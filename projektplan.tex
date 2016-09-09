@@ -1,0 +1,233 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english, swedish]{babel}
+
+\usepackage{lipsum}%% a garbage package you don't need except to create examples.
+
+%For headers & footers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{LOGO}
+\chead{Kartrobot}
+\rhead{2016-mm-dd}
+
+\lfoot{Konstruktion med mikrodatorer}
+\rfoot{Grupp 3 \\ ev. e-post till projektgrupp}
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+
+\title{Projektplan}
+\author{Patrik Sletmo}
+\date{September 2016}
+
+
+\begin{document}
+
+\selectlanguage{swedish}
+
+\thispagestyle{empty}
+
+{
+\sffamily
+\centering
+\large
+
+
+{\huge 
+Projektplan
+}
+
+{\large
+Patrik Sletmo
+}
+
+{\large
+Version x.y
+}
+
+\vspace{3.5cm}
+
+Status
+\begin{center}
+\begin{tabular}{ | c | c | c | } 
+\hline
+Granskad & snubbe & 2016-mm-dd \\
+\hline
+Godkänd & snubba & 2016-mm-dd\\
+\hline
+\end{tabular}
+\end{center}
+}
+
+\clearpage
+
+{
+\sffamily
+\centering
+\large
+
+
+{\huge 
+Projektidentitet
+}
+
+{\large
+Grupp 3, 16/HT, KarToffel \\ Linköpings tekniska högskola, institution 
+}
+
+\vspace{3.5cm}
+
+Status
+\begin{center}
+\begin{tabular}{ | c | c | c | c |} 
+\hline
+Namn & Ansvar & Telefon & E-post \\  
+\hline
+Ett namn & ett ansvar & ett telefon & ett e-post \\
+\hline
+\end{tabular}
+\end{center}
+}
+
+\begin{center}
+\textbf{E-postlista för hela gruppen}: epost \\
+\textbf{Hemsida}: N/A
+\end{center}
+
+\begin{center}
+\textbf{Kund}: Tomas Svensson, 581 83 Linköping, \\
+kundtelefon +46 (0)13 28 1368, tomas.svensson@liu.se \\
+\textbf{Kontaktperson hos kund}: Tomas Svensson, +46 (0)13 28 1368, tomas.svensson@liu.se
+\end{center}
+
+\begin{center}
+\textbf{Kursansvarig}: Tomas Svensson, 3B 528, +46 (0)13 28 1368, tomas.svensson@liu.se \\
+\textbf{Handledare}: namn, tel., mobil-nr., e-postadress 
+\end{center}
+\clearpage
+
+
+
+\renewcommand*\contentsname{Innehållsförteckning}
+\tableofcontents
+\clearpage
+
+\section{Beställare}
+Beställare och köpare av projektet är Mattias Krysander, 013 - 28 2198 , matkr@isy.liu.se
+
+\section{Översiktlig beskrivning av projektet}
+
+\subsection{Syfte och mål}
+Syftet med det här projektet är att få förståelse för mikroprocessorer och kommunikationen mellan
+dessa. Målet med detta projekt är att producera en robot som autonomt läser av ett rum och i realtid  ritar upp en karta över rummet.
+
+\subsection{Leveranser}
+Alla leveranser ska ske genom mail till beställaren i PDF-format, såvida inget annat står angivet. 
+
+\begin{itemize}
+    \item Kravspecifikationen ska vara godkänd senast den 2016-09-13. 
+    \item Första versionen av projektplan, tidsplan och systemskiss ska vara inlämnad till beställaren senast 2016-09-22. 
+    \item Slutgiltiga versionen av projektplan, tidsplan och systemskiss ska vara inlämnad till beställaren senast 2016-09-30. 
+    \item Första versionen av designspecifikationen ska vara inlämnad till beställaren senast 2016-11-01. 
+    \item Slutgiltiga versionen av designspecifikationen ska vara godkänd senast 2016-11-04.
+    \item Efterstudien ska vara inlämnad senast 2016-12-21. 
+    \item Utrustningen ska vara inlämnad senast 2016-12-22.
+    \item Roboten ska levereras och redovisas senast vecka 51 till beställaren personligen.
+    \item Teknisk dokumentation ska vara inlämnad senast tre arbetsdagar före redovisning.
+    \item Användarhandledning ska vara inlämnad senast tre arbetsdagar före redovisning.
+\end{itemize}
+
+
+\subsection{Begränsningar}
+Roboten ska ej förväntas fungera i en miljö utan tydliga konturer och hörn eller där det finns föremål som rör sig. Roboten förväntas heller inte fungera optimalt i ojämn terräng. (Under projektet kommer ej någon omfattande utvärdering göras vad gäller vilka programmeringsspråk eller komponenter är mest optimala.)
+
+\section{Fasplan}
+
+\subsection{Före projektstart}
+Innan projektets början ska en kravspecifikation tillsammans med projektplan, systemskiss och 
+
+\subsubsection{Bilda projektgrupp}
+En projektgrupp på sex studenter som läser kursen Konstruktion med mikrodatorer (TSEA29) ska bildas och rapporteras till kursens examinator. Samtidigt som gruppen bildas ska en projektledare utses.
+   
+\subsubsection{Kravspecifikation}
+En kravspecifikation enligt LIPS-modellen ska skrivas och godkännas av projektets beställare, se leveranser.
+
+\subsubsection{Ansvarsfördelning}
+Alla roller förutom projektledaren ska bestämmas utifrån projektmedlemmarnas preferenser och erfarenheter. Rollerna ska ha en betydelse för tidsplanen.
+
+\subsubsection{Tidsplan}
+En tidsplan där alla projektmedlemmars tider planeras ska genomföras och godkännas av projektets beställare.
+
+\subsubsection{Systemskiss}
+En översiktlig beskrivning av systemet där det framgår hur produkten ska konstrueras ska skapas och godkännas av projektets beställare. Från skissen ska det gå att avgöra vilka moduler systemet innehåller och hur dess konstruktion kan delas in i arbetsblock.
+
+\subsection{Under projektet}
+Under projektet ska produkten designas, utvecklas och testas. Gruppen ska också tid- och statusrapportera.
+
+\subsubsection{Design}
+En designspecifikation ska tas fram och godkännas av handledaren och sedan lämnas till beställaren, se leveranser. 
+
+\subsubsection{Utveckling}
+Produktens alla delar ska konstrueras. Fysiska delar ska monteras ihop och mjukvara ska utvecklas.
+
+\subsubsection{Tester}
+Tester ska definieras och utföras på olika delar och nivåer av produkten för att säkerställa att produkten uppfyller kraven formulerade i kravspecifikationen.
+
+\subsubsection{Planering}
+Möten ska hållas och planering ska ske. Om så behövs redigeras en tidigare planering för att fungera under nya förutsättningar. Beslutsmöten ska hållas mellan projektgruppen och beställaren.
+
+\subsubsection{Rapportering}
+Tidrapportering ska skickas till beställaren veckovis under projektet. På beställarens begäran ska statusrapport skickas in.
+
+\subsection{Efter projektet}
+Efter projektet ska roboten demonteras och alla komponenter återlämnas. Därmed finns ej någon avsikt att underhålla eller vidareutveckla roboten eller någon av delprodukterna. Projektgruppen kommer upplösas efter projektets slut.
+
+\section{Organisationsplan för hela projektet}
+
+\subsection{Organisationsplan per fas}
+TODO:BILD
+
+\subsection{Organisationsplan hos kunden}
+Kunden och beställaren är samma person.
+
+\subsection{Villkor för samarbetet inom projektgruppen}
+
+\subsection{Definition av arbetsinnehåll och ansvar}
+
+\section{Dokumentplan}
+
+
+\section{Utvecklingsmetodik}
+
+\section{Utbildningsplan}
+Varken kunden eller projektets medlemmar ska genomgå någon särskild utbildning för att förstå projektets interna eller externa struktur.
+
+\section{Rapporteringsplan}
+Mine /Pata
+
+\section{Mötesplan}
+\section{Resursplan}
+\subsection{Personer}
+\subsection{Material}
+\subsection{Lokaler}
+\subsection{Ekonomi}
+
+\section{Milstolpar och beslutpunkter}
+\subsection{Milstolpar}
+\subsection{Beslutspunkter}
+
+\section{Aktiviteter}
+\section{Tidplan}
+\section{Förändringsplan}
+\section{Kvalitetsplan}
+
+\subsection{Granskningar}
+\subsection{Testplan}
+
+\section{Riskanalys}
+\section{Prioriteringar}
+\section{Projektavslut}
+
+\end{document}
