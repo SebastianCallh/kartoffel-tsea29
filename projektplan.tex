@@ -1,13 +1,13 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage[english, swedish]{babel}
-
+\usepackage{graphicx}
 \usepackage{lipsum}%% a garbage package you don't need except to create examples.
 
 %For headers & footers
 \usepackage{fancyhdr}
 \pagestyle{fancy}
-\lhead{LOGO}
+\lhead{\includegraphics[scale=0.1516]{Logo}}
 \chead{Kartrobot}
 \rhead{2016-mm-dd}
 
@@ -24,7 +24,7 @@
 
 
 \begin{document}
-
+\graphicspath{{./images/}}
 \selectlanguage{swedish}
 
 \thispagestyle{empty}
@@ -188,7 +188,7 @@ Efter projektet ska roboten presenteras inför beställare och kund, samt ingå 
 ``Allmän beskrivning av vad kapitlet innehåller''
 \subsection{Organisationsplan per fas}
 
-\includegraphics{organisationplan}
+\includegraphics{Organisationsplan}
 TODO:BILD
 
 \subsection{Organisationsplan hos kunden}
