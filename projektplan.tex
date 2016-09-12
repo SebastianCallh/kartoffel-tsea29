@@ -1,13 +1,15 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage[english, swedish]{babel}
+\usepackage{graphicx}
+\usepackage{float}
 
 \usepackage{lipsum}%% a garbage package you don't need except to create examples.
 
 %For headers & footers
 \usepackage{fancyhdr}
 \pagestyle{fancy}
-\lhead{LOGO}
+\lhead{\includegraphics[scale=0.1516]{Logo}}
 \chead{Kartrobot}
 \rhead{2016-mm-dd}
 
@@ -24,7 +26,7 @@
 
 
 \begin{document}
-
+\graphicspath{{./images/}}
 \selectlanguage{swedish}
 
 \thispagestyle{empty}
@@ -47,7 +49,7 @@ Patrik Sletmo
 Version x.y
 }
 
-\vspace{3.5cm}
+\vspace{13.5cm}
 
 Status
 \begin{center}
@@ -63,6 +65,8 @@ Godkänd & snubba & 2016-mm-dd\\
 
 \clearpage
 
+\topskip0pt
+\vspace*{\fill}
 {
 \sffamily
 \centering
@@ -77,36 +81,43 @@ Projektidentitet
 Grupp 3, 16/HT, KarToffel \\ Linköpings tekniska högskola, institution 
 }
 
-\vspace{3.5cm}
+\vspace{0.5cm}
 
-Status
-\begin{
-center}
+\begin{table}[H]
+\centering
 \begin{tabular}{ | c | c | c | c |} 
 \hline
 Namn & Ansvar & Telefon & E-post \\  
 \hline
-Ett namn & ett ansvar & ett telefon & ett e-post \\
+Patrik Sletmo & Projektledare & 070 783 57 61 & patsl736@student.liu.se \\
+\hline
+Rebecca Lindblom &  & 073 436 40 79 & rebli156@student.liu.se \\
+\hline
+Matildha Sjöstedt &  & 070 515 84 11 & matsj696@student.liu.se \\
+\hline
+Sebastian Callh &  & 073 820 46 64 & sebca553@student.liu.se \\
+\hline
+Anton Dalgren &  & 076 836 51 56 & antda685@student.liu.se \\
+\hline
+Matilda Dahlström &  & 070 636 33 52 & matda715@student.liu.se \\
 \hline
 \end{tabular}
-\end{center}
+\end{table}
 }
 
 \begin{center}
-\textbf{E-postlista för hela gruppen}: epost \\
-\textbf{Hemsida}: N/A
+\textbf{Hemsida}: https://github.com/SebastianCallh/kartoffel-tsea29
 \end{center}
 
 \begin{center}
-\textbf{Kund}: Tomas Svensson, 581 83 Linköping, \\
-kundtelefon +46 (0)13 28 1368, tomas.svensson@liu.se \\
-\textbf{Kontaktperson hos kund}: Tomas Svensson, +46 (0)13 28 1368, tomas.svensson@liu.se
+\textbf{Kund}: Mattias Krysander, 013 - 28 2198 , matkr@isy.liu.se
 \end{center}
 
 \begin{center}
 \textbf{Kursansvarig}: Tomas Svensson, 3B 528, +46 (0)13 28 1368, tomas.svensson@liu.se \\
-\textbf{Handledare}: namn, tel., mobil-nr., e-postadress 
+\textbf{Handledare}: Ännu ej bestämt
 \end{center}
+\vspace*{\fill}
 \clearpage
 
 
@@ -189,7 +200,7 @@ Efter projektet ska roboten presenteras inför beställare och kund, samt ingå 
 ``Allmän beskrivning av vad kapitlet innehåller''
 \subsection{Organisationsplan per fas}
 
-\includegraphics{organisationplan}
+\includegraphics{Organisationsplan}
 TODO:BILD
 
 \subsection{Organisationsplan hos kunden}
@@ -248,7 +259,7 @@ Projektet kräver flertalet komponenter och mätutrustning. All utrustning finns
 \subsection{Lokaler}
 Till projektets förfogande finns lokalerna Muxen 3-4 där dator och mätutrustning för hårdvaruutveckling finns att tillgå. Dessa lokaler är alltid tillgängliga efter beslutpunkt 2 och alla i gruppen kan vara där samtidigt. Vid eventuell platsbrist i Muxen kan gruppen hitta andra lediga ytor att arbeta på. Om det skulle ske så tas ett beslut inom gruppen om vilka medlemmar som behöver stanna kvar i Muxen.
 \subsection{Ekonomi}
-Projektet har en budget på max 160 arbetstimmar per person.
+Projektet har en budget på max 160 arbetstimmar per person efter att beslutpunkt 2 har tagits.
 
 \section{Milstolpar och beslutspunkter}
 \subsection{Milstolpar}
