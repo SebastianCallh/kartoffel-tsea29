@@ -31,3 +31,12 @@
 # Debug files
 *.dSYM/
 *.su
+
+# Compiled latex files
+projektplan.aux
+projektplan.log
+projektplan.pdf
+projektplan.toc
+
+# Emacs backup files
+*~
