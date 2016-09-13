@@ -200,11 +200,11 @@ Efter projektet ska roboten presenteras inför beställare och kund, samt ingå 
 Detta kapitel handlar om strukturen som används inom projektet både hos kunden och projektgruppen. Mer specifikt går den in på hur projektgruppen ska samarbeta, vad som gäller för samarbetet och arbetsinnehållet för de olika ansvarsposterna.
 
 \subsection{Organisationsplan per fas}
-
+\begin{figure}[H]
 \includegraphics{Organisationsplan}
-
-\subsection{Organisationsplan hos kunden}
-Kunden och beställaren är samma person.
+\caption{Organisation i projektet}
+Gruppen ska ha samma organisation under hela projektet. Organisationen visas i Figur X.
+\end{figure}
 
 \subsection{Villkor för samarbetet inom projektgruppen}
 \label{subsec:villkorsamarbete}
@@ -229,16 +229,39 @@ Projektledaren ansvarar för att leda arbetet i gruppen framåt och är ansvarig
 Varje modul tilldelas ett team av utvecklare, som tillsammans ansvarar för att utveckla och skriva tester för deras modul. En utvecklare kan ha olika underansvar i sitt team, t.ex. ansvar för designen, tester eller för en specifik detalj i en modul beroende på hennes erfarenheter och teamets behov.
 
 \section{Dokumentplan}
+
 Alla dokument som ingår i projektet listas i tabellen nedan. Alla dokument skrivs på svenska. Alla medlemar i projektgruppen har behörighet att läsa samt redigera alla dokument som skapas av projektgruppen. Beställaren och kunden har endast behörighet att läsa de dokument som distribueras till dem. Dokumenten versionshanteras med hjälp av versionshanteringssystemet git. När ett dokument som inte är internt för projektgruppen anses färdigt att distribueras skickas det till den berörda parten. Vid distribution anges ett versionsnummer till dokumentet på formen X.Y där varje första distribution börjar med versionsnummer 0.1, och varje mindre revidering ökar versionsnummret på höger sida om punkten. Vid en större revision ökar siffran på vänster sida om punkten, och då nollställs även siffran till höger. Versionsnummret ändras endast vid granskning av dokumentet av utomstående part.   
-\begin{center}
-\begin{tabular}{ | c | c | c | c | c | c |} 
+
+\begin{table}[H]
+\begin{tabular}{ | l | l | l | l | l | l |} 
+% TODO Fix line break in table
 \hline
-Dokument & Ansvarig & Godkänns av & Syfte & Distribueras till & Färdigdatum \\
+\textbf{Dokument} & \textbf{Ansvarig} & \textbf{Godkänns av} & \textbf{Syfte} & \textbf{Distribueras till} & \textbf{Färdigdatum} \\
 \hline
-Kravspecifikation & Potatis & Mattias & Definierar alla krav på systemet & Mattias och gruppen & 2016-mm-dd\\
+Kravspecifikation & Patrik & Mattias & Definierar alla krav på systemet & Mattias och gruppen & 2016-mm-dd\\
+\hline
+Projektplan & Patrik & Mattias & Hjälpmedel för hur projektet ska genomföras & Mattias och gruppen & 2016-mm-dd\\
+\hline
+Tidsplan & Patrik & Mattias & Hjälpmedel för att hålla ekonomikrav & Mattias och gruppen & 2016-mm-dd\\
+\hline
+Systemskiss & Patrik & Mattias & Underlag för designspecifikation & Mattias och gruppen & 2016-mm-dd\\
+\hline
+Designspecifikation & Patrik & Handledare & Underlag för konstruktionsarbetet & Mattias och gruppen & 2016-mm-dd\\
+\hline
+Tidrapporter & Patrik & Mattias & Visar tidsfördelningen inom gruppen & Mattias och gruppen & 2016-mm-dd\\
+\hline
+Uppdaterad tidsplan & Patrik & Mattias & Visar om projektet håller tidsplanen & Mattias och gruppen & 2016-mm-dd\\
+\hline
+Teknisk dokumentation & Patrik & Mattias & Beskrivning av de tekniska lösningarna & Mattias och gruppen & 2016-mm-dd\\
+\hline
+Användarhandledning & Patrik & Mattias & Manual för den tänkta användaren & Mattias och gruppen & Tre dagar före redovisning\\
+\hline
+Efterstudie & Patrik & - & Reflektera över förbättrningar inför framtida projekt & Mattias och gruppen & 2016-mm-dd\\
+\hline
+Statusrapport & Patrik & Mattias & Visar om projektet håller tidsplanen & Mattias och gruppen & Vid begäran\\
 \hline
 \end{tabular}
-\end{center}
+\end{table}
 
 \section{Utvecklingsmetodik}
 
