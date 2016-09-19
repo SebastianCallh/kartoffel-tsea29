@@ -167,12 +167,17 @@ Bild på navigering
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.35]{styrenhet_blockschema}
-\caption{Figur X - Översiktsblockschema över styrenheten}
+\caption{Översiktsblockschema över styrenheten}
+\label{fig:styrenhet}
 \end{figure}
-Styrenheten är över gränssnittet I2C kopplad till huvudenheten.\newline\newline
-Styrenheten har en processor av typ ATmega1284.\newline\newline
-Styrenheten har fyra hjulservon indelade i två hjulpar som kan styras individuellt. Dessa kontrollerar robotens position och kommunicerar med processorn med PWM och en riktningssignal.\newline\newline
-Styrenheten har även ett rotationsservo som kontrollerar en avståndssensors rörelse. Detta servo kommunicerar med processorn via en half-duplex UART.\newline\newline
+Styrenheten (figur~\ref{fig:styrenhet}) är över gränssnittet I2C kopplad till huvudenheten.\newline\newline
+Styrenheten (figur~\ref{fig:styrenhet}) har en processor av typ ATmega1284.\newline\newline
+Styrenheten (figur~\ref{fig:styrenhet}) har fyra hjulservon indelade i två hjulpar. De två hjulparen kan styras oberoende av varandra. Dessa kontrollerar robotens position och kommunicerar med processorn med PWM och en riktningssignal.\newline\newline
+Styrenheten (figur~\ref{fig:styrenhet}) har även ett rotationsservo som kontrollerar en avståndssensors rörelse. Detta servo kommunicerar med processorn via en half-duplex UART.\newline\newline
+
+\subsection{Rotation}
+Styrenhetens (figur~\ref{fig:styrenhet}) rotationsservo kommer att ha två sensorer fastsatta på sig, en avståndssensor samt ett gyro. Dessa sensorer hör till sensorenheten och kommer inte att kommunicera direkt med styrenheten. Sensordata processeras av sensorenheten och skickas sedan till huvudenheten. Därefter tas ett beslut i huvudenheten baserat på sensorenhetens data hur rotationsservot ska styras. 
+
 
 \section{Sensorenhet}
 \begin{figure}[H]
