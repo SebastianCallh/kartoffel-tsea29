@@ -41,6 +41,8 @@ systemskiss.aux
 systemskiss.log
 systemskiss.pdf
 systemskiss.toc
+systemskiss.bbl
+systemskiss.blg
 
 # Emacs backup files
 *~

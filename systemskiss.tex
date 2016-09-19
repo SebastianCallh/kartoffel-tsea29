@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english, swedish]{babel}
 
+\usepackage{cite}
 \usepackage{caption}
 \usepackage{graphicx}
 \usepackage{float}
@@ -292,5 +293,11 @@ Ett AX-12-servo monteras ovanpå roboten i mitten (se figur~\ref{fig:montering})
 \label{fig:mjukvaruklient}
 \end{figure}
 Mjukvaruklienten ska presentera den karta som med robotens hjälp genererats över rummet, samt låta användaren styra roboten när den är i sitt manuella läge. Ovanstående figur (~\ref{fig:mjukvaruklient}) visar ett översiktligt flödesschema av hur mjukvaruklienten fungerar. Mjukvaruklienten kommunicerar med roboten via Bluetooth. När data tas emot så ska denna sorteras utifrån om det är kartdata, mätdata eller styrdata - vilket kommer kännas igen av någon form av ID i början av överföringen. Datan lagras sedan tills klienten är redo att behandla den för presentation, vilket ska ske löpande - dvs. data ska presenteras och kartan växa fram allt eftersom roboten kör. Kommandon för att styra roboten manuellt skickas via Bluetooth till roboten. En lista på kommandon som ska kunna skickas till roboten kan återfinnas i kravspecifikationen. Som ett sekundärt krav har vi att man ska kunna byta mellan manuellt och autonomt läge genom mjukvaruklienten (detta är ej illustrerat i figuren ovan). Signalerna RTS och CLS förklaras i avsnittet \textit{Huvudenhet}. 
+
+\clearpage
+
+\nocite{*}
+\bibliography{systemskiss}{}
+\bibliographystyle{plain}
 
 \end{document}
