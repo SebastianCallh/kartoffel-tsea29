@@ -263,10 +263,12 @@ För att både kunna leverera korrekt data till huvudenheten samt undvika att f�
 Ett AX-12-servo monteras ovanpå roboten i mitten (se figur~\ref{fig:montering}). Ovanpå servot monteras laseravståndssensorn som i sin tur har gyrot monterat ovanpå. Från både servot och gyrot går fria sladdar som är kopplade till sensorenheten. De sladdar som behövs för att koppla in servot kommer inte ligga ivägen för rotationen och är därför undantagna från figuren. Förslagsvis går någon sorts ränna på båda sidorna av rotationstornet där sladdarna kan röra sig fritt (ej inkluderat i figur).
 
 \section{Mjukvaruklient}
-\includegraphics[scale=0.25]{mjukvaruklient_flowchart.png}
+\begin{figure}[H}
+\centering
+\includegraphics[scale=0.25]{mjukvaruklient_flowchart2}
 \caption{Översiktligt flödesschema över mjukvaruklienten}
-
-
-Text och skiss på GUI
+\label{fig:mjukvaruklient}
+\end{figure}
+Mjukvaruklienten ska presentera den karta som med robotens hjälp genererats över rummet, samt låta användaren styra roboten när den är i sitt manuella läge. Ovanstående figur (~\ref{fig:mjukvaruklient}) visar ett översiktligt flödesschema av hur mjukvaruklienten fungerar. Mjukvaruklienten kommunicerar med roboten via Bluetooth. När data tas emot så ska denna sorteras utifrån om det är kartdata, mätdata eller styrdata - vilket kommer kännas igen av någon form av ID i början av överföringen. Datan lagras sedan tills klienten är redo att behandla den för presentation, vilket ska ske löpande - dvs. data ska presenteras och kartan växa fram allt eftersom roboten kör. Kommandon för att styra roboten manuellt skickas via Bluetooth till roboten. En lista på kommandon som ska kunna skickas till roboten kan återfinnas i kravspecifikationen. Som ett sekundärt krav har vi att man ska kunna byta mellan manuellt och autonomt läge genom mjukvaruklienten (detta är ej illustrerat i figuren ovan). Signalerna RTS och CLS förklaras i avsnittet \textit{Huvudenhet}. 
 
 \end{document}
