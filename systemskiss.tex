@@ -182,6 +182,15 @@ Att montera två sensorer på en roterande del medför en del problem med hur t.
 \subsubsection{Rotation}
 För att både kunna leverera korrekt data till huvudenheten samt undvika att förstöra hårdvaran på grund av utdragna sladdar behöver detektionen av sensorservots nuvarande rotation hålla sig innanför en viss felmarginal. Dels så rapporterar servot AX-12 sin nuvarande rotationsvinkel via dess dataport och dels kommer gyrosensorn ge en uppskattning om hur servot roterat. Blir felet för stort kan AX-12-servots rotation manuellt ändras till en given vinkel. I och med att data om rotationen kommer rapporteras från både sensorenheten (gyro) och styrenheten (servo) så sker beräkningen av vinkeln i huvudenheten.
 
+\subsubsection{Montering}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.45]{Montering}
+\caption{Skiss över montering av laser}
+\label{fig:montering}
+\end{figure}
+Ett AX-12-servo monteras ovanpå roboten i mitten (se figur~\ref{fig:montering}). Ovanpå servot monteras laseravståndssensorn som i sin tur har gyrot monterat ovanpå. Från både servot och gyrot går fria sladdar som är kopplade till sensorenheten. De sladdar som behövs för att koppla in servot kommer inte ligga ivägen för rotationen och är därför undantagna från figuren. Förslagsvis går någon sorts ränna på båda sidorna av rotationstornet där sladdarna kan röra sig fritt (ej inkluderat i figur).
+
 \section{Mjukvaruklient}
 Text och skiss på GUI
 
