@@ -151,23 +151,26 @@ Den här systemskissen beskriver i mer teknisk detalj konstruktionen av roboten 
 Blockschema över roboten
 
 \section{Huvudenhet}
+
+Huvudenheten består av två undermoduler, logikenheten och kommunikationsenheten (se figur ~\ref{fig:huvudenhet}). Logikenheten fattar robotens alla beslut genom att betrakta sensordata från sensorenheten och sedan beordra styrenheten att navigera på lämpligt sätt, och kommunikationsenheten hanterar all kommunikation med mjukvaruklienten. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{Huvudenhet} \\
+  \caption{Ett övergripande blockschema över huvudenheten}
+  \label{fig:huvudenhet}
+\end{figure}
+
+\subsection{Realisering}
+
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.25]{Huvudmodul_oversikt_blockschema}
 \caption{Översiktsblockschema över huvudenheten}
 \label{fig:huvudmodul}
 \end{figure}
-Figur~\ref{fig:huvudmodul} visar hur kommunikationen sker inom huvudenheten på ett översiktligt plan. Processorn innehåller minne där vi kommer lagra data, variabler, konstanter samt själva programmet som styr huvudenhetens logik (se \textit{Logikenhet}). Processorn kommunicerar till omvärlden på två sätt, via en Bluetoothenhet och via en I2C-buss. Kommunikationen via Bluetooth bygger på en slags handskakningsprincip mellan processorn och den PC som Bluetoothenheten är kopplad till. Processorn skickar signalen \textit{Clear to send} till PC för att tala om att den är redo att ta emot data. PC:n skickar signalen \textit{Request to send} till processorn när den är redo att ta emot data. I2C-bussen används för kommunikation mellan huvud-, sensor- och styrenhet. Huvudenheten är ensam master på bussen och styr på så vis kommunikaitonen. Följdaktligen är den även ansvarig för att generera klockpulsen SCL. När antingen sensor- eller styrenheten är redo att skicka data eller låta huvudenheten läsa data, kommer de skicka ett interrupt till huvudenhetens processor. Den processor vi har tänkt att använda oss utav i huvuenhten är en ATmega1284 processor, med 128kB flashminne samt extra 20 kB för variabler och konstanter och en klocka på 0-20 MHz. 
 
-Huvudenheten består av två undermoduler, logikenheten och kommunikationsenheten (se figur s). Logikenheten fattar robotens alla beslut genom att betrakta sensordata från sensorenheten och sedan beordra styrenheten att navigera på lämpligt sätt, och kommunikationsenheten hanterar all kommunikation med mjukvaruklienten. 
-
-\begin{center}
-  \begin{figure}
-    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Huvudenhet} \\
-    \caption{figure}{Figur s. Ett övergripande blockschema över huvudenheten}
-    \label{fig:huvudenhet}
-  \end{figure}
-\end{center}
+Figur~\ref{fig:huvudmodul} visar hur kommunikationen sker inom huvudenheten på ett översiktligt plan. Processorn innehåller minne där vi kommer lagra data, variabler, konstanter samt själva programmet som styr huvudenhetens logik (se \textit{Logikenhet}). Processorn kommunicerar till omvärlden på två sätt, via en Bluetoothenhet och via en I2C-buss. Kommunikationen via Bluetooth bygger på en slags handskakningsprincip mellan processorn och den PC som Bluetoothenheten är kopplad till. Processorn skickar signalen \textit{Clear to send} till PC för att tala om att den är redo att ta emot data. PC:n skickar signalen \textit{Request to send} till processorn när den är redo att ta emot data. I2C-bussen används för kommunikation mellan huvud-, sensor- och styrenhet. Huvudenheten är ensam master på bussen och styr på så vis kommunikaitonen. Följdaktligen är den även ansvarig för att generera klockpulsen SCL. När antingen sensor- eller styrenheten är redo att skicka data eller låta huvudenheten läsa data, kommer de skicka ett interrupt till huvudenhetens processor. Den processor vi har tänkt att använda oss utav i huvuenhten är en ATmega1284 processor, med 128kB flashminne samt extra 20 kB för variabler och konstanter och en klocka på 0-20 MHz.
  
 \subsection{Kommunikationsenhet}
 All kommunikation med mjukvaruklienten sker över Bluetooth.
@@ -184,33 +187,28 @@ Bild på navigation
 
 Allt eftersom roboten utforska den omkringliggande miljön kommer den att spara ned allt den upptäcker. Eftersom roboten rör sig under kartläggningen kommer den nedsparade datan att behöva
 
-För att kartlägga omgivningen så konstruerar roboten upp en graf, med hörn som noder och väggar som bågar. För att detektera var hörn finns så läses lasersensorn av med jämna mellanrum. Vi kan visualisera det avlästa avståndet som en funktion av laserns vinkel som i figur ss, där diskontinuiteter och lokala maximum/minimum representerar hörn. En diskontinuitet betyder att vi hittat ett utstickande hörn med golvyta bakom sig och ett lokalt maximum/minimum innebär att vi hittat ett hörn på banan. Se figur ss och figur sss för exempel.
+För att kartlägga omgivningen så konstruerar roboten upp en graf, med hörn som noder och väggar som bågar. För att detektera var hörn finns så läses lasersensorn av med jämna mellanrum. Vi kan visualisera det avlästa avståndet som en funktion av laserns vinkel som i figur ss, där diskontinuiteter och lokala maximum/minimum representerar hörn. En diskontinuitet betyder att vi hittat ett utstickande hörn med golvyta bakom sig och ett lokalt maximum/minimum innebär att vi hittat ett hörn på banan. Se figur ~\ref{fig:lasersensor} och figur ~\ref{fig:lasersensor2} för exempel.
 
-\begin{center}
-  \begin{figure}
-    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Laserfunktionskurva} \\
-    \caption{figure}{En linjär-interpolerad bild utav avståndsavläsningar från lasersensorn.}
-    \label{fig:laserfunktionskurva}
-  \end{figure}
-\end{center}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{Laserfunktionskurva} \\
+  \caption{En linjär-interpolerad bild utav avståndsavläsningar från lasersensorn.}
+  \label{fig:laserfunktionskurva}
+\end{figure}
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5,keepaspectratio]{Lasersensor} \\
+  \caption{Ett fall där laseravståndsgrafen kommer inntehålla en diskontinuitet.}
+  \label{fig:lasersensor}
+\end{figure}
 
-\begin{center}
-  \begin{figure}
-    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Lasersensor} \\
-    \caption{figure}{Ett fall där laseravståndsgrafen kommer inntehålla en diskontinuitet.}
-    \label{fig:lasersensor}
-  \end{figure}
-\end{center}
-
-
-\begin{center}
-  \begin{figure}
-    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Lasersensor2} \\
-    \caption{figure}{Ett fall där laseravståndsgrafen kommer inntehålla ett lokalt maximum.}
-    \label{fig:lasersensor2}
-  \end{figure}
-\end{center}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{Lasersensor2} \\
+  \caption{Ett fall där laseravståndsgrafen kommer inntehålla ett lokalt maximum.}
+  \label{fig:lasersensor2}
+\end{figure}
 
 Bild på hur kartan sparas
 
@@ -233,7 +231,7 @@ Styrenhetens (figur~\ref{fig:styrenhet}) rotationsservo kommer att ha två senso
 \section{Sensorenhet}
 Text och blockschema
 Bild på laser
-=======
+
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.5]{sensorenhet}
@@ -254,6 +252,15 @@ Att montera två sensorer på en roterande del medför en del problem med hur t.
 
 \subsubsection{Rotation}
 För att både kunna leverera korrekt data till huvudenheten samt undvika att förstöra hårdvaran på grund av utdragna sladdar behöver detektionen av sensorservots nuvarande rotation hålla sig innanför en viss felmarginal. Dels så rapporterar servot AX-12 sin nuvarande rotationsvinkel via dess dataport och dels kommer gyrosensorn ge en uppskattning om hur servot roterat. Blir felet för stort kan AX-12-servots rotation manuellt ändras till en given vinkel. I och med att data om rotationen kommer rapporteras från både sensorenheten (gyro) och styrenheten (servo) så sker beräkningen av vinkeln i huvudenheten.
+
+\subsubsection{Montering}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.45]{Montering}
+\caption{Skiss över montering av laser}
+\label{fig:montering}
+\end{figure}
+Ett AX-12-servo monteras ovanpå roboten i mitten (se figur~\ref{fig:montering}). Ovanpå servot monteras laseravståndssensorn som i sin tur har gyrot monterat ovanpå. Från både servot och gyrot går fria sladdar som är kopplade till sensorenheten. De sladdar som behövs för att koppla in servot kommer inte ligga ivägen för rotationen och är därför undantagna från figuren. Förslagsvis går någon sorts ränna på båda sidorna av rotationstornet där sladdarna kan röra sig fritt (ej inkluderat i figur).
 
 \section{Mjukvaruklient}
 \includegraphics[scale=0.25]{mjukvaruklient_flowchart.png}
