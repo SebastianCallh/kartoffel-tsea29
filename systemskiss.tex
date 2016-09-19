@@ -155,17 +155,18 @@ Blockschema över roboten
 \centering
 \includegraphics[scale=0.25]{Huvudmodul_oversikt_blockschema}
 \caption{Översiktsblockschema över huvudenheten}
-\label{fig:huvudenhet}
+\label{fig:huvudmodul}
 \end{figure}
-Figur~\ref{fig:huvudenhet} visar hur kommunikationen sker inom huvudenheten på ett översiktligt plan. Processorn innehåller minne där vi kommer lagra data, variabler, konstanter samt själva programmet som styr huvudenhetens logik (se \textit{Logikenhet}). Processorn kommunicerar till omvärlden på två sätt, via en Bluetoothenhet och via en I2C-buss. Kommunikationen via Bluetooth bygger på en slags handskakningsprincip mellan processorn och den PC som Bluetoothenheten är kopplad till. Processorn skickar signalen \textit{Clear to send} till PC för att tala om att den är redo att ta emot data. PC:n skickar signalen \textit{Request to send} till processorn när den är redo att ta emot data. I2C-bussen används för kommunikation mellan huvud-, sensor- och styrenhet. Huvudenheten är ensam master på bussen och styr på så vis kommunikaitonen. Följdaktligen är den även ansvarig för att generera klockpulsen SCL. När antingen sensor- eller styrenheten är redo att skicka data eller låta huvudenheten läsa data, kommer de skicka ett interrupt till huvudenhetens processor. Den processor vi har tänkt att använda oss utav i huvuenhten är en ATmega1284 processor, med 128kB flashminne samt extra 20 kB för variabler och konstanter och en klocka på 0-20 MHz. 
->>>>>>> 651ea5d616e938fd5e6fedcabb0da34dd4ef1ef9
+Figur~\ref{fig:huvudmodul} visar hur kommunikationen sker inom huvudenheten på ett översiktligt plan. Processorn innehåller minne där vi kommer lagra data, variabler, konstanter samt själva programmet som styr huvudenhetens logik (se \textit{Logikenhet}). Processorn kommunicerar till omvärlden på två sätt, via en Bluetoothenhet och via en I2C-buss. Kommunikationen via Bluetooth bygger på en slags handskakningsprincip mellan processorn och den PC som Bluetoothenheten är kopplad till. Processorn skickar signalen \textit{Clear to send} till PC för att tala om att den är redo att ta emot data. PC:n skickar signalen \textit{Request to send} till processorn när den är redo att ta emot data. I2C-bussen används för kommunikation mellan huvud-, sensor- och styrenhet. Huvudenheten är ensam master på bussen och styr på så vis kommunikaitonen. Följdaktligen är den även ansvarig för att generera klockpulsen SCL. När antingen sensor- eller styrenheten är redo att skicka data eller låta huvudenheten läsa data, kommer de skicka ett interrupt till huvudenhetens processor. Den processor vi har tänkt att använda oss utav i huvuenhten är en ATmega1284 processor, med 128kB flashminne samt extra 20 kB för variabler och konstanter och en klocka på 0-20 MHz. 
 
 Huvudenheten består av två undermoduler, logikenheten och kommunikationsenheten (se figur s). Logikenheten fattar robotens alla beslut genom att betrakta sensordata från sensorenheten och sedan beordra styrenheten att navigera på lämpligt sätt, och kommunikationsenheten hanterar all kommunikation med mjukvaruklienten. 
 
 \begin{center}
-  \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Huvudenhet} \\
-  \caption{figure}{Figur s. Ett övergripande blockschema över huvudenheten}
-  \label{fig:picture}
+  \begin{figure}
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Huvudenhet} \\
+    \caption{figure}{Figur s. Ett övergripande blockschema över huvudenheten}
+    \label{fig:huvudenhet}
+  \end{figure}
 \end{center}
  
 \subsection{Kommunikationsenhet}
@@ -186,23 +187,29 @@ Allt eftersom roboten utforska den omkringliggande miljön kommer den att spara 
 För att kartlägga omgivningen så konstruerar roboten upp en graf, med hörn som noder och väggar som bågar. För att detektera var hörn finns så läses lasersensorn av med jämna mellanrum. Vi kan visualisera det avlästa avståndet som en funktion av laserns vinkel som i figur ss, där diskontinuiteter och lokala maximum/minimum representerar hörn. En diskontinuitet betyder att vi hittat ett utstickande hörn med golvyta bakom sig och ett lokalt maximum/minimum innebär att vi hittat ett hörn på banan. Se figur ss och figur sss för exempel.
 
 \begin{center}
-  \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Laserfunktionskurva} \\
-  \caption{figure}{Figur ss. En linjär-interpolerad bild utav avståndsavläsningar från lasersensorn.}
-  \label{fig:picture}
+  \begin{figure}
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Laserfunktionskurva} \\
+    \caption{figure}{En linjär-interpolerad bild utav avståndsavläsningar från lasersensorn.}
+    \label{fig:laserfunktionskurva}
+  \end{figure}
 \end{center}
 
 
 \begin{center}
-  \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Lasersensor} \\
-  \caption{figure}{Figur sss. Ett fall där laseravståndsgrafen kommer inntehålla en diskontinuitet.}
-  \label{fig:picture}
+  \begin{figure}
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Lasersensor} \\
+    \caption{figure}{Ett fall där laseravståndsgrafen kommer inntehålla en diskontinuitet.}
+    \label{fig:lasersensor}
+  \end{figure}
 \end{center}
 
 
 \begin{center}
-  \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Lasersensor2} \\
-  \caption{figure}{Figur sss. Ett fall där laseravståndsgrafen kommer inntehålla ett lokalt maximum.}
-  \label{fig:picture}
+  \begin{figure}
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Lasersensor2} \\
+    \caption{figure}{Ett fall där laseravståndsgrafen kommer inntehålla ett lokalt maximum.}
+    \label{fig:lasersensor2}
+  \end{figure}
 \end{center}
 
 Bild på hur kartan sparas
