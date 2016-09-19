@@ -254,6 +254,8 @@ Att montera två sensorer på en roterande del medför en del problem med hur t.
 För att både kunna leverera korrekt data till huvudenheten samt undvika att förstöra hårdvaran på grund av utdragna sladdar behöver detektionen av sensorservots nuvarande rotation hålla sig innanför en viss felmarginal. Dels så rapporterar servot AX-12 sin nuvarande rotationsvinkel via dess dataport och dels kommer gyrosensorn ge en uppskattning om hur servot roterat. Blir felet för stort kan AX-12-servots rotation manuellt ändras till en given vinkel. I och med att data om rotationen kommer rapporteras från både sensorenheten (gyro) och styrenheten (servo) så sker beräkningen av vinkeln i huvudenheten.
 
 \section{Mjukvaruklient}
+\includegraphics[scale=0.25]{mjukvaruklient_flowchart.png}
+\caption{Översiktligt flödesschema över mjukvaruklienten}
 Text och skiss på GUI
 
 \end{document}
