@@ -229,8 +229,6 @@ Styrenhetens (figur~\ref{fig:styrenhet}) rotationsservo kommer att ha två senso
 
 
 \section{Sensorenhet}
-Text och blockschema
-Bild på laser
 
 \begin{figure}[H]
 \centering
@@ -238,11 +236,11 @@ Bild på laser
 \caption{Översikt över sensorernas koppling till sensorenheten}
 \label{fig:sensorenhet}
 \end{figure}
-Sensorenheten figur~\ref{fig:sensorenhet} är kopplad till huvudenheten över gränssnittet I2C.\newline\newline
-Sensorenheten figur~\ref{fig:sensorenhet} ska ha en lasersensor kopplad till sig som kommunicerar med processorn över PWM.\newline\newline
-Sensorenheten figur~\ref{fig:sensorenhet} ska ha en accelerometer och gyrosensor kopplad till sig som ska hålla koll på hur mycket roboten har roterat och hur snabbt den åker. Dessa kommunicerar med varandra över SPI. \newline\newline
-Sensorenheten figur~\ref{fig:sensorenhet} ska ha en rotationssensor kopplad till sig som håller koll på hur mycket lasersensorn har roterat. Dessa kommunicerar med varandra över SPI. \newline\newline
-Sensorenheten figur~\ref{fig:sensorenhet} ska ha en knapp kopplad till sig på en av interrupt pinarna. Detta gör att när knappen trycks ned så växlar vi mellan autonomt och manuellt styrläge på roboten. \newline\newline
+Sensorenheten (figur~\ref{fig:sensorenhet}) är kopplad till huvudenheten över gränssnittet I2C.\newline\newline
+Sensorenheten (figur~\ref{fig:sensorenhet}) ska ha en lasersensor kopplad till sig som kommunicerar med processorn över PWM.\newline\newline
+Sensorenheten (figur~\ref{fig:sensorenhet}) ska ha en accelerometer och gyrosensor kopplad till sig som ska hålla koll på hur mycket roboten har roterat och hur snabbt den åker. Dessa kommunicerar med varandra över SPI. \newline\newline
+Sensorenheten (figur~\ref{fig:sensorenhet}) ska ha en rotationssensor kopplad till sig som håller koll på hur mycket lasersensorn har roterat. Dessa kommunicerar med varandra över SPI. \newline\newline
+Sensorenheten (figur~\ref{fig:sensorenhet}) ska ha en knapp kopplad till sig på en av interrupt pinarna. Detta gör att när knappen trycks ned så växlar vi mellan autonomt och manuellt styrläge på roboten. \newline\newline
 
 \subsection{Avståndssensor}
 För att med så hög precision som möjligt kunna mäta avståndet till de kringläggande väggarna använder sig roboten av en LIDAR-Lite v2 laseravståndsmätare. Denna sensor är monterad tillsammans med ett servo på toppen av roboten för att kunna snurra runt och mäta avstånd i 360\textdegree. Den sensordata som rapporteras av lasern kombineras med data från ett gyro som också monterats på rotationsservot för att kunna ge en beskrivning av området runt roboten.
