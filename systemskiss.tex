@@ -163,8 +163,7 @@ Den här systemskissen beskriver i mer teknisk detalj konstruktionen av roboten 
 \caption{Översikt över systemet}
 \label{fig:oversikt_systemet}
 \end{figure}
-Övergripande text om moduler, bussar, dylikt
-Blockschema över roboten
+Vårt system (se ovanstådende figur ~\ref{fig:oversikt_systemet} uppdelad i fem stycken enheter (eller \textit{moduler}), där två utav dem - presentations- och fjärrstyrningsenheten - ingår i vår mjukvaruklient och resten ingår i själva roboten. Kommunikationen mellan mjukvaruklienten och roboten sker via Bluetooth, medan den interna kommunikationen mellan robotens enheter sker via en I2C-buss. Här är huvudenheten ensam master och styr- och sensorenhet slaves. Andra protokol som vi använder i robotens interna kommunikation är PWM och SPI. Sensorer som är kopplade till sensorenheten inkluderar en laser, knaptt samt diverse accelerometrar och gyron. Till styrenheten kopplas servon som styr hjul och rotation av lasern.
 
 \section{Huvudenhet}
 
@@ -181,12 +180,12 @@ Huvudenheten består av två undermoduler, logikenheten och kommunikationsenhete
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.25]{Huvudmodul_oversikt_blockschema}
+\includegraphics[scale=0.40]{Huvudmodul_oversikt_blockschema}
 \caption{Översiktsblockschema över huvudenheten}
 \label{fig:huvudmodul}
 \end{figure}
 
-Figur~\ref{fig:huvudmodul} visar hur kommunikationen sker inom huvudenheten på ett översiktligt plan. Processorn innehåller minne där vi kommer lagra data, variabler, konstanter samt själva programmet som styr huvudenhetens logik (se \textit{Logikenhet}). Processorn kommunicerar till omvärlden på två sätt, via en Bluetoothenhet och via en I2C-buss. Kommunikationen via Bluetooth bygger på en slags handskakningsprincip mellan processorn och den PC som Bluetoothenheten är kopplad till. Processorn skickar signalen \textit{Clear to send} till PC för att tala om att den är redo att ta emot data. PC:n skickar signalen \textit{Request to send} till processorn när den är redo att ta emot data. I2C-bussen används för kommunikation mellan huvud-, sensor- och styrenhet. Huvudenheten är ensam master på bussen och styr på så vis kommunikaitonen. Följdaktligen är den även ansvarig för att generera klockpulsen SCL. När antingen sensor- eller styrenheten är redo att skicka data eller låta huvudenheten läsa data, kommer de skicka ett interrupt till huvudenhetens processor. Den processor vi har tänkt att använda oss utav i huvuenhten är en ATmega1284 processor, med 128kB flashminne samt extra 20 kB för variabler och konstanter och en klocka på 0-20 MHz.
+Figur~\ref{fig:huvudmodul} visar hur kommunikationen sker inom huvudenheten på ett översiktligt plan. Processorn innehåller minne där vi kommer lagra data, variabler, konstanter samt själva programmet som styr huvudenhetens logik (se \textit{Logikenhet}). Processorn kommunicerar till omvärlden på två sätt, via en Bluetoothenhet och via en I2C-buss. Kommunikationen via Bluetooth bygger på en slags handskakningsprincip mellan processorn och den PC som Bluetoothenheten är kopplad till. Processorn skickar signalen \textit{Clear to send} till PC för att tala om att den är redo att ta emot data. PC:n skickar signalen \textit{Request to send} till processorn när den är redo att ta emot data. I2C-bussen används för kommunikation mellan huvud-, sensor- och styrenhet. Huvudenheten är ensam master på bussen och styr på så vis kommunikaitonen. Följdaktligen är den även ansvarig för att generera klockpulsen SCL. När antingen sensor- eller styrenheten är redo att skicka data eller låta huvudenheten läsa data, kommer de skicka ett avbrott (\texit{interrupt}) till huvudenhetens processor. Den processor vi har tänkt att använda oss utav i huvuenhten är en ATmega1284 processor, med 128kB flashminne samt extra 20 kB för variabler och konstanter och en klocka på 0-20 MHz.
  
 \subsection{Kommunikationsenhet}
 All kommunikation med mjukvaruklienten sker över Bluetooth.
@@ -201,7 +200,7 @@ Bild på navigation
 
 \subsubsection{Kartläggning}
 
-Allt eftersom roboten utforska den omkringliggande miljön kommer den att spara ned allt den upptäcker. Eftersom roboten rör sig under kartläggningen kommer nya hörn att behöva översättas till ett gemensamt koordinatsystem innan de sparas ned. Roboten löser det genom att vid start definera ett koordinatsystem med utgångspunkt där den startar och sedan, genom att veta sin egen position, översätta de nyupptäckta punkternas position till det ursprungliga koordinatsystemet med hjälp av vektoraddition. Se figur ~\ref{fig:Koordinatberakning} för ett exempel.
+Allt eftersom roboten utforska den omkringliggande miljön kommer den att spara ned allt den upptäcker. Eftersom roboten rör sig under kartläggningen kommer nya hörn att behöva översättas till ett gemensamt koordinatsystem innan de sparas ned. Roboten löser det genom att vid start definera ett koordinatsystem med utgångspunkt där den startar och sedan, genom att veta sin egen position, översätta de nyupptäckta punkternas position till det ursprungliga koordinatsystemet med hjälp av vektoraddition. Se figur ~\ref{fig:Koordinatberakning} för ett exempel.\newline\newline
 
 \begin{figure}[H]
   \centering
@@ -210,16 +209,7 @@ Allt eftersom roboten utforska den omkringliggande miljön kommer den att spara 
   \label{fig:Koordinatberakning}
 \end{figure}
 
-För att kartlägga omgivningen så konstruerar roboten upp en graf, med hörn som noder och väggar som bågar. För att detektera var hörn finns så läses lasersensorn av med jämna mellanrum. Vi kan visualisera det avlästa avståndet som en funktion av laserns vinkel som i figur ss, där diskontinuiteter och lokala maximum/minimum representerar hörn. En diskontinuitet betyder att vi hittat ett utstickande hörn med golvyta bakom sig och ett lokalt maximum/minimum innebär att vi hittat ett hörn på banan. Se figur ~\ref{fig:LaserDiskontinuitet} och figur ~\ref{fig:LaserLokaltMaximum} för exempel. Eftersom upplösningen på avläsningar på korta avstånd och långa avstånd kan skilja sig mycket kommer värdemängden defineras på ett interval där en jämförelse mellan mätningarna fortfarande är meningfull.
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.5]{Laserfunktionskurva} \\
-  \caption{En linjär-interpolerad bild utav avståndsavläsningar från lasersensorn där x är vår sensors vinkel och y det uppmätt avståndet.}
-  \label{fig:laserfunktionskurva}
-\end{figure}
-
-I figur ~\ref{fig:laserfunktionskurva} kommer punkten som ligger på (1, 0.5) sparas, tillsammans med en båge till punkten som ligger på (2, 1). Eftersom vi här upptäcker en diskontinuitet så kommer ingen båge sparas mellan (2, 1) och (2, 3), men bågar kommer ansluta (2, 3) till (3, 4) och (3, 4) till (4, 2).
+För att kartlägga omgivningen så konstruerar roboten upp en graf, med hörn som noder och väggar som bågar. För att detektera var hörn finns så läses lasersensorn av med jämna mellanrum. Vi kan visualisera det avlästa avståndet som en funktion av laserns vinkel som i figur ss, där diskontinuiteter och lokala maximum/minimum representerar hörn. En diskontinuitet betyder att vi hittat ett utstickande hörn med golvyta bakom sig och ett lokalt maximum/minimum innebär att vi hittat ett hörn på banan. Se figur ~\ref{fig:LaserDiskontinuitet} och figur ~\ref{fig:LaserLokaltMaximum} för exempel. Eftersom upplösningen på avläsningar på korta avstånd och långa avstånd kan skilja sig mycket kommer värdemängden defineras på ett interval där en jämförelse mellan mätningarna fortfarande är meningfull.\newline\newline
 
 \begin{figure}[H]
   \centering
@@ -235,7 +225,14 @@ I figur ~\ref{fig:laserfunktionskurva} kommer punkten som ligger på (1, 0.5) sp
   \label{fig:LaserLokaltMaximum}
 \end{figure}
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{Laserfunktionskurva} \\
+  \caption{En linjär-interpolerad bild utav avståndsavläsningar från lasersensorn där x är vår sensors vinkel och y det uppmätt avståndet.}
+  \label{fig:laserfunktionskurva}
+\end{figure}
 
+I figur ~\ref{fig:laserfunktionskurva} kommer punkten som ligger på (1, 0.5) sparas, tillsammans med en båge till punkten som ligger på (2, 1). Eftersom vi här upptäcker en diskontinuitet så kommer ingen båge sparas mellan (2, 1) och (2, 3), men bågar kommer ansluta (2, 3) till (3, 4) och (3, 4) till (4, 2).
 
 \section{Styrenhet}
 \begin{figure}[H]
@@ -292,7 +289,7 @@ Ett AX-12-servo monteras ovanpå roboten i mitten (se figur~\ref{fig:montering})
 \caption{Översiktligt flödesschema över mjukvaruklienten}
 \label{fig:mjukvaruklient}
 \end{figure}
-Mjukvaruklienten ska presentera den karta som med robotens hjälp genererats över rummet, samt låta användaren styra roboten när den är i sitt manuella läge. Ovanstående figur (~\ref{fig:mjukvaruklient}) visar ett översiktligt flödesschema av hur mjukvaruklienten fungerar. Mjukvaruklienten kommunicerar med roboten via Bluetooth. När data tas emot så ska denna sorteras utifrån om det är kartdata, mätdata eller styrdata - vilket kommer kännas igen av någon form av ID i början av överföringen. Datan lagras sedan tills klienten är redo att behandla den för presentation, vilket ska ske löpande - dvs. data ska presenteras och kartan växa fram allt eftersom roboten kör. Kommandon för att styra roboten manuellt skickas via Bluetooth till roboten. En lista på kommandon som ska kunna skickas till roboten kan återfinnas i kravspecifikationen. Som ett sekundärt krav har vi att man ska kunna byta mellan manuellt och autonomt läge genom mjukvaruklienten (detta är ej illustrerat i figuren ovan). Signalerna RTS och CLS förklaras i avsnittet \textit{Huvudenhet}. 
+I mjukvaruklienten ingår presentations- och fjärrstyrningsenheten. Mjukvaruklienten ska presentera den karta som med robotens hjälp genererats över rummet, samt låta användaren styra roboten när den är i sitt manuella läge. Ovanstående figur (~\ref{fig:mjukvaruklient}) visar ett översiktligt flödesschema av hur mjukvaruklienten fungerar. Mjukvaruklienten kommunicerar med roboten via Bluetooth. När data tas emot så ska denna sorteras utifrån om det är kartdata, mätdata eller styrdata - vilket kommer kännas igen av någon form av ID i början av överföringen. Datan lagras sedan tills klienten är redo att behandla den för presentation, vilket ska ske löpande - dvs. data ska presenteras och kartan växa fram allt eftersom roboten kör. Kommandon för att styra roboten manuellt skickas via Bluetooth till roboten. En lista på kommandon som ska kunna skickas till roboten kan återfinnas i kravspecifikationen. Som ett sekundärt krav har vi att man ska kunna byta mellan manuellt och autonomt läge genom mjukvaruklienten (detta är ej illustrerat i figuren ovan). Signalerna RTS och CLS förklaras i avsnittet \textit{Huvudenhet}. 
 
 \clearpage
 
