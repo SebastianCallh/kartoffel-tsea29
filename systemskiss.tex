@@ -243,7 +243,7 @@ Sensorenheten (figur~\ref{fig:sensorenhet}) ska ha en rotationssensor kopplad ti
 Sensorenheten (figur~\ref{fig:sensorenhet}) ska ha en knapp kopplad till sig på en av interrupt pinarna. Detta gör att när knappen trycks ned så växlar vi mellan autonomt och manuellt styrläge på roboten. \newline\newline
 
 \subsection{Avståndssensor}
-För att med så hög precision som möjligt kunna mäta avståndet till de kringläggande väggarna använder sig roboten av en LIDAR-Lite v2 laseravståndsmätare. Denna sensor är monterad tillsammans med ett servo på toppen av roboten för att kunna snurra runt och mäta avstånd i 360\textdegree. Den sensordata som rapporteras av lasern kombineras med data från ett gyro som också monterats på rotationsservot för att kunna ge en beskrivning av området runt roboten.
+För att med så hög precision som möjligt kunna mäta avståndet till de kringläggande väggarna använder sig roboten av en LIDAR-Lite v2 laseravståndsmätare. Denna sensor är monterad tillsammans med ett servo på toppen av roboten för att kunna rotera fram och tilbaka och mäta avstånd i 360\textdegree. Den sensordata som rapporteras av lasern kombineras med data från ett gyro som också monterats på rotationsservot för att kunna ge en beskrivning av området runt roboten.
 
 \subsubsection{Begränsningar}
 Att montera två sensorer på en roterande del medför en del problem med hur t.ex. sladdar hanteras. Servot måste rotera i svepande rörelser fram och tillbaka för att inte dra sönder sladdarna och längden på sladdarna får inte vara för lång för att undvika att de hamnar ivägen.
