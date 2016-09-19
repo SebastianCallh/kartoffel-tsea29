@@ -237,8 +237,6 @@ Styrenhetens (figur~\ref{fig:styrenhet}) rotationsservo kommer att ha två senso
 
 
 \section{Sensorenhet}
-Text och blockschema
-Bild på laser
 
 \begin{figure}[H]
 \centering
@@ -246,11 +244,11 @@ Bild på laser
 \caption{Översikt över sensorernas koppling till sensorenheten}
 \label{fig:sensorenhet}
 \end{figure}
-Sensorenheten figur~\ref{fig:sensorenhet} är kopplad till huvudenheten över gränssnittet I2C.\newline\newline
-Sensorenheten figur~\ref{fig:sensorenhet} ska ha en lasersensor kopplad till sig som kommunicerar med processorn över PWM.\newline\newline
-Sensorenheten figur~\ref{fig:sensorenhet} ska ha en accelerometer och gyrosensor kopplad till sig som ska hålla koll på hur mycket roboten har roterat och hur snabbt den åker. Dessa kommunicerar med varandra över SPI. \newline\newline
-Sensorenheten figur~\ref{fig:sensorenhet} ska ha en rotationssensor kopplad till sig som håller koll på hur mycket lasersensorn har roterat. Dessa kommunicerar med varandra över SPI. \newline\newline
-Sensorenheten figur~\ref{fig:sensorenhet} ska ha en knapp kopplad till sig på en av interrupt pinarna. Detta gör att när knappen trycks ned så växlar vi mellan autonomt och manuellt styrläge på roboten. \newline\newline
+Sensorenheten (figur~\ref{fig:sensorenhet}) är kopplad till huvudenheten över gränssnittet I2C.\newline\newline
+Sensorenheten (figur~\ref{fig:sensorenhet}) ska ha en lasersensor kopplad till sig som kommunicerar med processorn över PWM.\newline\newline
+Sensorenheten (figur~\ref{fig:sensorenhet}) ska ha en accelerometer och gyrosensor kopplad till sig som ska hålla koll på hur mycket roboten har roterat och hur snabbt den åker. Dessa kommunicerar med varandra över SPI. \newline\newline
+Sensorenheten (figur~\ref{fig:sensorenhet}) ska ha en rotationssensor kopplad till sig som håller koll på hur mycket lasersensorn har roterat. Dessa kommunicerar med varandra över SPI. \newline\newline
+Sensorenheten (figur~\ref{fig:sensorenhet}) ska ha en knapp kopplad till sig på en av interrupt pinarna. Detta gör att när knappen trycks ned så växlar vi mellan autonomt och manuellt styrläge på roboten. \newline\newline
 
 \subsection{Avståndssensor}
 För att med så hög precision som möjligt kunna mäta avståndet till de kringläggande väggarna använder sig roboten av en LIDAR-Lite v2 laseravståndsmätare. Denna sensor är monterad tillsammans med ett servo på toppen av roboten för att kunna snurra runt och mäta avstånd i 360\textdegree. Den sensordata som rapporteras av lasern kombineras med data från ett gyro som också monterats på rotationsservot för att kunna ge en beskrivning av området runt roboten.
@@ -261,9 +259,22 @@ Att montera två sensorer på en roterande del medför en del problem med hur t.
 \subsubsection{Rotation}
 För att både kunna leverera korrekt data till huvudenheten samt undvika att förstöra hårdvaran på grund av utdragna sladdar behöver detektionen av sensorservots nuvarande rotation hålla sig innanför en viss felmarginal. Dels så rapporterar servot AX-12 sin nuvarande rotationsvinkel via dess dataport och dels kommer gyrosensorn ge en uppskattning om hur servot roterat. Blir felet för stort kan AX-12-servots rotation manuellt ändras till en given vinkel. I och med att data om rotationen kommer rapporteras från både sensorenheten (gyro) och styrenheten (servo) så sker beräkningen av vinkeln i huvudenheten.
 
+\subsubsection{Montering}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.45]{Montering}
+\caption{Skiss över montering av laser}
+\label{fig:montering}
+\end{figure}
+Ett AX-12-servo monteras ovanpå roboten i mitten (se figur~\ref{fig:montering}). Ovanpå servot monteras laseravståndssensorn som i sin tur har gyrot monterat ovanpå. Från både servot och gyrot går fria sladdar som är kopplade till sensorenheten. De sladdar som behövs för att koppla in servot kommer inte ligga ivägen för rotationen och är därför undantagna från figuren. Förslagsvis går någon sorts ränna på båda sidorna av rotationstornet där sladdarna kan röra sig fritt (ej inkluderat i figur).
+
 \section{Mjukvaruklient}
-\includegraphics[scale=0.25]{mjukvaruklient_flowchart.png}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.3]{mjukvaruklient_flowchart2}
 \caption{Översiktligt flödesschema över mjukvaruklienten}
-Text och skiss på GUI
+\label{fig:mjukvaruklient}
+\end{figure}
+Mjukvaruklienten ska presentera den karta som med robotens hjälp genererats över rummet, samt låta användaren styra roboten när den är i sitt manuella läge. Ovanstående figur (~\ref{fig:mjukvaruklient}) visar ett översiktligt flödesschema av hur mjukvaruklienten fungerar. Mjukvaruklienten kommunicerar med roboten via Bluetooth. När data tas emot så ska denna sorteras utifrån om det är kartdata, mätdata eller styrdata - vilket kommer kännas igen av någon form av ID i början av överföringen. Datan lagras sedan tills klienten är redo att behandla den för presentation, vilket ska ske löpande - dvs. data ska presenteras och kartan växa fram allt eftersom roboten kör. Kommandon för att styra roboten manuellt skickas via Bluetooth till roboten. En lista på kommandon som ska kunna skickas till roboten kan återfinnas i kravspecifikationen. Som ett sekundärt krav har vi att man ska kunna byta mellan manuellt och autonomt läge genom mjukvaruklienten (detta är ej illustrerat i figuren ovan). Signalerna RTS och CLS förklaras i avsnittet \textit{Huvudenhet}. 
 
 \end{document}
