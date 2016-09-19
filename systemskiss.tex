@@ -6,6 +6,8 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{textcomp}
+\usepackage[yyyymmdd]{datetime}
+\renewcommand{\dateseparator}{-}
 
 \usepackage{graphicx}
 \graphicspath{ {images/} }
@@ -15,10 +17,10 @@
 \pagestyle{fancy}
 \lhead{\includegraphics[scale=0.2]{Logo}}
 \chead{Kartrobot}
-\rhead{2016-mm-dd}
+\rhead{\today}
 
 \lfoot{Konstruktion med mikrodatorer}
-\rfoot{Grupp 3 \\ ev. e-post till projektgrupp}
+\rfoot{Grupp 3}
 
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0.4pt}
@@ -26,7 +28,7 @@
 
 \title{Systemskiss}
 \author{Patrik Sletmo}
-\date{September 2016}
+\date{\today}
 
 \selectlanguage{swedish}
 
@@ -116,7 +118,7 @@ Matilda Dahlström &  & 070 636 33 52 & matda715@student.liu.se \\
 
 \begin{center}
 \textbf{Kursansvarig}: Tomas Svensson, 3B 528, +46 (0)13 28 1368, tomas.svensson@liu.se \\
-\textbf{Handledare}: Ännu ej bestämt
+\textbf{Handledare}: Anders Nilsson, 3B 512, +46 (0)13 28 2635, anders.p.nilsson@liu.se
 \end{center}
 \vspace*{\fill}
 \clearpage
@@ -154,6 +156,12 @@ Status
 Den här systemskissen beskriver i mer teknisk detalj konstruktionen av roboten och tillhörande mjukvara. Dokumentet ska reflektera vår faktiska relisation av projektet och kan mycket väl komma att ändras allt eftersom projektet fortskrider och designbesluts behöver omvärderas.
 
 \section{Systemöversikt}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.35]{oversikt_systemet}
+\caption{Översikt över systemet}
+\label{fig:oversikt_systemet}
+\end{figure}
 Övergripande text om moduler, bussar, dylikt
 Blockschema över roboten
 
@@ -172,7 +180,7 @@ Huvudenheten består av två undermoduler, logikenheten och kommunikationsenhete
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.25]{Huvudmodul_oversikt_blockschema}
+\includegraphics[scale=0.40]{Huvudmodul_oversikt_blockschema}
 \caption{Översiktsblockschema över huvudenheten}
 \label{fig:huvudmodul}
 \end{figure}
@@ -277,7 +285,7 @@ Ett AX-12-servo monteras ovanpå roboten i mitten (se figur~\ref{fig:montering})
 \section{Mjukvaruklient}
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.3]{mjukvaruklient_flowchart2}
+\includegraphics[scale=0.4]{mjukvaruklient_flowchart3}
 \caption{Översiktligt flödesschema över mjukvaruklienten}
 \label{fig:mjukvaruklient}
 \end{figure}
