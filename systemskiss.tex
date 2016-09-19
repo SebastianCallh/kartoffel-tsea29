@@ -159,7 +159,15 @@ Bild på hur kartan sparas
 Bild på navigering
 
 \section{Styrenhet}
-Text och blockschema
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.35]{styrenhet_blockschema}
+\caption{Figur X - Översiktsblockschema över styrenheten}
+\end{figure}
+Styrenheten är över gränssnittet I2C kopplad till huvudenheten.\newline\newline
+Styrenheten har en processor av typ ATmega1284.\newline\newline
+Styrenheten har fyra hjulservon indelade i två hjulpar som kan styras individuellt. Dessa kontrollerar robotens position och kommunicerar med processorn med PWM och en riktningssignal.\newline\newline
+Styrenheten har även ett rotationsservo som kontrollerar en avståndssensors rörelse. Detta servo kommunicerar med processorn via en half-duplex UART.\newline\newline
 
 \section{Sensorenhet}
 \includegraphics[scale=0.5]{sensorenhet}
