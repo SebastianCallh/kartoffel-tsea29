@@ -166,7 +166,14 @@ Sensorenheten ska ha en accelerometer och gyrosensor kopplad till sig som ska h�
 Sensorenheten ska ha en rotationssensor kopplad till sig som håller koll på hur mycket lasersensorn har roterat. Dessa kommunicerar med varandra över SPI. \newline\newline
 Sensorenheten ska ha en knapp kopplad till sig på en av interrupt pinarna. Detta gör att när knappen trycks ned så växlar vi mellan autonomt och manuellt styrläge på roboten. \newline\newline
 
-Bild på laser
+\subsection{Avståndssensor}
+För att med så hög precision som möjligt kunna mäta avståndet till de kringläggande väggarna använder sig roboten av en LIDAR-Lite v2 laseravståndsmätare. Denna sensor är monterad tillsammans med ett servo på toppen av roboten för att kunna snurra runt och mäta avstånd i 360°. Den sensordata som rapporteras av lasern kombineras med data från ett gyro som också monterats på rotationsservot för att kunna ge en beskrivning av området runt roboten.
+
+\subsubsection{Begränsningar}
+Att montera två sensorer på en roterande del medför en del problem med hur t.ex. sladdar hanteras. Servot måste rotera i svepande rörelser fram och tillbaka för att inte dra sönder sladdarna och längden på sladdarna får inte vara för lång för att undvika att de hamnar ivägen.
+
+\subsubsection{Rotation}
+För att både kunna leverera korrekt data till huvudenheten samt undvika att förstöra hårdvaran på grund av utdragna sladdar behöver detektionen av sensorservots nuvarande rotation hålla sig innanför en viss felmarginal. Dels så rapporterar servot AX-12 sin nuvarande rotationsvinkel via dess dataport och dels kommer gyrosensorn ge en uppskattning om hur servot roterat. Blir felet för stort kan AX-12-servots rotation manuellt ändras till en given vinkel. I och med att data om rotationen kommer rapporteras från både sensorenheten (gyro) och styrenheten (servo) så sker beräkningen av vinkeln i huvudenheten.
 
 \section{Mjukvaruklient}
 Text och skiss på GUI
