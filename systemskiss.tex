@@ -201,7 +201,7 @@ Allt eftersom roboten utforska den omkringliggande miljön kommer den att spara 
   \label{fig:Koordinatberakning}
 \end{figure}
 
-För att kartlägga omgivningen så konstruerar roboten upp en graf, med hörn som noder och väggar som bågar. För att detektera var hörn finns så läses lasersensorn av med jämna mellanrum. Vi kan visualisera det avlästa avståndet som en funktion av laserns vinkel som i figur ss, där diskontinuiteter och lokala maximum/minimum representerar hörn. En diskontinuitet betyder att vi hittat ett utstickande hörn med golvyta bakom sig och ett lokalt maximum/minimum innebär att vi hittat ett hörn på banan. Se figur ~\ref{fig:lasersensor} och figur ~\ref{fig:lasersensor2} för exempel. Eftersom upplösningen på avläsningar på korta avstånd och långa avstånd kan skilja sig mycket kommer värdemängden defineras på ett interval där en jämförelse mellan mätningarna fortfarande är meningfull.
+För att kartlägga omgivningen så konstruerar roboten upp en graf, med hörn som noder och väggar som bågar. För att detektera var hörn finns så läses lasersensorn av med jämna mellanrum. Vi kan visualisera det avlästa avståndet som en funktion av laserns vinkel som i figur ss, där diskontinuiteter och lokala maximum/minimum representerar hörn. En diskontinuitet betyder att vi hittat ett utstickande hörn med golvyta bakom sig och ett lokalt maximum/minimum innebär att vi hittat ett hörn på banan. Se figur ~\ref{fig:LaserDiskontinuitet} och figur ~\ref{fig:LaserLokaltMaximum} för exempel. Eftersom upplösningen på avläsningar på korta avstånd och långa avstånd kan skilja sig mycket kommer värdemängden defineras på ett interval där en jämförelse mellan mätningarna fortfarande är meningfull.
 
 \begin{figure}[H]
   \centering
@@ -214,16 +214,16 @@ I figur ~\ref{fig:laserfunktionskurva} kommer punkten som ligger på (1, 0.5) sp
 
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.5,keepaspectratio]{Lasersensor} \\
-  \caption{Ett fall där laseravståndsgrafen kommer inntehålla en diskontinuitet.}
-  \label{fig:lasersensor}
+  \includegraphics[scale=0.5,keepaspectratio]{LaserDiskontinuitet} \\
+  \caption{Ett fall där laseravståndsgrafen kommer innehålla en diskontinuitet.}
+  \label{fig:LaserDiskontinuitet}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.5]{Lasersensor2} \\
-  \caption{Ett fall där laseravståndsgrafen kommer inntehålla ett lokalt maximum.}
-  \label{fig:lasersensor2}
+  \includegraphics[scale=0.5]{LaserLokaltMaximum} \\
+  \caption{Ett fall där laseravståndsgrafen kommer innehålla ett lokalt maximum.}
+  \label{fig:LaserLokaltMaximum}
 \end{figure}
 
 
