@@ -191,8 +191,13 @@ Figur~\ref{fig:huvudmodul} visar hur kommunikationen sker inom huvudenheten på 
 All kommunikation med mjukvaruklienten sker över Bluetooth. PC:n ansluter sig till robotens Bluetooth-modul och blir därför master i kommunikationen. Informationen som ska skickas seriellt i paket om 7-8 bitar exklusive startbit och stopbitar. Innan överföring sker måste en så kallad handskakning ske mellan enhterna. En enhets RTS (\textit{Request to send}) signal talar om, om den är redo att skicka eller ta emot data, denna signal läses av på den andras CTS (\textit{Clear to send}) ingång. Data skickas till och från två separata in- och utgångar på Bluetooth-modulen. 
 \newline\newline
 
-
-Flödesdiagram här.
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{Bluetooth_kommunikation_i_robot} \\
+  \caption{Ett flödesdiagram på kommunikationen mellan PC:n och roboten sett ifrån roboten.}
+  \label{fig:Bluetooth}
+\end{figure}
+Flödesdiagrammet ~\ref{fig:Bluetooth} visar hur kommunikation sker mellan PC:n och roboten. Roboten växlar mellan att kolla om det finns data att hämta eller om den får skicka data. Om det finns data att läsas in kommer den att läsas in till huvudmodulens processor. Efter inläsningen är klar återgår kollen efter data som kan skickas eller läsas in. Om det finns data att skickas inväntar roboten ett klartecken att skicka data och efter att den har skickat färdigt återgår logiken till att vänta på data att tas emot eller skickas igen. 
 
 \subsection{Logikenhet}
 Logikenheten gör det mesta tunga lyftandet. Den hanterar både navigationsbeslut och själva kartläggandet. Utöver det styr den också kommunikationen på I2C-bussen.
