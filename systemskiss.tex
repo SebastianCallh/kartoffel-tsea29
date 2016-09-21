@@ -179,13 +179,13 @@ Huvudenheten består av två undermoduler, logikenheten och kommunikationsenhete
 \subsection{Realisering}
 
 \begin{figure}[H]
-\centering
-\includegraphics[scale=0.40]{Huvudmodul_oversikt_blockschema}
-\caption{Översiktsblockschema över huvudenheten}
-\label{fig:huvudmodul}
+ \centering
+ \includegraphics[scale=0.40]{Huvudmodul_oversikt_blockschema}
+ \caption{Översiktsblockschema över huvudenheten}
+ \label{fig:Huvudmodul_oversikt_blockschema}
 \end{figure}
 
-Figur~\ref{fig:huvudmodul} visar hur kommunikationen sker inom huvudenheten på ett översiktligt plan. Processorn innehåller minne där vi kommer lagra data, variabler, konstanter samt själva programmet som styr huvudenhetens logik (se \textit{Logikenhet}). Processorn kommunicerar till omvärlden på två sätt, via en Bluetoothenhet och via en I2C-buss. Kommunikationen via Bluetooth bygger på en slags handskakningsprincip mellan processorn och den PC som Bluetoothenheten är kopplad till. Processorn skickar signalen \textit{Clear to send} till PC för att tala om att den är redo att ta emot data. PC:n skickar signalen \textit{Request to send} till processorn när den är redo att ta emot data. I2C-bussen används för kommunikation mellan huvud-, sensor- och styrenhet. Huvudenheten är ensam master på bussen och styr på så vis kommunikaitonen. Följdaktligen är den även ansvarig för att generera klockpulsen SCL. När antingen sensor- eller styrenheten är redo att skicka data eller låta huvudenheten läsa data, kommer de skicka ett avbrott (\texit{interrupt}) till huvudenhetens processor. Den processor vi har tänkt att använda oss utav i huvuenhten är en ATmega1284 processor, med 128kB flashminne samt extra 20 kB för variabler och konstanter och en klocka på 0-20 MHz.
+Figur ~\ref{fig:Huvudmodul_oversikt_blockschema} visar hur kommunikationen sker inom huvudenheten på ett översiktligt plan. Processorn innehåller minne där vi kommer lagra data, variabler, konstanter samt själva programmet som styr huvudenhetens logik (se \textit{Logikenhet}). Processorn kommunicerar till omvärlden på två sätt, via en Bluetoothenhet och via en I2C-buss. Kommunikationen via Bluetooth bygger på en slags handskakningsprincip mellan processorn och den PC som Bluetoothenheten är kopplad till. Processorn skickar signalen \textit{Clear to send} till PC för att tala om att den är redo att ta emot data. PC:n skickar signalen \textit{Request to send} till processorn när den är redo att ta emot data. I2C-bussen används för kommunikation mellan huvud-, sensor- och styrenhet. Huvudenheten är ensam master på bussen och styr på så vis kommunikaitonen. Följdaktligen är den även ansvarig för att generera klockpulsen SCL. När antingen sensor- eller styrenheten är redo att skicka data eller låta huvudenheten läsa data, kommer de skicka ett avbrott (\texit{interrupt}) till huvudenhetens processor. Den processor vi har tänkt att använda oss utav i huvuenhten är en ATmega1284 processor, med 128kB flashminne samt extra 20 kB för variabler och konstanter och en klocka på 0-20 MHz.
  
 \subsection{Kommunikationsenhet}
 All kommunikation med mjukvaruklienten sker över Bluetooth. PC:n ansluter sig till robotens Bluetooth-modul och blir därför master i kommunikationen. Informationen som ska skickas seriellt i paket om 7-8 bitar exklusive startbit och stopbitar. Innan överföring sker måste en så kallad handskakning ske mellan enhterna. En enhets RTS (\textit{Request to send}) signal talar om, om den är redo att skicka eller ta emot data, denna signal läses av på den andras CTS (\textit{Clear to send}) ingång. Data skickas till och från två separata in- och utgångar på Bluetooth-modulen. 
