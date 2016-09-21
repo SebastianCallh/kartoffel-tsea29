@@ -203,7 +203,7 @@ Flödesdiagrammet ~\ref{fig:Bluetooth} visar hur kommunikation sker mellan PC:n 
 Logikenheten gör det mesta tunga lyftandet. Den hanterar både navigationsbeslut och själva kartläggandet. Utöver det styr den också kommunikationen på I2C-bussen.
 
 \subsubsection{Navigation}
-Bild på navigation
+Allt eftersom vi scannar vår omgivning så kommer roboten identifiera olika punkter som är relevanta att åka till för att fortsätta utforskandet. Den kommer fortsätta att navigera till relevanta punkter tills den är klar med utforskandet. En relevant punkt kan t.ex. vara en punkt kring ett hörn som skymmer vår syn, eller en punkt som är för långt bort för att vi ska kunna veta säkert vad som finns där. För att hantera svängar kommer roboten antingen röra sig i ett diskret rutnät och rotera på plats i kvarts varv, eller kunna röra sig "kontinuerligt" och följa bezier-kurvor för svängar. 
 
 \subsubsection{Kartläggning}
 
