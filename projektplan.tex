@@ -230,7 +230,7 @@ Varje modul tilldelas ett team av utvecklare, som tillsammans ansvarar för att 
 
 Alla dokument som ingår i projektet listas i tabellen nedan. Alla dokument skrivs på svenska. Alla medlemar i projektgruppen har behörighet att läsa samt redigera alla dokument som skapas av projektgruppen. Beställaren och kunden har endast behörighet att läsa de dokument som distribueras till dem. Dokumenten versionshanteras med hjälp av versionshanteringssystemet git. När ett dokument som inte är internt för projektgruppen anses färdigt att distribueras skickas det till den berörda parten. Vid distribution anges ett versionsnummer till dokumentet på formen X.Y där varje första distribution börjar med versionsnummer 0.1, och varje mindre revidering ökar versionsnummret på höger sida om punkten. Vid en större revision ökar siffran på vänster sida om punkten, och då nollställs även siffran till höger. Versionsnummret ändras endast vid granskning av dokumentet av utomstående part.
 
-\begin{table}
+\begin{table}[H]
 \centering
 \resizebox{\textwidth}{!}{\begin{tabular}{ | l | l | l | l | l | l | }
 % TODO Fix line break in table
@@ -265,6 +265,7 @@ Statusrapport & Patrik & Mattias & Visar om projektet håller tidsplanen & Matti
 \end{table}
 
 \section{Utvecklingsmetodik}
+Arbetet kommer mestadels ske moduluppdelat där grupper på två personer arbetar med samma modul för att kunna diskutera eventuella problem och bolla idéer. Händer det att en person från gruppen är frånvarande ska den kvarvarande medlemmen kunna fortsätta med arbetet på egen hand tills den andra är tillbaka. För vissa större beslut ska en större del av projektgruppen konsulteras, annars ska arbetetet kunna drivas framåt parallellt mellan grupperna utan interaktion sinsemellan och på så sätt maximera effektiviteten.
 
 \section{Utbildningsplan}
 Projektmedlemmarna får som förberedelse till projektet delta i sex stycken föreläsningar samt en labb i Mätteknik som ges i kursen Konstruktion med Mikrodatorer (TSEA29). Labben ska låta utbilda projektdeltagarna i att använda en logikanalysator. Kunden behöver ej genomgå någon särskild utbildning för att förstå projektets interna eller externa struktur.
@@ -410,10 +411,15 @@ Utifall att krav specificerade i kravspecifikationen ej kan uppnås eller tvinga
 \section{Kvalitetsplan}
 
 \subsection{Granskningar}
-\subsection{Testplan}
+Dokumentansvarig är slutgiltiga ansvarig för att granska och godkänna dokument, även om samtliga gruppmedlemar ska se till att deras bidrag till dokumenten håller god kvalitet.
 
-\section{Riskanalys}
-\section{Prioriteringar}
+\subsection{Testplan}
+\subsubsection{Enhetstester}
+Allt eftersom kod skrivs ska det även skrivas enhetstester som verifierar den förväntade funktionaliteten. Innan ny eller förändrad funktionalitet flyttas till från en egen branch till master-branchen så ska den klara att köra igenom de enhetestester som finns skrivna.
+
+\subsubsection{Systemtester}
+När tillräckligt mycket funktionalitet implementerats för att utföra tester som påverkar systemet som stort kan systemtester utföras. Systemet sätts då i ett verkligt scenario där t.ex. kommunikation mellan modulerna eller navigationsimplementationen testas. Testarna kan utföras för att verifiera funktionalitet under utveckling men måste utföras för att verifiera milstolpar. I aktivitetsplanen finns det tid avsatt speciellt för att utföra dessa tester.
+
 \section{Projektavslut}
 Projektet avslutas genom en presentation (v 51, år 2016) inför beställare och kund samt en tävling enligt dokumentet \textit{Ban- och tävlingsspecifikation för kartrobotar 2016}, där andra robotar med samma funktionsmål deltar. Presentationen syfte är att t.ex. lyfta fram särskilda tekniska lösningar och "göra reklam" för vår grupp inför beställaren. All utlånad utrustning - inklusive robotens komponenter - ska återlämnas senast den 22/12 till handledaren. Projektet ska efter sitt slut utvärderas i en efterstudie. Här kommer ska bl.a. samarbetet i projektgruppen, relation med beställare och handledare samt tekniska problem diskuteras. Projektdeltagarna ska inte göra någon individuell uppföljning vad gäller sina färdigheter i projektarbete.
 
