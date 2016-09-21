@@ -340,12 +340,68 @@ Projektet har en budget på max 160 arbetstimmar per person efter att beslutpunk
 \end{center}
 
 \section{Aktiviteter}
-
+I tabellen nedan är aktiviteterna för projektet listade. Tiden som anges är en uppskattning och justering av tiden kan ske med hjälp av bufferttiden under projektets gång.
 \begin{table}[H]
- \begin{tabular}{| l | l | l | l |}
+ \resizebox{\textwidth}{!}{\begin{tabular}{| l | l | l | l |}
  \hline
- \textbf{Nr} & \textbf{Aktiviet} & \textbf{Beskrivning} & \textbf{Beräknad tid tim}
- \end{tabular}
+ \textbf{Nr} & \textbf{Aktiviet} & \textbf{Beror på} & \textbf{Tid (tim)} \\ \hline
+ 1 & Gör kopplingsschema för huvudenhet &   &  1 \\ \hline 
+ 2 & Gör kopplingsschema för sensorenhet &   & 1 \\ \hline
+ 3 & Gör kopplingsschema för styrenhet &  & 1 \\ \hline
+ 4 & Gör kopplingsschema för hela systemet & 1,2,3 & 1 \\ \hline
+ 5 & Undersök hur I2C implementeras & & 7 \\ \hline
+ 6 & Implementera masterrollen i I2C & 5 & 12 \\ \hline
+ 7 & Implementera slaverollen i I2C & 5 & 8 \\ \hline
+ 8 & Specifiera ett övergripande protokoll för huvudbussen & & 2 \\ \hline
+ 9 & Specifiera kommandon för kommunikation med styrenheten & & 4 \\ \hline
+ 10 & Specifiera kommandon för kommunikation med sensorenheten & & 3 \\ \hline
+ 11 & Undersök hur Bluetooth fungerar och implementeras & & 10 \\ \hline
+ 12 & Implementera Bluetooth i huvudmodulen & 11 & 8\\ \hline
+ 13 & Bestäm programspråk för mjukvaruklient & & 1 \\ \hline
+ 14 & Implementera Bluetooth i mjukvaruklient & 13 & 3 \\ \hline
+ 15 & Specifiera ett protokoll för kommunikation via Bluetooth & 11 & 3 \\ \hline
+ 16 & Specifiera kommandon för kommunikation med mjukvaruklienten & & 2 \\ \hline
+ 17 & Implementera protokollet för huvudbussen i master och slave & 8 & 10 \\ \hline
+ 18 & Implementera stub-funktioner för alla kommandon som  & 9 & 6 \\ 
+    & styrenheten hanterar & & \\ \hline
+ 19 & Implementera stub-funktioner för alla kommandon som  & 10 & 6\\ 
+    & sensorenhten hanterar & & \\ \hline
+ 20 & Implementera funktionalitet för att snurra hjulpar & 50 & 8 \\ \hline
+ 21 & Implementera funktionalitet för att styra laserservot & 50 & 8\\ \hline
+ 22 & Implementera funktionalitet för att ta emot data från hjulpar till & 7,20 & 5 \\
+    & styrenheten och rapportera till huvudenheten & & \\ \hline
+ 23 & Implementera funktionalitet för att ta emot data från  & 7,21 & 5 \\
+    & laserservot till styrenhet och rapportera till huvudeenhten & & \\ \hline
+ 24 & Läsa av data från laser & 50 & 10 \\ \hline
+ 25 & Läsa av data från accelerometer & 50 & 8 \\ \hline
+ 26 & Läsa av data från gyroskop 1 & 50 & 8 \\ \hline
+ 27 & Läsa av data från gyroskop 2 & 50 & 8 \\ \hline
+ 28 & Läsa av avbrott från knapp & 50 & 3\\ \hline
+ 29 & Implementera rapporteringsrutin för sensorenhet & 6,7 & 8\\ \hline
+ 30 & Koppla ihop I2C-buss & 4 & 2 \\ \hline
+ 31 & Designa navigeringsalgoritm & & 15 \\ \hline
+ 32 & Designa kartläggningsalgoritm & & 20 \\ \hline
+ 33 & Deisgna huvudlopp & & 10 \\ \hline
+ 34 & Koda navigeringsalgoritm & 31 & 10 \\ \hline
+ 35 & Koda kartläggningsalgoritm & 32 & 20 \\ \hline
+ 36 & Koda huvudloop & 33 & 10 \\ \hline
+ 37 & Deisnga UI & 13 & 4 \\ \hline
+ 38 & Implementera utritning av kartdata & 13,43 & 7\\ \hline
+ 39 & Implementera utrning av sensordata & 13,44 & 3\\ \hline
+ 40 & Implementera utritning av styrdata & 13,45 & 3 \\ \hline
+ 41 & Gör kontroller för fjärrstyrning av robot & 13 & 3 \\ \hline
+ 42 & Designa fallback-algoritm (ladda ner kartdata igen vid ev. krasch) & 12,14 & 8 \\ \hline
+ 43 & Se till att huvudenheten skickar kartdata till mjukvaruklienten & 12,14,35 & 4 \\ \hline
+ 44 & Se till att huvudenhten skickar sensordata till mjukvaruklienten & 12,14,29 & 4\\ \hline
+ 45 & Se till att huvudenhten skickar styrdata till mjukvaruklienten & 12,14,22 & 4 \\ \hline
+ 46 & Testa implementation & & 100 \\ \hline
+ 47 & Dokumentera & & 190 \\ \hline
+ 48 & Möten & & 120 \\ \hline
+ 49 & Buffert & & 233 \\ \hline
+ 50 & Montering och byggande & 4 & 30 \\ \hline
+ 
+ 
+ \end{tabular}}
 \end{table}
 \section{Tidplan}
 \section{Förändringsplan}
