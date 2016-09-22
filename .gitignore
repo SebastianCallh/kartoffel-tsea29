@@ -33,16 +33,16 @@
 *.su
 
 # Compiled latex files
-projektplan.aux
-projektplan.log
-projektplan.pdf
-projektplan.toc
-systemskiss.aux
-systemskiss.log
-systemskiss.pdf
-systemskiss.toc
-systemskiss.bbl
-systemskiss.blg
+docs/src/projektplan.aux
+docs/src/projektplan.log
+docs/src/projektplan.pdf
+docs/src/projektplan.toc
+docs/src/systemskiss.aux
+docs/src/systemskiss.log
+docs/src/systemskiss.pdf
+docs/src/systemskiss.toc
+docs/src/systemskiss.bbl
+docs/src/systemskiss.blg
 
 # Emacs backup files
 *~
