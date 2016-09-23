@@ -52,7 +52,7 @@ Patrik Sletmo
 }
 
 {\large
-Version x.y
+Version 0.1
 }
 
 \vspace{3.5cm}
@@ -61,9 +61,7 @@ Status
 \begin{center}
 \begin{tabular}{ | c | c | c | } 
 \hline
-Granskad & snubbe & 2016-mm-dd \\
-\hline
-Godkänd & snubba & 2016-mm-dd\\
+Granskad & Patrik Sletmo & 2016-09-22 \\
 \hline
 \end{tabular}
 \end{center}
@@ -144,7 +142,7 @@ Status
 \hline
 \textbf{Version} & \textbf{Datum} & \textbf{Utförda ändringar} & \textbf{Utförd av } & \textbf{Granskad} \\  
 \hline
-0.1 & 2016-09-xx & Första utkastet &  john doe & icke \\
+0.1 & 2016-09-22 & Första utkastet & Grupp 3 & Patrik Sletmo \\
 \hline
 \end{tabular}
 \end{center}
@@ -163,7 +161,7 @@ Den här systemskissen beskriver i mer teknisk detalj konstruktionen av roboten 
 \caption{Översikt över systemet}
 \label{fig:oversikt_systemet}
 \end{figure}
-Vårt system (se ovanstådende figur ~\ref{fig:oversikt_systemet}) är uppdelad i fem stycken enheter (eller \textit{moduler}), där två utav dem - presentations- och fjärrstyrningsenheten - ingår i vår mjukvaruklient och resten ingår i själva roboten. Kommunikationen mellan mjukvaruklienten och roboten sker via Bluetooth, medan den interna kommunikationen mellan robotens enheter sker via en I2C-buss. Här är huvudenheten ensam master och styr- och sensorenhet slaves. Andra protokol som vi använder i robotens interna kommunikation är PWM och SPI. Sensorer som är kopplade till sensorenheten inkluderar en laser, knapp samt diverse accelerometrar och gyron. Till styrenheten kopplas servon som styr hjul och rotation av lasern.
+Vårt system (se ovanstående figur ~\ref{fig:oversikt_systemet}) är uppdelad i fem stycken enheter (eller \textit{moduler}), där två utav dem - presentations- och fjärrstyrningsenheten - ingår i vår mjukvaruklient och resten ingår i själva roboten. Kommunikationen mellan mjukvaruklienten och roboten sker via Bluetooth, medan den interna kommunikationen mellan robotens enheter sker via en I2C-buss. Här är huvudenheten ensam master och styr- och sensorenhet slaves. Andra protokol som vi använder i robotens interna kommunikation är PWM, SPI och UART. Sensorer som är kopplade till sensorenheten inkluderar en laser, knapp samt diverse accelerometrar och gyron. Till styrenheten kopplas servon som styr hjul och rotation av lasern.
 
 \section{Huvudenhet}
 
@@ -185,15 +183,15 @@ Huvudenheten består av två undermoduler, logikenheten och kommunikationsenhete
  \label{fig:Huvudmodul_oversikt_blockschema}
 \end{figure}
 
-Figur ~\ref{fig:huvudmodul} visar hur kommunikationen sker inom huvudenheten på ett översiktligt plan. Processorn innehåller minne där vi kommer lagra data, variabler, konstanter samt själva programmet som styr huvudenhetens logik (se \textit{Logikenhet}). Processorn kommunicerar till omvärlden på två sätt, via en Bluetoothenhet och via en I2C-buss. Kommunikationen via Bluetooth bygger på en slags handskakningsprincip mellan processorn och den PC som Bluetoothenheten är kopplad till. Processorn skickar signalen \textit{Clear to send} till PC för att tala om att den är redo att ta emot data. PC:n skickar signalen \textit{Request to send} till processorn när den är redo att ta emot data. I2C-bussen används för kommunikation mellan huvud-, sensor- och styrenhet. Huvudenheten är ensam master på bussen och styr på så vis kommunikaitonen. Följdaktligen är den även ansvarig för att generera klockpulsen SCL. När antingen sensor- eller styrenheten är redo att skicka data eller låta huvudenheten läsa data, kommer de skicka ett avbrott (\textit{interrupt}) till huvudenhetens processor. Den processor vi har tänkt att använda oss utav i huvuenhten är en ATmega1284 processor, med 128kB flashminne samt extra 20 kB för variabler och konstanter och en klocka på 0-20 MHz.
+Figur ~\ref{fig:Huvudmodul_oversikt_blockschema} visar hur kommunikationen sker inom huvudenheten på ett översiktligt plan. Processorn innehåller minne där vi kommer lagra data, variabler, konstanter samt själva programmet som styr huvudenhetens logik (se \textit{Logikenhet}). Processorn kommunicerar till omvärlden på två sätt, via en Bluetoothenhet och via en I2C-buss. Kommunikationen via Bluetooth bygger på en slags handskakningsprincip mellan processorn och den PC som Bluetoothenheten är kopplad till. Processorn skickar signalen \textit{Clear To Send} till PC för att tala om att den är redo att ta emot data. PC:n skickar signalen \textit{Request To Send} till processorn när den är redo att ta emot data. I2C-bussen används för kommunikation mellan huvud-, sensor- och styrenhet. Huvudenheten är ensam master på bussen och styr på så vis kommunikaitonen. Följdaktligen är den även ansvarig för att generera klockpulsen SCL. När antingen sensor- eller styrenheten är redo att skicka data eller låta huvudenheten läsa data, kommer de skicka ett avbrott (\textit{interrupt}) till huvudenhetens processor. Den processor vi har tänkt att använda oss utav i huvuenhten är en ATmega1284 processor, med 128kB flashminne samt extra 20 kB för variabler och konstanter och en klocka på 0-20 MHz.
  
 \subsection{Kommunikationsenhet}
-All kommunikation med mjukvaruklienten sker över Bluetooth. PC:n ansluter sig till robotens Bluetooth-modul och blir därför master i kommunikationen. Informationen som ska skickas seriellt i paket om 7-8 bitar exklusive startbit och stopbitar. Innan överföring sker måste en så kallad handskakning ske mellan enhterna. En enhets RTS (\textit{Request to send}) signal talar om, om den är redo att skicka eller ta emot data, denna signal läses av på den andras CTS (\textit{Clear to send}) ingång. Data skickas till och från två separata in- och utgångar på Bluetooth-modulen. 
+All kommunikation med mjukvaruklienten sker över Bluetooth. PC:n ansluter sig till robotens Bluetooth-modul och blir därför master i kommunikationen. Informationen som ska skickas seriellt i paket om 7-8 bitar exklusive startbit och stopbitar. Innan överföring sker måste en så kallad handskakning ske mellan enheterna. En enhets RTS (\textit{Request To Send}) signal talar om, om den är redo att skicka eller ta emot data, denna signal läses av på den andras CTS (\textit{Clear To Send}) ingång. Data skickas till och från två separata in- och utgångar på Bluetooth-modulen. 
 \newline\newline
 
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.5]{Bluetooth_kommunikation_i_robot} \\
+  \includegraphics[scale=0.44]{Bluetooth_kommunikation_i_robot} \\
   \caption{Ett flödesdiagram på kommunikationen mellan PC:n och roboten sett ifrån roboten.}
   \label{fig:Bluetooth}
 \end{figure}
@@ -203,7 +201,7 @@ Flödesdiagrammet ~\ref{fig:Bluetooth} visar hur kommunikation sker mellan PC:n 
 Logikenheten gör det mesta tunga lyftandet. Den hanterar både navigationsbeslut och själva kartläggandet. Utöver det styr den också kommunikationen på I2C-bussen.
 
 \subsubsection{Navigation}
-Allt eftersom vi scannar vår omgivning så kommer roboten identifiera olika punkter som är relevanta att åka till för att fortsätta utforskandet. Den kommer fortsätta att navigera till relevanta punkter tills den är klar med utforskandet. En relevant punkt kan t.ex. vara en punkt kring ett hörn som skymmer vår syn, eller en punkt som är för långt bort för att vi ska kunna veta säkert vad som finns där. För att hantera svängar kommer roboten antingen röra sig i ett diskret rutnät och rotera på plats i kvarts varv, eller kunna röra sig "kontinuerligt" och följa bezier-kurvor för svängar. 
+Allt eftersom vi scannar vår omgivning så kommer roboten identifiera olika punkter som är relevanta att åka till för att fortsätta utforskandet. Den kommer fortsätta att navigera till relevanta punkter tills den är klar med utforskandet. En relevant punkt kan t.ex. vara en punkt kring ett hörn som skymmer vår syn, eller en punkt som är för långt bort för att vi ska kunna veta säkert vad som finns där. För att hantera svängar kommer roboten antingen röra sig i ett diskret rutnät och rotera på plats i kvarts varv, eller kunna röra sig ``kontinuerligt'' och följa bezier-kurvor för svängar. 
 
 \subsubsection{Kartläggning}
 
@@ -255,7 +253,7 @@ Roboten vet att den är klar när grafen innehåller fler än en komponent och a
 \caption{Översiktsblockschema över styrenheten}
 \label{fig:styrenhet}
 \end{figure}
-Styrenheten är över gränssnittet I2C kopplad till huvudenheten.\newline\newline
+Styrenheten (se figur~\ref{fig:styrenhet}) är över gränssnittet I2C kopplad till huvudenheten.\newline\newline
 Styrenheten har en processor av typ ATmega1284.\newline\newline
 Styrenheten har fyra hjulservon indelade i två hjulpar. De två hjulparen kan styras oberoende av varandra. Dessa kontrollerar robotens position och kommunicerar med processorn med PWM och en riktningssignal.\newline\newline
 Styrenheten har även ett rotationsservo som kontrollerar en avståndssensors rörelse. Detta servo kommunicerar med processorn via en half-duplex UART.\newline\newline
@@ -272,7 +270,7 @@ Styrenhetens rotationsservo kommer att ha två sensorer fastsatta på sig, en av
 \caption{Översikt över sensorernas koppling till sensorenheten}
 \label{fig:sensorenhet}
 \end{figure}
-Sensorenheten är kopplad till huvudenheten över gränssnittet I2C.\newline\newline
+Sensorenheten (se figur~\ref{fig:sensorenhet}) är kopplad till huvudenheten över gränssnittet I2C.\newline\newline
 Sensorenheten ska ha en lasersensor kopplad till sig som kommunicerar med processorn över PWM.\newline\newline
 Sensorenheten ska ha en accelerometer och gyrosensor kopplad till sig som ska hålla koll på hur mycket roboten har roterat och hur snabbt den åker. Dessa kommunicerar med varandra över SPI. \newline\newline
 Sensorenheten ska ha en rotationssensor kopplad till sig som håller koll på hur mycket lasersensorn har roterat. Dessa kommunicerar med varandra över SPI. \newline\newline
@@ -299,11 +297,11 @@ Ett AX-12-servo monteras ovanpå roboten i mitten (se figur~\ref{fig:montering})
 \section{Mjukvaruklient}
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.4]{mjukvaruklient_flowchart3}
+\includegraphics[scale=0.3]{mjukvaruklient_flowchart3}
 \caption{Översiktligt flödesschema över mjukvaruklienten}
 \label{fig:mjukvaruklient}
 \end{figure}
-I mjukvaruklienten ingår presentations- och fjärrstyrningsenheten. Mjukvaruklienten ska presentera den karta som med robotens hjälp genererats över rummet, samt låta användaren styra roboten när den är i sitt manuella läge. Ovanstående figur (~\ref{fig:mjukvaruklient}) visar ett översiktligt flödesschema av hur mjukvaruklienten fungerar. Mjukvaruklienten kommunicerar med roboten via Bluetooth. När data tas emot så ska denna sorteras utifrån om det är kartdata, mätdata eller styrdata - vilket kommer kännas igen av någon form av ID i början av överföringen. Datan lagras sedan tills klienten är redo att behandla den för presentation, vilket ska ske löpande - dvs. data ska presenteras och kartan växa fram allt eftersom roboten kör. Kommandon för att styra roboten manuellt skickas via Bluetooth till roboten. En lista på kommandon som ska kunna skickas till roboten kan återfinnas i kravspecifikationen. Som ett sekundärt krav har vi att man ska kunna byta mellan manuellt och autonomt läge genom mjukvaruklienten (detta är ej illustrerat i figuren ovan). Signalerna RTS och CLS förklaras i avsnittet \textit{Huvudenhet}. 
+I mjukvaruklienten ingår presentations- och fjärrstyrningsenheten. Mjukvaruklienten ska presentera den karta som med robotens hjälp genererats över rummet, samt låta användaren styra roboten när den är i sitt manuella läge. Ovanstående figur (~\ref{fig:mjukvaruklient}) visar ett översiktligt flödesschema av hur mjukvaruklienten fungerar. Mjukvaruklienten kommunicerar med roboten via Bluetooth. När data tas emot så ska denna sorteras utifrån om det är kartdata, mätdata eller styrdata - vilket kommer kännas igen av någon form av ID i början av överföringen. Datan lagras sedan tills klienten är redo att behandla den för presentation, vilket ska ske löpande - dvs. data ska presenteras och kartan växa fram allt eftersom roboten kör. Kommandon för att styra roboten manuellt skickas via Bluetooth till roboten. En lista på förflyttningskommandon som roboten stödjer kan återfinnas i kravspecifikationen. Som ett sekundärt krav har vi att man ska kunna byta mellan manuellt och autonomt läge genom mjukvaruklienten (detta är ej illustrerat i figuren ovan). Signalerna RTS och CLS förklaras i avsnittet \textit{Huvudenhet}. 
 
 \clearpage
 
