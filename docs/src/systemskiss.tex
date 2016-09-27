@@ -27,7 +27,7 @@
 \renewcommand{\footrulewidth}{0.4pt}
 
 
-\title{Systemskiss}
+\title{Systemskiss för kartrobot}
 \author{Patrik Sletmo}
 \date{\today}
 
@@ -152,7 +152,7 @@ Status
 
 
 \section{Inledning}
-Den här systemskissen beskriver i mer teknisk detalj konstruktionen av roboten och tillhörande mjukvara. Dokumentet ska reflektera vår faktiska relisation av projektet och kan mycket väl komma att ändras allt eftersom projektet fortskrider och designbesluts behöver omvärderas.
+Den här systemskissen beskriver i mer teknisk detalj konstruktionen av roboten och tillhörande mjukvara. Dokumentet ska reflektera vår faktiska relisation av projektet och kan mycket väl komma att ändras allt eftersom projektet fortskrider och designbeslut behöver omvärderas.
 
 \section{Systemöversikt}
 \begin{figure}[H]
@@ -161,7 +161,7 @@ Den här systemskissen beskriver i mer teknisk detalj konstruktionen av roboten 
 \caption{Översikt över systemet}
 \label{fig:oversikt_systemet}
 \end{figure}
-Vårt system (se ovanstående figur ~\ref{fig:oversikt_systemet}) är uppdelad i fem stycken enheter (eller \textit{moduler}), där två utav dem - presentations- och fjärrstyrningsenheten - ingår i vår mjukvaruklient och resten ingår i själva roboten. Kommunikationen mellan mjukvaruklienten och roboten sker via Bluetooth, medan den interna kommunikationen mellan robotens enheter sker via en I2C-buss. Här är huvudenheten ensam master och styr- och sensorenhet slaves. Andra protokol som vi använder i robotens interna kommunikation är PWM, SPI och UART. Sensorer som är kopplade till sensorenheten inkluderar en laser, knapp samt diverse accelerometrar och gyron. Till styrenheten kopplas servon som styr hjul och rotation av lasern.
+Vårt system (se ovanstående figur ~\ref{fig:oversikt_systemet}) är uppdelad i fem stycken enheter (eller \textit{moduler}), där två utav dem - presentations- och fjärrstyrningsenheten - ingår i vår mjukvaruklient och resten ingår i själva roboten. Kommunikationen mellan mjukvaruklienten och roboten sker via Bluetooth, medan den interna kommunikationen mellan robotens enheter sker via en I2C-buss. Här är huvudenheten ensam master och styr- och sensorenhet slaves. Andra protokol som vi använder i robotens interna kommunikation är PWM, SPI och UART. Sensorer som är kopplade till sensorenheten inkluderar en laser, knapp samt en accelerometer och två gyroskop. Till styrenheten kopplas servon som styr hjul och rotation av lasern.
 
 \section{Huvudenhet}
 
@@ -198,10 +198,10 @@ All kommunikation med mjukvaruklienten sker över Bluetooth. PC:n ansluter sig t
 Flödesdiagrammet ~\ref{fig:Bluetooth} visar hur kommunikation sker mellan PC:n och roboten. Roboten växlar mellan att kolla om det finns data att hämta eller om den får skicka data. Om det finns data att läsas in kommer den att läsas in till huvudmodulens processor. Efter inläsningen är klar återgår kollen efter data som kan skickas eller läsas in. Om det finns data att skickas inväntar roboten ett klartecken att skicka data och efter att den har skickat färdigt återgår logiken till att vänta på data att tas emot eller skickas igen. 
 
 \subsection{Logikenhet}
-Logikenheten gör det mesta tunga lyftandet. Den hanterar både navigationsbeslut och själva kartläggandet. Utöver det styr den också kommunikationen på I2C-bussen.
+Logikenheten utgör hjärnan i roboten. Den hanterar både navigationsbeslut och själva kartläggandet. Utöver det styr den också kommunikationen på I2C-bussen.
 
 \subsubsection{Navigation}
-Allt eftersom vi scannar vår omgivning så kommer roboten identifiera olika punkter som är relevanta att åka till för att fortsätta utforskandet. Den kommer fortsätta att navigera till relevanta punkter tills den är klar med utforskandet. En relevant punkt kan t.ex. vara en punkt kring ett hörn som skymmer vår syn, eller en punkt som är för långt bort för att vi ska kunna veta säkert vad som finns där. För att hantera svängar kommer roboten antingen röra sig i ett diskret rutnät och rotera på plats i kvarts varv, eller kunna röra sig ``kontinuerligt'' och följa bezier-kurvor för svängar. 
+Allt eftersom vi scannar vår omgivning så kommer roboten identifiera olika punkter som är relevanta att åka till för att fortsätta utforskandet. Den kommer fortsätta att navigera till relevanta punkter tills den är klar med utforskandet. En relevant punkt kan t.ex. vara en punkt kring ett hörn som skymmer vår syn, eller en punkt som är för långt bort för att vi ska kunna veta säkert vad som finns där. För att hantera svängar kommer roboten antingen röra sig i ett diskret rutnät och rotera på plats i kvarts varv, eller kunna röra sig ``kontinuerligt'' och följa bezier-kurvor för svängar. För att veta vilken vinkel och position roboten har så kommer den använda sig att mätdata från ett gyroskop och en accelerometer, och genom att veta vilken vinkel den har kommer den kunna göra korrekta svängar.
 
 \subsubsection{Kartläggning}
 
@@ -221,7 +221,7 @@ Allt eftersom roboten utforska den omkringliggande miljön kommer den att spara 
   \label{fig:Laserfunktionskurva}
 \end{figure}
 
-För att kartlägga omgivningen så konstruerar roboten upp en graf, med hörn som noder och väggar som bågar. För att detektera var hörn finns så läses lasersensorn av med jämna mellanrum. Vi kan visualisera det avlästa avståndet som en funktion av laserns vinkel som i figur ~\ref{fig:Laserfunktionskurva}, där diskontinuiteter och lokala maximum/minimum representerar hörn. En diskontinuitet betyder att vi hittat ett utstickande hörn med golvyta bakom sig och ett lokalt maximum/minimum innebär att vi hittat ett hörn på banan. I figuren så kommer punkten som ligger på (1, 0.5) sparas, tillsammans med en båge till punkten som ligger på (2, 1). Eftersom vi här upptäcker en diskontinuitet så kommer ingen båge sparas mellan (2, 1) och (2, 3), men bågar kommer ansluta (2, 3) till (3, 4) och (3, 4) till (4, 2). Se figur ~\ref{fig:LaserDiskontinuitet} och figur ~\ref{fig:LaserLokaltMaximum} för exempel på hur miljön kan se ut i de olika fallen. Eftersom upplösningen på avläsningar på korta avstånd och långa avstånd kan skilja sig mycket kommer värdemängden defineras på ett interval där en jämförelse mellan mätningarna fortfarande är meningfull.\newline\newline
+För att kartlägga omgivningen så konstruerar roboten upp en graf, med hörn som noder och väggar som bågar. För att detektera var hörn finns så läses lasersensorn av med jämna mellanrum. Vi kan visualisera det avlästa avståndet som en funktion av laserns vinkel som i figur ~\ref{fig:Laserfunktionskurva}, där diskontinuiteter och lokala maximum/minimum representerar hörn. En diskontinuitet betyder att vi hittat ett utstickande hörn med golvyta bakom sig och ett lokalt maximum/minimum innebär att vi hittat ett hörn på banan. I figuren så kommer punkten som ligger på (1, 0.5) sparas, tillsammans med en båge till punkten som ligger på (2, 1). Eftersom vi här upptäcker en diskontinuitet så kommer ingen båge sparas mellan (2, 1) och (2, 3), men bågar kommer ansluta (2, 3) till (3, 4) och (3, 4) till (4, 2). Se figur ~\ref{fig:LaserDiskontinuitet} och figur ~\ref{fig:LaserLokaltMaximum} för exempel på hur miljön kan se ut i de olika fallen. Eftersom upplösningen på avläsningar på korta avstånd och långa avstånd kan skilja sig mycket kommer värdemängden defineras på ett interval där en jämförelse mellan mätningarna fortfarande är meningfull. För att det inte ska bli ett problem att läsa av samma hörn flera gånger så kommer nya noder som introduceras i grafen att kollas mot redan existerande noder. Om avståndet mellan dem av mindre än en viss felmarginal så kommer det konstateras att de i själva verket är samma nod och den nya kommer ignoreras. \newline\newline
 
 \begin{figure}[H]
   \centering
@@ -259,7 +259,7 @@ Styrenheten har fyra hjulservon indelade i två hjulpar. De två hjulparen kan s
 Styrenheten har även ett rotationsservo som kontrollerar en avståndssensors rörelse. Detta servo kommunicerar med processorn via en half-duplex UART.\newline\newline
 
 \subsection{Rotation}
-Styrenhetens rotationsservo kommer att ha två sensorer fastsatta på sig, en avståndssensor samt ett gyro. Dessa sensorer hör till sensorenheten och kommer inte att kommunicera direkt med styrenheten. Sensordata processeras av sensorenheten och skickas sedan till huvudenheten. Därefter tas ett beslut i huvudenheten baserat på sensorenhetens data hur rotationsservot ska styras. 
+Styrenhetens rotationsservo kommer att ha två sensorer fastsatta på sig, en avståndssensor samt ett gyro. Dessa sensorer hör till sensorenheten och kommer inte att kommunicera direkt med styrenheten. Sensordata processas av sensorenheten och skickas sedan till huvudenheten. Därefter tas ett beslut i huvudenheten baserat på sensorenhetens data hur rotationsservot ska styras. 
 
 
 \section{Sensorenhet}
