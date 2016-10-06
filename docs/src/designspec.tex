@@ -1,0 +1,317 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english, swedish]{babel}
+
+\usepackage{cite}
+\usepackage{caption}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{textcomp}
+\usepackage[yyyymmdd]{datetime}
+\renewcommand{\dateseparator}{-}
+
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+
+%For headers & footers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\includegraphics[scale=0.2]{Logo}}
+\chead{Kartrobot}
+\rhead{\today}
+
+\lfoot{Konstruktion med mikrodatorer}
+\rfoot{Grupp 3}
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+
+\title{Designspecifikation för kartrobot}
+\author{Patrik Sletmo}
+\date{\today}
+
+\selectlanguage{swedish}
+
+\begin{document}
+
+\thispagestyle{empty}
+
+{
+\sffamily
+\centering
+\large
+
+
+{\huge 
+Designspecifikation för kartrobot
+}
+
+{\large
+Patrik Sletmo
+}
+
+{\large
+Version 0.1
+}
+
+\vspace{3.5cm}
+
+Status
+\begin{center}
+\begin{tabular}{ | c | c | c | } 
+\hline
+\end{tabular}
+\end{center}
+}
+\clearpage
+
+\vspace*{\fill}
+{
+\sffamily
+\centering
+\large
+
+
+{\huge
+Projektidentitet
+}
+
+{\large
+Grupp 3, 16/HT, KarToffel \\ Linköpings tekniska högskola, institution
+}
+
+\vspace{0.5cm}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ | c | c | c | c |}
+\hline
+Namn & Ansvar & Telefon & E-post \\
+\hline
+Patrik Sletmo & Projektledare & 070 783 57 61 & patsl736@student.liu.se \\
+\hline
+Rebecca Lindblom &  & 073 436 40 79 & rebli156@student.liu.se \\
+\hline
+Matildha Sjöstedt &  & 070 515 84 11 & matsj696@student.liu.se \\
+\hline
+Sebastian Callh &  & 073 820 46 64 & sebca553@student.liu.se \\
+\hline
+Anton Dalgren &  & 076 836 51 56 & antda685@student.liu.se \\
+\hline
+Matilda Dahlström &  & 070 636 33 52 & matda715@student.liu.se \\
+\hline
+\end{tabular}
+\end{table}
+}
+
+\begin{center}
+\textbf{Hemsida}: https://github.com/SebastianCallh/kartoffel-tsea29
+\end{center}
+
+\begin{center}
+\textbf{Kund}: Mattias Krysander, 013 - 28 2198 , matkr@isy.liu.se
+\end{center}
+
+\begin{center}
+\textbf{Kursansvarig}: Tomas Svensson, 3B 528, +46 (0)13 28 1368, tomas.svensson@liu.se \\
+\textbf{Handledare}: Anders Nilsson, 3B 512, +46 (0)13 28 2635, anders.p.nilsson@liu.se
+\end{center}
+\vspace*{\fill}
+\clearpage
+
+\renewcommand*\contentsname{Innehållsförteckning}
+\tableofcontents
+\clearpage
+
+
+{
+\sffamily
+\centering
+\large
+
+
+{\huge 
+Dokumenthistorik \\
+}
+\begin{center}
+\begin{tabular}{ | c | c | c | c | c |} 
+\hline
+\textbf{Version} & \textbf{Datum} & \textbf{Utförda ändringar} & \textbf{Utförd av } & \textbf{Granskad} \\  
+\hline
+\end{tabular}
+\end{center}
+}
+
+\clearpage
+
+
+\section{Inledning}
+% Kort beskrivning av hela dokumentet, skrivs förslagsvis sist
+
+\clearpage
+
+\section{Systembeskrivning}
+% Beskrivning av systemets mest framträdande egenskaper
+
+\subsection{Delsystem}
+% Upplistning av delsystem, eventuellt någon kort kommentar om varje delsystem
+
+\subsection{Övergripande konstruktion}
+% Övergripande blockschema
+
+\subsection{Komponenter}
+% Väldigt kort beskrivning av delsektion
+
+\subsubsection{Beräkningsenheter}
+% Upplistning av processorer, SOC:s, etc
+
+\subsubsection{Sensorer}
+% Upplistning av alla sensorer
+
+\subsubsection{Ställdon}
+% Servon, motorer, etc
+
+\subsubsection{Moduler}
+% Upplistning av extrerna moduler, t.ex. Bluetooth (har vi ens några?)
+
+\clearpage
+
+\section{Delsystem}
+
+\subsection{Huvudenhet}
+% Kort beskrivning av huvudenhet
+
+\subsubsection{Delsystemets funktion}
+% Detaljerad beskrivning av delsystemets funktion
+
+\subsubsection{Kopplingsschema}
+% Helst ett kopplingsschema, alternativt väldigt detaljerat blockschema
+
+\subsubsection{Komponenter}
+% Upplistning av komponenter inkl. antal
+
+\subsubsection{Resurser}
+% Rada upp tillgängliga portar på mikroprocessorn samt hur många som krävs
+% Motivera val av mikroprocessor med uppskattning av de resurser som krävs (prestanda, minne, IO)
+
+\subsubsection{Programflöde}
+% Hur ska mjukvaran i delsystemet fungera? Använd antingen psuedokod eller ett flödesschema
+
+% Saxat från checklista:
+%   Behövs det några speciella algoritmer för att lösa uppgiften?
+%   Behövs det några större datastrukturer som kräver mycket minne?
+%   Vilka avbrott ska användas och vad ska avbrottsrutinerna utföra?
+%   Vilka funktioner ska utföras i en ”huvud-loop”?
+%   Hur samverkar avbrottsrutinerna med huvudloopen?
+
+\clearpage
+
+\subsection{Sensorenhet}
+% Se kommentarer för huvudenhet
+
+\subsubsection{Delsystemets funktion}
+
+\subsubsection{Kopplingsschema}
+
+\subsubsection{Komponenter}
+
+\subsubsection{Resurser}
+
+\subsubsection{Programflöde}
+
+\clearpage
+
+\subsection{Styrenhet}
+% Se kommentarer för huvudenhet
+
+\subsubsection{Delsystemets funktion}
+
+\subsubsection{Kopplingsschema}
+
+\subsubsection{Komponenter}
+
+\subsubsection{Resurser}
+
+\subsubsection{Programflöde}
+
+\clearpage
+
+\subsection{Presentationsenhet}
+% Se kommentarer för huvudenhet
+
+\subsubsection{Delsystemets funktion}
+
+\subsubsection{Blockschema}
+% Övergripande schema för systemets stuktur
+
+\subsubsection{Komponenter}
+
+\subsubsection{Resurser}
+
+\subsubsection{Programflöde}
+
+\clearpage
+
+\subsection{Fjärrstyrningsenhet}
+% Se kommentarer för huvudenhet
+
+\subsubsection{Delsystemets funktion}
+
+\subsubsection{Blockschema}
+% Övergripande schema för systemets stuktur
+
+\subsubsection{Komponenter}
+
+\subsubsection{Resurser}
+
+\subsubsection{Programflöde}
+
+\clearpage
+
+\section{Kommunikation mellan delsystem}
+% Kort inledning. Nämn att huvudbuss och Bluetooth använder ett "underliggande" protokoll (under I2C/Bluetooth) som specificeras under projektets gång
+
+\subsection{Huvudbuss}
+% Beskriv huvudbussen. Vad använder vi för teknik? Hur ser master/slave-förhållande ut?
+% Använd med fördel \subsubsection
+
+\subsection{Bluetooth}
+% Beskriv Bluetooth. Vad använder vi för teknik? Hur ser master/slave-förhållande ut?
+% Använd med fördel \subsubsection
+
+\subsection{Informationsflöde}
+% Vad skickas vart?
+% Vi har sedan tidigare bestämt att allt skickas som "kommandon" vilket gör systemet helt asynkront,
+% kommandon kan alltså inte direkt returnera information utan det sker vid ett senare tillfälle
+
+\clearpage
+
+\section{Implementationsstrategi}
+% Eventuell kort inledning
+
+\subsection{Utvecklingsstrategi}
+% Beskriv hur vi utvecklar systemet till färdig produkt
+% Inkludera t.ex. iterativ funktionalitet, minimal parallellism, risker (varför vi väljer att ha roboten tävlingsklar efter MS4), etc
+
+\subsection{Testfilosofi}
+% Hur har vi strukturerat upp arbetet efter testbarhet och hur är testtillfällen inplanerade?
+
+\subsection{Feedback}
+% Vad ger systemet oss för feedback?
+% Värt att nämna aktivitet #3 samt senare skede då vi kan läsa av data i mjukvaruklienten
+
+\subsection{Kritiska sektorer}
+% Vad kan inte ändras när det väl är gjort eller blir så pass "dyrt" att göra om att det inte är möjligt?
+% Försök hitta kritiska sektorer sent i projektets skede då de är "roligast"
+
+\subsection{???}
+% Står med i checklistan men vad betyder det: "Hur ofta bör man sampla?"
+
+\clearpage
+
+\nocite{*}
+\bibliography{designspec}{}
+\bibliographystyle{plain}
+
+\end{document}

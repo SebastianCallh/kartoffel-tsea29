@@ -43,6 +43,12 @@ docs/src/systemskiss.pdf
 docs/src/systemskiss.toc
 docs/src/systemskiss.bbl
 docs/src/systemskiss.blg
+docs/src/designspec.aux
+docs/src/designspec.log
+docs/src/designspec.pdf
+docs/src/designspec.toc
+docs/src/designspec.bbl
+docs/src/designspec.blg
 
 # Emacs backup files
 *~
