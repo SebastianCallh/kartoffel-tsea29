@@ -306,14 +306,11 @@ Projektet har en budget på max 160 arbetstimmar per person efter att beslutpunk
   \resizebox{\textwidth}{!}{\begin{tabular}{ | l | l | l | }
     \hline
     1 & Designspecifikation klar. & 2016-10-14 \\ \hline
-    2 & Huvudbuss klar. & 2016-11-11 \\ \hline
-    3 & Fungerande Bluetooth-kommunikation. & 2016-11-18  \\ \hline
-    4 & Roboten rapporterar styr- och sensordata till huvudenheten. & 2016-11-23  \\ \hline
-    5 & Roboten kan fjärrstyras från en dator. & 2016-11-25 \\ \hline
-    6 & Roboten har korrekt styrreglering. & 2016-11-25 \\ \hline
-    7 & Huvudmodulen kan generera en karta. & 2016-11-30 \\ \hline
-    8 & Roboten kan fatta navigationsbeslut baserat på en karta. & 2016-12-02 \\ \hline
-    9 & Roboten kan skicka styr-, kart- och sensordata till mjukvaruklienten som kan rendera denna data. & 2016-12-09 \\ \hline
+    2 & Roboten kan åka rakt längs en vägg & 2016-11-10 \\ \hline
+    3 & Roboten kan åka längs ytterväggar i ett slutet område  & 2016-11-18  \\ \hline
+    4 & Roboten är tävlningsklar (simpel variant) & 2016-11-25  \\ \hline
+    5 & Positionsbestämning kan ske utifrån data från accelerometer, gyro samt lasersensor & 2016-12-6 \\ \hline
+    6 & Roboten är tävlingsklar (avancerad variant) & 2016-12-9 \\ \hline
   \end{tabular}}
 \end{center}
 
@@ -323,51 +320,80 @@ Projektet har en budget på max 160 arbetstimmar per person efter att beslutpunk
     \hline
     3 & Godkännande av designspecifikationen, beslut att fortsätta uförandefasen & 2016-11-01 \\ \hline
     4 & Används ej &  \\ \hline
-    5 & Godkännande av produktens funktionalitet, beslut att leverera & 2016-12-16 \\ \hline
+    5 & Godkännande av produktens funktionalitet, beslut att leverera & 2016-12-14 \\ \hline
     6 & Godkännande av leverans, beslut att upplösa projektgruppen & 2016-12-20 \\
     \hline
   \end{tabular}}
 \end{center}
 
+\newpage
+
 \section{Aktiviteter}
 I tabellen nedan är aktiviteterna för projektet listade. Tiden som anges är en uppskattning och justering av tiden kan ske med hjälp av bufferttiden under projektets gång.
 \begin{table}[H]
- \resizebox{\textwidth}{!}{\begin{tabular}{| l | l | l | l |}
+ \resizebox{\textwidth}{!}{\begin{tabular}{| l | l | l | l | l|}
  \hline
- \textbf{Nr} & \textbf{Aktiviet} & \textbf{Tid (tim)} \\ \hline
- 1 & Gör kopplingsscheman (huvudenheten, styrenheten, sensorenheten samt hela systemet) & 10 \\ \hline
- 2 & Designa navigeringsalgoritm & 25 \\ \hline
- 3 & Specificiera ett övergripande protokoll för huvudbussen  & 10 \\ \hline
- 4 & Specificiera kommandon för kommunikation med undermoduler & 10 \\ \hline
- 5 & Undersök hur Bluetooth fungerar och implementeras samt bestäm protokoll för kommunkation & 15 \\ \hline
- 6 & Undersök 12C & 10 \\ \hline
- 7 & Designa kartläggningsalgoritm & 25 \\ \hline
- 8 & Designa huvudloop & 10 \\ \hline
- 9 & Designa styrreglering & 25 \\ \hline
- 10 & Bestäm programspråk för mjukvaruklient samt bygg stomme för mjukvaruklient & 10 \\ \hline
- 11 & Koda kartläggningsalgoritm & 20 \\ \hline
- 12 & Implementera styrreglering för förflyttning samt rotation & 20 \\ \hline
- 13 & Implementera I2C & 30 \\ \hline
- 14 & Implementera stub-funktioner för all kommandon som undermodulerna hanterar & 12 \\ \hline
- 15 & Koda navigeringsalgoritm samt positionsbestämning & 20 \\ \hline
- 16 & Läsa av data från sensorer och implementera rapporteringsflöde till huvudenhet & 45 \\ \hline
- 17 & Implementera kommunikation via Bluetooth mellan mjukvaruklienten och huvudenheten & 18 \\ \hline
- 18 & Implementera funktionalitet för att snurra hjulpar och rapportera servodata till huvudenhet & 13 \\ \hline
- 19 & Koda huvudloop & 10 \\ \hline
- 20 & Implementera funktionalitet för att styra laserservot och rapportera servodata till huvudenhet & 13 \\ \hline
- 21 & Designa och implementera UI för mjukvaruklienten & 20 \\ \hline
- 22 & Designa fallback-algoritm (ladda ner kartdata igen vid krasch) & 10 \\ \hline
- 23 & Se till att huvudenheten skickar kartdata, mätdata samt styrdata till mjukvaruklienten & 12 \\ \hline
- 24 & Se till att allting vunferar tillsammans & 40 \\ \hline
- 25 & Utför systemtester & 100 \\ \hline
- 26 & Designspecifikation & 31 \\ \hline
- 27 & Teknisk dokumentation & 57 \\ \hline
- 28 & Användarhandledning & 32 \\ \hline
- 29 & Efterstudie & 20 \\ \hline
- 30 & Möten & 120 \\ \hline
- 31 & Buffert & 125 \\ \hline
- 32 & Montering, byggande & 32 \\ \hline
- 33 & Projektledartid & 10 \\ \hline
+ \textbf{Nr} & \textbf{Aktivitet} & \textbf{Beskrivning} & \textbf{Beroende} & \textbf{Tid (tim)} \\ \hline
+ 1 & Gör kopplingsschema & & 10 & \\ \hline
+ 2 & Koppla in moduler & - Alla kopplingar som krävs för att köra och programmera modulerna & 1 & 20 \\
+   & & - I2C-buss & & \\
+   & & - IR-sensorer & & \\
+   & & - Hjulpar & & \\ \hline 
+ 3 & Implementera metod för felsökning & Möjlighet att skicka debug-datat till extern terminal & 2 & 10 \\ \hline 
+ 4 & Implementera kommmunikation över I2C-buss & Implementera och verifiera funktion & 3 & 30 \\ \hline
+ 5 & Implementera avläsning från IR-sensorer & - Implementera inläsning & 3 & 20 \\
+   & & - Verifiera korrekt avläsning & & \\ \hline
+ 6 & Implementera funktionalitet för att snurra hjulpar & & 3 & 10 \\ \hline
+ 7 & Bestäm och implementera protokoll för huvudbuss & - Protokollsspecifikation & 4,5,6 & 15 \\
+   & & - Implementera protokoll & & \\
+   & & - Implementera kommandon för && \\
+   & &   - sensorrapportering & & \\
+   & &   - styrning och statusrapportering för hjulpar & & \\ \hline
+ 8 & Implementea reglering & Kunna följa en rak vägg och köra mitt i mellan två närliggande & 7 & 40 \\ 
+   & & parallella väggar & & \\ \hline
+ 9 & Implementera avståndsavläsning från lasersensor & - Montera och koppla in lasersensor & 7 & 25 \\
+   & & - Implementera avläsning från laser & & \\
+   & & - Inkludera laserdata i sensorrapportering & & \\ \hline
+ 10 & Implementera rotering av robot & - 90 graders rotation & 7 & 20 \\
+   & & - Kommando för 90 graders sväng från huvudmodul & & \\ \hline 
+ 11 & Implementera simpel navigeringsalgoritm & Följ de yttre väggarna i banan & 8,9,10 & 40 \\ \hline
+ 12 & Implementera simpel positionsbestämning & - Spara besökt rutt & 11 & 30 \\
+   & & - Avstånd med hjälp av lasersensor & & \\
+   & & - Riktning från gjorda rotationer & 11 & 30 \\ \hline
+ 13 & Spara kartdata ihuvudenehten & - Bestäm formal för simpel kartdata & 12 & 20 \\
+   & & - Omvandla mät-/sensordata till kartdata & 12 & 20 \\ \hline
+ 14 & Implementera Bluetooth-kommunikation mellan & - Möjlighet att skicka & 7 & 16 \\
+   & huvudenhet och mjukaruklient & & & \\
+   & & arbiträr data i båda riktningarna & & \\
+   & & - Äteranvänd protokollet för huvudbussen och implementera & & \\ 
+   & & i mjukvaruklienten & & \\ \hline
+ 15 & Rapportering av styr-, mät- och kartdata till mjukvaruklienten & & 13,14 & 10 \\ \hline
+ 16 & Designa och implementera ett GUI i mjukvaruklienten & - Presentera styr- och mätdata samt rita upp kartan & 15 & 20 \\
+   & & - Designa fjärrstyrningsknappar & & \\ \hline
+ 17 & Implementera funktionalitet för att lokalisera köksö & & 16 & 30 \\
+  & samt returnera till startpositionen & & & \\ \hline
+ 18 & Implementera fjärrstyrning av robot från mjukvaruklient & Se kravspecifikation för kommandon & 16 & 10 \\ \hline
+ 19 & Implementera avläsning från accelerometer och gyro roboten & & 2 & 20 \\ \hline
+ 20 & Implementera rotering av laserservo & & 2 & 20 \\ \hline
+ 21 & Implementera avläsning från gyro på laserservot & & 2 & 16 \\ \hline
+ 22 & Implementera positionsbestämning & Positionen ska bestämmmas utifrån data från accelerometer, & 16,19,20,21 & 60 \\ 
+   & & gyro samt lasersensorn & & \\ \hline
+ 23 & Implementera kartläggning av omgivningen med hjälp av & Designa och implementera kartläggningsalgoritm & 22 & 40 \\
+  & den roterande lasersensorn & & & \\ \hline 
+ 24 & Implementera avancerade navigeringsbeslut utifrån & - Besök outforskade områden & 23 & 30 \\ 
+   & nuvarande kartdata & & & \\
+   & & - Hitta tillbaka till garaget & & \\ \hline
+ 25 & Designspecifikation & & & 66 \\ \hline
+ 26 & Teknisk dokumentation & & & 66 \\ \hline
+ 27 & Användarhandledning & & & 30 \\ \hline
+ 28 & Efterstudie & & & 18 \\ \hline
+ 29 & Möten & & & 81 \\ \hline
+ 30 & Projektledartid & & & 16 \\ \hline
+ 31 & Buffert & & & 121 \\ \hline
+ 32 & Redovisningsförberedelser & & & 24 \\ \hline
+ 33 & Bantester & & & 42 \\ \hline
+
+ 
  \end{tabular}}
 \end{table}
 \section{Tidplan}
