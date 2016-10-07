@@ -288,25 +288,53 @@ Dokumenthistorik \\
 \clearpage
 
 \section{Implementationsstrategi}
-% Eventuell kort inledning
+Detta avsnitt ger en inblick i hur projektet ska utvecklas, testas, och vilka kritiska sektorer som finns, med huvudsyfte att ge utvecklarna tydliga riktlinjer att följa.
 
 \subsection{Utvecklingsstrategi}
-% Beskriv hur vi utvecklar systemet till färdig produkt
-% Inkludera t.ex. iterativ funktionalitet, minimal parallellism, risker (varför vi väljer att ha roboten tävlingsklar efter MS4), etc
+För att snabbare få ett demonstrerbart resultat kommer projektet utvecklas iterativt där aktiviteterna utgör sprinter till nästa milstolpe. Detta innebär att all funktionalitet som implementeras för en milstolpe kommer slutföras i en ensam, icke-parallell aktivitet. Att utveckla på det här sättet gör att vi tydligare kan se konkreta saker bli klara och verifiera deras funktionalitet tillsammans med deras beroenden, vilket beskrivs tydligare i avsnitt~\ref{sec:testbarhet}. Med denna utvecklingsstrategi följer även nackdelen att arbetet blir svårare att parallellisera och innebär också att arbetet per vecka behöver delas in i veckans två halvor för att alla aktiviteter ska hinna genomföras.
+\newline\newline
+Aktivitetsplanen för projektet är uppdelad i två delar där aktiviteterna är separerade i olika nivåer av komplexitet. Denna strukturering härstammar från projektets planering och ambitioner: det finns ambition och intresse för att implementera en mer avancerad lösning på kartläggningsproblemet roboten ska lösa men risken är för stor att den algoritm gruppen har i åtanke inte alls kommer att fungera. För att fortfarande ha chans att skapa en robot med den mer avancerade funktionaliteten är aktiviteter för att realisera denna med i aktivitetsplanen men inplanerade i den andra delen. Den första delen bygger på en betydligt simplare och tidigare bevisat genomförbar algoritm och uppfyller alla krav med prioritet 1. De krav som har en prioritet 2 är också tillräckligt små för att implementera utan att inkludera den mer avancerade algoritmen fullt ut men är steg på vägen.
 
 \subsection{Testfilosofi}
-% Hur har vi strukturerat upp arbetet efter testbarhet och hur är testtillfällen inplanerade?
+\subsubsection{Testbarhet}
+\label{sec:testbarhet}
+Ett krav för projektets alla aktiviteter är att de ska vara testbara från första början och inte får påbörjas förrän det kontinuerligt går att genomföra tester under utvecklingens gång tillsammans med den kringliggande miljö som krävs. Anledningen till detta härstammar från risken som uppstår om tid läggs på att undersöka funktionalitet och algoritmer som inte omedelbart kan verifieras. Det är onödigt att lägga många timmar på att ta fram en komplicerad algoritm som inte visar sig fungera i verkligheten. Genom att även kunna verifiera en aktivitets slutgiltiga funktionalitet kan den avslutas med säkerhet och bidra till att färre buggar introduceras.
 
-\subsection{Feedback}
-% Vad ger systemet oss för feedback?
-% Värt att nämna aktivitet #3 samt senare skede då vi kan läsa av data i mjukvaruklienten
+\subsubsection{Enhetstester}
+Ett viktigt moment i att verifiera en ensam funktions korrekthet är att skriva små enhetstester (eng. unit tests) som säkerställer att man får förväntad utdata givet en specifik indata. Dessa tester tjänar som syfte att minimera fel som sker i de många små byggstenar som bygger upp en komponent. Det går med fördel att skriva dessa tester utifrån komponentens design innan funktionaliteten implementeras eller genom att testa varandras kod i de fall man är ett flertal personer som arbetar på samma aktivitet. Alla enhetstester ska skrivas samtidigt som en aktivitet genomförs och används som underlag för att verifiera aktivitetens funktion och avslut.
+
+\subsubsection{Systemtester}
+När mjukvaran ska testas i verkliga scenarion kommer så kallade systemtester behöva genomföras. Detta kan inkludera att skicka data på huvudbussen eller reglera utmed en vägg. Eftersom många av de här testerna kräver att flera mikroprocessorer programmeras och ibland till och med att hela roboten förflyttas till en annan plats så medför det att dessa tester inte kan köras samtidigt. För att mitigera detta problem ska alla mer omfattande systemtester förvarnas om i god tid ifall de riskerar att krocka med andra tester. Systemtesterna är liksom enhetstesterna inräknat i varje aktivitet som kräver dessa. Notera att systemtesterna aldrig testar en bana i sitt kompletta utförande utan endast ett visst antal egenskaper, för att testa banspecifikationen se avsnitt~\ref{sec:bantester}.
+
+\subsubsection{Bantester}
+\label{sec:bantester}
+När robotens tävlingsduglighet ska utvärderas kommer tester av banan i sitt kompletta utförande behövas. Det finns ett fåtal tillfället avsatta för det här och robotens funktionalitet bör vara säkerställd innan testerna börjar för att slippa förlora den stora mängd tid som krävs för att bygga upp banan i korrekt format. Då mjukvaran för att kartlägga området är känslig för avvikelser i banans design är det viktigt att banan byggs nogrannt nog för att inte få följfel som härstammar från inexakta vinklar och mått. Under bantesterna ska hela gruppen samarbeta för att effektivisera testandet och snabbare kunna upptäcka varför eventuella fel framträder.
 
 \subsection{Kritiska sektorer}
-% Vad kan inte ändras när det väl är gjort eller blir så pass "dyrt" att göra om att det inte är möjligt?
-% Försök hitta kritiska sektorer sent i projektets skede då de är "roligast"
+Under utvecklingens gång kommer det finnas kritiska moment som kan resultera i att tidigare genomfört arbete behöver modifieras eller blir fullkomligt invaliderat. Vissa kritiska moment kan undvikas i viss grad och nedan följer en uppradning av de mest kritiska momenten och hur de kan mitigeras.
 
-\subsection{???}
-% Står med i checklistan men vad betyder det: "Hur ofta bör man sampla?"
+\subsubsection{Kopplingsschema och virande}
+Att vira upp alla kopplingar efter kopplingsschemat kan vara en pillig och tidskrävande aktivitet där missar kan leda till glappande kontakter som är svåra att felsöka. Aktivitetsplanen är stukturerad så att kopplingsschemat realiseras i olika steg vilket gör att det kommer uppstå olika lager av virtrådar allt eftersom projektet fortgår. Skulle ett av de tidigare stegen behöva korrigeras med andra kopplingar på grund av modifierat kopplingsschema kan mycket arbete alltså behöva göras om. För att undvika att sådana problem uppkommer bör kopplingsschemat kontrolleras och godkännas för varje del som ska kopplas innan virandet genomförs.
+
+\subsubsection{Förändring av delade datastrukturer}
+Ifall datastrukturer som används i fler än en enhet behöver modifieras i efterhand kan det kräva förändring i många olika delar av systemet. Det är svårt att förebygga det här för många av de strukturer som används annat än att granska och godkänna dem innan de implementeras. Vissa strukturer så som protokollet för huvudbussen och Bluetooth delas upp i olika lager så att de kan modifieras oberoende.
+
+\subsubsection{Resurser}
+Om projektet kör in i någon sorts resursvägg kan projektet behöva planeras om för att kringgå hindret genom att t.ex. begränsa systemets funktion eller skriva om mycket funktionalitet för en kraftfullare komponent. Det största identifierade hindret som skulle kunna uppstå är att resurserna inte längre räcker till för att implementera den mer avancerade lösningen på kartläggningsproblemet och har minimerats genom att välja en Raspberry Pi som huvudenhet istället för en ATmega 1248. Andra problem som skulle kunna uppstå inkluderar överförningshastigheter på bussar och gränssnitt men uppskattas inte vara lika kritiska. 
+
+\clearpage
+
+\section{Interaktion med omvärlden}
+Det här avsnittet specificerar vad för feedback systemet kommer ge tillbaka till användaren samt hur ofta den externa input systemet tar emot kan processeras. Här sätts begränsningar för hur roboten kan tolka omvärlden samt rapportera tillbaka tolkningen till användaren.
+
+\subsection{Feedback}
+Innan kommunikation etablerats med mjukvaruklienten kommer det finnas minimal möjlighet att felsöka den mjukvara som körs på systemets mikroprocessorer. Huvudenheten på roboten kommer bestå av en Raspberry Pi och kan anslutas via förslagsvis SSH. De ATmega-mikroprocessorer resten av roboten består av kommer felsökas med hjälp av en UART-till-USB uppkoppling till en dator. På UART-porten skickar mikroprocessorn textsträngar för att indikera vad som händer och vad för data som skickas eller tas emot. Tanken med denna implementation är att det ska gå att felsöka roboten från vilken dator som helst utan krav på speciella portar eller kommunikation över huvudbussen.
+\newline\newline
+Utöver den felsökning som möjliggörs via SSH och UART så kommer roboten kunna ge feedback genom att styra sina ställdon. När kommunikation med mjukvaruklienten implementerats kommer det bli lättare att läsa av mät-, sensor- och kartdata då det kan presenteras grafiskt.
+
+\subsection{Samplingsfrekvens}
+Sampling från sensorer är uppdelat i två olika steg: sensorenheten kommer kontinuerligt läsa in mätdata från dess inkopplade sensorer så fort den blir tillgänlig och stoppa datat i en buffer som sedan vid ett fixt intervall efterfrågas av huvudenheten. Den kontinuerliga inläsningen kommer ske i den takt som är maximalt möjlig för varje enskild sensor och innebär att det blir viss förskjutning av den data som enheten innehåller vid tidpunkt t. Allt eftersom huvudenheten exekverar sin huvudloop kommer data efterfrågas från sensorenheten över huvudbussen. Förutsatt de 5 sensorer som är kopplade till sensorenheten behöver data med storleken 160 bitar skickas vid varje uppdatering (förutsatt 32-bitas ordlängd och inte inkluderat överföringsprotokoll). Med huvudbussen i sitt låghastighets-läge innebär det cirka 60 uppdateringar per sekund men kan vid behov ökas upp till cirka 1250 uppdateringar per sekund genom att klocka I2C-bussen på 200 kHz.
+
 
 \clearpage
 
