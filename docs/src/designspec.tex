@@ -209,12 +209,34 @@ Dokumenthistorik \\
 
 \subsection{Sensorenhet}
 % Se kommentarer för huvudenhet
+Sensorenheten kommer ha i uppgift att läsa in värden från sensorerna som finns placerade på roboten och rapportera detta till huvudenheten. Detta kommer att ske genom att processorn pollar information från varje sensor i iterationer.
 
 \subsubsection{Delsystemets funktion}
 
 \subsubsection{Kopplingsschema}
 
 \subsubsection{Komponenter}
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{ | c | c | c | c |}
+    \hline
+    \textbf{Komponent} & \textbf{Antal} \\
+    \hline
+    ATMega 1284 & 1 \\
+    \hline
+    LIDAR-Lite v2 & 1 \\
+    \hline
+    Knapp & 1 \\
+    \hline
+    GP2Y0A21 IR-Sensor & 2 \\
+    \hline
+    MLX90609 Gyro & 1 \\
+    \hline
+    MPU6050 Accelerometer + Gyro & 1 \\
+    \hline
+  \end{tabular}
+\end{table}
 
 \subsubsection{Resurser}
 
