@@ -303,9 +303,34 @@ Sensorenheten kommer ha i uppgift att läsa in värden från sensorerna som finn
 % Använd med fördel \subsubsection
 
 \subsection{Informationsflöde}
-% Vad skickas vart?
-% Vi har sedan tidigare bestämt att allt skickas som "kommandon" vilket gör systemet helt asynkront,
-% kommandon kan alltså inte direkt returnera information utan det sker vid ett senare tillfälle
+Tanken med hur informationen flödar mellan delsystemen är att den ska skickas som asynkrona så kallade kommandon eller paket. Genom att specificera detta kan informationsflödet implementeras med valfri asynkron buss eller kommunikationsmedie och det blir även möjligt att abstrahetera bort varifrån alla meddelanden kommer. I respektive delsystem kommer alla kommandon hanteras som event och vid behov även returnera data genom att skicka ett nytt asynkront kommando tillbaka som svar.
+
+\subsubsection{Kommunikation med sensorenhet}
+Den enda data som skickas från huvudenheten till sensorenheten är en förfrågan om att hämta mer data och på samma sätt är den enda data som skickas åt andra hållet den mätdata som sensorenheten för närvarande innehåller. Sensorenheten är inte ansvarig för att själv skicka denna data då huvudenheten enklare kan bestämma hur ofta data ska skickas. Med denna lösning blir sensorenhetens enda egna uppgift att läsa in data och spara det i dess minne.
+
+\subsubsection{Kommunikation med styrenhet}
+Precis som för sensorenheten kommer huvudenheten efterfråga data från styrenheten i form av styrdata. Utöver detta kommer kommandon för att styra enhetens ställdon skickas från huvudenheten med kommandon som t.ex. framåt, bakåt, stopp, rotera 90{\textdegree} höger, etc. Vissa av dessa kommandon kommer resultera i styrning som fortföljer tills ett annat kommando skickas medan andra har ett avslut (t.ex. rotering 90{\textdegree}). De kommandon som har ett avslut skickar ett svar tillbaka till huvudenheten när de genomförts.
+
+\subsubsection{Kommunikation med mjukvaruklient}
+Mellan huvudenheten och mjukvaruklienten kommer mycket av den data som redan skickas på huvudbussen skickas även där efter den ompaketerats.
+\newline\newline
+Den data som skickas från mjukvaruklienten är följande
+\begin{itemize}
+\item Förfrågan om all ny kartdata sedan en viss tidpunkt t
+\item Kommandon för att styra roboten
+\item Byte av exekveringsläge
+\end{itemize}
+\ \\
+Den data som skickas till mjukvaruklienten är följande
+\begin{itemize}
+\item All ny kartdata sedan tidpunkt t
+\item Kontinuerlig kartdata
+\item Kontinuerlig mätdata
+\item Kontinuerlig styrdata
+\item Verifikation av kommandon
+\end{itemize}
+\ \\
+Notera att all kontinuerlig data som skickas är begränsad av den samplingsfrekvens som beskrivs i avsnitt~\ref{sec:samplingsfrekvens}. Kontinuerlig kartdata kommer inte att skickas förrän mjukvaruklienten efterfrågat kartdata minst en gång.
 
 \clearpage
 
@@ -355,6 +380,7 @@ Innan kommunikation etablerats med mjukvaruklienten kommer det finnas minimal m�
 Utöver den felsökning som möjliggörs via SSH och UART så kommer roboten kunna ge feedback genom att styra sina ställdon. När kommunikation med mjukvaruklienten implementerats kommer det bli lättare att läsa av mät-, sensor- och kartdata då det kan presenteras grafiskt.
 
 \subsection{Samplingsfrekvens}
+\label{sec:samplingsfrekvens}
 Sampling från sensorer är uppdelat i två olika steg: sensorenheten kommer kontinuerligt läsa in mätdata från dess inkopplade sensorer så fort den blir tillgänlig och stoppa datat i en buffer som sedan vid ett fixt intervall efterfrågas av huvudenheten. Den kontinuerliga inläsningen kommer ske i den takt som är maximalt möjlig för varje enskild sensor och innebär att det blir viss förskjutning av den data som enheten innehåller vid tidpunkt t. Allt eftersom huvudenheten exekverar sin huvudloop kommer data efterfrågas från sensorenheten över huvudbussen. Förutsatt de 5 sensorer som är kopplade till sensorenheten behöver data med storleken 160 bitar skickas vid varje uppdatering (förutsatt 32-bitas ordlängd och inte inkluderat överföringsprotokoll). Med huvudbussen i sitt låghastighets-läge innebär det cirka 60 uppdateringar per sekund men kan vid behov ökas upp till cirka 1250 uppdateringar per sekund genom att klocka I2C-bussen på 200 kHz.
 
 
