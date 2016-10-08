@@ -274,17 +274,17 @@ Sensorenheten kommer att ha en knapp som låter roboten växla mellan manuellt- 
 Presentationsenheten är del av mjukvaruklienten och har till uppgift att presentera mät-/ och styrdata samt presentera kartdatan i form av en grafisk karta. Informationen ska presenteras genom mjukvaruklientens GUI och uppdateras kontinuerligt när ny data mottages från robotens huvudenhet. 
 
 \subsubsection{Delsystemets funktion}
-Presentationsenhten får sin data från mjukvaruklientens kommunikation med robotens huvudenhet. Denna kommunikation sker via Bluetooth (se avsnittet \it{Kommunikation mellan delsystem}). När datan aländer till presentationsenheten sorteras den utifrån medföljande ID, enligt kommunikationsprotokollet. De tre typerna av data är kart-, mät- och styrdata. Mät- och styrdatan kommer ursprungligen från robotens sensorer, gyroskop och accelerometrar. Kartdatan genereras av robotens huvudenhet och är underlaget för den grafiska utritningen av kartan i presentationsenheten. Formatet på kartdatan kommer vara sådant att den utgår från robotens startposition - vilket blir origo i koordinatsystemet - och i någon form sparar hörn som noder. 
+Presentationsenhten får sin data från mjukvaruklientens kommunikation med robotens huvudenhet. Denna kommunikation sker via Bluetooth (se avsnitt 4.2). När datan aländer till presentationsenheten sorteras den utifrån medföljande ID, enligt kommunikationsprotokollet. De tre typerna av data är kart-, mät- och styrdata. Mät- och styrdatan kommer ursprungligen från robotens sensorer, gyroskop och accelerometrar. Kartdatan genereras av robotens huvudenhet och är underlaget för den grafiska utritningen av kartan i presentationsenheten. Formatet på kartdatan kommer vara sådant att den utgår från robotens startposition - vilket blir origo i koordinatsystemet - och i någon form sparar hörn som noder. 
 
 \subsubsection{Blockschema}
 % Övergripande schema för systemets stuktur
 \begin{figure}[H]
-\centering 
+%\centering
 \includegraphics[scale=0.5]{Oversikt_presentationsenhet2}
 \caption{Presentationsenheten i omgivning}
 \label{fig:Oversikt_presentationsenhet2}
 \end{figure}
-Ovanstående figur ~\ref{Oversikt_presentationsenhet2} visar presentationsenheten i sin omgivning. Den kommunicerar via mjukvaruklientens Bluetooth-förbindelse med robotens huvudenhet. RTS- och CLS-signalerna används för handskakning mellan enheterna, dvs. styr vem som skickar respektive tar emot data.  
+Ovanstående figur ~\ref{fig:Oversikt_presentationsenhet2} visar presentationsenheten i sin omgivning. Den kommunicerar via mjukvaruklientens Bluetooth-förbindelse med robotens huvudenhet. RTS- och CLS-signalerna används för handskakning mellan enheterna, dvs. styr vem som skickar respektive tar emot data.  
 
 \subsubsection{Komponenter}
 Mjukvaruklienten och därmed presentationsenheten kräver en bärbar dator med Bluetooth. 
@@ -295,11 +295,11 @@ Presentationen och behandlingen av datan som presentationsenhet mottager uppskat
 \subsubsection{Programflöde}
 \begin{figure}[H]
 \centering 
-\includegraphics[scale=0.5]{Presentationsenhet}
+\includegraphics[scale=0.3]{Presentationsenhet}
 \caption{Flödesschema över presentationsenheten}
 \label{fig:Presentationsenhet}
 \end{figure}
-Som man kan se i ovanstående figur ~\ref{Presentationsenhet} måste den inkommande datan sorteras utifrån medföljande ID och lagras i lämpliga datastrukturer. Datastrukturerna bör kunna sortera sin data utifrån tid, för mät- och styrdata, samt tid och position för kartdata. Tiden behöver registreras för att mjukvaruklienten ska kunna begära rätt data från huvudenheten utifrån den senaste datan mottagen. Detta är även användbart om vi behöver äterhämta information från robotens huvudenhet vid eventuell krasch och förlust av data i mjukvaruklienten. (observera att denna funktion är klassificerad med prioriteringsnivå 2 i \it{Kravspecifikationen}) Programflödet i presentationsenheten kommer styras centralt i mjukvaruklienten, som har ansvar för att växla mellan behandling av I/O (dvs. växla mellan att låta presentations- respektive fjärrstyrningsenhet arbeta). 
+Som man kan se i ovanstående figur ~\ref{fig:Presentationsenhet} måste den inkommande datan sorteras utifrån medföljande ID och lagras i lämpliga datastrukturer. Datastrukturerna bör kunna sortera sin data utifrån tid, för mät- och styrdata, samt tid och position för kartdata. Tiden behöver registreras för att mjukvaruklienten ska kunna begära rätt data från huvudenheten utifrån den senaste datan mottagen. Detta är även användbart om vi behöver äterhämta information från robotens huvudenhet vid eventuell krasch och förlust av data i mjukvaruklienten. (observera att denna funktion är klassificerad med prioriteringsnivå 2 i \textit{Kravspecifikationen}) Programflödet i presentationsenheten kommer styras centralt i mjukvaruklienten, som har ansvar för att växla mellan behandling av I/O (dvs. växla mellan att låta presentations- respektive fjärrstyrningsenhet arbeta). 
 
 \clearpage
 
