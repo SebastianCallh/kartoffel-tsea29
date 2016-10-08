@@ -261,15 +261,19 @@ Sensorenheten kommer ha i uppgift att läsa in värden från sensorerna som finn
 
 \subsection{Presentationsenhet}
 % Se kommentarer för huvudenhet
+Presentationsenheten är del av mjukvaruklienten och har till uppgift att presentera mät-/ och styrdata samt presentera kartdatan i form av en grafisk karta. Informationen ska presenteras genom mjukvaruklientens GUI och uppdateras kontinuerligt när ny data mottages från robotens huvudenhet. 
 
 \subsubsection{Delsystemets funktion}
+Presentationsenhten får sin data från mjukvaruklientens kommunikation med robotens huvudenhet. Denna kommunikation sker via Bluetooth (se avsnittet \it{Kommunikation mellan delsystem}). När datan aländer till presentationsenheten sorteras den utifrån medföljande id, enligt kommunikationsprotokollet. De tre typerna av data är kart-, mät- och styrdata. Mät- och styrdatan kommer ursprungligen från robotens sensorer, gyroskop och accelerometrar. Kartdatan genereras av robotens huvudenhet och är underlaget för den grafiska utritningen av kartan i presentationsenheten. Formatet på kartdatan kommer vara sådant att den utgår från robotens startposition - vilket blir origo i koordinatsystemet - och i någon form sparar hörn som noder. 
 
 \subsubsection{Blockschema}
 % Övergripande schema för systemets stuktur
 
 \subsubsection{Komponenter}
+Mjukvaruklienten och därmed presentationsenheten kräver en bärbar dator med Bluetooth. 
 
 \subsubsection{Resurser}
+Presentationen och behandlingen av datan som presentationsenhet mottager uppskattas ej kräva mer minne eller prestanda än vad den tillhandahållna bärbara datorn klarar av.
 
 \subsubsection{Programflöde}
 
