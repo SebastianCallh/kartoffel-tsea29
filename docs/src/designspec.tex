@@ -209,9 +209,19 @@ Dokumenthistorik \\
 
 \subsection{Sensorenhet}
 % Se kommentarer för huvudenhet
-Sensorenheten kommer ha i uppgift att läsa in värden från sensorerna som finns placerade på roboten och rapportera detta till huvudenheten. Detta kommer att ske genom att processorn pollar information från varje sensor i iterationer.
+Sensorenheten kommer ha i uppgift att läsa in värden från sensorerna som finns placerade på roboten och rapportera detta till huvudenheten. Detta kommer att ske genom att processorn pollar information från varje sensor i iterationer och sparar undan i minnet. Huvudenheten kommer att fråga sensorenheten efter nya mätdata och sensorenheten kommer då att kommunicera detta över I2C bussen.
 
 \subsubsection{Delsystemets funktion}
+
+Sensorenheten kommer att bestå av en ATMega 1284 processor som kommer att ha sensorer kopplad till sig. Processorn kommer att läsa av mätdata från sensorerna kontinuerligt och sparar undan dessa i minnet. Vid förfrågan av huvudenheten kommer processorn att leverera mätdata via huvudbussen. \\*
+
+Sensorenheten kommer att ha en lasersensor som läser av avståndet framåt. Denna sensor leverar mätvärden över gränsnitten PWM och I2C. Sensorenheten kommer att läsa av lasersensorn med PWM och omvandla till ett avstånd som kan sparas och levereras till huvudenheten vid förfrågan. \\*
+
+Sensorenheten kommer att ha två stycken IR-sensorer som ska läsa avstånd i sidan. Dessa sensorer levererar analoga värden och måste omvandlas till digitala värden. En tabell över värden kontra avstånd måste skapas för att kunna leverera exakta avstånd till huvudenheten vid förfrågan. \\*
+
+Sensorenheten kommer att ha en knapp som låter roboten växla mellan manuellt- och autonomt- läge. \\*
+
+
 
 \subsubsection{Kopplingsschema}
 
