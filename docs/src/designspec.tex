@@ -213,13 +213,13 @@ Sensorenheten kommer ha i uppgift att läsa in värden från sensorerna som finn
 
 \subsubsection{Delsystemets funktion}
 
-Sensorenheten kommer att bestå av en ATMega 1284 processor som kommer att ha sensorer kopplad till sig. Processorn kommer att läsa av mätdata från sensorerna kontinuerligt och sparar undan dessa i minnet. Vid förfrågan av huvudenheten kommer processorn att leverera mätdata via huvudbussen. \\*
-
-Sensorenheten kommer att ha en lasersensor som läser av avståndet framåt. Denna sensor leverar mätvärden över gränsnitten PWM och I2C. Sensorenheten kommer att läsa av lasersensorn med PWM och omvandla till ett avstånd som kan sparas och levereras till huvudenheten vid förfrågan. \\*
-
-Sensorenheten kommer att ha två stycken IR-sensorer som ska läsa avstånd i sidan. Dessa sensorer levererar analoga värden och måste omvandlas till digitala värden. En tabell över värden kontra avstånd måste skapas för att kunna leverera exakta avstånd till huvudenheten vid förfrågan. \\*
-
-Sensorenheten kommer att ha en knapp som låter roboten växla mellan manuellt- och autonomt- läge. \\*
+Sensorenheten kommer att bestå av en ATMega 1284 processor som kommer att ha sensorer kopplad till sig. Processorn kommer att läsa av mätdata från sensorerna kontinuerligt och sparar undan dessa i minnet. Vid förfrågan av huvudenheten kommer processorn att leverera mätdata via huvudbussen.
+\newline\newline
+Sensorenheten kommer att ha en lasersensor som läser av avståndet framåt. Denna sensor leverar mätvärden över gränsnitten PWM och I2C. Sensorenheten kommer att läsa av lasersensorn med PWM och omvandla till ett avstånd som kan sparas och levereras till huvudenheten vid förfrågan. 
+\newline\newline
+Sensorenheten kommer att ha två stycken IR-sensorer som ska läsa avstånd i sidan. Dessa sensorer levererar analoga värden och måste omvandlas till digitala värden. En tabell över värden kontra avstånd måste skapas för att kunna leverera exakta avstånd till huvudenheten vid förfrågan. 
+\newline\newline
+Sensorenheten kommer att ha en knapp som låter roboten växla mellan manuellt och autonomt läge. 
 
 
 
@@ -256,12 +256,30 @@ Sensorenheten kommer att ha en knapp som låter roboten växla mellan manuellt- 
 
 \subsection{Styrenhet}
 % Se kommentarer för huvudenhet
-
+Styrenhetens uppgift är att kontrollera alla robotens fysiska rörelser. Styrenheten kommer att ta emot kommandon från huvudenheten som sedan översätts till signaler som skickas ut till styrenhetens servon. Det är genom styrenhetens funktionalitet  som roboten kommer att kunna förflytta sig igenom rummet som ska kartläggas.
+ 
 \subsubsection{Delsystemets funktion}
+Styrenheten kommer att bestå av en ATMega 1284 processor som kommer att ha servon kopplade till sig. Ifrån huvudenheten kommer kommandon som processorn omvandlar och skickar vidare till servona. Kommandona från huvudenheten kommer 
 
 \subsubsection{Kopplingsschema}
 
 \subsubsection{Komponenter}
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{ | c | c | c | c |}
+    \hline
+    \textbf{Komponent} & \textbf{Antal} \\
+    \hline
+    ATMega 1284 & 1 \\
+    \hline
+    Terminator (bas för fyrhjulingsrobot) & 1 \\
+    \hline
+    AX12-A Servo & 1 \\
+    \hline
+
+  \end{tabular}
+\end{table}
 
 \subsubsection{Resurser}
 
