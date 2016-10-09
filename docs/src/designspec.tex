@@ -256,10 +256,15 @@ Sensorenheten kommer att ha en knapp som låter roboten växla mellan manuellt o
 
 \subsection{Styrenhet}
 % Se kommentarer för huvudenhet
-Styrenhetens uppgift är att kontrollera alla robotens fysiska rörelser. Styrenheten kommer att ta emot kommandon från huvudenheten som sedan översätts till signaler som skickas ut till styrenhetens servon. Det är genom styrenhetens funktionalitet  som roboten kommer att kunna förflytta sig igenom rummet som ska kartläggas.
+Styrenhetens uppgift är att kontrollera alla robotens fysiska rörelser med hjälp av servon, baserat på kommandon ifrån huvudenheten. Det är genom styrenhetens funktionalitet  som roboten kommer att kunna förflytta sig igenom rummet som ska kartläggas.
  
 \subsubsection{Delsystemets funktion}
-Styrenheten kommer att bestå av en ATMega 1284 processor som kommer att ha servon kopplade till sig. Ifrån huvudenheten kommer kommandon som processorn omvandlar och skickar vidare till servona. Kommandona från huvudenheten kommer 
+Styrenheten kommer att bestå av en ATMega 1284 processor som kommer att ha servon kopplade till sig. Ifrån huvudenheten kommer kommandon som säger åt roboten att exempelvis åka framåt eller rotera. Kommandon som kommer ifrån huvudenheten översätts till signaler som skickas ut till styrenhetens servon för att kontrollera robotens rörelser. Processorn ska även ta emot och skicka vidare styrdata ifrån servona den har kopplade till sig.
+\newline\newline
+Fyra servon med hjul fastsatta på dem sitter ihopkopplade på ett chassi. De sitter två servon på varsin sida av chassit på samma sätt som hjulen sitter på en bil. Dessa servon är parkopplade, det vill säga att de två servona på vänstra sidan sitter ihop, och de på högra sidan sitter ihop. Höger och vänster hjulpar styrs alltså oberoende av varandra, och genom att skicka olika signaler till de båda hjulparen ska roboten kunna åka framåt och bakåt samt rotera. Hela konstruktionen heter Terminator och ses som en enskild enhet.
+\newline\newline
+Styrenheten kommer ha ytterligare ett servo kopplat till sig. På detta servo kommer två sensorer från sensorenheten att vara kopplade, en lasersensor samt ett gyro. I projektets första stadie kommer detta servo inte fylla någon funktion då lasersensorn monterad på den endast ska peka i en riktning, men i ett senare stadie kommer servot att rotera dessa två sensorer för att lättare och snabbare kunna detektera ouppsökta områden och kartlägga rummet.
+
 
 \subsubsection{Kopplingsschema}
 
@@ -267,7 +272,7 @@ Styrenheten kommer att bestå av en ATMega 1284 processor som kommer att ha serv
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{ | c | c | c | c |}
+  \begin{tabular}{ | c | c |}
     \hline
     \textbf{Komponent} & \textbf{Antal} \\
     \hline
@@ -282,6 +287,8 @@ Styrenheten kommer att bestå av en ATMega 1284 processor som kommer att ha serv
 \end{table}
 
 \subsubsection{Resurser}
+
+Omvandlingen av kommandon från huvudenheten och utskickning av signaler till servona samt omhändertagandet och vidarebefodrandet av styrdata från servona till huvudenheten uppskattas ej kräva mer prestanda eller minne än styrenhetens ATMega 1284 processor klarar av. 
 
 \subsubsection{Programflöde}
 
