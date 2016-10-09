@@ -369,15 +369,20 @@ Som man kan se i ovanstående figur ~\ref{fig:Presentationsenhet} måste den ink
 
 \subsection{Fjärrstyrningsenhet}
 % Se kommentarer för huvudenhet
+Fjärrstyrningsenheten är liksom presentationsenheten en del av mjukvaruklienten. Fjärrstyrningsenhetens huvudsakliga uppgift är att låta en användare skicka kommandon via mjukvaruklienten till roboten, med syfte att kunna kontrollera robotens fysiska position manuellt. I ett senare skede av projektets utveckling är det även tänkt att det ska gå att växla mellan robotens autonoma och manuella läge igenom fjärrstyrningsenheten, men det är en funktion som är lägre prioriterad än de andra.
 
 \subsubsection{Delsystemets funktion}
+Fjärrstyrningsenheten tar emot input av en användare som kommer genom mjukvaruklienten. Användarinput hämtas genom interaktion med mjukvaruklienten via datorn som mjukvaruklienten används på. Den informationen packeteras och skickas sedan vidare till robotens huvudenhet via Bluetooth (se avsnitt 4.2). Väl i huvudenheten sköter roboten så att kommandona skickas vidare till styrenheten som i sin tur gör att roboten förflyttar, så fjärrstyrningsenhetens enda jobb är att förmedla användarens input till huvudenheten.
+
 
 \subsubsection{Blockschema}
 % Övergripande schema för systemets stuktur
 
 \subsubsection{Komponenter}
+Fjärrstyrningsenheten kräver en dator med Bluetooth som kan köra mjukvaruklienten.
 
 \subsubsection{Resurser}
+Funktionaliteten för att ta emot användarinput och skicka iväg den via Bluetooth uppskattas ej kräva mer minne eller prestanda än vad den tillhandahållna datorn klarar av.
 
 \subsubsection{Programflöde}
 
