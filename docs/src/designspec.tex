@@ -244,16 +244,16 @@ Sensorenheten kommer ha i uppgift att läsa in värden från sensorerna som finn
 
 \subsubsection{Delsystemets funktion}
 
-Sensorenheten kommer att bestå av en ATMega 1284 processor som kommer att ha sensorer kopplade till sig. Processorn kommer att läsa av mätdata från sensorerna kontinuerligt och spara undan dessa i minnet. Vid förfrågan av huvudenheten kommer processorn att leverera mätdata via huvudbussen. \\*
-
-Sensorenheten kommer att ha en lasersensor som läser av avståndet framåt. Denna sensor leverar mätvärden över gränsnitten PWM och I2C. Sensorenheten kommer att läsa av lasersensorn med PWM och omvandla till ett avstånd som kan sparas och levereras till huvudenheten vid förfrågan. I ett senare skede i projektet när det finns en fungerande robot så kommer kartläggningen att gå över till en mer avancerad variant och då kommer lasersensorn att rotera runt roboten. Detta för att kunna använda metoden raycasting när rummet ska kartläggas.\\*
-
-Sensorenheten kommer att ha två stycken IR-sensorer som ska läsa avstånd åt sidan. Dessa sensorer levererar analoga värden och måste omvandlas till digitala värden. En tabell över värden kontra avstånd måste skapas för att kunna leverera exakta avstånd till huvudenheten vid förfrågan. \\*
-
-Sensorenheten kommer att ha en knapp som låter roboten växla mellan manuellt- och autonomt- läge. \\*
-
-I det senare skedet av projektet när den avancerade kartläggningen kommer att användas så kommer roboten att använda sig av ett gyroskop för att hålla koll på hur mycket lasersensorn har roterat. Detta för att roboten ska veta vinkeln som lasern har rört sig under de olika mätpunkterna som ges. \\*
-
+Sensorenheten kommer att bestå av en ATMega 1284 processor som kommer att ha sensorer kopplad till sig. Processorn kommer att läsa av mätdata från sensorerna kontinuerligt och sparar undan dessa i minnet. Vid förfrågan av huvudenheten kommer processorn att leverera mätdata via huvudbussen. 
+\newline\newline
+Sensorenheten kommer att ha en lasersensor som läser av avståndet framåt. Denna sensor leverar mätvärden över gränsnitten PWM och I2C. Sensorenheten kommer att läsa av lasersensorn med PWM och omvandla till ett avstånd som kan sparas och levereras till huvudenheten vid förfrågan. I ett senare skede i projektet när vi har en fungerande robot så kommer vi att välja att gå över till en mer avancerad variant av kartläggning och då kommer lasersensorn att rotera runt roboten. Detta för att kunna använda oss utav metoden raycasting när rummet ska kartläggas.
+\newline\newline
+Sensorenheten kommer att ha två stycken IR-sensorer som ska läsa avstånd i sidan. Dessa sensorer levererar analoga värden och måste omvandlas till digitala värden. En tabell över värden kontra avstånd måste skapas för att kunna leverera exakta avstånd till huvudenheten vid förfrågan. 
+\newline\newline
+Sensorenheten kommer att ha en knapp som låter roboten växla mellan manuellt- och autonomt- läge.
+\newline\newline
+I det senare skedet av projektet när den avancerade kartläggningen kommer att användas så kommer roboten att använda sig av ett gyroskop för att hålla koll på hur mycket lasersensorn har roterat. Detta för att roboten ska veta vinkeln som lasern har rört sig under de olika mätpunkterna som ges.
+\newline\newline
 En accelerometer och gyroskop kommer att sitta på roboten för att kunna sköta reglering av roboten, hålla koll på hur långt roboten har åkt samt användas för att kunna korrigera de vinkelfel som blir om roboten roterar samtidgt som lasern roterar.
 
 \subsubsection{Kopplingsschema}
@@ -326,14 +326,39 @@ En accelerometer och gyroskop kommer att sitta på roboten för att kunna sköta
 
 \subsection{Styrenhet}
 % Se kommentarer för huvudenhet
-
+Styrenhetens uppgift är att kontrollera alla robotens fysiska rörelser med hjälp av servon, baserat på kommandon ifrån huvudenheten. Det är genom styrenhetens funktionalitet  som roboten kommer att kunna förflytta sig igenom rummet som ska kartläggas.
+ 
 \subsubsection{Delsystemets funktion}
+Styrenheten kommer att bestå av en ATMega 1284 processor som kommer att ha servon kopplade till sig. Ifrån huvudenheten kommer kommandon som säger åt roboten att exempelvis åka framåt eller rotera. Kommandon som kommer ifrån huvudenheten översätts till signaler som skickas ut till styrenhetens servon för att kontrollera robotens rörelser. Processorn ska även ta emot och skicka vidare styrdata ifrån servona den har kopplade till sig.
+\newline\newline
+Fyra servon med hjul fastsatta på dem sitter ihopkopplade på ett chassi. De sitter två servon på varsin sida av chassit på samma sätt som hjulen sitter på en bil. Dessa servon är parkopplade, det vill säga att de två servona på vänstra sidan sitter ihop, och de på högra sidan sitter ihop. Höger och vänster hjulpar styrs alltså oberoende av varandra, och genom att skicka olika signaler till de båda hjulparen ska roboten kunna åka framåt och bakåt samt rotera. Hela konstruktionen heter Terminator och ses som en enskild enhet.
+\newline\newline
+Styrenheten kommer ha ytterligare ett servo kopplat till sig. På detta servo kommer två sensorer från sensorenheten att vara kopplade, en lasersensor samt ett gyro. I projektets första stadie kommer detta servo inte fylla någon funktion då lasersensorn monterad på den endast ska peka i en riktning, men i ett senare stadie kommer servot att rotera dessa två sensorer för att lättare och snabbare kunna detektera ouppsökta områden och kartlägga rummet.
+
 
 \subsubsection{Kopplingsschema}
 
 \subsubsection{Komponenter}
 
+\begin{table}[H]
+  \centering
+  \begin{tabular}{ | c | c |}
+    \hline
+    \textbf{Komponent} & \textbf{Antal} \\
+    \hline
+    ATMega 1284 & 1 \\
+    \hline
+    Terminator (bas för fyrhjulingsrobot) & 1 \\
+    \hline
+    AX12-A Servo & 1 \\
+    \hline
+
+  \end{tabular}
+\end{table}
+
 \subsubsection{Resurser}
+
+Omvandlingen av kommandon från huvudenheten och utskickning av signaler till servona samt omhändertagandet och vidarebefodrandet av styrdata från servona till huvudenheten uppskattas ej kräva mer prestanda eller minne än styrenhetens ATMega 1284 processor klarar av. 
 
 \subsubsection{Programflöde}
 
@@ -375,15 +400,20 @@ Som man kan se i ovanstående figur ~\ref{fig:Presentationsenhet} måste den ink
 
 \subsection{Fjärrstyrningsenhet}
 % Se kommentarer för huvudenhet
+Fjärrstyrningsenheten är liksom presentationsenheten en del av mjukvaruklienten. Fjärrstyrningsenhetens huvudsakliga uppgift är att låta en användare skicka kommandon via mjukvaruklienten till roboten, med syfte att kunna kontrollera robotens fysiska position manuellt. I ett senare skede av projektets utveckling är det även tänkt att det ska gå att växla mellan robotens autonoma och manuella läge igenom fjärrstyrningsenheten, men det är en funktion som är lägre prioriterad än de andra.
 
 \subsubsection{Delsystemets funktion}
+Fjärrstyrningsenheten tar emot input av en användare som kommer genom mjukvaruklienten. Användarinput hämtas genom interaktion med mjukvaruklienten via datorn som mjukvaruklienten används på. Den informationen packeteras och skickas sedan vidare till robotens huvudenhet via Bluetooth (se avsnitt 4.2). Väl i huvudenheten sköter roboten så att kommandona skickas vidare till styrenheten som i sin tur gör att roboten förflyttar, så fjärrstyrningsenhetens enda jobb är att förmedla användarens input till huvudenheten.
+
 
 \subsubsection{Blockschema}
 % Övergripande schema för systemets stuktur
 
 \subsubsection{Komponenter}
+Fjärrstyrningsenheten kräver en dator med Bluetooth som kan köra mjukvaruklienten.
 
 \subsubsection{Resurser}
+Funktionaliteten för att ta emot användarinput och skicka iväg den via Bluetooth uppskattas ej kräva mer minne eller prestanda än vad den tillhandahållna datorn klarar av.
 
 \subsubsection{Programflöde}
 
