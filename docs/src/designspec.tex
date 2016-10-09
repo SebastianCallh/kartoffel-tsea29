@@ -215,13 +215,15 @@ Sensorenheten kommer ha i uppgift att läsa in värden från sensorerna som finn
 
 Sensorenheten kommer att bestå av en ATMega 1284 processor som kommer att ha sensorer kopplad till sig. Processorn kommer att läsa av mätdata från sensorerna kontinuerligt och sparar undan dessa i minnet. Vid förfrågan av huvudenheten kommer processorn att leverera mätdata via huvudbussen. \\*
 
-Sensorenheten kommer att ha en lasersensor som läser av avståndet framåt. Denna sensor leverar mätvärden över gränsnitten PWM och I2C. Sensorenheten kommer att läsa av lasersensorn med PWM och omvandla till ett avstånd som kan sparas och levereras till huvudenheten vid förfrågan. \\*
+Sensorenheten kommer att ha en lasersensor som läser av avståndet framåt. Denna sensor leverar mätvärden över gränsnitten PWM och I2C. Sensorenheten kommer att läsa av lasersensorn med PWM och omvandla till ett avstånd som kan sparas och levereras till huvudenheten vid förfrågan. I ett senare skede i projektet när vi har en fungerande robot så kommer vi att välja att gå över till en mer avancerad variant av kartläggning och då kommer lasersensorn att rotera runt roboten. Detta för att kunna använda oss utav metoden raycasting när rummet ska kartläggas.\\*
 
 Sensorenheten kommer att ha två stycken IR-sensorer som ska läsa avstånd i sidan. Dessa sensorer levererar analoga värden och måste omvandlas till digitala värden. En tabell över värden kontra avstånd måste skapas för att kunna leverera exakta avstånd till huvudenheten vid förfrågan. \\*
 
 Sensorenheten kommer att ha en knapp som låter roboten växla mellan manuellt- och autonomt- läge. \\*
 
+I det senare skedet av projektet när den avancerade kartläggningen kommer att användas så kommer roboten att använda sig av ett gyroskop för att hålla koll på hur mycket lasersensorn har roterat. Detta för att roboten ska veta vinkeln som lasern har rört sig under de olika mätpunkterna som ges. \\*
 
+En accelerometer och gyroskop kommer att sitta på roboten för att kunna sköta reglering av roboten, hålla koll på hur långt roboten har åkt samt användas för att kunna korrigera de vinkelfel som blir om roboten roterar samtidgt som lasern roterar.
 
 \subsubsection{Kopplingsschema}
 
@@ -246,9 +248,46 @@ Sensorenheten kommer att ha en knapp som låter roboten växla mellan manuellt- 
     MPU6050 Accelerometer + Gyro & 1 \\
     \hline
   \end{tabular}
+  \caption{ Tabell över de komponenter som sensorenheten består av. }
 \end{table}
 
 \subsubsection{Resurser}
+% Rada upp tillgängliga portar på mikroprocessorn samt hur många som krävs
+% Motivera val av mikroprocessor med uppskattning av de resurser som krävs (prestanda, minne, IO)
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{ | c | c | c | c |}
+    \hline
+    \textbf{Port} & \textbf{Antal} & \textbf{Krävs} \\
+    \hline
+    SDA & 1 & 1 \\
+    \hline
+    SCL & 1 & 1 \\
+    \hline
+    PCINT & 31 & 2 \\
+    \hline
+    OC & 8 & 2 \\
+    \hline
+    A/D & 8 & 2 \\
+    \hline
+    MISO & 1 & 1 \\
+    \hline
+    MOSI & 1 & 1 \\
+    \hline
+    SCK & 1 & 1 \\
+    \hline
+    SS & 1 & 1 \\
+    \hline
+    RXD & 2 & 1 \\
+    \hline
+    TXD & 2 & 1 \\
+    \hline
+    XCK & 2 & 1 \\
+    \hline
+  \end{tabular}
+  \caption{Tabell över tillgängliga portar på processorn.}
+\end{table}
 
 \subsubsection{Programflöde}
 
