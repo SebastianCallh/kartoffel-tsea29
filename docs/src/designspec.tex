@@ -299,9 +299,14 @@ Huvudenheten är uppdelad i två undermoduler, logikenheten och kommunikationsen
 \caption{Flödesdiagram för navigering}
 \label{fig:navigering_flowchart}
 \end{figure}
-I figur~\ref{fig:navigering_flowchart} ses en illustration över algoritmen för att följa en vägg på höger sida om roboten. Eftersom roboten börjar vid en vägg enligt tävlingsspecifikationen så kan den följa den direkt. När den sedan kartlagt den yttre väggen söker den efter köksön och faller sedan in i samma algoritm igen.
+I figur ~\ref{fig:navigering_flowchart} ses en illustration över algoritmen för att följa en vägg på höger sida om roboten. Eftersom roboten börjar vid en vägg enligt tävlingsspecifikationen så kan den följa den direkt. När den sedan kartlagt den yttre väggen söker den efter köksön och faller sedan in i samma algoritm igen.
 
-Flödesskema för Bluetooth-kommunikation goes here
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.45]{Bluetooth_kommunikation_i_robot}
+\caption{Flödesschema över Bluetooth-kommunikationen i huvudenheten}
+\label{fig:Bluetooth_kommunikation_i_robot}
+\end{figure}
 % Saxat från checklista:
 %   Behövs det några speciella algoritmer för att lösa uppgiften?
 %   Behövs det några större datastrukturer som kräver mycket minne?
@@ -481,14 +486,28 @@ Fjärrstyrningsenheten tar emot input av en användare som kommer genom mjukvaru
 
 \subsubsection{Blockschema}
 % Övergripande schema för systemets stuktur
+\begin{figure}[H]
+\centering 
+\includegraphics[scale=0.5]{Oversikt_fjarrstyrenhet}
+\caption{Fjärrstyrningsenheten i omgivning}
+\label{fig:Oversikt_fjarrstyrenhet}
+\end{figure}
+Ovanstående figur ~\ref{fig:Oversikt_fjarrstyrenhet} visar fjärrstyrningsenheten i sin omgivning. Den kommunicerar via mjukvaruklientens Bluetooth-förbindelse med robotens huvudenhet. RTS- och CLS-signalerna används för handskakning mellan enheterna, dvs. styr vem som skickar respektive tar emot data.  
 
 \subsubsection{Komponenter}
-Fjärrstyrningsenheten kräver en dator med Bluetooth som kan köra mjukvaruklienten.
+Fjärrstyrningsenheten kräver en dator med Bluetooth som kan köra mjukvaruklienten, samt tangentbord och mus/touchpad för interaktion med klienten. 
 
 \subsubsection{Resurser}
 Funktionaliteten för att ta emot användarinput och skicka iväg den via Bluetooth uppskattas ej kräva mer minne eller prestanda än vad den tillhandahållna datorn klarar av.
 
 \subsubsection{Programflöde}
+\begin{figure}[H]
+\centering 
+\includegraphics[scale=0.4]{Fjarrstyrningsenhet_flowchart2}
+\caption{Flödesschema över fjärrstyrningssenheten}
+\label{fig:Fjarrstyrningsenhet_flowchart2}
+\end{figure}
+Som visas i ovanstånde figur ~\ref{fig:Fjarrstyrningsenhet_flowchart2} ger användaren input till fjärrstyrningsenheten. Inputet kommer orsaka någon form av input-event som påverkar programflödeskontrollen i mjukvaruklienten. Detta input tolkas sedan för att motsvara rätt kommando som sedan ska skickas via Bluetooth-anslutningen till robotens huvudenhet (för en lista över kommandon, se \textit{Kravspecifikationen}).
 
 \clearpage
 
