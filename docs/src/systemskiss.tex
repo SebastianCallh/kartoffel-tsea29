@@ -27,7 +27,7 @@
 \renewcommand{\footrulewidth}{0.4pt}
 
 
-\title{Designspecifikation för kartrobot}
+\title{Systemskiss för kartrobot}
 \author{Patrik Sletmo}
 \date{\today}
 
@@ -44,7 +44,7 @@
 
 
 {\huge 
-Designspecifikation för kartrobot
+Systemskiss för kartrobot
 }
 
 {\large
@@ -52,7 +52,7 @@ Patrik Sletmo
 }
 
 {\large
-Version 0.1
+Version 1.0
 }
 
 \vspace{3.5cm}
@@ -60,6 +60,10 @@ Version 0.1
 Status
 \begin{center}
 \begin{tabular}{ | c | c | c | } 
+\hline
+Granskad & Patrik Sletmo & 2016-09-22 \\
+\hline
+Godkänd & Patrik Sletmo & 2016-09-28 \\
 \hline
 \end{tabular}
 \end{center}
@@ -139,6 +143,10 @@ Dokumenthistorik \\
 \hline
 \textbf{Version} & \textbf{Datum} & \textbf{Utförda ändringar} & \textbf{Utförd av } & \textbf{Granskad} \\  
 \hline
+1.0 & 2016-09-28 & Slutgiltig version & Grupp 3 & Patrik Sletmo \\
+\hline
+0.1 & 2016-09-22 & Första utkastet & Grupp 3 & Patrik Sletmo \\
+\hline
 \end{tabular}
 \end{center}
 }
@@ -147,289 +155,161 @@ Dokumenthistorik \\
 
 
 \section{Inledning}
-% Kort beskrivning av hela dokumentet, skrivs förslagsvis sist
+Den här systemskissen beskriver i mer teknisk detalj konstruktionen av roboten och tillhörande mjukvara. Dokumentet ska reflektera vår faktiska relisation av projektet och kan mycket väl komma att ändras allt eftersom projektet fortskrider och designbeslut behöver omvärderas.
 
-\clearpage
+\section{Systemöversikt}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.35]{oversikt_systemet}
+\caption{Översikt över systemet}
+\label{fig:oversikt_systemet}
+\end{figure}
+Vårt system (se ovanstående figur ~\ref{fig:oversikt_systemet}) är uppdelad i fem stycken enheter (eller \textit{moduler}), där två utav dem - presentations- och fjärrstyrningsenheten - ingår i vår mjukvaruklient och resten ingår i själva roboten. Kommunikationen mellan mjukvaruklienten och roboten sker via Bluetooth, medan den interna kommunikationen mellan robotens enheter sker via en I2C-buss. Här är huvudenheten ensam master och styr- och sensorenhet slaves. Andra protokol som vi använder i robotens interna kommunikation är PWM, SPI och UART. Sensorer som är kopplade till sensorenheten inkluderar en laser, knapp samt en accelerometer och två gyroskop. Till styrenheten kopplas servon som styr hjul och rotation av lasern.
 
-\section{Systembeskrivning}
-% Beskrivning av systemets mest framträdande egenskaper
+\section{Huvudenhet}
 
-\subsection{Delsystem}
-% Upplistning av delsystem, eventuellt någon kort kommentar om varje delsystem
+Huvudenheten består av två undermoduler, logikenheten och kommunikationsenheten (se figur ~\ref{fig:huvudenhet}). Logikenheten fattar robotens alla beslut genom att betrakta sensordata från sensorenheten och sedan beordra styrenheten att navigera på lämpligt sätt, och kommunikationsenheten hanterar all kommunikation med mjukvaruklienten. 
 
-\subsection{Övergripande konstruktion}
-% Övergripande blockschema
-
-\subsection{Komponenter}
-% Väldigt kort beskrivning av delsektion
-
-\subsubsection{Beräkningsenheter}
-% Upplistning av processorer, SOC:s, etc
-
-\subsubsection{Sensorer}
-% Upplistning av alla sensorer
-
-\subsubsection{Ställdon}
-% Servon, motorer, etc
-
-\subsubsection{Moduler}
-% Upplistning av extrerna moduler, t.ex. Bluetooth (har vi ens några?)
-
-\clearpage
-
-\section{Delsystem}
-
-\subsection{Huvudenhet}
-% Kort beskrivning av huvudenhet
-Huvudenheten är främst mjukvarubaserad och det är här robotens logiska del finns, samt en del för fjärrkommunikation. Det främsta innehållet är algoritmer för navigering och kartläggning. Huvudenheten agerar även mästare på I2C-bussen.
-
-\subsubsection{Delsystemets funktion}
-% Detaljerad beskrivning av delsystemets funktion
-Huvudenheten är uppdelad i två undermoduler, logikenheten och kommunikationsenheten. Logikenheten analyserar data från sensorenheten för att avgöra hur roboten ska navigera och för att bestämma hur omvärlden ser ut så att den kan kartläggas. Tack vare de två IR-sensorer på vardera sida om roboten så kan vi följa en vägg på vänster/höger sida, och genom att göra det kartlägga hela den utomliggande väggen. När vi väl avgränsat området som köksön kan befinna sig i söker roboten av den begränsade ytan till köksön identifieras och följer dess väggar till även den är kartlagd. När hela kartan finns i robotens minne kan den finna den kortaste vägen tillbaka till startpositionen och navigera dit. Logikenheten ansvarar även för att hålla koll på var någonstans roboten befinner sig. Eftersom roboten navigerar i ett rutnät så kan vi med hjälp av vår lasersensor räkna hur långt vi åker i raka streckor mellan varje sväng och därmed räkna ut vår totala förflyttning. Kommunikationsenheten agerar som ett abstraktionslager för Raspberry Pi:ens Bluetoothmodul och ser till att sköta all översättning där i mellan så att vi kan arbeta med våra interna dataformat i övriga delar av roboten.
-
-\subsubsection{Kopplingsschema}
-% Helst ett kopplingsschema, alternativt väldigt detaljerat blockschema
-
-\subsubsection{Komponenter}
-
-\begin{table}[H]
+\begin{figure}[H]
   \centering
-  \begin{tabular}{ | c | c | }
-    \hline
-    \textbf{Komponent} & \textbf{Antal} \\
-    \hline
-    Raspberry PI 3 & 1 \\
-    \hline
-  \end{tabular}
-\end{table}
+  \includegraphics[scale=0.5]{Huvudenhet} \\
+  \caption{Ett övergripande blockschema över huvudenheten}
+  \label{fig:huvudenhet}
+\end{figure}
 
+\subsection{Realisering}
 
-\subsubsection{Resurser}
-% Rada upp tillgängliga portar på mikroprocessorn samt hur många som krävs
-% Motivera val av mikroprocessor med uppskattning av de resurser som krävs (prestanda, minne, IO)
+\begin{figure}[H]
+ \centering
+ \includegraphics[scale=0.40]{Huvudmodul_oversikt_blockschema}
+ \caption{Översiktsblockschema över huvudenheten}
+ \label{fig:Huvudmodul_oversikt_blockschema}
+\end{figure}
 
-\begin{table}[H]
+Figur ~\ref{fig:Huvudmodul_oversikt_blockschema} visar hur kommunikationen sker inom huvudenheten på ett översiktligt plan. Processorn innehåller minne där vi kommer lagra data, variabler, konstanter samt själva programmet som styr huvudenhetens logik (se \textit{Logikenhet}). Processorn kommunicerar till omvärlden på två sätt, via en Bluetoothenhet och via en I2C-buss. Kommunikationen via Bluetooth bygger på en slags handskakningsprincip mellan processorn och den PC som Bluetoothenheten är kopplad till. Processorn skickar signalen \textit{Clear To Send} till PC för att tala om att den är redo att ta emot data. PC:n skickar signalen \textit{Request To Send} till processorn när den är redo att ta emot data. I2C-bussen används för kommunikation mellan huvud-, sensor- och styrenhet. Huvudenheten är ensam master på bussen och styr på så vis kommunikaitonen. Följdaktligen är den även ansvarig för att generera klockpulsen SCL. När antingen sensor- eller styrenheten är redo att skicka data eller låta huvudenheten läsa data, kommer de skicka ett avbrott (\textit{interrupt}) till huvudenhetens processor. Den processor vi har tänkt att använda oss utav i huvuenhten är en ATmega1284 processor, med 128kB flashminne samt extra 20 kB för variabler och konstanter och en klocka på 0-20 MHz.
+ 
+\subsection{Kommunikationsenhet}
+All kommunikation med mjukvaruklienten sker över Bluetooth. PC:n ansluter sig till robotens Bluetooth-modul och blir därför master i kommunikationen. Informationen som ska skickas seriellt i paket om 7-8 bitar exklusive startbit och stopbitar. Innan överföring sker måste en så kallad handskakning ske mellan enheterna. En enhets RTS (\textit{Request To Send}) signal talar om, om den är redo att skicka eller ta emot data, denna signal läses av på den andras CTS (\textit{Clear To Send}) ingång. Data skickas till och från två separata in- och utgångar på Bluetooth-modulen. 
+\newline\newline
+
+\begin{figure}[H]
   \centering
-  \begin{tabular}{ | c | c | c | }
-    \hline
-    \textbf{Port} & \textbf{Antal} & \textbf{Används} \\
-    \hline
-    Bluetooth 4.1 BLE & 1 & 1\\
-    USB & 4 & 0 \\
-    Ethernet & 1 & 0 \\
-    GPIO pins & 40 & ? \\
-    HDMI & 1 & 0 \\
-    CSI & 1 & 0 \\
-    DSI & 1 & 0 \\
-    3.5mm & 1 & 0 \\
-    \hline
-  \end{tabular}
-\end{table}
+  \includegraphics[scale=0.44]{Bluetooth_kommunikation_i_robot} \\
+  \caption{Ett flödesdiagram på kommunikationen mellan PC:n och roboten sett ifrån roboten.}
+  \label{fig:Bluetooth}
+\end{figure}
+Flödesdiagrammet ~\ref{fig:Bluetooth} visar hur kommunikation sker mellan PC:n och roboten. Roboten växlar mellan att kolla om det finns data att hämta eller om den får skicka data. Om det finns data att läsas in kommer den att läsas in till huvudmodulens processor. Efter inläsningen är klar återgår kollen efter data som kan skickas eller läsas in. Om det finns data att skickas inväntar roboten ett klartecken att skicka data och efter att den har skickat färdigt återgår logiken till att vänta på data att tas emot eller skickas igen. 
 
-\subsubsection{Programflöde}
+\subsection{Logikenhet}
+Logikenheten utgör hjärnan i roboten. Den hanterar både navigationsbeslut och själva kartläggandet. Utöver det styr den också kommunikationen på I2C-bussen.
+
+\subsubsection{Navigation}
+Allt eftersom vi scannar vår omgivning så kommer roboten identifiera olika punkter som är relevanta att åka till för att fortsätta utforskandet. Den kommer fortsätta att navigera till relevanta punkter tills den är klar med utforskandet. En relevant punkt kan t.ex. vara en punkt kring ett hörn som skymmer vår syn, eller en punkt som är för långt bort för att vi ska kunna veta säkert vad som finns där. För att hantera svängar kommer roboten antingen röra sig i ett diskret rutnät och rotera på plats i kvarts varv, eller kunna röra sig ``kontinuerligt'' och följa bezier-kurvor för svängar. För att veta vilken vinkel och position roboten har så kommer den använda sig att mätdata från ett gyroskop och en accelerometer, och genom att veta vilken vinkel den har kommer den kunna göra korrekta svängar.
+
+\subsubsection{Kartläggning}
+
+Allt eftersom roboten utforska den omkringliggande miljön kommer den att spara ned allt den upptäcker. Eftersom roboten rör sig under kartläggningen kommer nya hörn att behöva översättas till ett gemensamt koordinatsystem innan de sparas ned. Roboten löser det genom att vid start definera ett koordinatsystem med utgångspunkt där den startar och sedan, genom att veta sin egen position, översätta de nyupptäckta punkternas position till det ursprungliga koordinatsystemet med hjälp av vektoraddition. Se figur ~\ref{fig:Koordinatberakning} för ett exempel.\newline\newline
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{Koordinatberakning} \\
+  \caption{En illustration över hur koordinater för nyfunna hörn beräknas innan de sparas. V är robotens ortsvektor, U hörnets vektor i förhållande till roboten och W hörnets ortsvektor.}
+  \label{fig:Koordinatberakning}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{Laserfunktionskurva} \\
+  \caption{En linjär-interpolerad bild utav avståndsavläsningar från lasersensorn där x är vår sensors vinkel och y det uppmätt avståndet.}
+  \label{fig:Laserfunktionskurva}
+\end{figure}
+
+För att kartlägga omgivningen så konstruerar roboten upp en graf, med hörn som noder och väggar som bågar. För att detektera var hörn finns så läses lasersensorn av med jämna mellanrum. Vi kan visualisera det avlästa avståndet som en funktion av laserns vinkel som i figur ~\ref{fig:Laserfunktionskurva}, där diskontinuiteter och lokala maximum/minimum representerar hörn. En diskontinuitet betyder att vi hittat ett utstickande hörn med golvyta bakom sig och ett lokalt maximum/minimum innebär att vi hittat ett hörn på banan. I figuren så kommer punkten som ligger på (1, 0.5) sparas, tillsammans med en båge till punkten som ligger på (2, 1). Eftersom vi här upptäcker en diskontinuitet så kommer ingen båge sparas mellan (2, 1) och (2, 3), men bågar kommer ansluta (2, 3) till (3, 4) och (3, 4) till (4, 2). Se figur ~\ref{fig:LaserDiskontinuitet} och figur ~\ref{fig:LaserLokaltMaximum} för exempel på hur miljön kan se ut i de olika fallen. Eftersom upplösningen på avläsningar på korta avstånd och långa avstånd kan skilja sig mycket kommer värdemängden defineras på ett interval där en jämförelse mellan mätningarna fortfarande är meningfull. För att det inte ska bli ett problem att läsa av samma hörn flera gånger så kommer nya noder som introduceras i grafen att kollas mot redan existerande noder. Om avståndet mellan dem av mindre än en viss felmarginal så kommer det konstateras att de i själva verket är samma nod och den nya kommer ignoreras. \newline\newline
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5,keepaspectratio]{LaserDiskontinuitet} \\
+  \caption{Ett fall där laseravståndsgrafen kommer innehålla en diskontinuitet.}
+  \label{fig:LaserDiskontinuitet}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{LaserLokaltMaximum} \\
+  \caption{Ett fall där laseravståndsgrafen kommer innehålla ett lokalt maximum.}
+  \label{fig:LaserLokaltMaximum}
+\end{figure}
+
+Roboten vet att den är klar när grafen innehåller fler än en komponent och alla komponenter innehåller en cykel, vilket motsvarar att alla väggar är sammanlänkade till ett rum/en köks-ö. Vid en diskontinuitet kommer en nod sparas för både hörnet och för nästa påträffade yta. Noden för nästa påträffade yta behövs för att vi ska kunna veta var någonstans på kartan vi fortfarande behöver utforska. Ett exempel syns i figur  ~\ref{fig:KartgrafLov}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5,keepaspectratio]{KartgrafLov} \\
+  \caption{En illustration där en lövnod kommer skapas.}
+  \label{fig:KartgrafLov}
+\end{figure}
+
+\section{Styrenhet}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.35]{styrenhet_blockschema}
+\caption{Översiktsblockschema över styrenheten}
+\label{fig:styrenhet}
+\end{figure}
+Styrenheten (se figur~\ref{fig:styrenhet}) är över gränssnittet I2C kopplad till huvudenheten.\newline\newline
+Styrenheten har en processor av typ ATmega1284.\newline\newline
+Styrenheten har fyra hjulservon indelade i två hjulpar. De två hjulparen kan styras oberoende av varandra. Dessa kontrollerar robotens position och kommunicerar med processorn med PWM och en riktningssignal.\newline\newline
+Styrenheten har även ett rotationsservo som kontrollerar en avståndssensors rörelse. Detta servo kommunicerar med processorn via en half-duplex UART.\newline\newline
+
+\subsection{Rotation}
+Styrenhetens rotationsservo kommer att ha två sensorer fastsatta på sig, en avståndssensor samt ett gyro. Dessa sensorer hör till sensorenheten och kommer inte att kommunicera direkt med styrenheten. Sensordata processas av sensorenheten och skickas sedan till huvudenheten. Därefter tas ett beslut i huvudenheten baserat på sensorenhetens data hur rotationsservot ska styras. 
+
+
+\section{Sensorenhet}
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.6]{navigering_flowchart}
-\caption{Flödesdiagram för navigering}
-\label{fig:navigering_flowchart}
+\includegraphics[scale=0.5]{sensorenhet}
+\caption{Översikt över sensorernas koppling till sensorenheten}
+\label{fig:sensorenhet}
 \end{figure}
+Sensorenheten (se figur~\ref{fig:sensorenhet}) är kopplad till huvudenheten över gränssnittet I2C.\newline\newline
+Sensorenheten ska ha en lasersensor kopplad till sig som kommunicerar med processorn över PWM.\newline\newline
+Sensorenheten ska ha en accelerometer och gyrosensor kopplad till sig som ska hålla koll på hur mycket roboten har roterat och hur snabbt den åker. Dessa kommunicerar med varandra över SPI. \newline\newline
+Sensorenheten ska ha en rotationssensor kopplad till sig som håller koll på hur mycket lasersensorn har roterat. Dessa kommunicerar med varandra över SPI. \newline\newline
+Sensorenheten ska ha en knapp kopplad till sig på en av interrupt pinarna. Detta gör att när knappen trycks ned så växlar vi mellan autonomt och manuellt styrläge på roboten. \newline\newline
 
-I figur~\ref{fig:navigering_flowchart} ses en illustration över algoritmen för att följa en vägg på höger sida om roboten. Eftersom roboten börjar vid en vägg enligt tävlingsspecifikationen så kan den följa den direkt. När den sedan kartlagt den yttre väggen söker den efter köksön och faller sedan in i samma algoritm igen.
+\subsection{Avståndssensor}
+För att med så hög precision som möjligt kunna mäta avståndet till de kringläggande väggarna använder sig roboten av en LIDAR-Lite v2 laseravståndsmätare. Denna sensor är monterad tillsammans med ett servo på toppen av roboten för att kunna rotera fram och tilbaka och mäta avstånd i 360\textdegree. Den sensordata som rapporteras av lasern kombineras med data från ett gyro som också monterats på rotationsservot för att kunna ge en beskrivning av området runt roboten.
 
-Flödesskema för Bluetooth-kommunikation
-% Hur ska mjukvaran i delsystemet fungera? Använd antingen psuedokod eller ett flödesschema
+\subsubsection{Begränsningar}
+Att montera två sensorer på en roterande del medför en del problem med hur t.ex. sladdar hanteras. Servot måste rotera i svepande rörelser fram och tillbaka för att inte dra sönder sladdarna och längden på sladdarna får inte vara för lång för att undvika att de hamnar ivägen.
 
-% Saxat från checklista:
-%   Behövs det några speciella algoritmer för att lösa uppgiften?
-%   Behövs det några större datastrukturer som kräver mycket minne?
-%   Vilka avbrott ska användas och vad ska avbrottsrutinerna utföra?
-%   Vilka funktioner ska utföras i en ”huvud-loop”?
-%   Hur samverkar avbrottsrutinerna med huvudloopen?
+\subsubsection{Rotation}
+För att både kunna leverera korrekt data till huvudenheten samt undvika att förstöra hårdvaran på grund av utdragna sladdar behöver detektionen av sensorservots nuvarande rotation hålla sig innanför en viss felmarginal. Dels så rapporterar servot AX-12 sin nuvarande rotationsvinkel via dess dataport och dels kommer gyrosensorn ge en uppskattning om hur servot roterat. Blir felet för stort kan AX-12-servots rotation manuellt ändras till en given vinkel. I och med att data om rotationen kommer rapporteras från både sensorenheten (gyro) och styrenheten (servo) så sker beräkningen av vinkeln i huvudenheten.
 
-\clearpage
+\subsubsection{Montering}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.45]{Montering}
+\caption{Skiss över montering av laser}
+\label{fig:montering}
+\end{figure}
+Ett AX-12-servo monteras ovanpå roboten i mitten (se figur~\ref{fig:montering}). Ovanpå servot monteras laseravståndssensorn som i sin tur har gyrot monterat ovanpå. Från både servot och gyrot går fria sladdar som är kopplade till sensorenheten. De sladdar som behövs för att koppla in servot kommer inte ligga ivägen för rotationen och är därför undantagna från figuren. Förslagsvis går någon sorts ränna på båda sidorna av rotationstornet där sladdarna kan röra sig fritt (ej inkluderat i figur).
 
-\subsection{Sensorenhet}
-% Se kommentarer för huvudenhet
-Sensorenheten kommer ha i uppgift att läsa in värden från sensorerna som finns placerade på roboten och rapportera detta till huvudenheten. Detta kommer att ske genom att processorn pollar information från varje sensor i iterationer.
-
-\subsubsection{Delsystemets funktion}
-
-\subsubsection{Kopplingsschema}
-
-\subsubsection{Komponenter}
-
-\begin{table}[H]
-  \centering
-  \begin{tabular}{ | c | c | c | c |}
-    \hline
-    \textbf{Komponent} & \textbf{Antal} \\
-    \hline
-    ATMega 1284 & 1 \\
-    \hline
-    LIDAR-Lite v2 & 1 \\
-    \hline
-    Knapp & 1 \\
-    \hline
-    GP2Y0A21 IR-Sensor & 2 \\
-    \hline
-    MLX90609 Gyro & 1 \\
-    \hline
-    MPU6050 Accelerometer + Gyro & 1 \\
-    \hline
-  \end{tabular}
-\end{table}
-
-\subsubsection{Resurser}
-
-\subsubsection{Programflöde}
-
-\clearpage
-
-\subsection{Styrenhet}
-% Se kommentarer för huvudenhet
-
-\subsubsection{Delsystemets funktion}
-
-\subsubsection{Kopplingsschema}
-
-\subsubsection{Komponenter}
-
-\subsubsection{Resurser}
-
-\subsubsection{Programflöde}
-
-\clearpage
-
-\subsection{Presentationsenhet}
-% Se kommentarer för huvudenhet
-
-\subsubsection{Delsystemets funktion}
-
-\subsubsection{Blockschema}
-% Övergripande schema för systemets stuktur
-
-\subsubsection{Komponenter}
-
-\subsubsection{Resurser}
-
-\subsubsection{Programflöde}
-
-\clearpage
-
-\subsection{Fjärrstyrningsenhet}
-% Se kommentarer för huvudenhet
-
-\subsubsection{Delsystemets funktion}
-
-\subsubsection{Blockschema}
-% Övergripande schema för systemets stuktur
-
-\subsubsection{Komponenter}
-
-\subsubsection{Resurser}
-
-\subsubsection{Programflöde}
-
-\clearpage
-
-\section{Kommunikation mellan delsystem}
-% Kort inledning. Nämn att huvudbuss och Bluetooth använder ett "underliggande" protokoll (under I2C/Bluetooth) som specificeras under projektets gång
-
-\subsection{Huvudbuss}
-% Beskriv huvudbussen. Vad använder vi för teknik? Hur ser master/slave-förhållande ut?
-% Använd med fördel \subsubsection
-
-\subsection{Bluetooth}
-% Beskriv Bluetooth. Vad använder vi för teknik? Hur ser master/slave-förhållande ut?
-% Använd med fördel \subsubsection
-
-\subsection{Informationsflöde}
-Tanken med hur informationen flödar mellan delsystemen är att den ska skickas som asynkrona så kallade kommandon eller paket. Genom att specificera detta kan informationsflödet implementeras med valfri asynkron buss eller kommunikationsmedie och det blir även möjligt att abstrahetera bort varifrån alla meddelanden kommer. I respektive delsystem kommer alla kommandon hanteras som event och vid behov även returnera data genom att skicka ett nytt asynkront kommando tillbaka som svar.
-
-\subsubsection{Kommunikation med sensorenhet}
-Den enda data som skickas från huvudenheten till sensorenheten är en förfrågan om att hämta mer data och på samma sätt är den enda data som skickas åt andra hållet den mätdata som sensorenheten för närvarande innehåller. Sensorenheten är inte ansvarig för att själv skicka denna data då huvudenheten enklare kan bestämma hur ofta data ska skickas. Med denna lösning blir sensorenhetens enda egna uppgift att läsa in data och spara det i dess minne.
-
-\subsubsection{Kommunikation med styrenhet}
-Precis som för sensorenheten kommer huvudenheten efterfråga data från styrenheten i form av styrdata. Utöver detta kommer kommandon för att styra enhetens ställdon skickas från huvudenheten med kommandon som t.ex. framåt, bakåt, stopp, rotera 90{\textdegree} höger, etc. Vissa av dessa kommandon kommer resultera i styrning som fortföljer tills ett annat kommando skickas medan andra har ett avslut (t.ex. rotering 90{\textdegree}). De kommandon som har ett avslut skickar ett svar tillbaka till huvudenheten när de genomförts.
-
-\subsubsection{Kommunikation med mjukvaruklient}
-Mellan huvudenheten och mjukvaruklienten kommer mycket av den data som redan skickas på huvudbussen skickas även där efter den ompaketerats.
-\newline\newline
-Den data som skickas från mjukvaruklienten är följande
-\begin{itemize}
-\item Förfrågan om all ny kartdata sedan en viss tidpunkt t
-\item Kommandon för att styra roboten
-\item Byte av exekveringsläge
-\end{itemize}
-\ \\
-Den data som skickas till mjukvaruklienten är följande
-\begin{itemize}
-\item All ny kartdata sedan tidpunkt t
-\item Kontinuerlig kartdata
-\item Kontinuerlig mätdata
-\item Kontinuerlig styrdata
-\item Verifikation av kommandon
-\end{itemize}
-\ \\
-Notera att all kontinuerlig data som skickas är begränsad av den samplingsfrekvens som beskrivs i avsnitt~\ref{sec:samplingsfrekvens}. Kontinuerlig kartdata kommer inte att skickas förrän mjukvaruklienten efterfrågat kartdata minst en gång.
-
-\clearpage
-
-\section{Implementationsstrategi}
-Detta avsnitt ger en inblick i hur projektet ska utvecklas, testas, och vilka kritiska sektorer som finns, med huvudsyfte att ge utvecklarna tydliga riktlinjer att följa.
-
-\subsection{Utvecklingsstrategi}
-För att snabbare få ett demonstrerbart resultat kommer projektet utvecklas iterativt där aktiviteterna utgör sprinter till nästa milstolpe. Detta innebär att all funktionalitet som implementeras för en milstolpe kommer slutföras i en ensam, icke-parallell aktivitet. Att utveckla på det här sättet gör att vi tydligare kan se konkreta saker bli klara och verifiera deras funktionalitet tillsammans med deras beroenden, vilket beskrivs tydligare i avsnitt~\ref{sec:testbarhet}. Med denna utvecklingsstrategi följer även nackdelen att arbetet blir svårare att parallellisera och innebär också att arbetet per vecka behöver delas in i veckans två halvor för att alla aktiviteter ska hinna genomföras.
-\newline\newline
-Aktivitetsplanen för projektet är uppdelad i två delar där aktiviteterna är separerade i olika nivåer av komplexitet. Denna strukturering härstammar från projektets planering och ambitioner: det finns ambition och intresse för att implementera en mer avancerad lösning på kartläggningsproblemet roboten ska lösa men risken är för stor att den algoritm gruppen har i åtanke inte alls kommer att fungera. För att fortfarande ha chans att skapa en robot med den mer avancerade funktionaliteten är aktiviteter för att realisera denna med i aktivitetsplanen men inplanerade i den andra delen. Den första delen bygger på en betydligt simplare och tidigare bevisat genomförbar algoritm och uppfyller alla krav med prioritet 1. De krav som har en prioritet 2 är också tillräckligt små för att implementera utan att inkludera den mer avancerade algoritmen fullt ut men är steg på vägen.
-
-\subsection{Testfilosofi}
-\subsubsection{Testbarhet}
-\label{sec:testbarhet}
-Ett krav för projektets alla aktiviteter är att de ska vara testbara från första början och inte får påbörjas förrän det kontinuerligt går att genomföra tester under utvecklingens gång tillsammans med den kringliggande miljö som krävs. Anledningen till detta härstammar från risken som uppstår om tid läggs på att undersöka funktionalitet och algoritmer som inte omedelbart kan verifieras. Det är onödigt att lägga många timmar på att ta fram en komplicerad algoritm som inte visar sig fungera i verkligheten. Genom att även kunna verifiera en aktivitets slutgiltiga funktionalitet kan den avslutas med säkerhet och bidra till att färre buggar introduceras.
-
-\subsubsection{Enhetstester}
-Ett viktigt moment i att verifiera en ensam funktions korrekthet är att skriva små enhetstester (eng. unit tests) som säkerställer att man får förväntad utdata givet en specifik indata. Dessa tester tjänar som syfte att minimera fel som sker i de många små byggstenar som bygger upp en komponent. Det går med fördel att skriva dessa tester utifrån komponentens design innan funktionaliteten implementeras eller genom att testa varandras kod i de fall man är ett flertal personer som arbetar på samma aktivitet. Alla enhetstester ska skrivas samtidigt som en aktivitet genomförs och används som underlag för att verifiera aktivitetens funktion och avslut.
-
-\subsubsection{Systemtester}
-När mjukvaran ska testas i verkliga scenarion kommer så kallade systemtester behöva genomföras. Detta kan inkludera att skicka data på huvudbussen eller reglera utmed en vägg. Eftersom många av de här testerna kräver att flera mikroprocessorer programmeras och ibland till och med att hela roboten förflyttas till en annan plats så medför det att dessa tester inte kan köras samtidigt. För att mitigera detta problem ska alla mer omfattande systemtester förvarnas om i god tid ifall de riskerar att krocka med andra tester. Systemtesterna är liksom enhetstesterna inräknat i varje aktivitet som kräver dessa. Notera att systemtesterna aldrig testar en bana i sitt kompletta utförande utan endast ett visst antal egenskaper, för att testa banspecifikationen se avsnitt~\ref{sec:bantester}.
-
-\subsubsection{Bantester}
-\label{sec:bantester}
-När robotens tävlingsduglighet ska utvärderas kommer tester av banan i sitt kompletta utförande behövas. Det finns ett fåtal tillfället avsatta för det här och robotens funktionalitet bör vara säkerställd innan testerna börjar för att slippa förlora den stora mängd tid som krävs för att bygga upp banan i korrekt format. Då mjukvaran för att kartlägga området är känslig för avvikelser i banans design är det viktigt att banan byggs nogrannt nog för att inte få följfel som härstammar från inexakta vinklar och mått. Under bantesterna ska hela gruppen samarbeta för att effektivisera testandet och snabbare kunna upptäcka varför eventuella fel framträder.
-
-\subsection{Kritiska sektorer}
-Under utvecklingens gång kommer det finnas kritiska moment som kan resultera i att tidigare genomfört arbete behöver modifieras eller blir fullkomligt invaliderat. Vissa kritiska moment kan undvikas i viss grad och nedan följer en uppradning av de mest kritiska momenten och hur de kan mitigeras.
-
-\subsubsection{Kopplingsschema och virande}
-Att vira upp alla kopplingar efter kopplingsschemat kan vara en pillig och tidskrävande aktivitet där missar kan leda till glappande kontakter som är svåra att felsöka. Aktivitetsplanen är stukturerad så att kopplingsschemat realiseras i olika steg vilket gör att det kommer uppstå olika lager av virtrådar allt eftersom projektet fortgår. Skulle ett av de tidigare stegen behöva korrigeras med andra kopplingar på grund av modifierat kopplingsschema kan mycket arbete alltså behöva göras om. För att undvika att sådana problem uppkommer bör kopplingsschemat kontrolleras och godkännas för varje del som ska kopplas innan virandet genomförs.
-
-\subsubsection{Förändring av delade datastrukturer}
-Ifall datastrukturer som används i fler än en enhet behöver modifieras i efterhand kan det kräva förändring i många olika delar av systemet. Det är svårt att förebygga det här för många av de strukturer som används annat än att granska och godkänna dem innan de implementeras. Vissa strukturer så som protokollet för huvudbussen och Bluetooth delas upp i olika lager så att de kan modifieras oberoende.
-
-\subsubsection{Resurser}
-Om projektet kör in i någon sorts resursvägg kan projektet behöva planeras om för att kringgå hindret genom att t.ex. begränsa systemets funktion eller skriva om mycket funktionalitet för en kraftfullare komponent. Det största identifierade hindret som skulle kunna uppstå är att resurserna inte längre räcker till för att implementera den mer avancerade lösningen på kartläggningsproblemet och har minimerats genom att välja en Raspberry Pi som huvudenhet istället för en ATmega 1248. Andra problem som skulle kunna uppstå inkluderar överförningshastigheter på bussar och gränssnitt men uppskattas inte vara lika kritiska. 
-
-\clearpage
-
-\section{Interaktion med omvärlden}
-Det här avsnittet specificerar vad för feedback systemet kommer ge tillbaka till användaren samt hur ofta den externa input systemet tar emot kan processeras. Här sätts begränsningar för hur roboten kan tolka omvärlden samt rapportera tillbaka tolkningen till användaren.
-
-\subsection{Feedback}
-Innan kommunikation etablerats med mjukvaruklienten kommer det finnas minimal möjlighet att felsöka den mjukvara som körs på systemets mikroprocessorer. Huvudenheten på roboten kommer bestå av en Raspberry Pi och kan anslutas via förslagsvis SSH. De ATmega-mikroprocessorer resten av roboten består av kommer felsökas med hjälp av en UART-till-USB uppkoppling till en dator. På UART-porten skickar mikroprocessorn textsträngar för att indikera vad som händer och vad för data som skickas eller tas emot. Tanken med denna implementation är att det ska gå att felsöka roboten från vilken dator som helst utan krav på speciella portar eller kommunikation över huvudbussen.
-\newline\newline
-Utöver den felsökning som möjliggörs via SSH och UART så kommer roboten kunna ge feedback genom att styra sina ställdon. När kommunikation med mjukvaruklienten implementerats kommer det bli lättare att läsa av mät-, sensor- och kartdata då det kan presenteras grafiskt.
-
-\subsection{Samplingsfrekvens}
-\label{sec:samplingsfrekvens}
-Sampling från sensorer är uppdelat i två olika steg: sensorenheten kommer kontinuerligt läsa in mätdata från dess inkopplade sensorer så fort den blir tillgänlig och stoppa datat i en buffer som sedan vid ett fixt intervall efterfrågas av huvudenheten. Den kontinuerliga inläsningen kommer ske i den takt som är maximalt möjlig för varje enskild sensor och innebär att det blir viss förskjutning av den data som enheten innehåller vid tidpunkt t. Allt eftersom huvudenheten exekverar sin huvudloop kommer data efterfrågas från sensorenheten över huvudbussen. Förutsatt de 5 sensorer som är kopplade till sensorenheten behöver data med storleken 160 bitar skickas vid varje uppdatering (förutsatt 32-bitas ordlängd och inte inkluderat överföringsprotokoll). Med huvudbussen i sitt låghastighets-läge innebär det cirka 60 uppdateringar per sekund men kan vid behov ökas upp till cirka 1250 uppdateringar per sekund genom att klocka I2C-bussen på 200 kHz.
-
+\section{Mjukvaruklient}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.3]{mjukvaruklient_flowchart3}
+\caption{Översiktligt flödesschema över mjukvaruklienten}
+\label{fig:mjukvaruklient}
+\end{figure}
+I mjukvaruklienten ingår presentations- och fjärrstyrningsenheten. Mjukvaruklienten ska presentera den karta som med robotens hjälp genererats över rummet, samt låta användaren styra roboten när den är i sitt manuella läge. Ovanstående figur (~\ref{fig:mjukvaruklient}) visar ett översiktligt flödesschema av hur mjukvaruklienten fungerar. Mjukvaruklienten kommunicerar med roboten via Bluetooth. När data tas emot så ska denna sorteras utifrån om det är kartdata, mätdata eller styrdata - vilket kommer kännas igen av någon form av ID i början av överföringen. Datan lagras sedan tills klienten är redo att behandla den för presentation, vilket ska ske löpande - dvs. data ska presenteras och kartan växa fram allt eftersom roboten kör. Kommandon för att styra roboten manuellt skickas via Bluetooth till roboten. En lista på förflyttningskommandon som roboten stödjer kan återfinnas i kravspecifikationen. Som ett sekundärt krav har vi att man ska kunna byta mellan manuellt och autonomt läge genom mjukvaruklienten (detta är ej illustrerat i figuren ovan). Signalerna RTS och CLS förklaras i avsnittet \textit{Huvudenhet}. 
 
 \clearpage
 
 \nocite{*}
-\bibliography{designspec}{}
+\bibliography{systemskiss}{}
 \bibliographystyle{plain}
 
 \end{document}
