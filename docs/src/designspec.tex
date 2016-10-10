@@ -166,7 +166,7 @@ Hela systemet är moduluppbyggt, och består av följande delsystem:
 \end{itemize}
 Mjukvaruenheten är den enda enheten i systemet som inte är en fysisk del av själva roboten, utan uppträder i en bärbar dator. Dess uppgifter är att kommunicera med roboten via Bluetooth, till exempel för att möjliggöra manuell fjärrstyrning, samt att presentera befintlig kartdata i ett grafiskt gränssnitt till användaren.  
 \newline\newline
-Huvudenhetens uppgifter består dels av att sköta kommuntikationen, både i bussen till de två andra modulerna i roboten och via Bluetooth till mjukvaruenheten, samt att sköta all logik. Huvudenheten använder data från sensorerna för att kartlägga rummet samt för att ta beslut om hur den ska navigera till outforskade områden.
+Huvudenhetens uppgifter består dels av att sköta kommuntikationen, både i I2C-bussen till de två andra modulerna i roboten och via Bluetooth till mjukvaruenheten, samt att sköta all logik. Huvudenheten använder data från sensorerna för att kartlägga rummet samt för att ta beslut om hur den ska navigera till outforskade områden.
 \newline\newline
 Sensorenheten har som uppgift att sampla data from omvärlden med hjälp av dess sensorer, och tillhandahålla denna data när huvudenheten ber om dem.
 Styrenhetens uppgift är att utifrån kommandon från huvudenheten föra roboten till vald position med hjälp av servon kopplade till robotens hjul. Styrenheten kontrollerar också det servo som lasersensorn är kopplad till, för att den ska kunna vridas och kunna mäta avstånd åt flera håll. 
@@ -241,7 +241,7 @@ Här nedan listas alla komponenter som roboten kommer att vara del av roboten.
 
 \subsubsection{Moduler}
 % Upplistning av extrerna moduler, t.ex. Bluetooth (har vi ens några?)
-* Tror inte vi har några, Bluetooth är ju inbyggt i Raspberryn
+
 
 \clearpage
 
