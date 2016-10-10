@@ -173,6 +173,13 @@ Styrenhetens uppgift är att utifrån kommandon från huvudenheten föra roboten
 
 \subsection{Övergripande konstruktion}
 % Övergripande blockschema
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.35]{oversikt_systemet}
+\caption{Översikt över systemet}
+\label{fig:oversikt_systemet}
+\end{figure}
+Ett övergripande blockschema av systemet visas i figur ~\ref{fig:oversikt_systemet}.
 
 \subsection{Komponenter}
 % Väldigt kort beskrivning av delsektion
@@ -180,27 +187,57 @@ Här nedan listas alla komponenter som roboten kommer att vara del av roboten.
 
 \subsubsection{Beräkningsenheter}
 % Upplistning av processorer, SOC:s, etc
-\begin{itemize}
-\item Raspberry Pi 3
-\item ATMega 1284
-\end{itemize}
+\begin{table}[H]
+  \centering
+  \begin{tabular}{ | c | c | c | c |}
+    \hline
+    \textbf{Enhet} & \textbf{Antal} \\
+    \hline
+    Raspberry Pi 3 & 1 \\
+    \hline
+    ATMega 1284 & 2 \\
+    \hline
+  \end{tabular}
+  \caption{ Tabell över beräkningsenheter. }
+\end{table}
 
 \subsubsection{Sensorer}
 % Upplistning av alla sensorer
-\begin{itemize}
-\item LIDAR-Lite v2 Lasersensor
-\item Knapp
-\item GP2Y0A21 IR-Sensor
-\item MLX90609 Gyro
-\item MPU6050 Accelerometer + Gyroskop
-\end{itemize}
+\begin{table}[H]
+  \centering
+  \begin{tabular}{ | c | c | c | c |}
+    \hline
+    \textbf{Komponent} & \textbf{Antal} \\
+    \hline
+    LIDAR-Lite v2 & 1 \\
+    \hline
+    Knapp & 1 \\
+    \hline
+    GP2Y0A21 IR-Sensor & 2 \\
+    \hline
+    MLX90609 Gyro & 1 \\
+    \hline
+    MPU6050 Accelerometer + Gyro & 1 \\
+    \hline
+  \end{tabular}
+  \caption{ Tabell över sensorer. }
+\end{table}
 
 \subsubsection{Ställdon}
 % Servon, motorer, etc
-\begin{itemize}
-\item 291RPM DC-motor
-\item AX-12 Laserservor
-\end{itemize}
+\begin{table}[H]
+  \centering
+  \begin{tabular}{ | c | c | c | c |}
+    \hline
+    \textbf{Komponent} & \textbf{Antal} \\
+    \hline
+    291RPM DC-motor & 4 \\
+    \hline
+    AX-12 Laserservor & 1 \\
+    \hline
+  \end{tabular}
+  \caption{ Tabell över ställdon. }
+\end{table}
 
 \subsubsection{Moduler}
 % Upplistning av extrerna moduler, t.ex. Bluetooth (har vi ens några?)
