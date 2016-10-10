@@ -248,24 +248,60 @@ Här nedan listas alla komponenter som roboten kommer att vara del av roboten.
 \section{Delsystem}
 
 \subsection{Huvudenhet}
-% Kort beskrivning av huvudenhet
+
+Huvudenheten är främst mjukvarubaserad och det är här robotens logiska del finns, samt en del för fjärrkommunikation. Det främsta innehållet är algoritmer för navigering och kartläggning. Huvudenheten agerar även mästare på I2C-bussen.
 
 \subsubsection{Delsystemets funktion}
-% Detaljerad beskrivning av delsystemets funktion
+
+Huvudenheten är uppdelad i två undermoduler, logikenheten och kommunikationsenheten. Logikenheten analyserar data från sensorenheten för att avgöra hur roboten ska navigera och för att bestämma hur omvärlden ser ut så att den kan kartläggas. Tack vare de två IR-sensorer på vardera sida om roboten så kan vi följa en vägg på vänster/höger sida, och genom att göra det kartlägga hela den utomliggande väggen. När vi väl avgränsat området som köksön kan befinna sig i söker roboten av den begränsade ytan till köksön identifieras och följer dess väggar till även den är kartlagd. När hela kartan finns i robotens minne kan den finna den kortaste vägen tillbaka till startpositionen och navigera dit. Logikenheten ansvarar även för att hålla koll på var någonstans roboten befinner sig. Eftersom roboten navigerar i ett rutnät så kan vi med hjälp av vår lasersensor räkna hur långt vi åker i raka streckor mellan varje sväng och därmed räkna ut vår totala förflyttning. Kommunikationsenheten agerar som ett abstraktionslager för Raspberry Pi:ens Bluetoothmodul och ser till att sköta all översättning där i mellan så att vi kan arbeta med våra interna dataformat i övriga delar av roboten.
+
 
 \subsubsection{Kopplingsschema}
 % Helst ett kopplingsschema, alternativt väldigt detaljerat blockschema
 
 \subsubsection{Komponenter}
-% Upplistning av komponenter inkl. antal
+
+\begin{table}[H]
+   \centering
+  \begin{tabular}{ | c | c | }
+    \hline
+    \textbf{Komponent} & \textbf{Antal} \\
+    \hline
+    Raspberry PI 3 & 1 \\
+    \hline
+  \end{tabular}
+\end{table}
 
 \subsubsection{Resurser}
-% Rada upp tillgängliga portar på mikroprocessorn samt hur många som krävs
-% Motivera val av mikroprocessor med uppskattning av de resurser som krävs (prestanda, minne, IO)
+
+\begin{table}[H]
+   \centering
+  \begin{tabular}{ | c | c | c | }
+    \hline
+    \textbf{Port} & \textbf{Antal} & \textbf{Används} \\
+    \hline
+    Bluetooth 4.1 BLE & 1 & 1\\
+    USB & 4 & 0 \\
+    Ethernet & 1 & 0 \\
+    GPIO pins & 40 & ? \\
+    HDMI & 1 & 0 \\
+    CSI & 1 & 0 \\
+    DSI & 1 & 0 \\
+    3.5mm & 1 & 0 \\
+    \hline
+  \end{tabular}
+\end{table}
 
 \subsubsection{Programflöde}
-% Hur ska mjukvaran i delsystemet fungera? Använd antingen psuedokod eller ett flödesschema
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.6]{navigering_flowchart}
+\caption{Flödesdiagram för navigering}
+\label{fig:navigering_flowchart}
+\end{figure}
+I figur~\ref{fig:navigering_flowchart} ses en illustration över algoritmen för att följa en vägg på höger sida om roboten. Eftersom roboten börjar vid en vägg enligt tävlingsspecifikationen så kan den följa den direkt. När den sedan kartlagt den yttre väggen söker den efter köksön och faller sedan in i samma algoritm igen.
 
+Flödesskema för Bluetooth-kommunikation goes here
 % Saxat från checklista:
 %   Behövs det några speciella algoritmer för att lösa uppgiften?
 %   Behövs det några större datastrukturer som kräver mycket minne?
@@ -547,7 +583,6 @@ Utöver den felsökning som möjliggörs via SSH och UART så kommer roboten kun
 \subsection{Samplingsfrekvens}
 \label{sec:samplingsfrekvens}
 Sampling från sensorer är uppdelat i två olika steg: sensorenheten kommer kontinuerligt läsa in mätdata från dess inkopplade sensorer så fort den blir tillgänlig och stoppa datat i en buffer som sedan vid ett fixt intervall efterfrågas av huvudenheten. Den kontinuerliga inläsningen kommer ske i den takt som är maximalt möjlig för varje enskild sensor och innebär att det blir viss förskjutning av den data som enheten innehåller vid tidpunkt t. Allt eftersom huvudenheten exekverar sin huvudloop kommer data efterfrågas från sensorenheten över huvudbussen. Förutsatt de 5 sensorer som är kopplade till sensorenheten behöver data med storleken 160 bitar skickas vid varje uppdatering (förutsatt 32-bitas ordlängd och inte inkluderat överföringsprotokoll). Med huvudbussen i sitt låghastighets-läge innebär det cirka 60 uppdateringar per sekund men kan vid behov ökas upp till cirka 1250 uppdateringar per sekund genom att klocka I2C-bussen på 200 kHz.
-
 
 \clearpage
 
