@@ -398,6 +398,8 @@ En accelerometer och gyroskop kommer att sitta på roboten för att kunna sköta
   \caption{Tabell över tillgängliga portar på processorn.}
 \end{table}
 
+En ATMega1284 måste användas i sensorenheten då accelerometer och gyroskopet använder sig av grännsnittet SPI för att kommunicera med omvärlden. Då det endast är ATMega1284 som har 2 eller fler SPI ingångar tvingas vi till att använda just denna.
+
 \subsubsection{Programflöde}
 
 \clearpage
