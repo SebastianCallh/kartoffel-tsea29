@@ -288,7 +288,7 @@ Raspberry Pi:en är vald som beräkningsenhet för huvudmodulen på grund av att
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.6]{navigering_flowchart}
-\caption{Flödesdiagram för navigering}
+\caption{Flödesdiagram för navigering.}
 \label{fig:navigering_flowchart}
 \end{figure}
 I figur ~\ref{fig:navigering_flowchart} ses en illustration över algoritmen för att följa en vägg på höger sida om roboten. Eftersom roboten börjar vid en vägg enligt tävlingsspecifikationen så kan den följa den direkt. När den sedan kartlagt den yttre väggen söker den efter köksön och faller sedan in i samma algoritm igen.
@@ -296,9 +296,11 @@ I figur ~\ref{fig:navigering_flowchart} ses en illustration över algoritmen fö
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.45]{Bluetooth_kommunikation_i_robot}
-\caption{Flödesschema över Bluetooth-kommunikationen i huvudenheten}
+\caption{Flödesschema över Bluetooth-kommunikationen i huvudenheten.}
 \label{fig:Bluetooth_kommunikation_i_robot}
 \end{figure}
+Då huvudenheten kommer att agera master i Bluetooth-kommunikationen (se avsnitt 4.2.2) krävs det att huvudenheten hanterar de signaler som sker vid kommunikation med Bluetooth. Figur ~\ref{fig:Bluetooth_kommunikation_i_robot} visar hur en handskakning först måste inväntas innan data kan skickas. Efter att en anslutning har upprättats kan data skickas eller tas emot. 
+
 % Saxat från checklista:
 %   Behövs det några speciella algoritmer för att lösa uppgiften?
 %   Behövs det några större datastrukturer som kräver mycket minne?
