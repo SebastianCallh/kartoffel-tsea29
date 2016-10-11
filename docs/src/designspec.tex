@@ -91,15 +91,15 @@ Namn & Ansvar & Telefon & E-post \\
 \hline
 Patrik Sletmo & Projektledare & 070 783 57 61 & patsl736@student.liu.se \\
 \hline
-Rebecca Lindblom &  & 073 436 40 79 & rebli156@student.liu.se \\
+Rebecca Lindblom & Utvecklare & 073 436 40 79 & rebli156@student.liu.se \\
 \hline
-Matildha Sjöstedt &  & 070 515 84 11 & matsj696@student.liu.se \\
+Matildha Sjöstedt & Utvecklare & 070 515 84 11 & matsj696@student.liu.se \\
 \hline
-Sebastian Callh &  & 073 820 46 64 & sebca553@student.liu.se \\
+Sebastian Callh & Utvecklare & 073 820 46 64 & sebca553@student.liu.se \\
 \hline
-Anton Dalgren &  & 076 836 51 56 & antda685@student.liu.se \\
+Anton Dalgren & Utvecklare & 076 836 51 56 & antda685@student.liu.se \\
 \hline
-Matilda Dahlström &  & 070 636 33 52 & matda715@student.liu.se \\
+Matilda Dahlström & Utvecklare & 070 636 33 52 & matda715@student.liu.se \\
 \hline
 \end{tabular}
 \end{table}
@@ -175,11 +175,12 @@ Styrenhetens uppgift är att utifrån kommandon från huvudenheten föra roboten
 % Övergripande blockschema
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.35]{oversikt_systemet}
+\includegraphics[scale=0.35]{oversikt_systemet2}
 \caption{Översikt över systemet}
-\label{fig:oversikt_systemet}
+\label{fig:oversikt_systemet2}
 \end{figure}
-Ett övergripande blockschema av systemet visas i figur~\ref{fig:oversikt_systemet}.
+
+Ett övergripande blockschema av systemet visas i figur ~\ref{fig:oversikt_systemet2}.
 
 \subsection{Komponenter}
 % Väldigt kort beskrivning av delsektion
@@ -285,6 +286,7 @@ Huvudenheten är uppdelad i två undermoduler, logikenheten och kommunikationsen
 Raspberry Pi:en är vald som beräkningsenhet för huvudmodulen på grund av att en mer avancerad algoritm för kartläggning planeras att implementeras under en senare del av projektet. En ATMega 1284 kan mycket väl räcka till för den grundläggande algoritmen, men efter att ha tagit del av erfarenheter från föregående års projektgrupper har det beslutas att mer prestanda kan krävas än vad ATMega 1284 klarar av att leverera, och därför har en Raspberry Pi valts. 
 
 \subsubsection{Programflöde}
+Programflödet i huvudenheten består i huvudsak av två delar: Den logiska delen som sköter navigeringsbesluten utifrån beräknad kartdata, samt delen som sköter kommunikation med resten av systemets delmoduler. Nedan beskrivs flödesscheman för navigering samt Bluetooth-kommunikation med huvudenheten. För detaljer kring kommunikation mellan huvud-, styr- och sensorenhet se avsnitt \textit{Kommunikation mellan delsystem}. 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.6]{navigering_flowchart}
@@ -293,13 +295,16 @@ Raspberry Pi:en är vald som beräkningsenhet för huvudmodulen på grund av att
 \end{figure}
 I figur~\ref{fig:navigering_flowchart} ses en illustration över algoritmen för att följa en vägg på höger sida om roboten. Eftersom roboten börjar vid en vägg enligt tävlingsspecifikationen så kan den följa den direkt. När den sedan kartlagt den yttre väggen söker den efter köksön och faller sedan in i samma algoritm igen.
 
+
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.45]{Bluetooth_kommunikation_i_robot}
 \caption{Flödesschema över Bluetooth-kommunikationen i huvudenheten.}
 \label{fig:Bluetooth_kommunikation_i_robot}
 \end{figure}
-Då huvudenheten kommer att agera master i Bluetooth-kommunikationen (se avsnitt 4.2.2) krävs det att huvudenheten hanterar de signaler som sker vid kommunikation med Bluetooth. Figur~\ref{fig:Bluetooth_kommunikation_i_robot} visar hur en handskakning först måste inväntas innan data kan skickas. Efter att en anslutning har upprättats kan data skickas eller tas emot. 
+
+Flödesschemat i figur~\ref{fig:Bluetooth_kommunikation_i_robot} visar hur kommunikationen med mjukvaruklienten sköts ifrån huvudenheten. Då huvudenheten kommer att agera master i Bluetooth-kommunikationen (se avsnitt 4.2.2) krävs det att huvudenheten hanterar de signaler som sker vid kommunikation med Bluetooth. Figuren visar även hur en handskakning först måste inväntas innan en anslutning kan upprättas och data skickas eller tas emot. RTS och CTS-signalerna är som beskrivit handskakningssignaler. När (styrkommando-)data kommer till huvudenheten från mjukvaruklienten skickas denna vidare till styrenheten och orsakar ett interrupt. Om det ej finns någon data att ta emot kollas istället om det finns data att skicka. 
+
 
 % Saxat från checklista:
 %   Behövs det några speciella algoritmer för att lösa uppgiften?
@@ -367,6 +372,8 @@ En accelerometer och gyroskop kommer att sitta på roboten för att kunna sköta
     SDA & 1 & 1 \\
     \hline
     SCL & 1 & 1 \\
+    \hline
+    IO & 32 & 2 \\
     \hline
     PCINT & 31 & 2 \\
     \hline
@@ -451,7 +458,7 @@ Styrenheten kommer ha ytterligare ett servo kopplat till sig. På detta servo ko
     \hline
     SCL & 1 & 1 \\
     \hline
-    IO & 32 & 5 \\
+    IO & 32 & 7 \\
     \hline
   \end{tabular}
   \caption{Tabell över tillgängliga portar på processorn.}
@@ -566,10 +573,10 @@ Som figur~\ref{fig:Kommunikation_Bluetooth} visar går det ett antal signaler me
 När en anslutning väl är upprättad kan data skickas mellan de båda enheterna.
 
 \subsubsection{Master-slave roller}
-När Bluetooth-anslutningen väl är upprättad mellan roboten och datorn går det att skicka data mellan de två. Liksom med huvudbussen finns ett master-slave förhållande mellan de olika Bluetooth-modulerna. I det här fallet kommer huvudenhetens Bluetooth-modul agera master, och datorn slave.
+När Bluetooth-anslutningen väl är upprättad mellan roboten och datorn går det att skicka data mellan de två. Liksom med huvudbussen finns ett master-slave förhållande mellan de olika Bluetooth-modulerna. I det här fallet kommer huvudenhetens Bluetooth-modul agera master och datorn slave.
 
 \subsubsection{Protokoll}
-Bluetoothkommunikationen kommer ske över samma protokoll som över huvudbussen. Detta dels för att kunna återanvända samma lösning vilket förenklar utvecklingsprocessen, dels för att förenkla hanteringen av kommunikationen i huvudenheten. Genom att använda samma protokoll för kommunikation över Bluetooth och huvudbussen kan kommunikationen hanteras på ett och samma ställe inom huvudenheten, istället för att behöva dela upp kommunikationshanteringen.
+Bluetooth-kommunikationen kommer ske över samma protokoll som används för kommunikationen över huvudbussen. Detta dels för att kunna återanvända samma lösning, vilket förenklar utvecklingsprocessen, dels för att förenkla hanteringen av kommunikationen i huvudenheten. Genom att använda samma protokoll för kommunikation över Bluetooth som för huvudbussen kan kommunikationen hanteras på ett och samma ställe inom huvudenheten, istället för att behöva dela upp kommunikationshanteringen.
 
 
 
