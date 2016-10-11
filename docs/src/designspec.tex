@@ -175,11 +175,11 @@ Styrenhetens uppgift är att utifrån kommandon från huvudenheten föra roboten
 % Övergripande blockschema
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.35]{oversikt_systemet}
+\includegraphics[scale=0.35]{oversikt_systemet2}
 \caption{Översikt över systemet}
-\label{fig:oversikt_systemet}
+\label{fig:oversikt_systemet2}
 \end{figure}
-Ett övergripande blockschema av systemet visas i figur ~\ref{fig:oversikt_systemet}.
+Ett övergripande blockschema av systemet visas i figur ~\ref{fig:oversikt_systemet2}.
 
 \subsection{Komponenter}
 % Väldigt kort beskrivning av delsektion
@@ -289,12 +289,14 @@ Huvudenheten är uppdelad i två undermoduler, logikenheten och kommunikationsen
 \end{table}
 
 \subsubsection{Programflöde}
+Programflödet i huvudenheten består i huvudsak av två delar: Den logiska delen som sköter navigeringsbesluten utifrån beräknad kartdata, samt delen som sköter kommunikation med resten av systemets delmoduler. Nedan beskrivs flödesscheman för navigering samt Bluetooth-kommunikation med huvudenheten. För detaljer kring kommunikation mellan huvud-, styr- och sensorenhet se avsnitt \textit{Kommunikation mellan delsystem}. 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.6]{navigering_flowchart}
 \caption{Flödesdiagram för navigering}
 \label{fig:navigering_flowchart}
 \end{figure}
+
 I figur ~\ref{fig:navigering_flowchart} ses en illustration över algoritmen för att följa en vägg på höger sida om roboten. Eftersom roboten börjar vid en vägg enligt tävlingsspecifikationen så kan den följa den direkt. När den sedan kartlagt den yttre väggen söker den efter köksön och faller sedan in i samma algoritm igen.
 
 \begin{figure}[H]
@@ -303,6 +305,8 @@ I figur ~\ref{fig:navigering_flowchart} ses en illustration över algoritmen fö
 \caption{Flödesschema över Bluetooth-kommunikationen i huvudenheten}
 \label{fig:Bluetooth_kommunikation_i_robot}
 \end{figure}
+
+Flödesschemat i figur ~\ref{fig:Bluetooth_kommunikation_i_robot} visar hur kommunikationen med mjukvaruklienten sköts ifrån huvudenheten. RTS och CTS signalern är som beskrivit handskakningssignaler. När (styrkommando-)data kommer till huvudenheten från mjukvaruklienten skickas denna vidare till styrenheten och orsakar ett interrupt. Om det ej finns någon data att ta emot kollas istället om det finns data att skicka. 
 % Saxat från checklista:
 %   Behövs det några speciella algoritmer för att lösa uppgiften?
 %   Behövs det några större datastrukturer som kräver mycket minne?
