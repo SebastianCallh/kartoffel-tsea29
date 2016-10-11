@@ -486,11 +486,11 @@ Presentationsenhten får sin data från mjukvaruklientens kommunikation med robo
 % Övergripande schema för systemets stuktur
 \begin{figure}[H]
 %\centering
-\includegraphics[scale=0.5]{Oversikt_presentationsenhet2}
+\includegraphics[scale=0.4]{Oversikt_presentationsenhet3}
 \caption{Presentationsenheten i omgivning}
-\label{fig:Oversikt_presentationsenhet2}
+\label{fig:Oversikt_presentationsenhet3}
 \end{figure}
-Ovanstående figur ~\ref{fig:Oversikt_presentationsenhet2} visar presentationsenheten i sin omgivning. Den kommunicerar via mjukvaruklientens Bluetooth-förbindelse med robotens huvudenhet. RTS- och CTS-signalerna används för handskakning mellan enheterna, dvs. styr vem som skickar respektive tar emot data.  
+Ovanstående figur ~\ref{fig:Oversikt_presentationsenhet3} visar presentationsenheten i sin omgivning. Den kommunicerar via mjukvaruklientens Bluetooth-förbindelse med robotens huvudenhet. RTS- och CTS-signalerna används för handskakning mellan enheterna, dvs. styr vem som skickar respektive tar emot data.  
 
 \subsubsection{Komponenter}
 Mjukvaruklienten och därmed presentationsenheten kräver en bärbar dator med Bluetooth. 
@@ -501,11 +501,11 @@ Presentationen och behandlingen av datan som presentationsenhet mottager uppskat
 \subsubsection{Programflöde}
 \begin{figure}[H]
 \centering 
-\includegraphics[scale=0.3]{Presentationsenhet}
+\includegraphics[scale=0.3]{Presentationsenhet3}
 \caption{Flödesschema över presentationsenheten}
-\label{fig:Presentationsenhet}
+\label{fig:Presentationsenhet3}
 \end{figure}
-Som man kan se i ovanstående figur ~\ref{fig:Presentationsenhet} måste den inkommande datan sorteras utifrån medföljande ID och lagras i lämpliga datastrukturer. Datastrukturerna bör kunna sortera sin data utifrån tid, för mät- och styrdata, samt tid och position för kartdata. Tiden behöver registreras för att mjukvaruklienten ska kunna begära rätt data från huvudenheten utifrån den senaste datan mottagen. Detta är även användbart om vi behöver återhämta information från robotens huvudenhet vid eventuell krasch och förlust av data i mjukvaruklienten (observera att denna funktion är klassificerad med prioriteringsnivå 2 i \textit{Kravspecifikationen}). Programflödet i presentationsenheten kommer styras centralt i mjukvaruklienten, som har ansvar för att växla mellan behandling av I/O (dvs. växla mellan att låta presentations- respektive fjärrstyrningsenhet arbeta). 
+Som man kan se i ovanstående figur ~\ref{fig:Presentationsenhet3} måste den inkommande datan sorteras utifrån medföljande ID och lagras i lämpliga datastrukturer. Datastrukturerna bör kunna sortera sin data utifrån tid, för mät- och styrdata, samt tid och position för kartdata. Tiden behöver registreras för att mjukvaruklienten ska kunna begära rätt data från huvudenheten utifrån den senaste datan mottagen. Detta är även användbart om vi behöver återhämta information från robotens huvudenhet vid eventuell krasch och förlust av data i mjukvaruklienten (observera att denna funktion är klassificerad med prioriteringsnivå 2 i \textit{Kravspecifikationen}). Programflödet i presentationsenheten kommer styras centralt i mjukvaruklienten, som har ansvar för att växla mellan behandling av I/O (dvs. växla mellan att låta presentations- respektive fjärrstyrningsenhet arbeta). 
 
 \clearpage
 
@@ -521,11 +521,11 @@ Fjärrstyrningsenheten tar emot input av en användare som kommer genom mjukvaru
 % Övergripande schema för systemets stuktur
 \begin{figure}[H]
 \centering 
-\includegraphics[scale=0.5]{Oversikt_fjarrstyrenhet}
+\includegraphics[scale=0.4]{Oversikt_fjarrstyrenhet3}
 \caption{Fjärrstyrningsenheten i omgivning}
-\label{fig:Oversikt_fjarrstyrenhet}
+\label{fig:Oversikt_fjarrstyrenhet3}
 \end{figure}
-Ovanstående figur ~\ref{fig:Oversikt_fjarrstyrenhet} visar fjärrstyrningsenheten i sin omgivning. Den kommunicerar via mjukvaruklientens Bluetooth-förbindelse med robotens huvudenhet. RTS- och CTS-signalerna används för handskakning mellan enheterna, dvs. styr vem som skickar respektive tar emot data.  
+Ovanstående figur ~\ref{fig:Oversikt_fjarrstyrenhet3} visar fjärrstyrningsenheten i sin omgivning. Den kommunicerar via mjukvaruklientens Bluetooth-förbindelse med robotens huvudenhet. RTS- och CTS-signalerna används för handskakning mellan enheterna, dvs. styr vem som skickar respektive tar emot data.  
 
 \subsubsection{Komponenter}
 Fjärrstyrningsenheten kräver en dator med Bluetooth som kan köra mjukvaruklienten, samt tangentbord och mus/touchpad för interaktion med klienten. 
@@ -536,11 +536,11 @@ Funktionaliteten för att ta emot användarinput och skicka iväg den via Blueto
 \subsubsection{Programflöde}
 \begin{figure}[H]
 \centering 
-\includegraphics[scale=0.4]{Fjarrstyrningsenhet_flowchart2}
+\includegraphics[scale=0.3]{Fjarrstyrningsenhet_flowchart3}
 \caption{Flödesschema över fjärrstyrningssenheten}
-\label{fig:Fjarrstyrningsenhet_flowchart2}
+\label{fig:Fjarrstyrningsenhet_flowchart3}
 \end{figure}
-Som visas i ovanstånde figur ~\ref{fig:Fjarrstyrningsenhet_flowchart2} ger användaren input till fjärrstyrningsenheten. Inputet kommer orsaka någon form av input-event som påverkar programflödeskontrollen i mjukvaruklienten. Detta input tolkas sedan för att motsvara rätt kommando som sedan ska skickas via Bluetooth-anslutningen till robotens huvudenhet (för en lista över kommandon, se \textit{Kravspecifikationen}).
+Som visas i ovanstånde figur ~\ref{fig:Fjarrstyrningsenhet_flowchart3} ger användaren input till fjärrstyrningsenheten. Inputet kommer orsaka någon form av input-event som påverkar programflödeskontrollen i mjukvaruklienten. Detta input tolkas sedan för att motsvara rätt kommando som sedan ska skickas via Bluetooth-anslutningen till robotens huvudenhet (för en lista över kommandon, se \textit{Kravspecifikationen}).
 
 \clearpage
 
@@ -573,8 +573,6 @@ När Bluetooth-anslutningen väl är upprättad mellan roboten och datorn går d
 
 \subsubsection{Protokoll}
 Bluetooth-kommunikationen kommer ske över samma protokoll som används för kommunikationen över huvudbussen. Detta dels för att kunna återanvända samma lösning, vilket förenklar utvecklingsprocessen, dels för att förenkla hanteringen av kommunikationen i huvudenheten. Genom att använda samma protokoll för kommunikation över Bluetooth som för huvudbussen kan kommunikationen hanteras på ett och samma ställe inom huvudenheten, istället för att behöva dela upp kommunikationshanteringen.
-
-
 
 \subsection{Informationsflöde}
 Tanken med hur informationen flödar mellan delsystemen är att den ska skickas som asynkrona så kallade kommandon eller paket. Genom att specificera detta kan informationsflödet implementeras med valfri asynkron buss eller kommunikationsmedie och det blir även möjligt att abstrahetera bort varifrån alla meddelanden kommer. I respektive delsystem kommer alla kommandon hanteras som event och vid behov även returnera data genom att skicka ett nytt asynkront kommando tillbaka som svar.
