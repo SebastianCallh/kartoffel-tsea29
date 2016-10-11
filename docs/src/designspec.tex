@@ -473,10 +473,10 @@ Den maximala hastigheten som sensordata kan läsas in i är begränsad av sensor
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.6]{styrenhet_flowchart}
-\caption{Presentationsenheten i omgivning}
+\caption{Ett flödesschema över styrenhetens tillstånd}
 \label{fig:styrenhet_flowchart}
 \end{figure}
-Referens till figur~\ref{fig:styrenhet_flowchart} 
+Styrenheten har tre olika tillstånd den kan befinna sig i. Antingen skickar den styrdata, utför en instruktion eller så befinner den sig i vänteläge. Figur~\ref{fig:styrenhet_flowchart} visar visuellt hur styrenheten rör sig mellan dessa tre tillstånd. Dess standardtillstånd är vänteläget som den befinner sig i tills den fått en instruktion ifrån huvudenheten. Till skillnad från sensorenheten som läser av sina sensorer utan något kommando från huvudenheten kommer styrenheten inte att göra något utan att ha fått en instruktion ifrån huvudenheten att utföra. I vänteläget kommer styrenheten invänta instruktioner från huvudenheten, av vilket det finns två olika typer. Antingen är det en begäran om data, och isåfall kommer styrenheten att skicka tidigare sparad styrdata till huvudenheten. Annars är det en styrinstruktion (som exempelvis att åka framåt, bakåt eller svänga), i vilket fall styrenheten kommer att omvandla den instruktionen till signaler att skicka till de servon som är kopplade till processorn. I det här tillståndet kommer även styrdata insamlat från servona sparas för att kunna skickas till huvudenheten när det kommer en förfrågan om det.
 \clearpage
 
 \subsection{Presentationsenhet}
