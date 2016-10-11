@@ -179,6 +179,7 @@ Styrenhetens uppgift är att utifrån kommandon från huvudenheten föra roboten
 \caption{Översikt över systemet}
 \label{fig:oversikt_systemet2}
 \end{figure}
+
 Ett övergripande blockschema av systemet visas i figur ~\ref{fig:oversikt_systemet2}.
 
 \subsection{Komponenter}
@@ -232,7 +233,7 @@ Här nedan listas alla komponenter som roboten kommer att vara del av roboten.
     \textbf{Komponent} & \textbf{Antal} \\
     \hline
     291RPM DC-motor & 4 \\
-    \hline
+   \hline
     AX-12 Laserservor & 1 \\
     \hline
   \end{tabular}
@@ -292,8 +293,8 @@ Programflödet i huvudenheten består i huvudsak av två delar: Den logiska dele
 \caption{Flödesdiagram för navigering.}
 \label{fig:navigering_flowchart}
 \end{figure}
+I figur~\ref{fig:navigering_flowchart} ses en illustration över algoritmen för att följa en vägg på höger sida om roboten. Eftersom roboten börjar vid en vägg enligt tävlingsspecifikationen så kan den följa den direkt. När den sedan kartlagt den yttre väggen söker den efter köksön och faller sedan in i samma algoritm igen.
 
-I figur ~\ref{fig:navigering_flowchart} ses en illustration över algoritmen för att följa en vägg på höger sida om roboten. Eftersom roboten börjar vid en vägg enligt tävlingsspecifikationen så kan den följa den direkt. När den sedan kartlagt den yttre väggen söker den efter köksön och faller sedan in i samma algoritm igen.
 
 \begin{figure}[H]
 \centering
@@ -302,7 +303,8 @@ I figur ~\ref{fig:navigering_flowchart} ses en illustration över algoritmen fö
 \label{fig:Bluetooth_kommunikation_i_robot}
 \end{figure}
 
-Flödesschemat i figur ~\ref{fig:Bluetooth_kommunikation_i_robot} visar hur kommunikationen med mjukvaruklienten sköts ifrån huvudenheten. Då huvudenheten kommer att agera master i Bluetooth-kommunikationen (se avsnitt 4.2.2) krävs det att huvudenheten hanterar de signaler som sker vid kommunikation med Bluetooth. Figuren visar även hur en handskakning först måste inväntas innan en anslutning kan upprättas och data skickas eller tas emot. RTS och CTS-signalerna är som beskrivit handskakningssignaler. När (styrkommando-)data kommer till huvudenheten från mjukvaruklienten skickas denna vidare till styrenheten och orsakar ett interrupt. Om det ej finns någon data att ta emot kollas istället om det finns data att skicka. 
+Flödesschemat i figur~\ref{fig:Bluetooth_kommunikation_i_robot} visar hur kommunikationen med mjukvaruklienten sköts ifrån huvudenheten. Då huvudenheten kommer att agera master i Bluetooth-kommunikationen (se avsnitt 4.2.2) krävs det att huvudenheten hanterar de signaler som sker vid kommunikation med Bluetooth. Figuren visar även hur en handskakning först måste inväntas innan en anslutning kan upprättas och data skickas eller tas emot. RTS och CTS-signalerna är som beskrivit handskakningssignaler. När (styrkommando-)data kommer till huvudenheten från mjukvaruklienten skickas denna vidare till styrenheten och orsakar ett interrupt. Om det ej finns någon data att ta emot kollas istället om det finns data att skicka. 
+
 
 % Saxat från checklista:
 %   Behövs det några speciella algoritmer för att lösa uppgiften?
@@ -407,7 +409,9 @@ En ATMega1284 måste användas i sensorenheten då accelerometer och gyroskopet 
 \caption{Ett flödesdiagram över sensorenhetens tillstånd}
 \label{fig:sensorenhet_flowchart}
 \end{figure}
-Referera till figur~\ref{fig:sensorenhet_flowchart} 
+Sensorenheten kan befinna sig i ett av tre lägen (se figur~\ref{fig:sensorenhet_flowchart}). Den läser antingen av sensordata, skickar sensordata, eller så befinner den sig i vänteläge. Sensorenheten kommer inte att ta några egna beslut om när den ska  skicka sensordata utan är helt beroende av att få kommando från huvudenheten för att skicka sensordata. Sensorenhetens huvudloop kommer att följa strukturen i flödesdiagramet i figur~\ref{fig:sensorenhet_flowchart}. Standardläget för sensorenheten kommer att vara vänteläget där den befinner sig tills en av två saker händer. Antingen kommer en instruktion ifrån huvudenheten som instruerar sensorenheten att skicka sensordata till huvudenheten. Då kommer datan att skickas via huvudbussen till huvudenheten, och sedan återgår sensorenheten till vänteläget. 
+\newline\newline
+Det andra som kan bryta sensorenhetens vänteläge är att den ska läsa in och spara sensordata. Sensorenheten kommer ha ett flertal sensorer kopplade till sig som ska läsas av så snart det är möjligt, men varje enskild sensor har en maximal inläsningstakt som inte kan överskridas. Det är alltså inte möjligt att läsa av varje sensor precis hela tiden, utan det är en viss väntetid mellan inläsningarna. Detta kommer sensorenheten att ha koll på, och så fort en sensor är redo för inläsning kommer värdet att läsas in, i den mån det behövs filtreras och/eller omvandlas datan, och sparas sedan för att kunna skickas iväg till huvudenheten när den ber om det. 
 
 \clearpage
 
@@ -486,7 +490,8 @@ Presentationsenhten får sin data från mjukvaruklientens kommunikation med robo
 % Övergripande schema för systemets stuktur
 \begin{figure}[H]
 %\centering
-\includegraphics[scale=0.4]{Oversikt_presentationsenhet3}
+
+\includegraphics[scale=0.37]{Oversikt_presentationsenhet3}
 \caption{Presentationsenheten i omgivning}
 \label{fig:Oversikt_presentationsenhet3}
 \end{figure}
@@ -521,7 +526,7 @@ Fjärrstyrningsenheten tar emot input av en användare som kommer genom mjukvaru
 % Övergripande schema för systemets stuktur
 \begin{figure}[H]
 \centering 
-\includegraphics[scale=0.4]{Oversikt_fjarrstyrenhet3}
+\includegraphics[scale=0.37]{Oversikt_fjarrstyrenhet3}
 \caption{Fjärrstyrningsenheten i omgivning}
 \label{fig:Oversikt_fjarrstyrenhet3}
 \end{figure}
@@ -545,9 +550,26 @@ Som visas i ovanstånde figur ~\ref{fig:Fjarrstyrningsenhet_flowchart3} ger anv�
 \clearpage
 
 \section{Kommunikation mellan delsystem}
+Kommunikation mellan systemets enheter kommer att ske över både en fysisk huvudbuss samt en trådlös Bluetooth-uppkoppling till presentations- och fjärrstyrningsenheten. Under teknikernas basprotokoll kommer de båda kommunikationsmedierna använda sig av samma protokoll. Detta är dels för att kunna återanvända samma lösning vilket förenklar utvecklingsprocessen, dels för att förenkla hanteringen av kommunikationen i huvudenheten. Genom att använda samma protokoll för kommunikation över Bluetooth och huvudbussen kan kommunikationen hanteras på ett och samma ställe inom huvudenheten, istället för att behöva dela upp kommunikationshanteringen. Protokollet specificeras senare i projektets skede för att kunna testa dess funktion innan det bestäms.
+
 % Kort inledning. Nämn att huvudbuss och Bluetooth använder ett "underliggande" protokoll (under I2C/Bluetooth) som specificeras under projektets gång
 
 \subsection{Huvudbuss}
+Systemets moduler på roboten kommer vara sammankopplade med en I2C-buss (även kallat Two-Wire-Interface) där huvudenheten skickar och tar emot kommandon från sensor- och styrenheten. Trots att gränssnittet stödjer kommunikation mellan bussens alla enheter kommer endast kommunikation direkt till och från huvudenheten att implementeras för att kunna hålla systemets beroenden så pass frikopplade som möjligt.
+
+\subsubsection{Uppbyggnad}
+Bussen består så som dess alternativa namn antyder av ett två-trådat gränssnitt och stödjer upp till 128 enheter. De två trådarna är SDA och SCL där SDA överför data medan SCL styr med vilken frekvens detta sker. SDA kommer skrivas på av bussens alla inkopplade enheter och behöver kopplas in till ett pull-up-motstånd för att inte flyta. Uppbyggnaden av bussen och dess master-slave förhållande kan ses i figur~\ref{fig:huvudbuss_masterslave}.
+
+\subsubsection{Master-slave roller}
+\begin{figure}[H]
+\centering 
+\includegraphics[scale=0.56]{Huvudbuss}
+\caption{Huvudbussens uppbyggnad och master-slave förhållande}
+\label{fig:huvudbuss_masterslave}
+\end{figure}
+
+I2C har två olika implementationer: multimaster och master-slave, som båda skiljer en del till implementationen. Multimaster är svårare att implementera då flera olika mikroprocessorer behöver styra bussens klock-pin. Detta system kommer använda sig av den enklare master-slave-implementationen för att kunna lägga tid på mer användbara funktioner samt eftersom Raspberry Pi:s egna I2C-implementationen endast stödjer just det läget. Huvudenheten kommer att agera master i konfigurationen för huvudbussen och generera en klocka på SCL-pinnen från det att bussens startvillkor inträffat till dess att stoppvillkoret är uppfyllt. Bussens start- och stoppvillkor är designade så att de inte kan inträffa samtidigt som man överför riktig data. Resten av enheterna agerar slavar, se figur~\ref{fig:huvudbuss_masterslave}.
+
 % Beskriv huvudbussen. Vad använder vi för teknik? Hur ser master/slave-förhållande ut?
 % Använd med fördel \subsubsection
 
@@ -564,7 +586,7 @@ Datorn som mjukvaruklienten är installerad behöver kunna kommunicera roboten f
 \label{fig:Kommunikation_Bluetooth}
 \end{figure}
 
-Som figur ~\ref{fig:Kommunikation_Bluetooth} visar går det ett antal signaler mellan huvudenheten och mjukvaruklienten. Till en början finns två signaler som går från respektive Bluetoothmoduls RTS (\textit{Request to send}) till den andra enhetens CTS (\textit{Clear to send}) som används för handskakning mellan de båda Bluetoothenheterna. Handskakningen krävs för att upprätta en förbindelse mellan de två modulerna för vidare kommunikation. När en förbindelse väl har upprättats kommer de att automatiskt återansluta till varandra om de skulle tappa kontakten. Om datorn exempelvis skulle föras längre ifrån roboten än räckvidden för Bluetoothanslutningen och sedan föras tillbaka igen skulle datorn och roboten känna igen att de varit anslutna till varandra med Bluetooth förut och därefter automatiskt ansluta igen.
+Som figur~\ref{fig:Kommunikation_Bluetooth} visar går det ett antal signaler mellan huvudenheten och mjukvaruklienten. Till en början finns två signaler som går från respektive Bluetoothmoduls RTS (\textit{Request to send}) till den andra enhetens CTS (\textit{Clear to send}) som används för handskakning mellan de båda Bluetoothenheterna. Handskakningen krävs för att upprätta en förbindelse mellan de två modulerna för vidare kommunikation. När en förbindelse väl har upprättats kommer de att automatiskt återansluta till varandra om de skulle tappa kontakten. Om datorn exempelvis skulle föras längre ifrån roboten än räckvidden för Bluetoothanslutningen och sedan föras tillbaka igen skulle datorn och roboten känna igen att de varit anslutna till varandra med Bluetooth förut, och därefter automatiskt ansluta igen.
 \newline\newline
 När en anslutning väl är upprättad kan data skickas mellan de båda enheterna.
 
