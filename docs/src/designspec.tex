@@ -439,6 +439,21 @@ Styrenheten kommer ha ytterligare ett servo kopplat till sig. På detta servo ko
 \end{table}
 
 \subsubsection{Resurser}
+\begin{table}[H]
+  \centering
+  \begin{tabular}{ | c | c | c | c |}
+    \hline
+    \textbf{Port} & \textbf{Antal} & \textbf{Krävs} \\
+    \hline
+    SDA & 1 & 1 \\
+    \hline
+    SCL & 1 & 1 \\
+    \hline
+    IO & 32 & 5 \\
+    \hline
+  \end{tabular}
+  \caption{Tabell över tillgängliga portar på processorn.}
+\end{table}
 
 Omvandlingen av kommandon från huvudenheten och utskickning av signaler till servona samt omhändertagandet och vidarebefodrandet av styrdata från servona till huvudenheten uppskattas ej kräva mer prestanda eller minne än styrenhetens ATMega 1284 processor klarar av.
 \newline\newline
