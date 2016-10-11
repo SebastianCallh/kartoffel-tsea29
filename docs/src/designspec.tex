@@ -517,6 +517,27 @@ Som visas i ovanstånde figur ~\ref{fig:Fjarrstyrningsenhet_flowchart2} ger anv�
 \subsection{Bluetooth}
 % Beskriv Bluetooth. Vad använder vi för teknik? Hur ser master/slave-förhållande ut?
 % Använd med fördel \subsubsection
+Datorn som mjukvaruklienten är installerad behöver kunna kommunicera roboten för att det ska gå att rita upp kartan samt kunna fjärrstyra roboten ifrån datorn. Då det skulle vara opraktiskt att ha en sladd mellan datorn och roboten kommer kommunikationen istället ske trådlöst via Bluetooth. 
+
+\subsubsection{Handskakning}
+\begin{figure}[H]
+\centering 
+\includegraphics[scale=0.8]{Kommunikation_Bluetooth}
+\caption{Bluetooth mellan huvudenheten och mjukvaruklienten}
+\label{fig:Kommunikation_Bluetooth}
+\end{figure}
+
+Som figur ~\ref{fig:Kommunikation_Bluetooth} visar går det ett antal signaler mellan huvudenheten och mjukvaruklienten. Till en början finns två signaler som går från respektive Bluetoothmoduls RTS (\textit{Request to send}) till den andra enhetens CTS (\textit{Clear to send}) som används för handskakning mellan de båda Bluetoothenheterna. Handskakningen krävs för att upprätta en förbindelse mellan de två modulerna för vidare kommunikation. När en förbindelse väl har upprättats kommer de att automatiskt återansluta till varandra om de skulle tappa kontakten. Om datorn exempelvis skulle föras längre ifrån roboten än räckvidden för Bluetoothanslutningen och sedan föras tillbaka igen skulle datorn och roboten känna igen att de varit anslutna till varandra med Bluetooth förut, och därefter automatiskt ansluta igen.
+\newline\newline
+När en anslutning väl är upprättad kan data skickas mellan de båda enheterna.
+
+\subsubsection{Master-slave roller}
+När Bluetooth-anslutningen väl är upprättad mellan roboten och datorn går det att skicka data mellan de två. Liksom med huvudbussen finns ett master-slave förhållande mellan de olika Bluetooth-modulerna. I det här fallet kommer huvudenhetens Bluetooth-modul agera master, och datorn slave.
+
+\subsubsection{Protokoll}
+Bluetoothkommunikationen kommer ske över samma protokoll som över huvudbussen. Detta dels för att kunna återanvända samma lösning vilket förenklar utvecklingsprocessen, dels för att förenkla hanteringen av kommunikationen i huvudenheten. Genom att använda samma protokoll för kommunikation över Bluetooth och huvudbussen kan kommunikationen hanteras på ett och samma ställe inom huvudenheten, istället för att behöva dela upp kommunikationshanteringen.
+
+
 
 \subsection{Informationsflöde}
 Tanken med hur informationen flödar mellan delsystemen är att den ska skickas som asynkrona så kallade kommandon eller paket. Genom att specificera detta kan informationsflödet implementeras med valfri asynkron buss eller kommunikationsmedie och det blir även möjligt att abstrahetera bort varifrån alla meddelanden kommer. I respektive delsystem kommer alla kommandon hanteras som event och vid behov även returnera data genom att skicka ett nytt asynkront kommando tillbaka som svar.
