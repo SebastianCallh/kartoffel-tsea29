@@ -545,6 +545,21 @@ Som visas i ovanstånde figur ~\ref{fig:Fjarrstyrningsenhet_flowchart2} ger anv�
 % Kort inledning. Nämn att huvudbuss och Bluetooth använder ett "underliggande" protokoll (under I2C/Bluetooth) som specificeras under projektets gång
 
 \subsection{Huvudbuss}
+Systemets moduler på roboten kommer vara sammankopplade med en I2C-buss (även kallat Two-Wire-Interface) där huvudenheten skickar och tar emot kommandon från sensor- och styrenheten. Trots att gränssnittet stödjer kommunikation mellan bussens alla enheter kommer endast kommunikation direkt till och från huvudenheten att implementeras för att kunna hålla systemets beroenden så pass frikopplade som möjligt.
+
+\subsubsection{Uppbyggnad}
+Bussen består så som dess alternativa namn antyder av ett två-trådat gränssnitt och stödjer upp till 128 enheter. De två trådarna är SDA och SCL där SDA överför data medan SCL styr med vilken frekvens detta sker. SDA kommer skrivas på av bussens alla inkopplade enheter och behöver kopplas in till ett pull-up-motstånd för att inte flyta. Uppbyggnaden av bussen och dess master-slave förhållande kan ses i figur~\ref{fig:huvudbuss_masterslave}.
+
+\subsubsection{Master-slave roller}
+\begin{figure}[H]
+\centering 
+\includegraphics[scale=0.56]{Huvudbuss}
+\caption{Huvudbussens uppbyggnad och master-slave förhållande}
+\label{fig:huvudbuss_masterslave}
+\end{figure}
+
+I2C har två olika implementationer: multimaster och master-slave, som båda skiljer en del till implementationen. Multimaster är svårare att implementera då flera olika mikroprocessorer behöver styra bussens klock-pin. Detta system kommer använda sig av den enklare master-slave-implementationen för att kunna lägga tid på mer användbara funktioner samt eftersom Raspberry Pi:s egna I2C-implementationen endast stödjer just det läget. Huvudenheten kommer att agera master i konfigurationen för huvudbussen och generera en klocka på SCL-pinnen från det att bussens startvillkor inträffat till dess att stoppvillkoret är uppfyllt. Bussens start- och stoppvillkor är designade så att de inte kan inträffa samtidigt som man överför riktig data. Resten av enheterna agerar slavar, se figur~\ref{fig:huvudbuss_masterslave}.
+
 % Beskriv huvudbussen. Vad använder vi för teknik? Hur ser master/slave-förhållande ut?
 % Använd med fördel \subsubsection
 
