@@ -277,16 +277,12 @@ Huvudenheten är uppdelad i två undermoduler, logikenheten och kommunikationsen
     \textbf{Port} & \textbf{Antal} & \textbf{Används} \\
     \hline
     Bluetooth 4.1 BLE & 1 & 1\\
-    USB & 4 & 0 \\
-    Ethernet & 1 & 0 \\
     GPIO pins & 40 & ? \\
-    HDMI & 1 & 0 \\
-    CSI & 1 & 0 \\
-    DSI & 1 & 0 \\
-    3.5mm & 1 & 0 \\
     \hline
   \end{tabular}
 \end{table}
+
+Raspberry Pi:en är vald som beräkningsenhet för huvudmodulen på grund av att en mer avancerad algoritm för kartläggning planeras att implementeras under en senare del av projektet. En ATMega 1284 kan mycket väl räcka till för den grundläggande algoritmen, men efter att ha tagit del av erfarenheter från föregående års projektgrupper har det beslutas att mer prestanda kan krävas än vad ATMega 1284 klarar av att leverera, och därför har en Raspberry Pi valts. 
 
 \subsubsection{Programflöde}
 \begin{figure}[H]
