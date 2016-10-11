@@ -91,15 +91,15 @@ Namn & Ansvar & Telefon & E-post \\
 \hline
 Patrik Sletmo & Projektledare & 070 783 57 61 & patsl736@student.liu.se \\
 \hline
-Rebecca Lindblom &  & 073 436 40 79 & rebli156@student.liu.se \\
+Rebecca Lindblom & Utvecklare & 073 436 40 79 & rebli156@student.liu.se \\
 \hline
-Matildha Sjöstedt &  & 070 515 84 11 & matsj696@student.liu.se \\
+Matildha Sjöstedt & Utvecklare & 070 515 84 11 & matsj696@student.liu.se \\
 \hline
-Sebastian Callh &  & 073 820 46 64 & sebca553@student.liu.se \\
+Sebastian Callh & Utvecklare & 073 820 46 64 & sebca553@student.liu.se \\
 \hline
-Anton Dalgren &  & 076 836 51 56 & antda685@student.liu.se \\
+Anton Dalgren & Utvecklare & 076 836 51 56 & antda685@student.liu.se \\
 \hline
-Matilda Dahlström &  & 070 636 33 52 & matda715@student.liu.se \\
+Matilda Dahlström & Utvecklare & 070 636 33 52 & matda715@student.liu.se \\
 \hline
 \end{tabular}
 \end{table}
@@ -277,23 +277,19 @@ Huvudenheten är uppdelad i två undermoduler, logikenheten och kommunikationsen
     \textbf{Port} & \textbf{Antal} & \textbf{Används} \\
     \hline
     Bluetooth 4.1 BLE & 1 & 1\\
-    USB & 4 & 0 \\
-    Ethernet & 1 & 0 \\
     GPIO pins & 40 & ? \\
-    HDMI & 1 & 0 \\
-    CSI & 1 & 0 \\
-    DSI & 1 & 0 \\
-    3.5mm & 1 & 0 \\
     \hline
   \end{tabular}
 \end{table}
+
+Raspberry Pi:en är vald som beräkningsenhet för huvudmodulen på grund av att en mer avancerad algoritm för kartläggning planeras att implementeras under en senare del av projektet. En ATMega 1284 kan mycket väl räcka till för den grundläggande algoritmen, men efter att ha tagit del av erfarenheter från föregående års projektgrupper har det beslutas att mer prestanda kan krävas än vad ATMega 1284 klarar av att leverera, och därför har en Raspberry Pi valts. 
 
 \subsubsection{Programflöde}
 Programflödet i huvudenheten består i huvudsak av två delar: Den logiska delen som sköter navigeringsbesluten utifrån beräknad kartdata, samt delen som sköter kommunikation med resten av systemets delmoduler. Nedan beskrivs flödesscheman för navigering samt Bluetooth-kommunikation med huvudenheten. För detaljer kring kommunikation mellan huvud-, styr- och sensorenhet se avsnitt \textit{Kommunikation mellan delsystem}. 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.6]{navigering_flowchart}
-\caption{Flödesdiagram för navigering}
+\caption{Flödesdiagram för navigering.}
 \label{fig:navigering_flowchart}
 \end{figure}
 
@@ -302,11 +298,12 @@ I figur ~\ref{fig:navigering_flowchart} ses en illustration över algoritmen fö
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.45]{Bluetooth_kommunikation_i_robot}
-\caption{Flödesschema över Bluetooth-kommunikationen i huvudenheten}
+\caption{Flödesschema över Bluetooth-kommunikationen i huvudenheten.}
 \label{fig:Bluetooth_kommunikation_i_robot}
 \end{figure}
 
-Flödesschemat i figur ~\ref{fig:Bluetooth_kommunikation_i_robot} visar hur kommunikationen med mjukvaruklienten sköts ifrån huvudenheten. RTS och CTS signalern är som beskrivit handskakningssignaler. När (styrkommando-)data kommer till huvudenheten från mjukvaruklienten skickas denna vidare till styrenheten och orsakar ett interrupt. Om det ej finns någon data att ta emot kollas istället om det finns data att skicka. 
+Flödesschemat i figur ~\ref{fig:Bluetooth_kommunikation_i_robot} visar hur kommunikationen med mjukvaruklienten sköts ifrån huvudenheten. Då huvudenheten kommer att agera master i Bluetooth-kommunikationen (se avsnitt 4.2.2) krävs det att huvudenheten hanterar de signaler som sker vid kommunikation med Bluetooth. Figuren visar även hur en handskakning först måste inväntas innan en anslutning kan upprättas och data skickas eller tas emot. RTS och CTS-signalerna är som beskrivit handskakningssignaler. När (styrkommando-)data kommer till huvudenheten från mjukvaruklienten skickas denna vidare till styrenheten och orsakar ett interrupt. Om det ej finns någon data att ta emot kollas istället om det finns data att skicka. 
+
 % Saxat från checklista:
 %   Behövs det några speciella algoritmer för att lösa uppgiften?
 %   Behövs det några större datastrukturer som kräver mycket minne?
@@ -374,6 +371,8 @@ En accelerometer och gyroskop kommer att sitta på roboten för att kunna sköta
     \hline
     SCL & 1 & 1 \\
     \hline
+    IO & 32 & 2 \\
+    \hline
     PCINT & 31 & 2 \\
     \hline
     OC & 8 & 2 \\
@@ -401,6 +400,14 @@ En accelerometer och gyroskop kommer att sitta på roboten för att kunna sköta
 En ATMega1284 måste användas i sensorenheten då accelerometer och gyroskopet använder sig av grännsnittet SPI för att kommunicera med omvärlden. Då det endast är ATMega1284 som har 2 eller fler SPI ingångar tvingas vi till att använda just denna.
 
 \subsubsection{Programflöde}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.6]{sensorenhet_flowchart}
+\caption{Ett flödesdiagram över sensorenhetens tillstånd}
+\label{fig:sensorenhet_flowchart}
+\end{figure}
+Referera till figur~\ref{fig:sensorenhet_flowchart} 
 
 \clearpage
 
@@ -437,11 +444,35 @@ Styrenheten kommer ha ytterligare ett servo kopplat till sig. På detta servo ko
 \end{table}
 
 \subsubsection{Resurser}
+\begin{table}[H]
+  \centering
+  \begin{tabular}{ | c | c | c | c |}
+    \hline
+    \textbf{Port} & \textbf{Antal} & \textbf{Krävs} \\
+    \hline
+    SDA & 1 & 1 \\
+    \hline
+    SCL & 1 & 1 \\
+    \hline
+    IO & 32 & 7 \\
+    \hline
+  \end{tabular}
+  \caption{Tabell över tillgängliga portar på processorn.}
+\end{table}
 
-Omvandlingen av kommandon från huvudenheten och utskickning av signaler till servona samt omhändertagandet och vidarebefodrandet av styrdata från servona till huvudenheten uppskattas ej kräva mer prestanda eller minne än styrenhetens ATMega 1284 processor klarar av. 
+Omvandlingen av kommandon från huvudenheten och utskickning av signaler till servona samt omhändertagandet och vidarebefodrandet av styrdata från servona till huvudenheten uppskattas ej kräva mer prestanda eller minne än styrenhetens ATMega 1284 processor klarar av.
+\newline\newline
+Den maximala hastigheten som sensordata kan läsas in i är begränsad av sensorernas rapporteringsfrekvens som är betydligt långsammare än en ATmega 1284:s klockfrekvens, därför lönar det sig inte med en snabbare processor för sensorenhetens syfte. Det i princip enda minnet sensorenheten kommer använda sig av är för temporärlagring av alla sensorers data, vilket kommer hålla sig runt 20 bytes. Utöver sensorinläsningen kommer enheten svara på kommandon över huvudbussen som inte heller kräver några höga hastigheter eller minneskrav. En mer ingående motivering till dessa resurskrav finns i avsnitt~\ref{sec:samplingsfrekvens}.
 
 \subsubsection{Programflöde}
 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.6]{styrenhet_flowchart}
+\caption{Presentationsenheten i omgivning}
+\label{fig:styrenhet_flowchart}
+\end{figure}
+Referens till figur~\ref{fig:styrenhet_flowchart} 
 \clearpage
 
 \subsection{Presentationsenhet}
@@ -459,7 +490,7 @@ Presentationsenhten får sin data från mjukvaruklientens kommunikation med robo
 \caption{Presentationsenheten i omgivning}
 \label{fig:Oversikt_presentationsenhet2}
 \end{figure}
-Ovanstående figur ~\ref{fig:Oversikt_presentationsenhet2} visar presentationsenheten i sin omgivning. Den kommunicerar via mjukvaruklientens Bluetooth-förbindelse med robotens huvudenhet. RTS- och CLS-signalerna används för handskakning mellan enheterna, dvs. styr vem som skickar respektive tar emot data.  
+Ovanstående figur ~\ref{fig:Oversikt_presentationsenhet2} visar presentationsenheten i sin omgivning. Den kommunicerar via mjukvaruklientens Bluetooth-förbindelse med robotens huvudenhet. RTS- och CTS-signalerna används för handskakning mellan enheterna, dvs. styr vem som skickar respektive tar emot data.  
 
 \subsubsection{Komponenter}
 Mjukvaruklienten och därmed presentationsenheten kräver en bärbar dator med Bluetooth. 
@@ -494,7 +525,7 @@ Fjärrstyrningsenheten tar emot input av en användare som kommer genom mjukvaru
 \caption{Fjärrstyrningsenheten i omgivning}
 \label{fig:Oversikt_fjarrstyrenhet}
 \end{figure}
-Ovanstående figur ~\ref{fig:Oversikt_fjarrstyrenhet} visar fjärrstyrningsenheten i sin omgivning. Den kommunicerar via mjukvaruklientens Bluetooth-förbindelse med robotens huvudenhet. RTS- och CLS-signalerna används för handskakning mellan enheterna, dvs. styr vem som skickar respektive tar emot data.  
+Ovanstående figur ~\ref{fig:Oversikt_fjarrstyrenhet} visar fjärrstyrningsenheten i sin omgivning. Den kommunicerar via mjukvaruklientens Bluetooth-förbindelse med robotens huvudenhet. RTS- och CTS-signalerna används för handskakning mellan enheterna, dvs. styr vem som skickar respektive tar emot data.  
 
 \subsubsection{Komponenter}
 Fjärrstyrningsenheten kräver en dator med Bluetooth som kan köra mjukvaruklienten, samt tangentbord och mus/touchpad för interaktion med klienten. 
@@ -523,6 +554,27 @@ Som visas i ovanstånde figur ~\ref{fig:Fjarrstyrningsenhet_flowchart2} ger anv�
 \subsection{Bluetooth}
 % Beskriv Bluetooth. Vad använder vi för teknik? Hur ser master/slave-förhållande ut?
 % Använd med fördel \subsubsection
+Datorn som mjukvaruklienten är installerad behöver kunna kommunicera roboten för att det ska gå att rita upp kartan samt kunna fjärrstyra roboten ifrån datorn. Då det skulle vara opraktiskt att ha en sladd mellan datorn och roboten kommer kommunikationen istället ske trådlöst via Bluetooth. 
+
+\subsubsection{Handskakning}
+\begin{figure}[H]
+\centering 
+\includegraphics[scale=0.8]{Kommunikation_Bluetooth}
+\caption{Bluetooth mellan huvudenheten och mjukvaruklienten}
+\label{fig:Kommunikation_Bluetooth}
+\end{figure}
+
+Som figur ~\ref{fig:Kommunikation_Bluetooth} visar går det ett antal signaler mellan huvudenheten och mjukvaruklienten. Till en början finns två signaler som går från respektive Bluetoothmoduls RTS (\textit{Request to send}) till den andra enhetens CTS (\textit{Clear to send}) som används för handskakning mellan de båda Bluetoothenheterna. Handskakningen krävs för att upprätta en förbindelse mellan de två modulerna för vidare kommunikation. När en förbindelse väl har upprättats kommer de att automatiskt återansluta till varandra om de skulle tappa kontakten. Om datorn exempelvis skulle föras längre ifrån roboten än räckvidden för Bluetoothanslutningen och sedan föras tillbaka igen skulle datorn och roboten känna igen att de varit anslutna till varandra med Bluetooth förut och därefter automatiskt ansluta igen.
+\newline\newline
+När en anslutning väl är upprättad kan data skickas mellan de båda enheterna.
+
+\subsubsection{Master-slave roller}
+När Bluetooth-anslutningen väl är upprättad mellan roboten och datorn går det att skicka data mellan de två. Liksom med huvudbussen finns ett master-slave förhållande mellan de olika Bluetooth-modulerna. I det här fallet kommer huvudenhetens Bluetooth-modul agera master och datorn slave.
+
+\subsubsection{Protokoll}
+Bluetooth-kommunikationen kommer ske över samma protokoll som används för kommunikationen över huvudbussen. Detta dels för att kunna återanvända samma lösning, vilket förenklar utvecklingsprocessen, dels för att förenkla hanteringen av kommunikationen i huvudenheten. Genom att använda samma protokoll för kommunikation över Bluetooth som för huvudbussen kan kommunikationen hanteras på ett och samma ställe inom huvudenheten, istället för att behöva dela upp kommunikationshanteringen.
+
+
 
 \subsection{Informationsflöde}
 Tanken med hur informationen flödar mellan delsystemen är att den ska skickas som asynkrona så kallade kommandon eller paket. Genom att specificera detta kan informationsflödet implementeras med valfri asynkron buss eller kommunikationsmedie och det blir även möjligt att abstrahetera bort varifrån alla meddelanden kommer. I respektive delsystem kommer alla kommandon hanteras som event och vid behov även returnera data genom att skicka ett nytt asynkront kommando tillbaka som svar.
