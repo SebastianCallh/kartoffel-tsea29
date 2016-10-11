@@ -542,6 +542,8 @@ Som visas i ovanstånde figur ~\ref{fig:Fjarrstyrningsenhet_flowchart2} ger anv�
 \clearpage
 
 \section{Kommunikation mellan delsystem}
+Kommunikation mellan systemets enheter kommer att ske över både en fysisk huvudbuss samt en trådlös Bluetooth-uppkoppling till presentations- och fjärrstyrningsenheten. Under teknikernas basprotokoll kommer de båda kommunikationsmedierna använda sig av samma protokoll. Detta är dels för att kunna återanvända samma lösning vilket förenklar utvecklingsprocessen, dels för att förenkla hanteringen av kommunikationen i huvudenheten. Genom att använda samma protokoll för kommunikation över Bluetooth och huvudbussen kan kommunikationen hanteras på ett och samma ställe inom huvudenheten, istället för att behöva dela upp kommunikationshanteringen. Protokollet specificeras senare i projektets skede för att kunna testa dess funktion innan det bestäms.
+
 % Kort inledning. Nämn att huvudbuss och Bluetooth använder ett "underliggande" protokoll (under I2C/Bluetooth) som specificeras under projektets gång
 
 \subsection{Huvudbuss}
@@ -582,11 +584,6 @@ När en anslutning väl är upprättad kan data skickas mellan de båda enhetern
 
 \subsubsection{Master-slave roller}
 När Bluetooth-anslutningen väl är upprättad mellan roboten och datorn går det att skicka data mellan de två. Liksom med huvudbussen finns ett master-slave förhållande mellan de olika Bluetooth-modulerna. I det här fallet kommer huvudenhetens Bluetooth-modul agera master, och datorn slave.
-
-\subsubsection{Protokoll}
-Bluetoothkommunikationen kommer ske över samma protokoll som över huvudbussen. Detta dels för att kunna återanvända samma lösning vilket förenklar utvecklingsprocessen, dels för att förenkla hanteringen av kommunikationen i huvudenheten. Genom att använda samma protokoll för kommunikation över Bluetooth och huvudbussen kan kommunikationen hanteras på ett och samma ställe inom huvudenheten, istället för att behöva dela upp kommunikationshanteringen.
-
-
 
 \subsection{Informationsflöde}
 Tanken med hur informationen flödar mellan delsystemen är att den ska skickas som asynkrona så kallade kommandon eller paket. Genom att specificera detta kan informationsflödet implementeras med valfri asynkron buss eller kommunikationsmedie och det blir även möjligt att abstrahetera bort varifrån alla meddelanden kommer. I respektive delsystem kommer alla kommandon hanteras som event och vid behov även returnera data genom att skicka ett nytt asynkront kommando tillbaka som svar.
