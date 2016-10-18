@@ -310,12 +310,12 @@ I figur~\ref{fig:navigering_flowchart} ses en illustration över algoritmen för
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.45]{Bluetooth_kommunikation_i_robot}
+\includegraphics[scale=0.45]{Kommunikation_huvudenhet_v2}
 \caption{Flödesschema över Bluetooth-kommunikationen i huvudenheten.}
-\label{fig:Bluetooth_kommunikation_i_robot}
+\label{fig:Kommunikation_huvudenhet_v2}
 \end{figure}
 \ \\
-Flödesschemat i figur~\ref{fig:Bluetooth_kommunikation_i_robot} visar hur kommunikationen med mjukvaruklienten sköts ifrån huvudenheten. Då huvudenheten kommer att agera master i Bluetooth-kommunikationen (se avsnitt~\ref{sec:bluetooth_master_slave}) krävs det att huvudenheten hanterar de signaler som sker vid kommunikation med Bluetooth. Figuren visar även hur en handskakning (som upprättas med hjälp av CTS och RTS-signalerna som beskrivs närmre i avsnitt~\ref{sec:handskakning})först måste inväntas innan en anslutning kan upprättas och data skickas eller tas emot. När (styrkommando-) data kommer till huvudenheten från mjukvaruklienten skickas denna vidare till styrenheten och orsakar ett interrupt. Om det ej finns någon data att ta emot kollas istället om det finns data att skicka. 
+Flödesschemat i figur~\ref{fig:Kommunikation_huvudenhet_v2} visar hur kommunikationen med mjukvaruklienten sköts ifrån huvudenheten. Då huvudenheten kommer att agera master i Bluetooth-kommunikationen (se avsnitt~\ref{sec:bluetooth_master_slave}) krävs det att huvudenheten hanterar de signaler som sker vid kommunikation med Bluetooth. Figuren visar även hur en handskakning (som upprättas med hjälp av CTS och RTS-signalerna som beskrivs närmre i avsnitt~\ref{sec:handskakning})först måste inväntas innan en anslutning kan upprättas och data skickas eller tas emot. När (styrkommando-) data kommer till huvudenheten från mjukvaruklienten skickas denna vidare till styrenheten och orsakar ett interrupt. Om det ej finns någon data att ta emot kollas istället om det finns data att skicka. 
 
 
 % Saxat från checklista:
