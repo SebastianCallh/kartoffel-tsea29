@@ -314,12 +314,12 @@ I figur~\ref{fig:navigering_flowchart} ses en illustration över algoritmen för
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.45]{Bluetooth_kommunikation_i_robot}
+\includegraphics[scale=0.45]{Kommunikation_huvudenhet_v2}
 \caption{Flödesschema över Bluetooth-kommunikationen i huvudenheten.}
-\label{fig:Bluetooth_kommunikation_i_robot}
+\label{fig:Kommunikation_huvudenhet_v2}
 \end{figure}
 \ \\
-Flödesschemat i figur~\ref{fig:Bluetooth_kommunikation_i_robot} visar hur kommunikationen med mjukvaruklienten sköts ifrån huvudenheten. Då huvudenheten kommer att agera master i Bluetooth-kommunikationen (se avsnitt~\ref{sec:bluetooth_master_slave}) krävs det att huvudenheten hanterar de signaler som sker vid kommunikation med Bluetooth. Figuren visar även hur en handskakning först måste inväntas innan en anslutning kan upprättas och data skickas eller tas emot. RTS och CTS-signalerna är som tidigare beskrivit handskakningssignaler. När (styrkommando-)data kommer till huvudenheten från mjukvaruklienten skickas denna vidare till styrenheten och orsakar ett interrupt. Om det ej finns någon data att ta emot kollas istället om det finns data att skicka. 
+Flödesschemat i figur~\ref{fig:Kommunikation_huvudenhet_v2} visar hur kommunikationen med mjukvaruklienten sköts ifrån huvudenheten. Då huvudenheten kommer att agera master i Bluetooth-kommunikationen (se avsnitt~\ref{sec:bluetooth_master_slave}) krävs det att huvudenheten hanterar de signaler som sker vid kommunikation med Bluetooth. Figuren visar även hur en handskakning (som upprättas med hjälp av CTS och RTS-signalerna som beskrivs närmre i avsnitt~\ref{sec:handskakning})först måste inväntas innan en anslutning kan upprättas och data skickas eller tas emot. När (styrkommando-) data kommer till huvudenheten från mjukvaruklienten skickas denna vidare till styrenheten och orsakar ett interrupt. Om det ej finns någon data att ta emot kollas istället om det finns data att skicka. 
 
 
 % Saxat från checklista:
@@ -339,7 +339,7 @@ Sensorenheten kommer ha i uppgift att läsa in värden från sensorerna som finn
 
 Sensorenheten kommer att bestå av en ATMega 1284 processor som kommer att ha sensorer kopplad till sig. Processorn kommer att läsa av mätdata från sensorerna kontinuerligt och sparar undan dessa i minnet. Vid förfrågan av huvudenheten kommer processorn att leverera mätdata via huvudbussen. 
 \newline\newline
-Sensorenheten kommer att ha en lasersensor som läser av avståndet framåt. Denna sensor leverar mätvärden över gränsnitten PWM och I2C. Sensorenheten kommer att läsa av lasersensorn med PWM och omvandla till ett avstånd som kan sparas och levereras till huvudenheten vid förfrågan. I ett senare skede i projektet när vi har en fungerande robot så kommer vi att välja att gå över till en mer avancerad variant av kartläggning och då kommer lasersensorn att rotera runt roboten. Detta för att kunna använda oss utav metoden raycasting när rummet ska kartläggas.
+Sensorenheten kommer att ha en lasersensor som läser av avståndet framåt. Denna sensor leverar mätvärden över huvudbussen som sedan skickas till och sparas i sensorenheten. De mätvärdena kan sedan levereras till huvudenheten vid förfrågan. I ett senare skede i projektet när vi har en fungerande robot så kommer vi att välja att gå över till en mer avancerad variant av kartläggning och då kommer lasersensorn att rotera runt roboten. Detta för att kunna använda oss utav metoden raycasting när rummet ska kartläggas.
 \newline\newline
 Sensorenheten kommer att ha två stycken IR-sensorer som ska läsa avstånd i sidan. Dessa sensorer levererar analoga värden och måste omvandlas till digitala värden. En tabell över värden kontra avstånd måste skapas för att kunna leverera exakta avstånd till huvudenheten vid förfrågan. 
 \newline\newline
@@ -414,9 +414,6 @@ Enhetens alla komponenter (processorer och sensorer) är inkopplade med skydd f�
   \end{tabular}
   \caption{Tabell över tillgängliga portar på processorn.}
 \end{table}
-
-En ATMega1284 måste användas i sensorenheten då accelerometer och gyroskopet använder sig av grännsnittet SPI för att kommunicera med omvärlden. Då det endast är ATMega1284 som har 2 eller fler SPI ingångar tvingas vi till att använda just denna.
-\newline\newline
 Den maximala hastigheten som sensordata kan läsas in i är begränsad av sensorernas rapporteringsfrekvens som är betydligt långsammare än en ATmega 1284:s klockfrekvens, därför lönar det sig inte med en snabbare processor för sensorenhetens syfte. Det i princip enda minnet sensorenheten kommer använda sig av är för temporärlagring av alla sensorers data, vilket kommer hålla sig runt 20 bytes. Utöver sensorinläsningen kommer enheten svara på kommandon över huvudbussen som inte heller kräver några höga hastigheter eller minneskrav. En mer ingående motivering till dessa resurskrav finns i avsnitt~\ref{sec:samplingsfrekvens}.
 
 \subsubsection{Programflöde}
@@ -582,7 +579,7 @@ Kommunikation mellan systemets enheter kommer att ske över både en fysisk huvu
 % Kort inledning. Nämn att huvudbuss och Bluetooth använder ett "underliggande" protokoll (under I2C/Bluetooth) som specificeras under projektets gång
 
 \subsection{Huvudbuss}
-Systemets moduler på roboten kommer vara sammankopplade med en I2C-buss (även kallad Two-Wire-Interface) där huvudenheten skickar och tar emot kommandon från sensor- och styrenheten. Trots att gränssnittet stödjer kommunikation mellan bussens alla enheter kommer endast kommunikation direkt till och från huvudenheten att implementeras för att kunna hålla systemets beroenden så pass frikopplade som möjligt.
+Systemets moduler på roboten kommer vara sammankopplade med en I2C-buss (även kallad Two-Wire-Interface) där huvudenheten skickar och tar emot kommandon från sensor- och styrenheten. Huvudbussen kommer även att användas för att skicka sensordata från lasersensorn samt den kombinerade accelerometern och gyrot till sensorenhetens processor.
 
 \subsubsection{Uppbyggnad}
 Bussen består så som dess alternativa namn antyder av ett två-trådat gränssnitt och stödjer upp till 128 enheter. De två trådarna är SDA och SCL, där SDA överför data medan SCL styr med vilken frekvens detta sker. SDA kommer skrivas till utav bussens alla inkopplade enheter och behöver kopplas in till ett pull-up-motstånd för att inte flyta. Uppbyggnaden av bussen och dess master-slave förhållande kan ses i figur~\ref{fig:huvudbuss_masterslave}.
@@ -607,6 +604,7 @@ I2C har två olika implementationer: multimaster och master-slave, som båda ski
 Datorn som mjukvaruklienten är installerad på behöver kunna kommunicera med roboten för att det ska gå att rita upp kartan samt kunna fjärrstyra roboten ifrån datorn. Då det skulle vara opraktiskt att ha en sladd mellan datorn och roboten kommer kommunikationen istället ske trådlöst via Bluetooth. 
 
 \subsubsection{Handskakning}
+\label{sec:handskakning}
 \begin{figure}[H]
 \centering 
 \includegraphics[scale=0.8]{Kommunikation_Bluetooth}
@@ -626,7 +624,7 @@ När Bluetooth-anslutningen väl är upprättad mellan roboten och datorn går d
 Tanken med hur informationen flödar mellan delsystemen är att den ska skickas som asynkrona så kallade kommandon eller paket. Genom att specificera detta kan informationsflödet implementeras med valfri asynkron buss eller kommunikationsmedie och det blir även möjligt att abstrahetera bort varifrån alla meddelanden kommer. I respektive delsystem kommer alla kommandon hanteras som event och vid behov även returnera data genom att skicka ett nytt asynkront kommando tillbaka som svar.
 
 \subsubsection{Kommunikation med sensorenhet}
-Den enda data som skickas från huvudenheten till sensorenheten är en förfrågan om att hämta mer data och på samma sätt är den enda data som skickas åt andra hållet den mätdata som sensorenheten för närvarande innehåller. Sensorenheten är inte ansvarig för att själv skicka denna data då huvudenheten enklare kan bestämma hur ofta data ska skickas. Med denna lösning blir sensorenhetens enda egna uppgift att läsa in data och spara det i dess minne.
+Den enda data som skickas från huvudenheten till sensorenheten är en förfrågan om att hämta mer data och på samma sätt är den enda data som skickas åt andra hållet den mätdata som sensorenheten för närvarande innehåller. Sensorenheten är inte ansvarig för att själv skicka denna data då huvudenheten enklare kan bestämma hur ofta data ska skickas. Med denna lösning blir sensorenhetens enda egna uppgift att läsa in data och spara det i dess minne. 
 
 \subsubsection{Kommunikation med styrenhet}
 Precis som för sensorenheten kommer huvudenheten efterfråga data från styrenheten i form av styrdata. Utöver detta kommer kommandon för att styra enhetens ställdon skickas från huvudenheten med kommandon som t.ex. framåt, bakåt, stopp, rotera 90{\textdegree} höger, etc. Vissa av dessa kommandon kommer resultera i styrning som fortföljer tills ett annat kommando skickas medan andra har ett avslut (t.ex. rotering 90{\textdegree}). De kommandon som har ett avslut skickar ett svar tillbaka till huvudenheten när de genomförts.
