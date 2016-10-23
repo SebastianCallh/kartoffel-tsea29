@@ -188,7 +188,7 @@ Styrenhetens uppgift är att utifrån kommandon från huvudenheten föra roboten
 \label{fig:oversikt_systemet3}
 \end{figure}
 
-Ett övergripande blockschema av systemet visas i figur ~\ref{fig:oversikt_systemet3}. Notera att huvudbussen består av en kanal för SDA och en kanal för SCL, där SDA ska kopplas in med ett pull-up-motstånd. Motståndet uppskattas till 4 - 10 k$\Omega$.
+Ett övergripande blockschema av systemet visas i figur~\ref{fig:oversikt_systemet3}. Notera att huvudbussen består av en kanal för SDA och en kanal för SCL, där SDA ska kopplas in med ett pull-up-motstånd. Motståndet uppskattas till 4 - 10 k$\Omega$.
 
 \subsection{Komponenter}
 % Väldigt kort beskrivning av delsektion
@@ -319,7 +319,7 @@ I figur~\ref{fig:navigering_flowchart} ses en illustration över algoritmen för
 \label{fig:Kommunikation_huvudenhet_v2}
 \end{figure}
 \ \\
-Flödesschemat i figur~\ref{fig:Kommunikation_huvudenhet_v2} visar hur kommunikationen med mjukvaruklienten sköts ifrån huvudenheten. Då huvudenheten kommer att agera master i Bluetooth-kommunikationen (se avsnitt~\ref{sec:bluetooth_master_slave}) krävs det att huvudenheten hanterar de signaler som sker vid kommunikation med Bluetooth. Figuren visar även hur en handskakning (som upprättas med hjälp av CTS och RTS-signalerna som beskrivs närmre i avsnitt~\ref{sec:handskakning})först måste inväntas innan en anslutning kan upprättas och data skickas eller tas emot. När (styrkommando-) data kommer till huvudenheten från mjukvaruklienten skickas denna vidare till styrenheten och orsakar ett interrupt. Om det ej finns någon data att ta emot kollas istället om det finns data att skicka. 
+Flödesschemat i figur~\ref{fig:Kommunikation_huvudenhet_v2} visar hur kommunikationen med mjukvaruklienten sköts ifrån huvudenheten. Då huvudenheten kommer att agera master i Bluetooth-kommunikationen (se avsnitt~\ref{sec:bluetooth_master_slave}) krävs det att huvudenheten hanterar de signaler som sker vid kommunikation med Bluetooth. Figuren visar även hur en handskakning (som upprättas med hjälp av CTS och RTS-signalerna som beskrivs närmre i avsnitt~\ref{sec:handskakning}) först måste inväntas innan en anslutning kan upprättas och data skickas eller tas emot. När (styrkommando-) data kommer till huvudenheten från mjukvaruklienten skickas denna vidare till styrenheten och orsakar ett interrupt. Om det ej finns någon data att ta emot kollas istället om det finns data att skicka. 
 
 
 % Saxat från checklista:
