@@ -293,9 +293,7 @@ Huvudenheten innehåller gränssnitt för att kommunicera med mjukvaruklienten o
     \hline
     \textbf{Port} & \textbf{Antal} & \textbf{Används} \\
     \hline
-    Bluetooth 4.1 BLE & 1 & 1\\
-    \hline
-    GPIO pins & 40 & TBA \\
+    GPIO pins & 40 & 2 \\
     \hline
   \end{tabular}
 \end{table}
@@ -399,11 +397,7 @@ Enhetens alla komponenter (processorer och sensorer) är inkopplade med skydd f�
     \hline
     SCL & 1 & 1 \\
     \hline
-    IO & 32 & 2 \\
-    \hline
-    PCINT & 31 & 2 \\
-    \hline
-    OC & 8 & 2 \\
+    PCINT & 24 & 1 \\
     \hline
     A/D & 8 & 2 \\
     \hline
@@ -415,11 +409,7 @@ Enhetens alla komponenter (processorer och sensorer) är inkopplade med skydd f�
     \hline
     SS & 1 & 1 \\
     \hline
-    RXD & 2 & 1 \\
-    \hline
-    TXD & 2 & 1 \\
-    \hline
-    XCK & 2 & 1 \\
+    RESET & 1 & 1 \\
     \hline
   \end{tabular}
   \caption{Tabell över tillgängliga portar på processorn.}
@@ -494,7 +484,9 @@ Inkopplingen av styrenheten och dess tillhörande laserservo är båda inkopplad
     \hline
     SCL & 1 & 1 \\
     \hline
-    IO & 32 & 7 \\
+    RESET & 1 & 1 \\
+    \hline
+    IO & 30 & 5 \\
     \hline
   \end{tabular}
   \caption{Tabell över tillgängliga portar på processorn.}
