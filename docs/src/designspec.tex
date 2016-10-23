@@ -263,8 +263,14 @@ Huvudenheten är uppdelad i två undermoduler, logikenheten och kommunikationsen
 En mer avancerad strategi finns som ett alternativ till den redan beskrivna approachen. Strategin bygger på att roboten sveper av sin omgivning med hjälp av lasersensorn och sparar var alla hörn är, och på så sätt kan den beräkna hur den kan navigera för att ta sig runt hörn som döljer ytterligare yta bakom sig. Den kommer eventuellt att implementeras om tid finns och om de sista tekniska detaljerna blir lösta innan kursslut.
 
 \subsubsection{Kopplingsschema}
-Saknas för tillfället.
-% Helst ett kopplingsschema, alternativt väldigt detaljerat blockschema
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.6]{Huvudenhet_kopplingsschema}
+\caption{Kopplingsschema för huvudenheten.}
+\label{fig:huvudenhet_kopplingsschema}
+\end{figure}
+
+Huvudenheten innehåller gränssnitt för att kommunicera med mjukvaruklienten och kopplas endast in till systemets matning och huvudbuss, se figur~\ref{fig:huvudenhet_kopplingsschema}. För att undvika så kallade voltage spikes sitter det en kondensator mellan jord och matningen, \textit{C1}. Kapacitansen för denna kondensator bestäms under uppbyggnaden av systemet med hjälp av ett oscilloskop.
 
 \subsubsection{Komponenter}
 
@@ -346,7 +352,14 @@ I det senare skedet av projektet när den avancerade kartläggningen kommer att 
 En accelerometer och gyroskop kommer att sitta på roboten för att kunna sköta reglering av roboten, hålla koll på hur långt roboten har åkt samt användas för att kunna korrigera de vinkelfel som blir om roboten roterar samtidgt som lasern roterar.
 
 \subsubsection{Kopplingsschema}
-Saknas för tillfället.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.6]{Sensorenhet_kopplingsschema}
+\caption{Kopplingsschema för sensorenheten.}
+\label{fig:sensorenhet_kopplingsschema}
+\end{figure}
+
+Enhetens alla komponenter (processorer och sensorer) är inkopplade med skydd för voltage spikes med hjälp av kondensatorer. Till mikroprocessorn är en reset-krets kopplad som ser till att processorn startar varsamt och möjliggör omstart av enheten, se figur~\ref{fig:sensorenhet_kopplingsschema}. Alla kapacitanser och motstånd bestäms vid systemets uppbyggnad. Notera att de fyra trådarna för I2C-bussen som visas refererar till samma två trådar, SDA i övre bussen är alltså samma som SDA i undre bussen.
 
 \subsubsection{Komponenter}
 
@@ -443,7 +456,14 @@ Styrenheten kommer ha ytterligare ett servo kopplat till sig. På detta servo ko
 
 
 \subsubsection{Kopplingsschema}
-Saknas för tillfället.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.45]{Styrenhet_kopplingsschema}
+\caption{Kopplingsschema för styrenheten.}
+\label{fig:styrenhet_kopplingsschema}
+\end{figure}
+
+Inkopplingen av styrenheten och dess tillhörande laserservo är båda inkopplade till matningen tillsammans med varsin kondensator för att minimera voltage spikes, \textit{C1} och \textit{C2}. De två hjulpar som även är inkopplade har en intern krets för att mitigera detta problem som inte visas i kopplingsschemt. Till mikroprocessorn är en reset-krets kopplad som ser till att processorn startar varsamt och möjliggör omstart av enheten, se figur~\ref{fig:styrenhet_kopplingsschema}. Alla kapacitanser och motstånd bestäms vid systemets uppbyggnad.
 
 \subsubsection{Komponenter}
 
