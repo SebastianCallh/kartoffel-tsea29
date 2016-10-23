@@ -52,3 +52,6 @@ docs/src/designspec.blg
 
 # Emacs backup files
 *~
+
+# MacOS
+.DS_Store
