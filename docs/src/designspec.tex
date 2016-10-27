@@ -250,6 +250,24 @@ Här nedan listas alla komponenter som roboten kommer att vara del av roboten.
   \caption{ Tabell över ställdon. }
 \end{table}
 
+\subsubsection{IC-kretsar}
+% Shifters
+\begin{table}[H]
+  \centering
+  \begin{tabular}{ | c | c | c | c |}
+    \hline
+    \textbf{Komponent} & \textbf{Antal} \\
+    \hline
+    BSS138 & 1 \\
+   \hline
+    EXO3 & 1 \\
+    \hline
+    LS241 & 1 \\
+    \hline
+  \end{tabular}
+  \caption{ Tabell över ställdon. }
+\end{table}
+
 \clearpage
 
 \section{Delsystem}
@@ -361,7 +379,7 @@ En accelerometer och gyroskop kommer att sitta på roboten för att kunna sköta
 \label{fig:sensorenhet_kopplingsschema}
 \end{figure}
 
-Enhetens alla komponenter (processorer och sensorer) är inkopplade med skydd för voltage spikes med hjälp av kondensatorer. Till mikroprocessorn är en reset-krets kopplad som ser till att processorn startar varsamt och möjliggör omstart av enheten, se figur~\ref{fig:sensorenhet_kopplingsschema}. Alla kapacitanser och motstånd bestäms vid systemets uppbyggnad. Notera att de fyra trådarna för I2C-bussen som visas refererar till samma två trådar, SDA i övre bussen är alltså samma som SDA i undre bussen.
+Enhetens alla komponenter (processorer och sensorer) är inkopplade med skydd för voltage spikes med hjälp av kondensatorer. Till mikroprocessorn är en reset-krets kopplad som ser till att processorn startar varsamt och möjliggör omstart av enheten, se figur~\ref{fig:sensorenhet_kopplingsschema}. Alla kapacitanser och motstånd bestäms vid systemets uppbyggnad. Notera att de fyra trådarna för I2C-bussen som visas refererar till samma två trådar, SDA i övre bussen är alltså samma som SDA i undre bussen. Notera att EXO3-komponenten är delad mellan sensorenheten och styrenheten trots att den illustreras som separata komponenter i kopplingsschemat.
 
 \subsubsection{Komponenter}
 
@@ -452,7 +470,7 @@ Styrenheten kommer ha ytterligare ett servo kopplat till sig. På detta servo ko
 \label{fig:styrenhet_kopplingsschema}
 \end{figure}
 
-Inkopplingen av styrenheten och dess tillhörande laserservo är båda inkopplade till matningen tillsammans med varsin kondensator för att minimera voltage spikes, \textit{C1} och \textit{C2}. De två hjulpar som även är inkopplade har en intern krets för att mitigera detta problem som inte visas i kopplingsschemt. Till mikroprocessorn är en reset-krets kopplad som ser till att processorn startar varsamt och möjliggör omstart av enheten, se figur~\ref{fig:styrenhet_kopplingsschema}. Alla kapacitanser och motstånd bestäms vid systemets uppbyggnad.
+Inkopplingen av styrenheten och dess tillhörande laserservo är båda inkopplade till matningen tillsammans med varsin kondensator för att minimera voltage spikes, \textit{C1} och \textit{C2}. De två hjulpar som även är inkopplade har en intern krets för att mitigera detta problem som inte visas i kopplingsschemt. Till mikroprocessorn är en reset-krets kopplad som ser till att processorn startar varsamt och möjliggör omstart av enheten, se figur~\ref{fig:styrenhet_kopplingsschema}. Alla kapacitanser och motstånd bestäms vid systemets uppbyggnad. Notera att EXO3-komponenten är delad mellan sensorenheten och styrenheten trots att den illustreras som separata komponenter i kopplingsschemat. PWM-styrningen av hjulparen sker med hjälp av ATmega1284:ans timer 1 som synkroniserar portarna OC1A och OC1B mot timern.
 
 \subsubsection{Komponenter}
 
@@ -469,6 +487,8 @@ Inkopplingen av styrenheten och dess tillhörande laserservo är båda inkopplad
     AX12-A Servo & 1 \\
     \hline
     EXO3 & 1 (delad) \\
+    \hline
+    LS241 & 1 \\
     \hline
 
   \end{tabular}
@@ -488,6 +508,12 @@ Inkopplingen av styrenheten och dess tillhörande laserservo är båda inkopplad
     RESET & 1 & 1 \\
     \hline
     IO & 30 & 5 \\
+    \hline
+    USART & 4 & 4 \\
+    \hline
+    JTAG & 1 & 1 \\
+    \hline
+    CLK & 1 & 1 \\
     \hline
   \end{tabular}
   \caption{Tabell över tillgängliga portar på processorn.}
