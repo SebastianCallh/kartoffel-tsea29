@@ -267,12 +267,12 @@ En mer avancerad strategi finns som ett alternativ till den redan beskrivna appr
 \subsubsection{Kopplingsschema}
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.6]{Huvudenhet_kopplingsschema}
+\includegraphics[scale=0.45]{Huvudenhet_kopplingsschema}
 \caption{Kopplingsschema för huvudenheten.}
 \label{fig:huvudenhet_kopplingsschema}
 \end{figure}
 
-Huvudenheten innehåller gränssnitt för att kommunicera med mjukvaruklienten och kopplas endast in till systemets matning och huvudbuss, se figur~\ref{fig:huvudenhet_kopplingsschema}. För att undvika så kallade voltage spikes sitter det en kondensator mellan jord och matningen, \textit{C1}. Kapacitansen för denna kondensator bestäms under uppbyggnaden av systemet med hjälp av ett oscilloskop.
+Huvudenheten innehåller gränssnitt för att kommunicera med mjukvaruklienten och kopplas endast in till systemets matning och huvudbuss, se figur~\ref{fig:huvudenhet_kopplingsschema}. För att undvika så kallade voltage spikes sitter det en kondensator mellan jord och matningen, \textit{C1}. Kapacitansen för denna kondensator bestäms under uppbyggnaden av systemet med hjälp av ett oscilloskop. Eftersom Raspberry Pi drivs av 3.3 V matspänning och de övriga atmega-processorerna i roboten drivs av 5 V så behövs vi nivåskifta bussen så att de kan kommunicera med varandra, vilket görs med nivåskiftaren BSS138.
 
 \subsubsection{Komponenter}
 
