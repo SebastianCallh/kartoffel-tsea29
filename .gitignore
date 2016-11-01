@@ -55,3 +55,6 @@ docs/src/designspec.blg
 
 # MacOS
 .DS_Store
+
+# Built directories
+Debug/
