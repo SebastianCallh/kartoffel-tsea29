@@ -22,6 +22,7 @@ static FILE uart_stdout = FDEV_SETUP_STREAM(USARTPutChar, NULL, _FDEV_SETUP_WRIT
 
 bool uart_initialized = false;
 
+
 void initialize_uart() {
 	// Set baud rate
 	UBRR0L = BAUD_PRESCALE;
