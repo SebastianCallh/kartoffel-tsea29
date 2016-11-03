@@ -10,7 +10,7 @@
 #define CONFIG_H_
 
 // Processor frequency
-#define F_CPU 16000000UL
+#define F_CPU 8000000UL
 
 // USART speed
 #define USART_BAUDRATE 9600
