@@ -9,9 +9,7 @@
 #ifndef I2CSLAVE_H_
 #define I2CSLAVE_H_
 
-#define SLAVE_ADDRESS 0x01
-
-void initialize_i2c();
+#define SLAVE_ADDRESS 0x30
 
 
 
