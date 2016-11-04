@@ -6,11 +6,13 @@
  */ 
 #include "common/debug.h"
 #include "i2cslave.h"
+#include "common/queue.h"
 
 
 #include <avr/io.h>
 #include <compat/twi.h>
 #include <avr/interrupt.h>
+
 
 void i2c_slave_action(unsigned char read_write_action) {
 	//read = 0, write = 1. Derived from buss
@@ -35,6 +37,8 @@ unsigned char available_data_size;
 unsigned char available_data_index;
 unsigned char available_data_buffer[MAX_DATA_SIZE];
 
+struct queue* data_to_send = queue_create();
+
 #define I2C_STATE_UNINIT 0
 #define I2C_STATE_WAITING_FOR_ADDR 1
 #define I2C_STATE_WAITING_FOR_DATA 2
@@ -45,9 +49,7 @@ ISR(TWI_vect) {
 	static unsigned char i2c_state = I2C_STATE_UNINIT;
 	unsigned char twi_status;
 	cli();
-	//printf("interrupt happened\n");	
 	twi_status = TWSR & 0xF8;
-	//printf("%d\n", twi_status);
 	switch (twi_status) {		
 	case (TW_SR_SLA_ACK) : //SLA+R received, ACK returned
 		i2c_state = I2C_STATE_WAITING_FOR_ADDR;
@@ -58,7 +60,6 @@ ISR(TWI_vect) {
 		if(i2c_state == I2C_STATE_WAITING_FOR_ADDR) {
 			addr = TWDR; //Saving address
 			i2c_state = I2C_STATE_WAITING_FOR_DATA;
-			//printf("Received address: %d\n", addr);
 		} else {
 			switch (addr) {
 				case DATA_CMD_LEN:
@@ -68,20 +69,10 @@ ISR(TWI_vect) {
 				case DATA_CMD_BYTE:
 					data_buffer[data_index] = TWDR;
 					++data_index;
-					/*
-					if (data_index >= data_size) {
-						//printf("Received data: ");
-						for (int i = 0; i < data_size; ++i) {
-							//printf("%c", data_buffer[i]);
-						}
-						//printf("\n");
-					}
-					*/
 					break;
 			}
 						
 			i2c_state = I2C_STATE_READING_DATA;
-			//printf("Received data: %d\n", TWDR);
 		}
 		TWCR |= (1<<TWINT); //Reset TWINT flag
 		break;
@@ -89,11 +80,11 @@ ISR(TWI_vect) {
 	case (TW_SR_STOP) : //STOP or START condition received while selected
 		if(i2c_state == I2C_STATE_READING_DATA) {
 			//Eventually save data somewhere
-			//printf("SR_STOP\n");
 			i2c_state = I2C_STATE_WAITING_FOR_ADDR;
 			
-			available_data_size = data_size;
-			memcpy(available_data_buffer, data_buffer, data_size);
+			if(data_index == data_size) {
+				
+			}
 		}
 		TWCR |= (1<<TWINT); //Reset TWINT
 		break;
@@ -103,8 +94,11 @@ ISR(TWI_vect) {
 		if(i2c_state == I2C_STATE_WAITING_FOR_DATA) {
 			switch (addr) {
 				case DATA_CMD_LEN:
-					available_data_index = 0;
-					TWDR = available_data_size;
+					if (queue_empty(data_to_send)) {
+						TWDR = 0;
+					} else {
+						TWDR = 1; // TODO: Read data size from struct
+					}
 					break;
 				case DATA_CMD_BYTE:
 					TWDR = available_data_buffer[available_data_index];
@@ -112,7 +106,6 @@ ISR(TWI_vect) {
 					break;
 			}
 			
-			//printf("Transmitting data: %d \n", data);
 			i2c_state = I2C_STATE_WAITING_FOR_ADDR;
 		}
 		TWCR |= (1<<TWINT); //Reset TWINT
@@ -130,7 +123,7 @@ ISR(TWI_vect) {
 int main(void)
 {
 	initialize_uart();
-	//printf("Boooooooted\n");
+	printf("Boooooooted\n");
 	//Initializing i2cslave
 	TWAR = (SLAVE_ADDRESS<<1) & 0xFE; //Sets slavei2caddress and ignore general
 	TWDR = 0x00; //Initial data is set to 0
