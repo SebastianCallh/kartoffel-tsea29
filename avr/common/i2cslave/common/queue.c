@@ -6,27 +6,27 @@
  */ 
 
 #include "queue.h"
+#include <assert.h>
 
-struct queue queue_create() {
-	struct queue q* = new struct queue;
+struct queue* queue_create() {
+	struct queue* q = malloc(sizeof(struct queue));
 	q->next = NULL;
 	q->data = NULL;
 	
 	return q;
 }
 
-void queue_free(struct queue q*) {
-	struct queue current* = q;
+void queue_free(struct queue* q) {
+	struct queue* current = q;
 	while (current != NULL) {
-		struct queue next* = current->next;
-		free(current->data);
+		struct queue* next = current->next;
 		free(current);
 		current = next;
 	}
 }
 
-void* queue_front(struct queue q*) {
-	assert(q->data == NULL);
+void* queue_front(struct queue* q) {
+	//assert(q->data == NULL);
 	
 	struct queue* front = q->next;
 	if (front != NULL) {
@@ -36,11 +36,11 @@ void* queue_front(struct queue q*) {
 	}
 }
 
-void queue_pop(struct queue q*) {
-	assert(q->data == NULL);
-	assert(!queue_empty(q));
+void queue_pop(struct queue* q) {
+	//assert(q->data == NULL);
+	//assert(!queue_empty(q));
 	
-	struct queue old* = q->next;	
+	struct queue* old = q->next;	
 	q->next = q->next->next;
 	
 	if (old != NULL) {
@@ -49,22 +49,22 @@ void queue_pop(struct queue q*) {
 	}
 }
 
-void queue_push(struct queue q*, void* data) {
-	assert(q->data == NULL);
+void queue_push(struct queue* q, void* data) {
+	//assert(q->data == NULL);
 	
-	struct queue* tail = &q;
+	struct queue* tail = q;
 	while (tail->next != NULL) {
 		tail = tail->next;
 	}
 	
-	struct queue next = queue_create();
-	next->data = data;
+	struct queue* next = queue_create();
+	next->data = data;	
+	tail->next = next;
 	
-	tail->next = &next;
 }
 
-bool queue_empty(struct queue q*) {
-	assert(q->data == NULL);
+bool queue_empty(struct queue* q) {
+	//assert(q->data == NULL);
 	
 	return q->next == NULL;
 }

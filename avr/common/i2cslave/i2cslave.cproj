@@ -107,6 +107,9 @@
     <Compile Include="common\debug.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="common\packet.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="common\queue.c">
       <SubType>compile</SubType>
     </Compile>

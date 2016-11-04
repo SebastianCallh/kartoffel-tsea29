@@ -7,8 +7,9 @@
 #include "common/debug.h"
 #include "i2cslave.h"
 #include "common/queue.h"
+#include "common/packet.h"
 
-
+#include <string.h>
 #include <avr/io.h>
 #include <compat/twi.h>
 #include <avr/interrupt.h>
@@ -37,7 +38,9 @@ unsigned char available_data_size;
 unsigned char available_data_index;
 unsigned char available_data_buffer[MAX_DATA_SIZE];
 
-struct queue* data_to_send = queue_create();
+unsigned int dts_index;
+struct queue* data_to_send;
+struct queue* data_recieved;
 
 #define I2C_STATE_UNINIT 0
 #define I2C_STATE_WAITING_FOR_ADDR 1
@@ -80,10 +83,13 @@ ISR(TWI_vect) {
 	case (TW_SR_STOP) : //STOP or START condition received while selected
 		if(i2c_state == I2C_STATE_READING_DATA) {
 			//Eventually save data somewhere
-			i2c_state = I2C_STATE_WAITING_FOR_ADDR;
-			
+			i2c_state = I2C_STATE_WAITING_FOR_ADDR;			
 			if(data_index == data_size) {
-				
+				data_index = 0;
+				struct packet* p = malloc(sizeof(struct packet));
+				p->size = data_size;
+				memcpy(p->data, data_buffer, data_size);
+				queue_push(data_recieved, p);
 			}
 		}
 		TWCR |= (1<<TWINT); //Reset TWINT
@@ -97,12 +103,24 @@ ISR(TWI_vect) {
 					if (queue_empty(data_to_send)) {
 						TWDR = 0;
 					} else {
-						TWDR = 1; // TODO: Read data size from struct
+						dts_index = 0;
+						struct packet* p = queue_front(data_to_send);
+						TWDR = p->size;
 					}
 					break;
 				case DATA_CMD_BYTE:
-					TWDR = available_data_buffer[available_data_index];
-					++available_data_index;
+					if (queue_empty(data_to_send)) {
+						TWDR = 0;
+					} 
+					else {
+						struct packet* p = queue_front(data_to_send);
+						TWDR = p->data[dts_index];
+						++dts_index;
+						if(dts_index == p->size) {
+							free(p->data);
+							queue_pop(data_to_send);
+						}
+					}
 					break;
 			}
 			
@@ -120,8 +138,23 @@ ISR(TWI_vect) {
 	sei();
 }
 
+void send_data(struct packet* p) {
+	queue_push(data_to_send, p);
+}
+
+struct packet* get_received_data() {
+	if(queue_empty(data_recieved)) {
+		return NULL;
+	} else {
+		struct packet* p = queue_front(data_recieved);
+		queue_pop(data_recieved);
+		return p;	
+	}
+}
 int main(void)
 {
+	data_to_send = queue_create();
+	data_recieved = queue_create();
 	initialize_uart();
 	printf("Boooooooted\n");
 	//Initializing i2cslave
