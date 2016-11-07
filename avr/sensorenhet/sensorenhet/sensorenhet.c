@@ -20,6 +20,7 @@ uint16_t adc_synch(uint8_t channel);
  
 void adc_init(void) {
 	 ADCSRA |= ((1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0));  //FEL MATTE 16Mhz/128 = 125Khz the ADC reference clock
+	 ADMUX |= ((1<<REFS0)|(1<<REFS1));	//2.56 internal voltage as reference
 	 ADMUX |= (1<<REFS0);							//Voltage reference, koppla 3.3v till AREF
 	 ADCSRA |= (1<<ADEN);							//Turn on ADC
 	 ADCSRA |= (1<<ADSC);							//Do an initial conversion because this one is the slowest and to ensure that everything is up and running
@@ -51,27 +52,26 @@ int main(void)
 	
 	initialize_uart();
 	//adc_init();
-	 
 	ADCSRA |= ((1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0));    //Prescaler at 128 so we have an 125Khz clock source
-	ADMUX |= (1<<REFS0);
-	ADMUX &= ~(1<<REFS1);                //Avcc(+5v) as voltage reference
-	ADCSRB &= ~((1<<ADTS2)|(1<<ADTS1)|(1<<ADTS0));    //ADC in free-running mode
-	ADCSRA |= (1<<ADATE);                //Signal source, in this case is the free-running
+	ADMUX |= ((1<<REFS0)|(1<<REFS1));	//2.56 internal voltage as reference
+	ADCSRB &= 0x00;    //ADC in free-running mode
+	ADCSRA &= ~(1<<ADATE);                //Signal source, in this case is the free-running
 	ADCSRA |= (1<<ADEN);                //Power up the ADC
 	ADCSRA |= (1<<ADSC);                //Start converting
  
 	while(1)
     {
 		//ir_left = adc_synch(MUX0);
-		
-		
-		channel = MUX0;
-		ir_left = ADCW;
-		_delay_ms(100);		
-		//channel = MUX1;
-		//ir_right = ADCW;
-		//_delay_ms(100);
+		//ir_right = adc_synch(MUX1);
+		ADMUX |= (1<<MUX0);
+		ADCSRA |= (1<<ADSC);
+		ir_left = ADCW;	
+		ADMUX &= ~(1<<MUX0);
+		ADMUX |= (1<<MUX1); 
+		ADCSRA |= (1<<ADSC);
+		ir_right = ADCW;
 		printf("left: %d, right: %d\n", ir_left, ir_right);
+		ADMUX &= ~(1<<MUX1);
 	}
 	//printf("left: %d, right: %d\n", ir_left, ir_right);
 			//printf("val: %d, mm: %d \n", ir_left, to_mm(ir_left));
