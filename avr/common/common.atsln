@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Atmel Studio Solution File, Format Version 11.00
-Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "common", "common\common.cproj", "{7595E76E-4F10-4E18-9D3F-210A7BF99B67}"
-EndProject
 Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "i2cslave", "i2cslave\i2cslave.cproj", "{7B3516CB-4E75-4EAB-9990-9D50FEB7EE05}"
+EndProject
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "common", "common\common.cproj", "{1B43D5FC-BF6C-444E-BA6E-BBB3A28CC313}"
+EndProject
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "sensorenhet", "sensorenhet\sensorenhet.cproj", "{134A3BCF-EAED-4266-8695-82C042AC7CAE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,14 +13,18 @@ Global
 		Release|AVR = Release|AVR
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7595E76E-4F10-4E18-9D3F-210A7BF99B67}.Debug|AVR.ActiveCfg = Debug|AVR
-		{7595E76E-4F10-4E18-9D3F-210A7BF99B67}.Debug|AVR.Build.0 = Debug|AVR
-		{7595E76E-4F10-4E18-9D3F-210A7BF99B67}.Release|AVR.ActiveCfg = Release|AVR
-		{7595E76E-4F10-4E18-9D3F-210A7BF99B67}.Release|AVR.Build.0 = Release|AVR
 		{7B3516CB-4E75-4EAB-9990-9D50FEB7EE05}.Debug|AVR.ActiveCfg = Debug|AVR
 		{7B3516CB-4E75-4EAB-9990-9D50FEB7EE05}.Debug|AVR.Build.0 = Debug|AVR
 		{7B3516CB-4E75-4EAB-9990-9D50FEB7EE05}.Release|AVR.ActiveCfg = Release|AVR
 		{7B3516CB-4E75-4EAB-9990-9D50FEB7EE05}.Release|AVR.Build.0 = Release|AVR
+		{1B43D5FC-BF6C-444E-BA6E-BBB3A28CC313}.Debug|AVR.ActiveCfg = Debug|AVR
+		{1B43D5FC-BF6C-444E-BA6E-BBB3A28CC313}.Debug|AVR.Build.0 = Debug|AVR
+		{1B43D5FC-BF6C-444E-BA6E-BBB3A28CC313}.Release|AVR.ActiveCfg = Release|AVR
+		{1B43D5FC-BF6C-444E-BA6E-BBB3A28CC313}.Release|AVR.Build.0 = Release|AVR
+		{134A3BCF-EAED-4266-8695-82C042AC7CAE}.Debug|AVR.ActiveCfg = Debug|AVR
+		{134A3BCF-EAED-4266-8695-82C042AC7CAE}.Debug|AVR.Build.0 = Debug|AVR
+		{134A3BCF-EAED-4266-8695-82C042AC7CAE}.Release|AVR.ActiveCfg = Release|AVR
+		{134A3BCF-EAED-4266-8695-82C042AC7CAE}.Release|AVR.Build.0 = Release|AVR
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
