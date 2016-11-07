@@ -58,3 +58,6 @@ docs/src/designspec.blg
 
 # Built directories
 Debug/
+
+# Atmel Studio
+*.atsuo

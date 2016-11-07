@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Atmel Studio Solution File, Format Version 11.00
 Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "common", "common\common.cproj", "{7595E76E-4F10-4E18-9D3F-210A7BF99B67}"
 EndProject
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "i2cslave", "i2cslave\i2cslave.cproj", "{7B3516CB-4E75-4EAB-9990-9D50FEB7EE05}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|AVR = Debug|AVR
@@ -13,6 +15,10 @@ Global
 		{7595E76E-4F10-4E18-9D3F-210A7BF99B67}.Debug|AVR.Build.0 = Debug|AVR
 		{7595E76E-4F10-4E18-9D3F-210A7BF99B67}.Release|AVR.ActiveCfg = Release|AVR
 		{7595E76E-4F10-4E18-9D3F-210A7BF99B67}.Release|AVR.Build.0 = Release|AVR
+		{7B3516CB-4E75-4EAB-9990-9D50FEB7EE05}.Debug|AVR.ActiveCfg = Debug|AVR
+		{7B3516CB-4E75-4EAB-9990-9D50FEB7EE05}.Debug|AVR.Build.0 = Debug|AVR
+		{7B3516CB-4E75-4EAB-9990-9D50FEB7EE05}.Release|AVR.ActiveCfg = Release|AVR
+		{7B3516CB-4E75-4EAB-9990-9D50FEB7EE05}.Release|AVR.Build.0 = Release|AVR
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

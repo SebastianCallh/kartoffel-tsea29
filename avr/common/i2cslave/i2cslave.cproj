@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>6.2</ProjectVersion>
     <ToolchainName>com.Atmel.AVRGCC8.C</ToolchainName>
-    <ProjectGuid>{7595e76e-4f10-4e18-9d3f-210a7bf99b67}</ProjectGuid>
+    <ProjectGuid>{7b3516cb-4e75-4eab-9990-9d50feb7ee05}</ProjectGuid>
     <avrdevice>ATmega1284P</avrdevice>
     <avrdeviceseries>none</avrdeviceseries>
     <OutputType>Executable</OutputType>
@@ -12,9 +12,9 @@
     <OutputFileName>$(MSBuildProjectName)</OutputFileName>
     <OutputFileExtension>.elf</OutputFileExtension>
     <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
-    <AssemblyName>common</AssemblyName>
-    <Name>common</Name>
-    <RootNamespace>common</RootNamespace>
+    <AssemblyName>i2cslave</AssemblyName>
+    <Name>i2cslave</Name>
+    <RootNamespace>i2cslave</RootNamespace>
     <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>
@@ -98,18 +98,33 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="common.c">
+    <Compile Include="common\config.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="config.h">
+    <Compile Include="common\debug.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="debug.c">
+    <Compile Include="common\debug.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="debug.h">
+    <Compile Include="common\packet.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="common\queue.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="common\queue.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="i2cslave.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="i2cslave.h">
+      <SubType>compile</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="common" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>
