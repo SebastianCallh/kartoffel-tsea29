@@ -46,6 +46,8 @@ int main(void)
 	initialize_i2c(0x30);
 	adc_init();
 	
+	printf("BOOT\n");
+	
 	listen_for_sensor_data_request(&handle_data_request);
 	
 	return run_program(&handle_loop);
