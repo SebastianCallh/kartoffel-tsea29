@@ -10,6 +10,13 @@
 #include <avr/io.h>
 #include "common/debug.h"
 
+const TOP = 16000;
+const MAX_SPEED = 16000;
+
+int converted_speed(unsigned char speed) {
+	return (speed / 100.0) * MAX_SPEED;
+}
+
 void handle_motor_speed_received(struct motor_speed* ms) {
 	OCR1A = ms->left_speed;	// Set speed left wheels
 	OCR1B = ms->right_speed;	// Set speed right wheels
@@ -37,7 +44,7 @@ void initialize_PWM() {
 	TCCR1A = 0;		// Clear Timer1 settings
 	TCCR1B = 0;		// Clear Timer1 settings
 		
-	PORTA = 0xF1;	// Set direction of wheels (Pin 40 for left wheels, pin 38 for right wheels)
+	PORTA = 0xF5;	// Set direction of wheels (Pin 40 for left wheels, pin 38 for right wheels)
 		
 	TCCR1B|= (1<<WGM12)|(1<<CS12)|(1<<CS10)|(1<<WGM13); // Prescaler 1024, Timer1 settings
 	TCCR1A|= (1<<COM1A1)|(1<<WGM11)|(1<<COM1B1);		// Timer1 settings
