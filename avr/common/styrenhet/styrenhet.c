@@ -18,8 +18,8 @@ int converted_speed(unsigned char speed) {
 }
 
 void handle_motor_speed_received(struct motor_speed* ms) {
-	OCR1A = ms->left_speed;	// Set speed left wheels
-	OCR1B = ms->right_speed;	// Set speed right wheels
+	OCR1A = converted_speed(ms->left_speed);	// Set speed left wheels
+	OCR1B = converted_speed(ms->right_speed);	// Set speed right wheels
 }
 
 void handle_left_motor_speed_received(unsigned char speed) {
