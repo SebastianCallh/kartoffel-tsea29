@@ -23,11 +23,11 @@ void handle_motor_speed_received(struct motor_speed* ms) {
 }
 
 void handle_left_motor_speed_received(unsigned char speed) {
-	OCR1A = speed;
+	OCR1A = converted_speed(speed);
 }
 
 void handle_right_motor_speed_received(unsigned char speed) {
-	OCR1B = speed;
+	OCR1B = converted_speed(speed);
 }
 
 void handle_loop()
@@ -46,10 +46,10 @@ void initialize_PWM() {
 		
 	PORTA = 0xF5;	// Set direction of wheels (Pin 40 for left wheels, pin 38 for right wheels)
 		
-	TCCR1B|= (1<<WGM12)|(1<<CS12)|(1<<CS10)|(1<<WGM13); // Prescaler 1024, Timer1 settings
+	TCCR1B|= (1<<WGM12)|(1<<CS10)|(1<<WGM13);			// No prescaler, Timer1 settings
 	TCCR1A|= (1<<COM1A1)|(1<<WGM11)|(1<<COM1B1);		// Timer1 settings
-	ICR1 = 16;											// Set TOP
-		
+	ICR1 = TOP;											// Set TOP
+	
 }
 
 int main(void)

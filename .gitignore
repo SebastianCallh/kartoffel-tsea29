@@ -61,3 +61,6 @@ Debug/
 
 # Atmel Studio
 *.atsuo
+
+# IDEA
+.idea/
