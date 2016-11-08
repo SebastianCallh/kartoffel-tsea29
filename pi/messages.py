@@ -19,7 +19,7 @@ def read_messages(bus):
         if packet_id in raw_observer_map:
             raw_observer_map[packet_id].notify(msg)
         else:
-            print('Unknown packet id: ' + packet_id)
+            print('Unknown packet id: ' + str(packet_id))
 
 
 def subscribe_to_cmd(cmd, func):
@@ -29,4 +29,17 @@ def subscribe_to_cmd(cmd, func):
         print('Trying to subscribe to unknown cmd')
 
 
-register_map(outbound.CMD_RETURN_SENSOR_DATA, lambda msg: [msg[1], msg[2]])
+def parse_returned_sensor_data(msg):
+    return [
+        twos_comp((msg[1] << 8) | msg[2], 16),
+        twos_comp((msg[3] << 8) | msg[4], 16)
+    ]
+
+
+def twos_comp(val, bits):
+    if (val & (1 << (bits - 1))) != 0:
+        val -= 1 << bits
+
+    return val
+
+register_map(outbound.CMD_RETURN_SENSOR_DATA, parse_returned_sensor_data)
