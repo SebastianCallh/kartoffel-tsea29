@@ -7,10 +7,14 @@ from outbound import request_sensor_data, CMD_RETURN_SENSOR_DATA
 bus = Bus()
 
 last_request = datetime.now()
-request_period = timedelta(seconds=2)
+request_period = timedelta(milliseconds=1)
+busy = False
 
 
 def sensor_data_received(msg):
+    global busy
+    busy = False
+
     ir_left_mm = msg[1]
     ir_right_mm = msg[2]
 
@@ -23,7 +27,8 @@ subscribe_to_cmd(CMD_RETURN_SENSOR_DATA, sensor_data_received)
 while True:
     read_messages(bus)
 
-    if datetime.now() - last_request > request_period:
+    if not busy and datetime.now() - last_request > request_period:
+        busy = True
         last_request = datetime.now()
 
         request_sensor_data(bus)

@@ -40,5 +40,7 @@ class Bus:
         for i in range(packet_len):
             data.append(self.bus.read_byte_data(addr, PACKET_DATA))
 
+        return data
+
     def _get_pending_packet_size(self, addr):
         return self.bus.read_byte_data(addr, PACKET_HEADER)
