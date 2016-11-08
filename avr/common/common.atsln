@@ -7,6 +7,8 @@ Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "common", "common\common.cpr
 EndProject
 Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "sensorenhet", "sensorenhet\sensorenhet.cproj", "{134A3BCF-EAED-4266-8695-82C042AC7CAE}"
 EndProject
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "styrenhet", "styrenhet\styrenhet.cproj", "{D7524776-2D4D-45F3-A989-3B01363F4D42}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|AVR = Debug|AVR
@@ -25,6 +27,10 @@ Global
 		{134A3BCF-EAED-4266-8695-82C042AC7CAE}.Debug|AVR.Build.0 = Debug|AVR
 		{134A3BCF-EAED-4266-8695-82C042AC7CAE}.Release|AVR.ActiveCfg = Release|AVR
 		{134A3BCF-EAED-4266-8695-82C042AC7CAE}.Release|AVR.Build.0 = Release|AVR
+		{D7524776-2D4D-45F3-A989-3B01363F4D42}.Debug|AVR.ActiveCfg = Debug|AVR
+		{D7524776-2D4D-45F3-A989-3B01363F4D42}.Debug|AVR.Build.0 = Debug|AVR
+		{D7524776-2D4D-45F3-A989-3B01363F4D42}.Release|AVR.ActiveCfg = Release|AVR
+		{D7524776-2D4D-45F3-A989-3B01363F4D42}.Release|AVR.Build.0 = Release|AVR
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

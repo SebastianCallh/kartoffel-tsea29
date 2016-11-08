@@ -117,7 +117,7 @@ ISR(TWI_vect) {
 						TWDR = p->data[dts_index];
 						++dts_index;
 						if(dts_index == p->size) {
-							free(p->data);
+							free(p);
 							queue_pop(data_to_send);
 						}
 					}
