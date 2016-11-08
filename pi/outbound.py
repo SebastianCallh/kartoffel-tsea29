@@ -1,0 +1,11 @@
+
+CMD_REQUEST_SENSOR_DATA = 1
+CMD_RETURN_SENSOR_DATA = 2
+CMD_PING = 3
+CMD_PONG = 4
+
+NUM_CMDS = 4
+
+
+def request_sensor_data(bus):
+    bus.send([CMD_REQUEST_SENSOR_DATA])
