@@ -1,5 +1,8 @@
 import smbus
 
+SENS_ADDR = 0x30
+STYR_ADDR = 0x40
+
 PACKET_HEADER = 0
 PACKET_DATA = 1
 
