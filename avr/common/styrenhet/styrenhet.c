@@ -36,7 +36,6 @@ void handle_loop()
 }
 
 void initialize_PWM() {
-		
 	DDRA = 0xFF;	// Set Data Direction on PortA
 	DDRD = 0xFF;	// Set Data Direction on PortD
 	TCNT1 = 0;		// Reset Timer1 counter
@@ -44,12 +43,15 @@ void initialize_PWM() {
 	TCCR1A = 0;		// Clear Timer1 settings
 	TCCR1B = 0;		// Clear Timer1 settings
 		
-	PORTA = 0xF5;	// Set direction of wheels (Pin 40 for left wheels, pin 38 for right wheels)
+	PORTA = 0x05;	// Set direction of wheels (Pin 40 for left wheels, pin 38 for right wheels)
 		
 	TCCR1B|= (1<<WGM12)|(1<<CS10)|(1<<WGM13);			// No prescaler, Timer1 settings
 	TCCR1A|= (1<<COM1A1)|(1<<WGM11)|(1<<COM1B1);		// Timer1 settings
 	ICR1 = TOP;											// Set TOP
 	
+	// Set initial speed
+	OCR1A = 0;
+	OCR1B = 0;
 }
 
 int main(void)
@@ -64,7 +66,4 @@ int main(void)
 	listen_for_right_motor_speed_received(&handle_right_motor_speed_received);
 	
 	return run_program(&handle_loop);
-	
-	}
-
 }
