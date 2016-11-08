@@ -18,8 +18,8 @@ def sensor_data_received(msg):
     ir_left_mm = msg[1]
     ir_right_mm = msg[2]
 
-    print('ir_left_mm: ' + ir_left_mm)
-    print('ir_right_mm: ' + ir_right_mm)
+    print('ir_left_mm: ' + str(ir_left_mm))
+    print('ir_right_mm: ' + str(ir_right_mm))
 
 
 subscribe_to_cmd(CMD_RETURN_SENSOR_DATA, sensor_data_received)
