@@ -20,14 +20,14 @@
 
 struct sensor_data
 {
-	unsigned char ir_left_mm;
-	unsigned char ir_right_mm;
+	int ir_left_mm;
+	int ir_right_mm;
 };
 
 struct motor_speed
 {
-	unsigned int left_speed;
-	unsigned int right_speed;
+	unsigned char left_speed;
+	unsigned char right_speed;
 };
 
 #endif /* PROTOCOL_H_ */
