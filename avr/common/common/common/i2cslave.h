@@ -13,6 +13,6 @@
 
 void send_data(struct packet*);
 struct packet* get_received_data();
-void initialze_i2c (unsigned char address);
+void initialize_i2c (unsigned char address);
 
 #endif /* I2CSLAVE_H_ */
