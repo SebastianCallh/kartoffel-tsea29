@@ -55,11 +55,11 @@ int main(void)
     {
 		if (adc_ready()) {
 			if (channel == MUX0) {
-				ir_left = to_mm(ADCW);
+				ir_right = to_mm(ADCW);
 				channel = MUX1;
 			}
 			else if (channel == MUX1) {
-				ir_right = to_mm(ADCW);
+				ir_left = to_mm(ADCW);
 				channel = MUX0;
 			}
 			adc_start(channel);
