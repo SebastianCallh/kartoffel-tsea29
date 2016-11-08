@@ -8,6 +8,7 @@
 #include "common/main.h"
 #include "common/protocol.h"
 #include <avr/io.h>
+#include "common/debug.h"
 
 void handle_data_request()
 {
@@ -31,7 +32,9 @@ void handle_loop()
 int main(void)
 {
 	// TODO: Register handlers
-	
+	initialize_uart();
+	initialize_i2c(0x30);
+	printf("booted\n");
 	listen_for_sensor_data_request(&handle_data_request);
 	listen_for_sensor_data_returned(&handle_data_response);
 	

@@ -106,7 +106,7 @@ ISR(TWI_vect) {
 						TWDR = p->data[dts_index];
 						++dts_index;
 						if(dts_index == p->size) {
-							free(p->data);
+							free(p);
 							queue_pop(data_to_send);
 						}
 					}
@@ -141,7 +141,7 @@ struct packet* get_received_data() {
 	}
 }
 
-void initialze_i2c(unsigned char address)
+void initialize_i2c(unsigned char address)
 {
 	data_to_send = queue_create();
 	data_recieved = queue_create();
