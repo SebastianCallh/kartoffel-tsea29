@@ -37,6 +37,5 @@ void parse_and_execute(struct packet* p) {
 			break;
 	}
 	
-	free(p->data);
 	free(p);
 }
