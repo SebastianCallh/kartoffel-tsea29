@@ -32,11 +32,7 @@ def sensor_data_received(ir_left_mm, ir_right_mm):
     #print('ir_left_mm: ' + str(ir_left_mm))
     print('ir_right_mm: ' + str(ir_right_mm))
 
-    if (ir_right_mm == -1):
-        u = 0
-        print("no reglering")
-    else:
-        u = auto_ctrl(ir_right_mm)
+    u = auto_ctrl(ir_right_mm)
 
     print('u: ' + str(u))
 
@@ -45,19 +41,25 @@ def sensor_data_received(ir_left_mm, ir_right_mm):
 # Reglerteknik
 def auto_ctrl(ir_right_mm):
     global curr_speed_r
-    e = DESIRED_DIST - ir_right_mm # reglerfelet
 
-    # **** P-reglering *********
-    u = Kp * e # styrsignal
+    if (ir_right_mm == -1):
+        u = 0
+        print("no reglering")
+        set_motor_speed(bus, curr_speed_l)
+    else:
+        e = DESIRED_DIST - ir_right_mm # reglerfelet
 
-    # ****** PD-reglering *********
-    """global old_e, old_t
-    u = Kp * e + Kd / (t - old_t) * (e - old_e)
-    old_e = e
-    old_t = t"""
+        # **** P-reglering *********
+        u = Kp * e # styrsignal
 
-    curr_speed_r += u
-    set_right_motor_speed(bus, curr_speed_r)
+        # ****** PD-reglering *********
+        """global old_e, old_t
+        u = Kp * e + Kd / (t - old_t) * (e - old_e)
+        old_e = e
+        old_t = t"""
+
+        curr_speed_r = curr_speed_r + u
+        set_right_motor_speed(bus, curr_speed_r)
     return u
 
 
