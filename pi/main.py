@@ -40,7 +40,7 @@ def sensor_data_received(ir_left_mm, ir_right_mm):
 
 # Reglerteknik
 def auto_ctrl(ir_right_mm):
-    
+    global curr_speed_r
     e = DESIRED_DIST - ir_right_mm # reglerfelet
 
     # **** P-reglering *********
