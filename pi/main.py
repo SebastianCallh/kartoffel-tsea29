@@ -41,7 +41,7 @@ def sensor_data_received(ir_left_mm, ir_right_mm):
 # Reglerteknik
 def auto_ctrl(ir_right_mm):
     
-    e = des_dist - ir_right_mm # reglerfelet
+    e = DESIRED_DIST - ir_right_mm # reglerfelet
 
     # **** P-reglering *********
     u = Kp * e # styrsignal
