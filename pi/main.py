@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from bus import Bus
 from messages import read_messages, subscribe_to_cmd
 from outbound import request_sensor_data, CMD_RETURN_SENSOR_DATA, \
-    set_motor_speed
+    set_motor_speed, set_right_motor_speed, set_left_motor_speed
 
 bus = Bus()
 
