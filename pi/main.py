@@ -1,5 +1,6 @@
 import signal
 import sys
+import traceback
 from datetime import datetime, timedelta
 
 from bus import Bus
@@ -82,3 +83,4 @@ try:
             request_sensor_data(bus)
 except:
     set_motor_speed(bus, 0)
+    traceback.print_stack()
