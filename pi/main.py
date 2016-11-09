@@ -28,25 +28,32 @@ def sensor_data_received(ir_left_mm, ir_right_mm):
     busy = False
     t = datetime.now()
 
-    print('ir_left_mm: ' + str(ir_left_mm))
+    #print('ir_left_mm: ' + str(ir_left_mm))
     print('ir_right_mm: ' + str(ir_right_mm))
+
+    u = auto_ctrl(ir_right_mm)
+
+    print('u: ' + str(u))
+
     
 
 # Reglerteknik
 def auto_ctrl(ir_right_mm):
-    old_e, old_t
+    
     e = des_dist - ir_right_mm # reglerfelet
 
     # **** P-reglering *********
     u = Kp * e # styrsignal
 
     # ****** PD-reglering *********
-    """u = Kp * e + Kd / (t - old_t) * (e - old_e)
+    """global old_e, old_t
+    u = Kp * e + Kd / (t - old_t) * (e - old_e)
     old_e = e
     old_t = t"""
 
     curr_speed_r += u
     set_right_motor_speed(bus, curr_speed_r)
+    return u
 
 
 
@@ -60,15 +67,18 @@ def handle_abort(signum, frame):
 subscribe_to_cmd(CMD_RETURN_SENSOR_DATA, sensor_data_received)
 signal.signal(signal.SIGINT, handle_abort)
 
-curr_speed_l = 3
-curr_speed_r = 3
+curr_speed_l = 20
+curr_speed_r = 20
 set_motor_speed(bus, curr_speed_r)
 
-while True:
-    read_messages(bus)
+try:
+    while True:
+        read_messages(bus)
 
-    if not busy and datetime.now() - last_request > request_period:
-        busy = True
-        last_request = datetime.now()
+        if not busy and datetime.now() - last_request > request_period:
+            busy = True
+            last_request = datetime.now()
 
-        request_sensor_data(bus)
+            request_sensor_data(bus)
+except:
+    set_motor_speed(bus, 0)
