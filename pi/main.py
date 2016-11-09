@@ -82,5 +82,6 @@ try:
 
             request_sensor_data(bus)
 except:
-    set_motor_speed(bus, 0)
     traceback.print_stack()
+    set_motor_speed(bus, 0)
+    
