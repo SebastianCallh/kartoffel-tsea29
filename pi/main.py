@@ -19,7 +19,7 @@ DESIRED_DIST = 100 # Desired distance to wall
 
 old_e = 0
 old_t = datetime.now()
-Kp = 1
+Kp = 2
 
 curr_speed_l = 0
 curr_speed_r = 0
@@ -32,7 +32,11 @@ def sensor_data_received(ir_left_mm, ir_right_mm):
     #print('ir_left_mm: ' + str(ir_left_mm))
     print('ir_right_mm: ' + str(ir_right_mm))
 
-    u = auto_ctrl(ir_right_mm)
+    if (ir_right_mm == -1):
+        u = 0
+        print("no reglering")
+    else:
+        u = auto_ctrl(ir_right_mm)
 
     print('u: ' + str(u))
 
@@ -68,8 +72,8 @@ def handle_abort(signum, frame):
 subscribe_to_cmd(CMD_RETURN_SENSOR_DATA, sensor_data_received)
 signal.signal(signal.SIGINT, handle_abort)
 
-curr_speed_l = 20
-curr_speed_r = 20
+curr_speed_l = 7
+curr_speed_r = 7
 set_motor_speed(bus, curr_speed_r)
 
 try:
