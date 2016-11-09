@@ -19,7 +19,7 @@ DESIRED_DIST = 100 # Desired distance to wall
 
 old_e = 0
 old_t = datetime.now()
-Kp = 2
+Kp = 0.1
 
 curr_speed_l = 0
 curr_speed_r = 0
