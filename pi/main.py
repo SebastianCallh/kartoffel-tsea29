@@ -74,7 +74,7 @@ def handle_abort(signum, frame):
     sys.exit(0)
 
 # Setup
-#subscribe_to_cmd(CMD_RETURN_SENSOR_DATA, sensor_data_received)
+subscribe_to_cmd(CMD_RETURN_SENSOR_DATA, sensor_data_received)
 signal.signal(signal.SIGINT, handle_abort)
 
 curr_speed_l = 20
