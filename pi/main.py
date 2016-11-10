@@ -28,7 +28,6 @@ curr_speed_r = 0
 def sensor_data_received(ir_left_mm, ir_right_mm):
     global busy
     busy = False
-    t = datetime.now()
 
     #print('ir_left_mm: ' + str(ir_left_mm))
     print('ir_right_mm: ' + str(ir_right_mm))
@@ -41,26 +40,29 @@ def sensor_data_received(ir_left_mm, ir_right_mm):
 
 # Reglerteknik
 def auto_ctrl(ir_right_mm):
-    global curr_speed_r
+    global curr_speed_r, old_t
+    t = datetime.now()
 
-    if (ir_right_mm == -1):
-        u = 0
-        print("no reglering")
-        set_motor_speed(bus, curr_speed_l)
-    else:
-        e = DESIRED_DIST - ir_right_mm # reglerfelet
+    if (t - old_t >= 500):
+        if (ir_right_mm == -1):
+            u = 0
+            print("no reglering")
+            set_motor_speed(bus, curr_speed_l)
+        else:
+            e = DESIRED_DIST - ir_right_mm # reglerfelet
 
-        # **** P-reglering *********
-        u = floor(Kp * e) # styrsignal
+            # **** P-reglering *********
+            u = floor(Kp * e) # styrsignal
 
-        # ****** PD-reglering *********
-        """global old_e, old_t
-        u = Kp * e + Kd / (t - old_t) * (e - old_e)
-        old_e = e
-        old_t = t"""
+            # ****** PD-reglering *********
+            """global old_e
+            u = Kp * e + Kd / (t - old_t) * (e - old_e)
+            old_e = e
+            """
+            curr_speed_r = curr_speed_r + u
+            set_right_motor_speed(bus, curr_speed_r)
+        old_t = t
 
-        curr_speed_r = curr_speed_r + u
-        set_right_motor_speed(bus, curr_speed_r)
     return u
 
 
