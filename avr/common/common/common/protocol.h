@@ -26,8 +26,8 @@ struct sensor_data
 
 struct motor_speed
 {
-	unsigned char left_speed;
-	unsigned char right_speed;
+	signed char left_speed;
+	signed char right_speed;
 };
 
 #endif /* PROTOCOL_H_ */

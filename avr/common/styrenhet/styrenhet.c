@@ -13,20 +13,36 @@
 const TOP = 16000;
 const MAX_SPEED = 16000;
 
-int converted_speed(unsigned char speed) {
+int converted_speed(signed char speed) {
 	return (speed / 100.0) * MAX_SPEED;
 }
 
 void handle_motor_speed_received(struct motor_speed* ms) {
-	OCR1A = converted_speed(ms->left_speed);	// Set speed left wheels
-	OCR1B = converted_speed(ms->right_speed);	// Set speed right wheels
+	signed char l = ms->left_speed;
+	signed char r = ms->right_speed;
+	
+	printf("wheel speed received: l: %d, r: &d", l, r);
+	
+	if (l < 0) PORTA |= (1<<PORTA0);
+	if (l >= 0) PORTA &= ~(1<<PORTA0);
+	
+	if (r < 0) PORTA |= (1<<PORTA2);
+	if (r >= 0) PORTA &= ~(1<<PORTA2);
+	
+	unsigned char c_l = converted_speed(abs(l));
+	unsigned char c_r = converted_speed(abs(r));
+	
+	printf("converted: l: %d, r: &d", c_l, c_r);
+	
+	OCR1A = c_l;	// Set speed left wheels
+	OCR1B = c_r;	// Set speed right wheels
 }
 
-void handle_left_motor_speed_received(unsigned char speed) {
+void handle_left_motor_speed_received(signed char speed) {
 	OCR1A = converted_speed(speed);
 }
 
-void handle_right_motor_speed_received(unsigned char speed) {
+void handle_right_motor_speed_received(signed char speed) {
 	OCR1B = converted_speed(speed);
 }
 
@@ -43,7 +59,7 @@ void initialize_PWM() {
 	TCCR1A = 0;		// Clear Timer1 settings
 	TCCR1B = 0;		// Clear Timer1 settings
 		
-	PORTA = 0x05;	// Set direction of wheels (Pin 40 for left wheels, pin 38 for right wheels)
+	PORTA = 0x05;	// Set direction of wheels (Pin 40 for left wheels, pin 38 for right wheels) (PORTA[0] left and PORTA[2] right)
 		
 	TCCR1B|= (1<<WGM12)|(1<<CS10)|(1<<WGM13);			// No prescaler, Timer1 settings
 	TCCR1A|= (1<<COM1A1)|(1<<WGM11)|(1<<COM1B1);		// Timer1 settings
