@@ -74,7 +74,7 @@ def handle_abort(signum, frame):
     sys.exit(0)
 
 # Setup
-subscribe_to_cmd(CMD_RETURN_SENSOR_DATA, sensor_data_received)
+#subscribe_to_cmd(CMD_RETURN_SENSOR_DATA, sensor_data_received)
 signal.signal(signal.SIGINT, handle_abort)
 
 curr_speed_l = 7
@@ -83,13 +83,14 @@ set_motor_speed(bus, curr_speed_l, curr_speed_r)
 
 try:
     while True:
-        read_messages(bus)
+        '''read_messages(bus)
 
         if not busy and datetime.now() - last_request > request_period:
             busy = True
             last_request = datetime.now()
 
             request_sensor_data(bus)
+		'''
 except:
     traceback.print_exc()
     set_motor_speed(bus, 0)
