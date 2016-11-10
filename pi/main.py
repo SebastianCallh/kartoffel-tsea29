@@ -22,8 +22,12 @@ old_e = 0
 old_t = datetime.now()
 Kp = 0.1
 
+TURN_SPEED = 20
+TURN_TIME = 1000
+turn_start_time = 0
 curr_speed_l = 0
 curr_speed_r = 0
+
 
 def sensor_data_received(ir_left_mm, ir_right_mm):
     global busy
@@ -32,7 +36,7 @@ def sensor_data_received(ir_left_mm, ir_right_mm):
     #print('ir_left_mm: ' + str(ir_left_mm))
     print('ir_right_mm: ' + str(ir_right_mm))
 
-    #u = auto_ctrl(ir_right_mm)
+    u = auto_ctrl(ir_right_mm)
 
     print('u: ' + str(u))
 
@@ -73,24 +77,36 @@ def handle_abort(signum, frame):
 
     sys.exit(0)
 
+def update_turn_state():
+	if datetime.datetim.now() - turn_start_time >= datetime.timedelta(milliseconds=TURN_TIME)
+		set_motor_speed(bus, 0, 0)
+		
+def turn_left():
+	global turn_start_time = datetime.now()
+	set_motor_speed(bus, -TURN_SPEED, TURN_SPEED)
+	
+def turn_right():
+	global turn_start_time = datetime.now()
+	set_motor_speed(bus, TURN_SPEED, -TURN_SPEED)
+
+
 # Setup
-subscribe_to_cmd(CMD_RETURN_SENSOR_DATA, sensor_data_received)
+#subscribe_to_cmd(CMD_RETURN_SENSOR_DATA, sensor_data_received)
 signal.signal(signal.SIGINT, handle_abort)
 
-curr_speed_l = 20
-curr_speed_r = -20
-'''set_motor_speed(bus, curr_speed_l, curr_speed_r)
-'''
+turn_right()
+
 try:
     while True:
-        read_messages(bus)
+		#read_messages(bus)
 
-        if not busy and datetime.now() - last_request > request_period:
+		update_turn_state()
+		'''if not busy and datetime.now() - last_request > request_period:
             busy = True
             last_request = datetime.now()
 
             request_sensor_data(bus)
-		
+		'''
 except:
     traceback.print_exc()
     set_motor_speed(bus, 0)
