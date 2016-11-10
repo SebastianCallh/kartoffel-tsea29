@@ -7,13 +7,14 @@
 
 #include "common/main.h"
 #include "common/protocol.h"
+#include <limits.h>
 #include <avr/io.h>
 #include "common/debug.h"
 
 const TOP = 16000;
 const MAX_SPEED = 16000;
 
-int converted_speed(signed char speed) {
+int converted_speed(unsigned char speed) {
 	return (speed / 100.0) * MAX_SPEED;
 }
 
@@ -21,7 +22,8 @@ void handle_motor_speed_received(struct motor_speed* ms) {
 	signed char l = ms->left_speed;
 	signed char r = ms->right_speed;
 	
-	printf("wheel speed received: l: %d, r: &d", l, r);
+	printf("wheel speed received: l: %d, r: %d \n", l, r);
+	
 	
 	if (l < 0) PORTA |= (1<<PORTA0);
 	if (l >= 0) PORTA &= ~(1<<PORTA0);
@@ -29,10 +31,15 @@ void handle_motor_speed_received(struct motor_speed* ms) {
 	if (r < 0) PORTA |= (1<<PORTA2);
 	if (r >= 0) PORTA &= ~(1<<PORTA2);
 	
-	unsigned char c_l = converted_speed(abs(l));
-	unsigned char c_r = converted_speed(abs(r));
+	unsigned char a_l = abs(l) + UINT_MAX + 1;
+	unsigned char a_r = abs(r) + UINT_MAX + 1;
 	
-	printf("converted: l: %d, r: &d", c_l, c_r);
+	printf("abs: l: %d, r: %d \n", a_l, a_r);
+	
+	int c_l = converted_speed(a_l);
+	int c_r = converted_speed(a_r);
+	
+	printf("converted: l: %d, r: %d \n", c_l, c_r);
 	
 	OCR1A = c_l;	// Set speed left wheels
 	OCR1B = c_r;	// Set speed right wheels
