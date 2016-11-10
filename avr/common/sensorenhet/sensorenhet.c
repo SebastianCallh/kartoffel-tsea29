@@ -87,7 +87,7 @@ int to_mm(int n) {
 
 /*
 intervall 280 < n < 1000
-Mätdata från vänster sensor [1023, 872, 761, 664, 590, 531, 476, 430, 400, 374, 350, 327, 304, 289, 271, 258, 239]
+Mätdata från höger sensor [1023, 872, 761, 664, 590, 531, 476, 430, 400, 374, 350, 327, 304, 289, 271, 258, 239]
 
 
 //Python för att sampla funktionen
