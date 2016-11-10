@@ -1,6 +1,7 @@
 import signal
 import sys
 import traceback
+from math import floor
 from datetime import datetime, timedelta
 
 from bus import Bus
@@ -50,7 +51,7 @@ def auto_ctrl(ir_right_mm):
         e = DESIRED_DIST - ir_right_mm # reglerfelet
 
         # **** P-reglering *********
-        u = Kp * e # styrsignal
+        u = math.floor(Kp * e) # styrsignal
 
         # ****** PD-reglering *********
         """global old_e, old_t
