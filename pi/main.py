@@ -78,7 +78,8 @@ def handle_abort(signum, frame):
     sys.exit(0)
 
 def update_turn_state():
-	if datetime.datetim.now() - turn_start_time >= datetime.timedelta(milliseconds=TURN_TIME)
+	global TURN_TIME
+	if datetime.datetime.now() - turn_start_time >= datetime.timedelta(milliseconds=TURN_TIME)
 		set_motor_speed(bus, 0, 0)
 		
 def turn_left():
