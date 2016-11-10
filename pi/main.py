@@ -4,6 +4,7 @@ import traceback
 from math import floor
 from datetime import datetime, timedelta
 
+import laser
 from bus import Bus
 from messages import read_messages, subscribe_to_cmd
 from outbound import request_sensor_data, CMD_RETURN_SENSOR_DATA, \
@@ -77,6 +78,9 @@ def handle_abort(signum, frame):
 subscribe_to_cmd(CMD_RETURN_SENSOR_DATA, sensor_data_received)
 signal.signal(signal.SIGINT, handle_abort)
 
+#Setup laser
+laser.init_laser_data(bus)
+
 curr_speed_l = 20
 curr_speed_r = 20
 set_motor_speed(bus, curr_speed_r)
@@ -89,6 +93,8 @@ try:
             busy = True
             last_request = datetime.now()
 
+            laser_distance = laser.read_laser_data(bus)
+            
             request_sensor_data(bus)
 except:
     traceback.print_exc()
