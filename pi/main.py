@@ -1,8 +1,8 @@
 import signal
 import sys
 import traceback
+import datetime
 from math import floor
-from datetime import datetime, timedelta
 
 from bus import Bus
 from messages import read_messages, subscribe_to_cmd
