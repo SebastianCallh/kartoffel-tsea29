@@ -100,15 +100,14 @@ signal.signal(signal.SIGINT, handle_abort)
 turn_right()
 
 try:
-    while True:
+	while True:
 		#read_messages(bus)
-
 		update_turn_state()
 		'''if not busy and datetime.now() - last_request > request_period:
-            busy = True
-            last_request = datetime.now()
-
-            request_sensor_data(bus)
+	            busy = True
+	            last_request = datetime.now()
+	
+	            request_sensor_data(bus)
 		'''
 except:
     traceback.print_exc()
