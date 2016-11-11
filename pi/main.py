@@ -13,7 +13,7 @@ bus = Bus()
 
 # Update frequency
 last_request = datetime.datetime.now()
-request_period = timedelta(milliseconds=1)
+request_period = datetime.timedelta(milliseconds=1)
 busy = False
 
 DESIRED_DIST = 100 # Desired distance to wall
