@@ -25,11 +25,11 @@ void handle_motor_speed_received(struct motor_speed* ms) {
 	printf("wheel speed received: l: %d, r: %d \n", l, r);
 	
 	
-	if (l < 0) PORTA |= (1<<PORTA0);
-	if (l >= 0) PORTA &= ~(1<<PORTA0);
+	if (l < 0) PORTA &= ~(1<<PORTA0);
+	if (l >= 0) PORTA |= (1<<PORTA0);
 	
-	if (r < 0) PORTA |= (1<<PORTA2);
-	if (r >= 0) PORTA &= ~(1<<PORTA2);
+	if (r < 0) PORTA &= ~(1<<PORTA2);
+	if (r >= 0) PORTA |= (1<<PORTA2);
 	
 	unsigned char a_l = abs(l) + UINT_MAX + 1;
 	unsigned char a_r = abs(r) + UINT_MAX + 1;
