@@ -97,7 +97,7 @@ def turn_right():
 #subscribe_to_cmd(CMD_RETURN_SENSOR_DATA, sensor_data_received)
 signal.signal(signal.SIGINT, handle_abort)
 
-turn_right()
+turn_left()
 
 try:
 	while True:
