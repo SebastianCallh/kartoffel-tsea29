@@ -83,11 +83,13 @@ def update_turn_state():
 		set_motor_speed(bus, 0, 0)
 		
 def turn_left():
-	global turn_start_time = datetime.now()
+	global turn_start_time 
+	turn_start_time = datetime.now()
 	set_motor_speed(bus, -TURN_SPEED, TURN_SPEED)
 	
 def turn_right():
-	global turn_start_time = datetime.now()
+	global turn_start_time
+	turn_start_time = datetime.now()
 	set_motor_speed(bus, TURN_SPEED, -TURN_SPEED)
 
 
