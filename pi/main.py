@@ -12,14 +12,14 @@ from outbound import request_sensor_data, CMD_RETURN_SENSOR_DATA, \
 bus = Bus()
 
 # Update frequency
-last_request = datetime.now()
+last_request = datetime.datetime.now()
 request_period = timedelta(milliseconds=1)
 busy = False
 
 DESIRED_DIST = 100 # Desired distance to wall
 
 old_e = 0
-old_t = datetime.now()
+old_t = datetime.datetime.now()
 Kp = 0.1
 
 TURN_SPEED = 20
@@ -45,7 +45,7 @@ def sensor_data_received(ir_left_mm, ir_right_mm):
 # Reglerteknik
 def auto_ctrl(ir_right_mm):
     global curr_speed_r, old_t
-    t = datetime.now()
+    t = datetime.datetime.now()
 
     if (t - old_t >= 500):
         if (ir_right_mm == -1):
@@ -84,12 +84,12 @@ def update_turn_state():
 		
 def turn_left():
 	global turn_start_time 
-	turn_start_time = datetime.now()
+	turn_start_time = datetime.datetime.now()
 	set_motor_speed(bus, -TURN_SPEED, TURN_SPEED)
 	
 def turn_right():
 	global turn_start_time
-	turn_start_time = datetime.now()
+	turn_start_time = datetime.datetime.now()
 	set_motor_speed(bus, TURN_SPEED, -TURN_SPEED)
 
 
