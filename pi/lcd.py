@@ -60,7 +60,7 @@ class LCD:
 		
 		#Turn on display
 		self.send(DISPLAY_ON)
-		sleep()				#Wait a lot 
+		wait(80)				#Wait a lot 
 		
 		
 			
