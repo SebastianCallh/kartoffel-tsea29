@@ -15,7 +15,7 @@ GROUND 	30
 5V/VCC 	02
 R_W 	22
 E		40
-A		04
+A		17
 K		06
 '''
 
@@ -48,19 +48,19 @@ class LCD:
 		GPIO.output(R_W, 0) 	#Make sure R_W is low (should probably be grounded since we never read)
 		
 		#Power up sequence
-		sleep(40)				#Make sure at least 30 ms has passed since power on
+		wait(40)				#Make sure at least 30 ms has passed since power on
 		self.send(FUNCTION_SET)
-		sleep(2)				#Make super sure that 39 us mas passed
+		wait(2)				#Make super sure that 39 us mas passed
 		self.send(DISPLAY_ONOFF_CONTROL)
-		sleep(2)				#Make super sure that 39 us mas passed again
+		wait(2)				#Make super sure that 39 us mas passed again
 		self.send(DISPLAY_CLEAR)
-		sleep(4)				#Make sure that 1.53 ms has passed
+		wait(4)				#Make sure that 1.53 ms has passed
 		self.send(ENTRY_MODE_SET)
 		#End of power up sequence. Display is off
 		
 		#Turn on display
 		self.send(DISPLAY_ON)
-		sleep(80)				#Wait a lot 
+		sleep()				#Wait a lot 
 		
 		
 			
@@ -74,12 +74,16 @@ class LCD:
 			
 		#Write the data
 		GPIO.output(E, 1)
-		sleep(1)				#Larger than recommended wait
+		wait(1)				#Larger than recommended wait
 		GPIO.output(E, 0)
-		sleep(1)				#Larger than recommended wait
+		wait(1)				#Larger than recommended wait
 		
 		
-			
 	def cleanup(self):
 		GPIO.cleanup()
+		
+
+#Sleep in ms
+def wait(t):
+	sleep(t / 1000)
 		
