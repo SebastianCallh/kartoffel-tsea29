@@ -5,11 +5,14 @@ import datetime
 from math import floor
 
 from bus import Bus
+from lcd import LCD
+
 from messages import read_messages, subscribe_to_cmd
 from outbound import request_sensor_data, CMD_RETURN_SENSOR_DATA, \
     set_motor_speed, set_right_motor_speed, set_left_motor_speed
 
 bus = Bus()
+lcd = LCD()
 
 # Update frequency
 last_request = datetime.datetime.now()
@@ -97,7 +100,10 @@ def turn_right():
 #subscribe_to_cmd(CMD_RETURN_SENSOR_DATA, sensor_data_received)
 signal.signal(signal.SIGINT, handle_abort)
 
-turn_left()
+lcd = LCD()
+lcd.init()
+
+lcd.send([1, 0, 1, 0, 1, 0, 1, 0])
 
 try:
 	while True:
