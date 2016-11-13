@@ -9,7 +9,7 @@ E_PULSE_WIDTH = 230
 DATA = [0 for x in range(0, 7)]
 
 '''
-Anslutningar till GPIO-portar. Alla portar är i board-numbering
+Anslutningar till GPIO-portar. Alla portar ar i board-numbering
 GPIO 	29, 31, 32, 33, 35, 36, 37, 38
 GROUND 	30
 5V/VCC 	02
@@ -42,7 +42,7 @@ class LCD:
 
 		GPIO.output(RS, 0)		#Select instruction register
 		GPIO.output(E, 0) 		#Make sure E is initially low
-		GPIO.output(R_W, 0) 	#Make sure R_W is initially low
+		GPIO.output(R_W, 0) 	#Make sure R_W is low
 		
 		#Power up sequence
 		sleep(40)				#Make sure at least 30 ms has passed since power on
@@ -63,11 +63,19 @@ class LCD:
 			
 	def send(self, data):
 		GPIO.output(E, 0) 		#Make sure E is initially low
-		GPIO.output(R_W, 0) 	#Make sure R_W is initially low
-		GPIO.output(RS, 0)		
+		GPIO.output(RS, 0)		#Make sure RS is initially low
 		
+		#Put the data on the pins
 		for d, p in zip(data, pins):
 			GPIO.output(p, d)
+			
+		#Write the data
+		GPIO.output(E, 1)
+		sleep(1)				#Larger than recommended wait
+		GPIO.output(E, 0)
+		sleep(1)				#Larger than recommended wait
+		
+		
 			
 	def cleanup(self):
 		GPIO.cleanup()
