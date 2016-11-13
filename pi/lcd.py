@@ -44,7 +44,7 @@ class LCD:
 
 		GPIO.output(RS, 0)		#Select instruction register
 		GPIO.output(E, 0) 		#Make sure E is initially low
-		GPIO.output(R_W, 0) 	#Make sure R_W is low
+		GPIO.output(R_W, 0) 	#Make sure R_W is low (should probably be grounded since we never read)
 		
 		#Power up sequence
 		sleep(40)				#Make sure at least 30 ms has passed since power on
@@ -65,7 +65,7 @@ class LCD:
 			
 	def send(self, data):
 		GPIO.output(E, 0) 		#Make sure E is initially low
-		GPIO.output(RS, 0)		#Make sure RS is initially low
+		GPIO.output(RS, 1)		#Select data register
 		
 		#Put the data on the pins
 		for d, p in zip(data, pins):
