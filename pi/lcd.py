@@ -37,6 +37,7 @@ class LCD:
 		GPIO.setmode(GPIO.BOARD)
 		
 		#Configure output pins
+		GPIO.setup(RS, GPIO.OUT)
 		GPIO.setup(R_W, GPIO.OUT)
 		GPIO.setup(E, GPIO.OUT)
 		for p in pins:
