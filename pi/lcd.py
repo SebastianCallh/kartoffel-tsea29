@@ -25,8 +25,8 @@ RS = 18
 R_W = 22
 E = 40
 
-FUNCTION_SET = [0, 0, 1, 1, 1, 1, 0, 0]
-DISPLAY_ONOFF_CONTROL = [0, 0, 0, 0, 1, 1, 1, 1] #display, cursor, blink on 
+FUNCTION_SET = [0, 0, 1, 1, 0, 0, 0, 0]
+DISPLAY_ONOFF_CONTROL = [0, 0, 0, 0, 1, 0, 0, 0] #display, cursor, blink on 
 DISPLAY_CLEAR = [0, 0, 0, 0, 0, 0, 0, 1]
 ENTRY_MODE_SET = [0, 0, 0, 0, 0, 1, 1, 0] #increment mode, entire shift off
 DISPLAY_ON = [0, 0, 0, 0, 1, 1, 0, 0]	
@@ -43,24 +43,25 @@ class LCD:
 		for p in pins:
 			GPIO.setup(p, GPIO.OUT)
 
+			
+		#Power up sequence
 		GPIO.output(RS, 0)		#Select instruction register
-		GPIO.output(E, 0) 		#Make sure E is initially low
 		GPIO.output(R_W, 0) 	#Make sure R_W is low (should probably be grounded since we never read)
 		
-		#Power up sequence
-		wait(40)				#Make sure at least 30 ms has passed since power on
+		sleep_ms(30)				#Make sure at least 30 ms has passed since power on
 		self.send(FUNCTION_SET)
-		wait(2)				#Make super sure that 39 us mas passed
+		sleep_us(80)				#Make super sure that 39 us mas passed
 		self.send(DISPLAY_ONOFF_CONTROL)
-		wait(2)				#Make super sure that 39 us mas passed again
+		sleep_us(80)				#Make super sure that 39 us mas passed again
 		self.send(DISPLAY_CLEAR)
-		wait(4)				#Make sure that 1.53 ms has passed
+		sleep_ms(4)				#Make sure that 1.53 ms has passed
 		self.send(ENTRY_MODE_SET)
+		sleep_us(80)
 		#End of power up sequence. Display is off
 		
 		#Turn on display
 		self.send(DISPLAY_ON)
-		wait(80)				#Wait a lot 
+		sleep_us(80)				#Wait a lot 
 		
 		
 			
@@ -74,9 +75,9 @@ class LCD:
 			
 		#Write the data
 		GPIO.output(E, 1)
-		wait(1)				#Larger than recommended wait
+		sleep_us(1)				#Larger than recommended wait
 		GPIO.output(E, 0)
-		wait(1)				#Larger than recommended wait
+		sleep_us(1)				#Larger than recommended wait
 		
 		
 	def cleanup(self):
@@ -84,6 +85,10 @@ class LCD:
 		
 
 #Sleep in ms
-def wait(t):
+def sleep_ms(t):
 	sleep(t / 1000)
+		
+#Sleep in mu
+def sleep_mu(t):
+	sleep(t / 10000)
 		
