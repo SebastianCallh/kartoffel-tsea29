@@ -31,7 +31,7 @@ class LCD:
 		
 		for p in pins:
 			GPIO.setup(p, GPIO.OUT)
-			print('pin ' + p ' + 'output')
+			print('pin ' + p + ' output')
 			
 			
 	def send(self, data):
