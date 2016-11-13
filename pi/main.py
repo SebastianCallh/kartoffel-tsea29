@@ -22,7 +22,7 @@ old_e = 0
 old_t = datetime.datetime.now()
 Kp = 0.1
 
-TURN_SPEED = 40
+TURN_SPEED = 45
 TURN_TIME = 900
 turn_start_time = 0
 curr_speed_l = 0
