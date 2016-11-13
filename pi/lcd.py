@@ -16,7 +16,7 @@ R_W 	22
 E		40
 '''
 
-GPIO = [29, 31, 32, 33, 35, 36, 37, 38]
+pins = [29, 31, 32, 33, 35, 36, 37, 38]
 R_W = 22
 E = 40
 
@@ -24,10 +24,10 @@ class LCD:
 	def init(self):	
 		# set board mode to Broadcom
 		GPIO.setmode(GPIO.BCM)
-		for port in GPIO:
-			GPIO.setup(port, GPIO.OUT)
+		for p in pins:
+			GPIO.setup(p, GPIO.OUT)
 			
 			
 	def send(self, data):
-		for d, p in zip(data, zip):
+		for d, p in zip(data, pins):
 			GPIO.output(p, d)
