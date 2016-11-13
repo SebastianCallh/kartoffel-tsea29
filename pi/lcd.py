@@ -22,12 +22,18 @@ E = 40
 
 class LCD:
 	def init(self):	
-		# set board mode to Broadcom
-		GPIO.setmode(GPIO.BCM)
+		#Use board numbering
+		GPIO.setmode(GPIO.BOARD)
 		for p in pins:
 			GPIO.setup(p, GPIO.OUT)
 			
 			
 	def send(self, data):
+		GPIO.output(R_W, 1)
+		GPIO.output(E, 1)
+		
 		for d, p in zip(data, pins):
 			GPIO.output(p, d)
+			
+	def cleanup(self):
+		GPIO.cleanup()
