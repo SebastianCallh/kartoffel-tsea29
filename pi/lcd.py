@@ -31,13 +31,13 @@ class LCD:
 		
 		for p in pins:
 			GPIO.setup(p, GPIO.OUT)
-			print('pin ' + p + ' output')
+			print('pin ' + str(p) + ' output')
 			
 			
 	def send(self, data):
 		for d, p in zip(data, pins):
 			GPIO.output(p, d)
-			print('setting ' + p + ' to ' + d)
+			print('setting ' + str(p) + ' to ' + str(d))
 			
 	def cleanup(self):
 		GPIO.cleanup()
