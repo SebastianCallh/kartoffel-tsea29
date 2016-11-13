@@ -15,6 +15,8 @@ GROUND 	30
 5V/VCC 	02
 R_W 	22
 E		40
+A		04
+K		06
 '''
 
 #29 is MSB, 38 LSB
