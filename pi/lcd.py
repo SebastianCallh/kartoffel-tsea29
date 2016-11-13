@@ -24,16 +24,20 @@ class LCD:
 	def init(self):	
 		#Use board numbering
 		GPIO.setmode(GPIO.BOARD)
+		
+		GPIO.setup(R_W, GPIO.OUT)
+		GPIO.setup(E, GPIO.OUT)
+		print('R_W, E output')
+		
 		for p in pins:
 			GPIO.setup(p, GPIO.OUT)
+			print('pin ' + p ' + 'output')
 			
 			
 	def send(self, data):
-		GPIO.output(R_W, 1)
-		GPIO.output(E, 1)
-		
 		for d, p in zip(data, pins):
 			GPIO.output(p, d)
+			print('setting ' + p + ' to ' + d)
 			
 	def cleanup(self):
 		GPIO.cleanup()

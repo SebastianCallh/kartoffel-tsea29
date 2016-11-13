@@ -5,5 +5,7 @@ try:
 	lcd = LCD()
 	lcd.init()
 	lcd.send([1, 1, 1, 1, 1, 1, 1, 1])
-except:
+		
+except e:
 	lcd.cleanup()
+	print(e)
