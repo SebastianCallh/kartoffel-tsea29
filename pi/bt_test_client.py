@@ -1,4 +1,30 @@
-import socket
+import bluetooth
+
+server_addr = "B8:27:EB:FC:55:27"
+port = 1
+client_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+client_sock.connect((server_addr,port))
+
+client_sock.send("Kartoffel paj")
+
+
+
+
+sock.close()
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''import socket
 
 serverMACAddress = 'B8:27:EB:FC:55:27'
 port = 3
@@ -9,4 +35,4 @@ while 1:
     if text == "quit":
         break
     s.send(bytes(text, 'UTF-8'))
-s.close()
+s.close()'''
