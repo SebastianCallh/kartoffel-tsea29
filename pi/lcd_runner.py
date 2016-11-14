@@ -6,7 +6,8 @@ try:
 	lcd = LCD()
 	lcd.init()
 	lcd.send(A)
-		
+	lcd.cleanup()
+	
 except e:
 	lcd.cleanup()
 	print(e)

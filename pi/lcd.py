@@ -26,7 +26,7 @@ R_W = 22
 E = 40
 
 FUNCTION_SET = [0, 0, 1, 1, 0, 0, 0, 0]
-DISPLAY_ONOFF_CONTROL = [0, 0, 0, 0, 1, 0, 0, 0] #display, cursor, blink on 
+DISPLAY_ONOFF_CONTROL = [0, 0, 0, 0, 1, 1, 1, 1] #display, cursor, blink on 
 DISPLAY_CLEAR = [0, 0, 0, 0, 0, 0, 0, 1]
 ENTRY_MODE_SET = [0, 0, 0, 0, 0, 1, 1, 0] #increment mode, entire shift off
 DISPLAY_ON = [0, 0, 0, 0, 1, 1, 0, 0]	
@@ -48,7 +48,7 @@ class LCD:
 		GPIO.output(RS, 0)		#Select instruction register
 		GPIO.output(R_W, 0) 	#Make sure R_W is low (should probably be grounded since we never read)
 		
-		sleep_ms(30)				#Make sure at least 30 ms has passed since power on
+		sleep_ms(100)				#Make sure at least 30 ms has passed since power on
 		self.send(FUNCTION_SET)
 		sleep_us(80)				#Make super sure that 39 us mas passed
 		self.send(DISPLAY_ONOFF_CONTROL)
@@ -56,11 +56,11 @@ class LCD:
 		self.send(DISPLAY_CLEAR)
 		sleep_ms(4)				#Make sure that 1.53 ms has passed
 		self.send(ENTRY_MODE_SET)
-		sleep_us(80)
+		sleep_ms(10)
 		#End of power up sequence. Display is off
 		
 		#Turn on display
-		self.send(DISPLAY_ON)
+		#self.send(DISPLAY_ON)
 		sleep_us(80)				#Wait a lot 
 		
 		
