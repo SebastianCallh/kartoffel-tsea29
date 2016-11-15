@@ -1,5 +1,4 @@
-import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from navigator import Navigator
 from driver import Driver
@@ -19,7 +18,7 @@ driver = Driver()
 navigator = Navigator(driver, laser)
 
 # Update frequency
-last_request = datetime.datetime.now()
+last_request = datetime.now()
 request_period = timedelta(milliseconds=1)
 busy = False
 
