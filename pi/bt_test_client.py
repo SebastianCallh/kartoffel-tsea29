@@ -1,12 +1,12 @@
 import bluetooth
 
-server_addr = "B8:27:EB:FC:55:27"
+PI_ADDR = "B8:27:EB:FC:55:27"
 port = 3
 
 client_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 print("created client_sock")
-client_sock.connect((server_addr, port))
-print("connected to %d \n", server_addr)
+client_sock.connect((PI_ADDR, port))
+print("connected to %s \n", PI_ADDR)
 
 client_sock.send("Kartoffel paj")
 print("sent msg")
@@ -15,6 +15,7 @@ print("sent msg")
 
 
 client_sock.close()
+print("closed")
 
 
 

@@ -12,7 +12,7 @@ server_sock.listen(1)
 print("Init performed")
 
 (client_sock, client_addr) = server_sock.accept()
-print("Accepted connection from %d \n", client_addr)
+print("Accepted connection from %s \n", client_addr)
 
 
 
