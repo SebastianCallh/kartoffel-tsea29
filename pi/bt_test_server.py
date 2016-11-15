@@ -14,7 +14,14 @@ print("Init performed")
 (client_sock, client_addr) = server_sock.accept()
 print("Accepted connection from %d \n", client_addr)
 
-
+try:
+    while True:
+        data = client_sock.recv(1024)
+        if len(data) == 0:
+            break
+        print("received [%s]" % data)
+except IOError:
+    pass
 
 
 server_sock.close()
@@ -27,7 +34,7 @@ print("Closed")
 
 
 
-
+# sudo hciconfig hci0 piscan
 
 
 
