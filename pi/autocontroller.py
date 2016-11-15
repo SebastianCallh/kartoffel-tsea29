@@ -23,10 +23,9 @@ class AutoController:
 		if (ir_left_mm == -1 and ir_right_mm == -1): # Don't regulate
 			regulation = 0
 			print("u = 0, no reglering")
-			set_motor_speed(bus, SLOW_SPEED)
 			time_last_regulation = time_now
 			use_derivate = False
-			return
+			return SLOW_SPEED, SLOW_SPEED
 		elif (ir_left_mm != -1 and ir_right_mm != -1): # Regulate on right side
 			reg_side = "right"
 			sensor_data_dist = ir_right_mm
