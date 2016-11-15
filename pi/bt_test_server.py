@@ -19,7 +19,7 @@ try:
         data = client_sock.recv(1024)
         if len(data) == 0:
             break
-        print("received [%s]" % data)
+        print("received " + str(data))
 except IOError:
     pass
 
