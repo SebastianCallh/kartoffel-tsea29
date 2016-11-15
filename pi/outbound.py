@@ -1,30 +1,70 @@
-from bus import STYR_ADDR, SENS_ADDR
+"""
+This file contains functions for interacting with the two different AVR units.
+All functions defined here are outbound which mean they go from the main unit
+to one of the AVR units.
 
-CMD_REQUEST_SENSOR_DATA = 1
-CMD_RETURN_SENSOR_DATA = 2
-CMD_PING = 3
-CMD_PONG = 4
-CMD_SET_MOTOR_SPEED = 5
-CMD_SET_LEFT_MOTOR_SPEED = 6
-CMD_SET_RIGHT_MOTOR_SPEED = 7
+The message passing function is implemented as a distributed event bus which
+in its distributed nature depends on asynchronous functionality. This means that
+messages sent are not executed immediately and there is no guarantee that the
+sent command is actually executed on the receiving unit.
 
-NUM_CMDS = 7
+For more information see eventbus.py.
+"""
+
+from bus import STYR_ADDR, SENSOR_ADDR
+from event import Event
+from eventbus import EventBus
+from protocol import CMD_REQUEST_SENSOR_DATA, CMD_SET_MOTOR_SPEED, \
+    CMD_SET_LEFT_MOTOR_SPEED, CMD_SET_RIGHT_MOTOR_SPEED
+
+# NOTE: Function comments are purposely left out from this file in favor of the
+# complete definitions of every found command in proctol.py.
 
 
-def request_sensor_data(bus):
-    bus.send([CMD_REQUEST_SENSOR_DATA], addr=SENS_ADDR)
+def request_sensor_data():
+    EventBus.post(
+        SENSOR_ADDR,
+        Event(
+            message_id=CMD_REQUEST_SENSOR_DATA
+        )
+    )
 
 
-def set_motor_speed(bus, left_speed, right_speed=None):
+def set_motor_speed(left_speed, right_speed=None):
     if right_speed is None:
         right_speed = left_speed
 
-    bus.send([CMD_SET_MOTOR_SPEED, left_speed, right_speed], addr=STYR_ADDR)
+    EventBus.post(
+        STYR_ADDR,
+        Event(
+            message_id=CMD_SET_MOTOR_SPEED,
+            arguments=[
+                left_speed,
+                right_speed
+            ]
+        )
+    )
 
 
-def set_left_motor_speed(bus, speed):
-    bus.send([CMD_SET_LEFT_MOTOR_SPEED, speed], addr=STYR_ADDR)
+def set_left_motor_speed(speed):
+    EventBus.post(
+        STYR_ADDR,
+        Event(
+            message_id=CMD_SET_LEFT_MOTOR_SPEED,
+            arguments=[
+                speed
+            ]
+        )
+    )
 
 
-def set_right_motor_speed(bus, speed):
-    bus.send([CMD_SET_RIGHT_MOTOR_SPEED, speed], addr=STYR_ADDR)
+def set_right_motor_speed(speed):
+    EventBus.post(
+        STYR_ADDR,
+        Event(
+            message_id=CMD_SET_RIGHT_MOTOR_SPEED,
+            arguments=[
+                speed
+            ]
+        )
+    )
