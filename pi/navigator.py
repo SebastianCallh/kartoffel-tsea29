@@ -23,11 +23,12 @@ class auto_control(State):
 		print('distance diff: ' + str(data['ir_right'] - data['old_ir_right']))
 		DISCONTINUITY_DIST = 20.0 #mm
 		FACING_WALL_DIST = 30 #mm
+		print('laser distance: ' + str(data['laser'].read_data()))
 		if data['ir_right'] - data['old_ir_right'] >= DISCONTINUITY_DIST:
 			print('changing to preparing for turn')
 			data['driver'].prepare_for_turn()
 			return before_turn()
-		elif laser.read_data() <=  FACING_WALL_DIST:
+		elif data['laser'].read_data() <=  FACING_WALL_DIST:
 			driver.turn_left()
 			return turn()
 		else:
