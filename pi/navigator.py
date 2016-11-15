@@ -36,7 +36,7 @@ class before_turn(State):
 	
 	def run(self, data):
 		print('running before turn')
-		if not data['driver'].driving:
+		if not data['driver'].driving():
 			print('changing to turn')
 			data['driver'].turn_right()
 			return turn()
@@ -48,7 +48,7 @@ class turn(State):
 		return #Do nothing. Only auto control uses it
 	
 	def run(self, data):
-		if not data['driver'].driving:
+		if not data['driver'].driving():
 			print('changing to auto control')
 			return auto_control()
 		else:
