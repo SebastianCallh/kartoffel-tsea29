@@ -30,4 +30,5 @@ class Driver:
 		self.drive(TURN_SPEED, -TURN_SPEED, TURN_TIME)
 		
 	def prepare_for_turn(self):
+		print('driver preparing for turn')
 		self.drive(40, 40, 600)
