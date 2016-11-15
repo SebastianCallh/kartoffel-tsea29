@@ -76,7 +76,7 @@ class Navigator:
 					}
 		
 		#Stand still for 100 ms, waiting for sensors
-		self.data['driver'].drive(0, 0, 100)
+		self.data['driver'].drive(0, 0, 5000)
 		self.state = warmup()
 		
 						
