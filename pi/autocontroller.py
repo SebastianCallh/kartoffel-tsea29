@@ -67,4 +67,4 @@ class AutoController:
 
 		time_last_regulation = time_now
 		
-		return speed_close_wall, speed_far_wall
+		return int(speed_close_wall), int(speed_far_wall)
