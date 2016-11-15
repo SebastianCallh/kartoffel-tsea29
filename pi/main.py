@@ -20,10 +20,10 @@ request_period = timedelta(milliseconds=1)
 busy = False
 
 def sensor_data_received(ir_left_mm, ir_right_mm):
-    global busy, ir_left, ir_right
-    busy = False
+	global busy
+	busy = False
 	navigate.sensor_data_received(ir_left_mm, ir_right_mm)
-
+	
 def handle_abort(signum, frame):
     # Stop motors to avoid robot running amok
     set_motor_speed(bus, 0)
@@ -44,7 +44,7 @@ subscribe_to_cmd(CMD_RETURN_SENSOR_DATA, sensor_data_received)
 try:
 	
     while True:
-        read_messages(bus)
+		read_messages(bus)
 		handle_bus(bus)
 		navigator.navigate()
 		
