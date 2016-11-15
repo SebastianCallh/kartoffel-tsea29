@@ -16,4 +16,4 @@ class Laser:
             data = (hi << 8) | lo
             return data
         except:
-            return Laser.read_data()
+            return -1
