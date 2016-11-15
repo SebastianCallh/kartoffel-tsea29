@@ -21,16 +21,16 @@ class auto_control(State):
 	def run(self, data):
 		#If sensor readings jump more than 5 mm we've discovered a turn
 		print('distance diff: ' + str(data['ir_right'] - data['old_ir_right']))
+		print('laser distance: ' + str(data['laser'].read_data()))
 		DISCONTINUITY_DIST = 20.0 #mm
 		FACING_WALL_DIST = 30 #mm
-		print('laser distance: ' + str(data['laser'].read_data()))
 		if data['ir_right'] - data['old_ir_right'] >= DISCONTINUITY_DIST:
 			print('changing to preparing for turn')
 			data['driver'].prepare_for_turn()
 			return before_turn()
-		elif data['laser'].read_data() <=  FACING_WALL_DIST:
-			data['driver'].turn_left()
-			return turn()
+		#elif data['laser'].read_data() <=  FACING_WALL_DIST:
+		#	data['driver'].turn_left()
+		#	return turn()
 		else:
 			return auto_control()
 				
@@ -109,7 +109,5 @@ class Navigator:
 		
 	#Runs the state. The states run method returns the next state
 	def navigate(self):
-		print('navigate')
 		next_state = self.state.run(self.data)
-		print(next_state)
 		self.state = next_state
