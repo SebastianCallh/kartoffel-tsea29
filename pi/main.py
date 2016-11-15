@@ -2,77 +2,27 @@ import signal
 import sys
 import traceback
 import datetime
-from math import floor
+from datetime import timedelta
 
 from bus import Bus
-from lcd import LCD
+from navigator import Navigator
 
 from messages import read_messages, subscribe_to_cmd
 from outbound import request_sensor_data, CMD_RETURN_SENSOR_DATA, \
     set_motor_speed, set_right_motor_speed, set_left_motor_speed
 
 bus = Bus()
-lcd = LCD()
+navigator = Navigator()
 
 # Update frequency
 last_request = datetime.datetime.now()
-request_period = datetime.timedelta(milliseconds=1)
+request_period = timedelta(milliseconds=1)
 busy = False
 
-DESIRED_DIST = 100 # Desired distance to wall
-
-old_e = 0
-old_t = datetime.datetime.now()
-Kp = 0.1
-
-TURN_SPEED = 45
-TURN_TIME = 900
-turn_start_time = 0
-curr_speed_l = 0
-curr_speed_r = 0
-
-
 def sensor_data_received(ir_left_mm, ir_right_mm):
-    global busy
+    global busy, ir_left, ir_right
     busy = False
-
-    #print('ir_left_mm: ' + str(ir_left_mm))
-    print('ir_right_mm: ' + str(ir_right_mm))
-
-    u = auto_ctrl(ir_right_mm)
-
-    print('u: ' + str(u))
-
-    
-
-# Reglerteknik
-def auto_ctrl(ir_right_mm):
-    global curr_speed_r, old_t
-    t = datetime.datetime.now()
-
-    if (t - old_t >= 500):
-        if (ir_right_mm == -1):
-            u = 0
-            print("no reglering")
-            set_motor_speed(bus, curr_speed_l)
-        else:
-            e = DESIRED_DIST - ir_right_mm # reglerfelet
-
-            # **** P-reglering *********
-            u = floor(Kp * e) # styrsignal
-
-            # ****** PD-reglering *********
-            """global old_e
-            u = Kp * e + Kd / (t - old_t) * (e - old_e)
-            old_e = e
-            """
-            curr_speed_r = curr_speed_r + u
-            set_right_motor_speed(bus, curr_speed_r)
-        old_t = t
-
-    return u
-
-
+	navigate.sensor_data_received(ir_left_mm, ir_right_mm)
 
 def handle_abort(signum, frame):
     # Stop motors to avoid robot running amok
@@ -80,42 +30,25 @@ def handle_abort(signum, frame):
 
     sys.exit(0)
 
-def update_turn_state():
-	global TURN_TIME
-	if datetime.datetime.now() - turn_start_time >= datetime.timedelta(milliseconds=TURN_TIME):
-		set_motor_speed(bus, 0, 0)
-		
-def turn_left():
-	global turn_start_time 
-	turn_start_time = datetime.datetime.now()
-	set_motor_speed(bus, -TURN_SPEED, TURN_SPEED)
-	
-def turn_right():
-	global turn_start_time
-	turn_start_time = datetime.datetime.now()
-	set_motor_speed(bus, TURN_SPEED, -TURN_SPEED)
+def handle_bus(bus):
+	if not busy and datetime.datetime.now() - last_request > request_period:
+		busy = True
+		last_request = datetime.datetime.now()
 
+		request_sensor_data(bus)
 
 # Setup
-#subscribe_to_cmd(CMD_RETURN_SENSOR_DATA, sensor_data_received)
 signal.signal(signal.SIGINT, handle_abort)
-
-lcd = LCD()
-lcd.init()
-
-lcd.send([1, 0, 1, 0, 1, 0, 1, 0])
+subscribe_to_cmd(CMD_RETURN_SENSOR_DATA, sensor_data_received)
 
 try:
-	while True:
-		#read_messages(bus)
-		update_turn_state()
-		'''if not busy and datetime.now() - last_request > request_period:
-	            busy = True
-	            last_request = datetime.now()
 	
-	            request_sensor_data(bus)
-		'''
+    while True:
+        read_messages(bus)
+		handle_bus(bus)
+		navigator.navigate()
+		
+		
 except:
     traceback.print_exc()
     set_motor_speed(bus, 0)
-    
