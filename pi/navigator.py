@@ -21,11 +21,15 @@ class auto_control(State):
 	def run(self, data):
 		#If sensor readings jump more than 5 mm we've discovered a turn
 		print('distance diff: ' + str(data['ir_right'] - data['old_ir_right']))
-		DISCONTINUITY_DIST = 20.0
+		DISCONTINUITY_DIST = 20.0 #mm
+		FACING_WALL_DIST = 100 #mm
 		if data['ir_right'] - data['old_ir_right'] >= DISCONTINUITY_DIST:
 			print('changing to preparing for turn')
 			data['driver'].prepare_for_turn()
 			return before_turn()
+		else if laser.read_data() <=  FACING_WALL_DIST:
+			driver.turn_left()
+			return turn()
 		else:
 			return auto_control()
 				
@@ -67,13 +71,13 @@ class turn(State):
 ###### NAVIGATOR CLASS #######	
 class Navigator:
 
-	def __init__(self, driver):
-		self.driver = driver
+	def __init__(self, driver, laser):
 		self.data = {'ir_left': 0,
 					'ir_right': 0,
 					'old_ir_right': 0,
 					'old_ir_left': 0,
-					'driver' : driver
+					'driver' : driver,
+					'laser' : laser
 					}
 		
 		#Stand still for 100 ms, waiting for sensors
