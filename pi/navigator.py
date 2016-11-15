@@ -29,7 +29,7 @@ class auto_control(State):
 			data['driver'].prepare_for_turn()
 			return before_turn()
 		elif data['laser'].read_data() <=  FACING_WALL_DIST:
-			driver.turn_left()
+			data['driver'].turn_left()
 			return turn()
 		else:
 			return auto_control()
