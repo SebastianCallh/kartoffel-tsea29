@@ -31,7 +31,7 @@ def handle_abort(signum, frame):
 	sys.exit(0)
 
 def handle_bus(bus):
-	global busy
+	global busy, last_request, request_period
 	if not busy and datetime.datetime.now() - last_request > request_period:
 		busy = True
 		last_request = datetime.datetime.now()
