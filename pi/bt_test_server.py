@@ -3,9 +3,9 @@ import bluetooth
 client_addr = "00:15:83:2A:49:E4"
 server_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 
-port = 1
+port = 50000
 server_sock.bind((client_addr,port))
-server_sock.listen(1)
+server_sock.listen(50000)
 
 client_sock,client_addr = server_sock.accept()
 print("Accepted connection from %d \n", address)

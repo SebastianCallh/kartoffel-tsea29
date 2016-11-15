@@ -1,7 +1,7 @@
 import bluetooth
 
 server_addr = "B8:27:EB:FC:55:27"
-port = 5000
+port = 50000
 client_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 client_sock.connect((server_addr,port))
 
