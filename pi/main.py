@@ -32,8 +32,8 @@ def handle_abort(signum, frame):
 
 def handle_bus(bus):
 	if not busy and datetime.datetime.now() - last_request > request_period:
-	busy = True
-	last_request = datetime.datetime.now()
+		busy = True
+		last_request = datetime.datetime.now()
 
 	request_sensor_data(bus)
 
