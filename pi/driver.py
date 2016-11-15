@@ -8,18 +8,20 @@ class Driver:
 
 	TURN_SPEED = 45
 	TURN_TIME = 900
-
-	drive_stop_time = 0
-
+	
+	def __init__(self, bus):
+		self.bus = bus
+		self.drive_stop_time = 0
+		
 	def driving(self):
-		if drive_stop_time <= datetime.now():
-			set_motor_speed(bus, 0, 0)
+		if self.drive_stop_time <= datetime.now():
+			set_motor_speed(self.bus, 0, 0)
 			return False
 		return True
 
 	def drive(self, left_speed, right_speed, duration):
-		drive_stop_time = datetime.now() + timedelta(milliseconds=duration)
-		set_motor_speed(bus, left_speed, right_speed)
+		self.drive_stop_time = datetime.now() + timedelta(milliseconds=duration)
+		set_motor_speed(self.bus, left_speed, right_speed)
 			
 	def turn_left(self):
 		drive(-TURN_SPEED, TURN_SPEED, TURN_TIME)
