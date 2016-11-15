@@ -6,15 +6,16 @@ server_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 port = 50000
 server_sock.bind((client_addr,port))
 server_sock.listen(50000)
+print("Init performed")
 
 client_sock,client_addr = server_sock.accept()
-print("Accepted connection from %d \n", address)
+print("Accepted connection from %d \n", client_addr)
 
 
 
 
 server_sock.close()
-	
+print("Closed")
 	
 
 
