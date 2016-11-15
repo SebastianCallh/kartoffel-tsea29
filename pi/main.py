@@ -24,7 +24,7 @@ busy = False
 def sensor_data_received(ir_left_mm, ir_right_mm):
 	global busy, navigator
 	busy = False
-	print('ir right': ir_right_mm)
+	print('ir right ' + str(ir_right_mm))
 	navigator.sensor_data_received(ir_left_mm, ir_right_mm)
 
 def handle_abort(signum, frame):
