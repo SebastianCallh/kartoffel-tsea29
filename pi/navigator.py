@@ -20,9 +20,10 @@ class auto_control(State):
 		
 	def run(self, data):
 		#If sensor readings jump more than 5 mm we've discovered a turn
-		return auto_control()
+		print(str(data['ir_right'] - data['old_ir_right']))
 		DISCONTINUITY_DIST = 5.0
 		if data['ir_right'] - data['old_ir_right'] >= DISCONTINUITY_DIST:
+			print('changing to preparing for turn')
 			data['driver'].prepare_for_turn()
 			return before_turn()
 		else:
@@ -35,6 +36,7 @@ class before_turn(State):
 	
 	def run(self, data):
 		if not data['driver'].driving:
+			print('changing to turn')
 			data['driver'].turn_right()
 			return turn()
 		else:
@@ -46,6 +48,7 @@ class turn(State):
 	
 	def run(self, data):
 		if not data['driver'].driving:
+			print('changing to auto control')
 			return auto_control()
 		else:
 			return turn()
