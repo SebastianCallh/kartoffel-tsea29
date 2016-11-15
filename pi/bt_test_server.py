@@ -6,7 +6,7 @@ client_addr = ""
 server_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 
 port = 3
-server_sock.bind(PI_ADDR, port)
+server_sock.bind((PI_ADDR, port))
 server_sock.listen(1)
 
 print("Init performed")
