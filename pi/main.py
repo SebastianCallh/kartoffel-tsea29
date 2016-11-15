@@ -15,7 +15,7 @@ set_motor_speed
 
 
 from protocol import CMD_RETURN_SENSOR_DATA
-from saftey import Safety
+from safety import Safety
 
 
 bus = Bus()
