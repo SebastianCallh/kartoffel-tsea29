@@ -6,19 +6,18 @@ time_last_regulation = datetime.datetime.now()
 use_derivate = True
 old_error = 0
 
-Kp = float(0.6)
-Kd = float(2)
-
-STANDARD_SPEED = 40
-SLOW_SPEED = 20
-
 class AutoController:
 
 	def auto_control(self, ir_left_mm, ir_right_mm, reg_side):
 		global use_derivate, time_last_regulation, old_error
 		
 		DESIRED_DISTANCE = 120 # Desired distance to wall
+		STANDARD_SPEED = 40
+		SLOW_SPEED = 20
 		
+		Kp = float(0.6)
+		Kd = float(2)
+
 		time_now = datetime.datetime.now()
 
 		if (ir_left_mm == -1 and ir_right_mm == -1): # Don't regulate
