@@ -13,6 +13,7 @@ class Driver:
 		self.drive_stop_time = 0
 		
 	def driving(self):
+		print('time left driving: ' + str(self.drive_stop_time - datetime.now()))
 		if self.drive_stop_time <= datetime.now():
 			set_motor_speed(self.bus, 0, 0)
 			return False
