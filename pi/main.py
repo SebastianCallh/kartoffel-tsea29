@@ -1,10 +1,6 @@
-import signal
-import sys
-import traceback
 import datetime
 from datetime import timedelta
 
-from bus import Bus
 from navigator import Navigator
 from driver import Driver
 from laser import Laser
@@ -18,9 +14,8 @@ from protocol import CMD_RETURN_SENSOR_DATA
 from safety import Safety
 
 
-bus = Bus()
 laser = Laser()
-driver = Driver(bus)
+driver = Driver()
 navigator = Navigator(driver, laser)
 
 # Update frequency
@@ -38,12 +33,6 @@ def sensor_data_received(ir_left_mm, ir_right_mm):
 	busy = False
 	print('ir right ' + str(ir_right_mm))
 	navigator.sensor_data_received(ir_left_mm, ir_right_mm)
-
-def handle_abort(signum, frame):
-	# Stop motors to avoid robot running amok
-	set_motor_speed(bus, 0)
-
-	sys.exit(0)
 
 def handle_bus(bus):
 	global busy, last_request, request_period
