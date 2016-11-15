@@ -34,15 +34,14 @@ def sensor_data_received(ir_left_mm, ir_right_mm):
 	print('ir right ' + str(ir_right_mm))
 	navigator.sensor_data_received(ir_left_mm, ir_right_mm)
 
-def handle_bus(bus):
+def request_data():
 	global busy, last_request, request_period
 	if not busy and datetime.now() - last_request > request_period:
 		busy = True
 		last_request = datetime.now()
 		laser_distance = Laser.read_data()
 		request_sensor_data()
-
-	
+		
 def main():
 	global busy, last_request
 
@@ -50,7 +49,7 @@ def main():
 
 	while True:
 		EventBus.receive()
-		handle_bus(bus)
+		request_data()
 		navigator.navigate()
 
 		

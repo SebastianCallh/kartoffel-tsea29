@@ -19,7 +19,7 @@ def process_sensor_data(left_ir_mm_hi, left_ir_mm_lo, right_ir_mm_hi, right_ir_m
     left_ir_mm = twos_comp((left_ir_mm_hi << 8) | left_ir_mm_lo, 16)
     right_ir_mm = twos_comp((right_ir_mm_hi << 8) | right_ir_mm_lo, 16)
 
-    return [left_ir_mm, right_ir_mm] + args
+    return [left_ir_mm, right_ir_mm] + list(args)
 
 
 COMMAND_PROCESSORS[CMD_RETURN_SENSOR_DATA] = process_sensor_data
