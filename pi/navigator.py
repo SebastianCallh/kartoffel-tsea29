@@ -20,7 +20,7 @@ class auto_control(State):
 		
 	def run(self, data):
 		#If sensor readings jump more than 5 mm we've discovered a turn
-		print(str(data['ir_right'] - data['old_ir_right']))
+		print('distance diff: ' + str(data['ir_right'] - data['old_ir_right']))
 		DISCONTINUITY_DIST = 5.0
 		if data['ir_right'] - data['old_ir_right'] >= DISCONTINUITY_DIST:
 			print('changing to preparing for turn')
@@ -35,6 +35,7 @@ class before_turn(State):
 		return #Do nothing. Only auto control uses it
 	
 	def run(self, data):
+		print('running before turn')
 		if not data['driver'].driving:
 			print('changing to turn')
 			data['driver'].turn_right()
@@ -75,4 +76,7 @@ class Navigator:
 		
 	#Runs the state. The states run method returns the next state
 	def navigate(self):
-		self.state = self.state.run(self.data)
+		print('navigate')
+		next_state = self.state.run(self.data)
+		print(next_state)
+		self.state = next_state
