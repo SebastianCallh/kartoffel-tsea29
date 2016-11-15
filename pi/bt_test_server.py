@@ -14,8 +14,10 @@ print("Init performed")
 (client_sock, client_addr) = server_sock.accept()
 print("Accepted connection from %s \n", client_addr)
 
+data = ""
+
 try:
-    while True:
+    while data == "":
         print("getting data")
         data = client_sock.recv(1024)
         if len(data) == 0:
