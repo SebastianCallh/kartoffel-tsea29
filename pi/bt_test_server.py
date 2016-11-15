@@ -21,6 +21,7 @@ try:
             break
         print("received " + str(data))
 except IOError:
+    print("Error = " + str(IOError))
     pass
 
 
