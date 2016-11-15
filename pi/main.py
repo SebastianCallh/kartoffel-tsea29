@@ -20,9 +20,9 @@ request_period = timedelta(milliseconds=1)
 busy = False
 
 def sensor_data_received(ir_left_mm, ir_right_mm):
-	global busy
+	global busy, navigator
 	busy = False
-	navigate.sensor_data_received(ir_left_mm, ir_right_mm)
+	navigator.sensor_data_received(ir_left_mm, ir_right_mm)
 
 def handle_abort(signum, frame):
 	# Stop motors to avoid robot running amok
