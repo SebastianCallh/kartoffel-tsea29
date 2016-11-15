@@ -14,8 +14,11 @@ print("Init performed")
 (client_sock, client_addr) = server_sock.accept()
 print("Accepted connection from %s \n", client_addr)
 
+data = ""
+
 try:
-    while True:
+    while data == "":
+        print("getting data")
         data = client_sock.recv(1024)
         if len(data) == 0:
             break
@@ -23,6 +26,13 @@ try:
 except IOError:
     print("Error = " + str(IOError))
     pass
+
+try:
+    print("Sending IP")
+    client_sock.send("IP address")
+    print("IP sent")
+except IOError:
+    print("Error = " + str(IOError))
 
 
 server_sock.close()
