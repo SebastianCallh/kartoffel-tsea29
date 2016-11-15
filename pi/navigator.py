@@ -20,7 +20,7 @@ class auto_control(State):
 		
 	def run(self, data):
 		#If sensor readings jump more than 5 mm we've discovered a turn
-		print('distance: ' + str(data['ir_right'])
+		print('distance: ' + str(data['ir_right']))
 		if data['ir_right'] == -1:
 			print('changing to preparing for turn')
 			data['driver'].prepare_for_turn()
