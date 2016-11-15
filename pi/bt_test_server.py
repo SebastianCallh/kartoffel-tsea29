@@ -1,11 +1,14 @@
 import bluetooth
 
-client_addr = "00:15:83:2A:49:E4"
+PI_ADDR = "B8:27:EB:FC:55:27"
+client_addr = ""
+
 server_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 
-port = 50000
-server_sock.bind((client_addr,port))
-server_sock.listen(50000)
+port = 3
+server_sock.bind(PI_ADDR)
+server_sock.listen(1)
+
 print("Init performed")
 
 (client_sock, client_addr) = server_sock.accept()
@@ -16,7 +19,7 @@ print("Accepted connection from %d \n", client_addr)
 
 server_sock.close()
 print("Closed")
-	
+
 
 
 
