@@ -27,7 +27,17 @@ class auto_control(State):
 			return before_turn()
 		else:
 			return auto_control()
+				
+class warmup(State):
+	
+	def sensor_data_received(self, data, new_ir_right, new_ir_left):
+		return #Do nothing
 		
+	def run(self, data):
+		if not data['driver'].driving():
+			return auto_control()
+		else:
+			return warmup()
 		
 class before_turn(State):
 	def sensor_data_received(self, data, new_ir_right, new_ir_left):
@@ -58,13 +68,17 @@ class Navigator:
 
 	def __init__(self, driver):
 		self.driver = driver
-		self.state = auto_control()
 		self.data = {'ir_left': 0,
 					'ir_right': 0,
 					'old_ir_right': 0,
 					'old_ir_left': 0,
 					'driver' : driver
 					}
+		
+		#Stand still for 100 ms, waiting for sensors
+		data['driver'].drive(0, 0, 100)
+		self.state = warmup()
+		
 						
 	def sensor_data_received(self, new_ir_right, new_ir_left):
 		self.state.sensor_data_received(self.data, new_ir_left, new_ir_right)
