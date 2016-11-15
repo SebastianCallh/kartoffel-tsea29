@@ -30,7 +30,7 @@ except IOError:
 
 f = os.popen('ifconfig wlan0 | grep "inet\ addr" | cut -d: -f2 | cut -d" " -f1')
 pi_ip=f.read()
-print("Reading ip: " + str(your_ip))
+print("Reading ip: " + str(pi_ip))
 
 try:
     print("Sending IP")
