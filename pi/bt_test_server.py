@@ -8,7 +8,7 @@ server_sock.bind((client_addr,port))
 server_sock.listen(50000)
 print("Init performed")
 
-client_sock,client_addr = server_sock.accept()
+(client_sock, client_addr) = server_sock.accept()
 print("Accepted connection from %d \n", client_addr)
 
 
