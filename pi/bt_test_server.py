@@ -27,6 +27,13 @@ except IOError:
     print("Error = " + str(IOError))
     pass
 
+try:
+    print("Sending IP")
+    client_sock.send("IP address")
+    print("IP sent")
+except IOError:
+    print("Error = " + str(IOError))
+
 
 server_sock.close()
 print("Closed")
