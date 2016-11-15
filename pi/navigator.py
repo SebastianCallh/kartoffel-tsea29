@@ -22,7 +22,7 @@ class auto_control(State):
 		#If sensor readings jump more than 5 mm we've discovered a turn
 		print('distance diff: ' + str(data['ir_right'] - data['old_ir_right']))
 		DISCONTINUITY_DIST = 20.0 #mm
-		FACING_WALL_DIST = 100 #mm
+		FACING_WALL_DIST = 30 #mm
 		if data['ir_right'] - data['old_ir_right'] >= DISCONTINUITY_DIST:
 			print('changing to preparing for turn')
 			data['driver'].prepare_for_turn()
@@ -56,6 +56,19 @@ class before_turn(State):
 			return turn()
 		else:
 			return before_turn()
+
+class after_turn(State):
+	def sensor_data_received(self, data, new_ir_right, new_ir_left):
+		return #Do nothing. Only auto control uses it
+	
+	def run(self, data):
+		print('running after turn')
+		if not data['driver'].driving():
+			print('changing to auto control')
+			return auto_control()
+		else:
+			return after_turn()			
+
 	
 class turn(State):
 	def sensor_data_received(self, data, new_ir_right, new_ir_left):
@@ -63,8 +76,9 @@ class turn(State):
 	
 	def run(self, data):
 		if not data['driver'].driving():
-			print('changing to auto control')
-			return auto_control()
+			print('changing to after turn')
+			data['driver'].prepare_for_turn()
+			return after_turn()
 		else:
 			return turn()
 		
