@@ -1,4 +1,5 @@
 import bluetooth
+import os
 
 PI_ADDR = "B8:27:EB:FC:55:27"
 client_addr = ""
@@ -27,9 +28,13 @@ except IOError:
     print("Error = " + str(IOError))
     pass
 
+f = os.popen('ifconfig wlan0 | grep "inet\ addr" | cut -d: -f2 | cut -d" " -f1')
+pi_ip=f.read()
+print("Reading ip: " + str(your_ip))
+
 try:
     print("Sending IP")
-    client_sock.send("IP address")
+    client_sock.send("IP address: " + str(pi_ip))
     print("IP sent")
 except IOError:
     print("Error = " + str(IOError))
