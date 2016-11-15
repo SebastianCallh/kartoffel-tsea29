@@ -27,9 +27,9 @@ class auto_control(State):
 			print('changing to preparing for turn')
 			data['driver'].prepare_for_turn()
 			return before_turn()
-		#elif laser.read_data() <=  FACING_WALL_DIST:
-		#	driver.turn_left()
-		#	return turn()
+		elif laser.read_data() <=  FACING_WALL_DIST:
+			driver.turn_left()
+			return turn()
 		else:
 			return auto_control()
 				

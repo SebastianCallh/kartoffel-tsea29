@@ -26,7 +26,7 @@ busy = False
 def setup():
     Safety.setup_terminal_abort()
     EventBus.subscribe(CMD_RETURN_SENSOR_DATA, sensor_data_received)
-    #Laser.initialize()
+    Laser.initialize()
 
 def sensor_data_received(ir_left_mm, ir_right_mm):
 	global busy, navigator
