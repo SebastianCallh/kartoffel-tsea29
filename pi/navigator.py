@@ -56,7 +56,7 @@ class Navigator:
 	def __init__(self, driver):
 		self.driver = driver
 		self.state = auto_control()
-		self.data = {'if_left': 0,
+		self.data = {'ir_left': 0,
 					'ir_right': 0,
 					'old_ir_right': 0,
 					'old_ir_left': 0,
