@@ -27,17 +27,17 @@ class Driver:
         self.drive_stop_time = datetime.now() + timedelta(milliseconds=duration)
         set_motor_speed(left_speed, right_speed)
     
-    def out_right_turn(self):
-        self.tasks = [nudge_forward, turn_right, nudge_forward]
+    def outer_turn_right(self):
+        self.tasks = [_nudge_forward, _turn_right, _nudge_forward]
 
-    def outer_left_turn(self):
-        self.tasks = [nudge_forward, turn_left, nudge_forward]
+    def outer_turn_left(self):
+        self.tasks = [_nudge_forward, _turn_left, _nudge_forward]
 
-    def inner_left_turn(self):
-        self.tasks = [turn_left]
+    def inner_turn_left(self):
+        self.tasks = [_turn_left]
 
-    def inner_right_turn(self):
-        self.tasks = [turn_right]
+    def inner_turn_right(self):
+        self.tasks = [_turn_right]
 
     def stop(self):
         set_motor_speed(0, 0)
