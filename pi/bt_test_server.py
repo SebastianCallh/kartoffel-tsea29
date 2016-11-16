@@ -5,7 +5,7 @@ from datetime import datetime
 
 
 
-time.sleep(20)
+time.sleep(5)
 
 f = open('log.txt', 'w')
 f.write('start')
