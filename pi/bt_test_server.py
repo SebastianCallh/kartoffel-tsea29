@@ -1,7 +1,7 @@
 import bluetooth
 import os
 
-f = open('log.txt', 'a')
+f = open('log.txt', 'w')
 f.write('start')
 
 PI_ADDR = "B8:27:EB:FC:55:27"
