@@ -4,7 +4,7 @@ import time
 
 
 
-time.sleep(10)
+time.sleep(20)
 
 f = open('log.txt', 'w')
 f.write('start')
