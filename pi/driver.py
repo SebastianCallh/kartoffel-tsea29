@@ -17,7 +17,7 @@ class Driver:
         if self.drive_stop_time <= datetime.now():
             #If tasks are complete, the robot is no longer driving
             if not self.tasks:
-                self.set_motor_speed(0, 0, 500)
+                set_motor_speed(0, 0, 500)
                 return False
             
             self.tasks.pop()()
