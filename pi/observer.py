@@ -1,3 +1,9 @@
+"""
+Simple implementation of the observer pattern.
+
+See https://en.wikipedia.org/wiki/Observer_pattern for more information.
+"""
+
 
 class Observer:
     def __init__(self):

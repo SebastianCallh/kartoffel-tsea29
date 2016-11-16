@@ -1,17 +1,23 @@
+"""
+Main program code - where all the magic happens
+"""
+
 import signal
 import sys
 import traceback
 from math import floor
 from datetime import datetime, timedelta
 
-from bus import Bus
-from messages import read_messages, subscribe_to_cmd
-from outbound import request_sensor_data, CMD_RETURN_SENSOR_DATA, \
-    set_motor_speed, set_right_motor_speed, set_left_motor_speed
+from laser import Laser
+from eventbus import EventBus
+from outbound import request_sensor_data, \
+    set_motor_speed, set_right_motor_speed
 
-bus = Bus()
 
 # Update frequency
+from protocol import CMD_RETURN_SENSOR_DATA
+from saftey import Safety
+
 last_request = datetime.now()
 request_period = timedelta(milliseconds=1)
 busy = False
@@ -22,8 +28,6 @@ old_e = 0
 old_t = datetime.now()
 Kp = 0.1
 
-curr_speed_l = 0
-curr_speed_r = 0
 
 def sensor_data_received(ir_left_mm, ir_right_mm):
     global busy
@@ -47,7 +51,7 @@ def auto_ctrl(ir_right_mm):
         if (ir_right_mm == -1):
             u = 0
             print("no reglering")
-            set_motor_speed(bus, curr_speed_l)
+            set_motor_speed(curr_speed_l)
         else:
             e = DESIRED_DIST - ir_right_mm # reglerfelet
 
@@ -60,37 +64,36 @@ def auto_ctrl(ir_right_mm):
             old_e = e
             """
             curr_speed_r = curr_speed_r + u
-            set_right_motor_speed(bus, curr_speed_r)
+            set_right_motor_speed(curr_speed_r)
         old_t = t
 
     return u
 
 
+def setup():
+    Safety.setup_terminal_abort()
+    EventBus.subscribe(CMD_RETURN_SENSOR_DATA, sensor_data_received)
+    Laser.initialize()
 
-def handle_abort(signum, frame):
-    # Stop motors to avoid robot running amok
-    set_motor_speed(bus, 0)
 
-    sys.exit(0)
+def main():
+    global busy, last_request
 
-# Setup
-subscribe_to_cmd(CMD_RETURN_SENSOR_DATA, sensor_data_received)
-signal.signal(signal.SIGINT, handle_abort)
+    setup()
 
-curr_speed_l = 20
-curr_speed_r = 20
-set_motor_speed(bus, curr_speed_r)
-
-try:
     while True:
-        read_messages(bus)
+        EventBus.receive()
 
         if not busy and datetime.now() - last_request > request_period:
             busy = True
             last_request = datetime.now()
 
-            request_sensor_data(bus)
-except:
-    traceback.print_exc()
-    set_motor_speed(bus, 0)
-    
+            laser_distance = Laser.read_data()
+
+            request_sensor_data()
+
+curr_speed_l = 20
+curr_speed_r = 20
+set_motor_speed(curr_speed_r)
+
+Safety.run_safely(main)
