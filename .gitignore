@@ -68,5 +68,6 @@ Debug/
 # Bluetooth
 pi/log.txt
 
-# Cached Python files
+# Python
 __pycache__/
+*.pyc

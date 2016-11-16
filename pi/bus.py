@@ -66,12 +66,13 @@ class Bus:
         self._write_packet_data(data, unit_addr)
 
     def try_receive(self, unit_addr):
-        size = self._get_pending_packet_size(unit_addr)
-        if size == 0:
-            # No pending packet
-            return None
+		size = self._get_pending_packet_size(unit_addr)
+		
+		if size == 0:
+			# No pending packet
+			return None
 
-        return self._read_packet_data(size, unit_addr)
+		return self._read_packet_data(size, unit_addr)
 
     # Internal methods
 
