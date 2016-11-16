@@ -27,10 +27,12 @@ class auto_control(State):
         #Outer turn, prioritize following right wall
         if right_diff >= Navigator.DISCONTINUITY_DIST and data['side'] == Navigator.RIGHT_SIDE:
             data['driver'].outer_turn_right()
+            print('outer turn right')
             return turn()
             
         if left_diff >= Navigator.DISCONTINUITY_DIST and data['side'] == Navigator.LEFT_SIDE:
             data['driver'].outer_turn_left()
+            print('outer turn left')
             return turn()
         
         print('Left diff: ' + str(left_diff) + ' right diff ' + str(right_diff))
@@ -40,9 +42,11 @@ class auto_control(State):
         #if data['laser'].read_data() <=  Navigator.FACING_WALL_DIST:
         #    if data['side'] == Navigator.LEFT_SIDE:
         #        data['driver'].inner_turn_right()
+        #        print('inner turn right')
         #        return turn()
         #    if data['side'] == Navigator.RIGHT_SIDE:
         #        data['driver'].inner_turn_left()
+        #        print('inner turn left')
         #        return turn()
                 
         return auto_control()
@@ -56,30 +60,6 @@ class warmup(State):
             return auto_control()
         else:
             return warmup()
-
-class outer_turn(State):
-    def sensor_data_received(self, data, new_ir_left, new_ir_right):
-        return #Do nothing. Only auto control uses it
-
-    def run(self, data):
-        print('running outer turn')
-        if not data['driver'].driving():
-            data['driver'].turn_right()
-            return turn()
-        else:
-            return outer_turn()
-
-class after_turn(State):
-    def sensor_data_received(self, data, new_ir_left, new_ir_right):
-        return #Do nothing. Only auto control uses it
-
-    def run(self, data):
-        print('running after turn')
-        if not data['driver'].driving():
-            print('changing to auto control')
-            return auto_control()
-        else:
-            return after_turn()
 
 class turn(State):
     def sensor_data_received(self, data, new_ir_left, new_ir_right):

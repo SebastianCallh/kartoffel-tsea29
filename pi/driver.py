@@ -13,7 +13,6 @@ class Driver:
         self.tasks = []
 
     def driving(self):
-        print('time left driving: ' + str(self.drive_stop_time - datetime.now()))
         if self.drive_stop_time <= datetime.now():
             #If tasks are complete, the robot is no longer driving
             if not self.tasks:
