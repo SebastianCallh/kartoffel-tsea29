@@ -72,8 +72,9 @@ class EmulatedSlave:
                 return 0
 
             self.transmitted_packet = self.data_queue.get()
-            self.bytes_to_send = len(self.transmitted_packet)
             self.current_transmitted_byte = 0
+
+            return len(self.transmitted_packet)
         elif data_id == PACKET_DATA:
             if self.transmitted_packet is None:
                 log.error('Data incorrectly requested from address {} without preceding packet header'.format(self.address))
