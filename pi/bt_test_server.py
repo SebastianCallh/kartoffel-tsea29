@@ -42,7 +42,7 @@ while(True):
 			f.write('Recieved ' + str(data) + '\n')
 	except IOError:
 		# print("Error = " + str(IOError))
-	    f.write('Error = ' + str(IOError) + '\n')
+		f.write('Error = ' + str(IOError) + '\n')
 		pass
 
 
