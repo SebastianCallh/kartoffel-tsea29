@@ -58,6 +58,8 @@ class Bus:
 
     def try_receive(self, unit_addr):
         size = self._get_pending_packet_size(unit_addr)
+		print('unit addr :' + str(unit_addr) + ' size :' + str(size))
+		
         if size == 0:
             # No pending packet
             return None
