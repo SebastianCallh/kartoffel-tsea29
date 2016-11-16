@@ -37,13 +37,13 @@ class auto_control(State):
         print('laser distance: ' + str(data['laser'].read_data()))
         
         #Inner turn
-        if data['laser'].read_data() <=  Navigator.FACING_WALL_DIST:
-            if data['side'] == Navigator.LEFT_SIDE:
-                data['driver'].inner_turn_right()
-                return turn()
-            if data['side'] == Navigator.RIGHT_SIDE:
-                data['driver'].inner_turn_left()
-                return turn()
+        #if data['laser'].read_data() <=  Navigator.FACING_WALL_DIST:
+        #    if data['side'] == Navigator.LEFT_SIDE:
+        #        data['driver'].inner_turn_right()
+        #        return turn()
+        #    if data['side'] == Navigator.RIGHT_SIDE:
+        #        data['driver'].inner_turn_left()
+        #        return turn()
                 
         return auto_control()
 
@@ -87,9 +87,8 @@ class turn(State):
 
     def run(self, data):
         if not data['driver'].driving():
-            print('changing to after turn')
-            data['driver'].prepare_for_turn()
-            return after_turn()
+            print('changing to auto control')
+            return auto_control()
         else:
             return turn()
 
