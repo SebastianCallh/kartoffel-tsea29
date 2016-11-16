@@ -14,6 +14,9 @@ class Laser:
             hi = EventBus.bus.read_byte_data(LASER_ADDR, 0x0f)
             lo = EventBus.bus.read_byte_data(LASER_ADDR, 0x10)
             data = (hi << 8) | lo
-            return data * 10
+            if hi & 0x80 == 128:
+                return -1
+            else:
+                return data * 10
         except:
             return -1
