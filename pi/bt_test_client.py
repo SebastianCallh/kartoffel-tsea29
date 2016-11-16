@@ -10,7 +10,7 @@ print("Created client sock")
 client_sock.connect((PI_ADDR,port))
 print("connected to %s \n", PI_ADDR)
 
-while(true):
+while(True):
 	msg = input("To server: ")
 
 	client_sock.send(msg)
