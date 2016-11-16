@@ -1,5 +1,10 @@
 import bluetooth
 import os
+import time
+
+
+
+time.sleep(10)
 
 f = open('log.txt', 'w')
 f.write('start')
