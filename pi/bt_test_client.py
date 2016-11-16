@@ -19,41 +19,16 @@ while(true):
 	data = ""
 
 	try:
-	    while data == "":
-		data = client_sock.recv(1024)
+		while data == "":
+			data = client_sock.recv(1024)
 		if len(data) == 0:
 		    break
 		print("received " + str(data))
 	except IOError:
-	    print("Error = " + str(IOError))
-	    pass
+		print("Error = " + str(IOError))
+		pass
 
 
 
 client_sock.close()
 print("closed")
-
-
-
-
-
-
-
-
-
-
-
-
-
-'''import socket
-
-serverMACAddress = 'B8:27:EB:FC:55:27'
-port = 3
-s = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
-s.connect((serverMACAddress,port))
-while 1:
-    text = input()
-    if text == "quit":
-        break
-    s.send(bytes(text, 'UTF-8'))
-s.close()'''
