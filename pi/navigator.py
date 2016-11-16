@@ -109,7 +109,7 @@ class Navigator:
                     'old_ir_left': 0,
                     'driver' : driver,
                     'laser' : laser,
-                    'side' : RIGHT_SIDE
+                    'side' : Navigator.RIGHT_SIDE
                     }
 
         #Stand still for 100 ms, waiting for sensors
