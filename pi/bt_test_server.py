@@ -32,7 +32,7 @@ data = ""
 
 while(True):
 	try:
-	    while data == "":
+		while data == "":
 		f.write('getting data\n')
 		# print("getting data")
 		data = client_sock.recv(1024)
@@ -41,9 +41,9 @@ while(True):
 		# print("received " + str(data))
 		f.write('Recieved ' + str(data) + '\n')
 	except IOError:
-	    # print("Error = " + str(IOError))
+		# print("Error = " + str(IOError))
 	    f.write('Error = ' + str(IOError) + '\n')
-	    pass
+		pass
 
 
 	msg = input("To client: ")
@@ -55,20 +55,17 @@ while(True):
 pi_ip = ""
 
 while pi_ip == "":
-    s = os.popen('ifconfig wlan0 | grep "inet\ addr" | cut -d: -f2 | 			cut -d" " -f1')
-    pi_ip = s.read()
-    #print("Reading ip: " + str(pi_ip))
+	s = os.popen('ifconfig wlan0 | grep "inet\ addr" | cut -d: -f2 | 			cut -d" " -f1')
+	pi_ip = s.read()
+	#print("Reading ip: " + str(pi_ip))
     f.write('Reading ip: ' + str(pi_ip) + '\n')
 
 try:
-    # print("Sending IP")
-    f.write('Sending IP\n')
-    client_sock.send("IP address: " + str(pi_ip))
-    # print("IP sent")
-    f.write('IP sent\n')
+	f.write('Sending IP\n')
+	client_sock.send("IP address: " + str(pi_ip))
 except IOError:
-    # print("Error = " + str(IOError))
-    f.write('Error = ' + str(IOError) + '\n')
+	# print("Error = " + str(IOError))
+	f.write('Error = ' + str(IOError) + '\n')
 
 
 server_sock.close()
