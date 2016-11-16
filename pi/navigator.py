@@ -15,7 +15,11 @@ class auto_control(State):
     auto_controller = AutoController()
 
     def sensor_data_received(self, data, new_ir_left, new_ir_right):
-        ##NOTE TO SELF: Kan inte reglera pa vanster sida nu!!!
+        left_diff = data['ir_left'] - data['old_ir_left']
+        right_diff = data['ir_right'] - data['old_ir_right']
+        if right_diff >= Navigator.DISCONTINUITY_DIST and data['side'] == Navigator.RIGHT_SIDE:
+            return
+        
         right_speed, left_speed = auto_control.auto_controller.auto_control(new_ir_left, new_ir_right, data['side'])
         #Duration set to something quite high to mimic running forever (until next update)
         data['driver'].drive(left_speed, right_speed, 500)
