@@ -24,7 +24,7 @@ class auto_control(State):
         left_diff = data['ir_left'] - data['old_ir_left']
         right_diff = data['ir_right'] - data['old_ir_right']
         
-        print('ir right:' + str(data['ir_right']) + ' old ir right: ' + data['old_ir_right'] + ' right diff : ' + str(right_diff))
+        print('ir right:' + str(data['ir_right']) + ' old ir right: ' + str(data['old_ir_right']) + ' right diff : ' + str(right_diff))
         #Outer turn, prioritize following right wall
         if right_diff >= Navigator.DISCONTINUITY_DIST and data['side'] == Navigator.RIGHT_SIDE:
             data['driver'].outer_turn_right()
