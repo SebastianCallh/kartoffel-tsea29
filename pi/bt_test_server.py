@@ -47,10 +47,10 @@ except IOError:
 pi_ip = ""
 
 while pi_ip == "":
-	s = os.popen('ifconfig wlan0 | grep "inet\ addr" | cut -d: -f2 | 			cut -d" " -f1')
-	pi_ip = s.read()	
-	#print("Reading ip: " + str(pi_ip))
-	f.write('Reading ip: ' + str(pi_ip) + '\n')
+    s = os.popen('ifconfig wlan0 | grep "inet\ addr" | cut -d: -f2 | 			cut -d" " -f1')
+    pi_ip = s.read()
+    #print("Reading ip: " + str(pi_ip))
+    f.write('Reading ip: ' + str(pi_ip) + '\n')
 
 try:
     # print("Sending IP")
@@ -68,33 +68,3 @@ server_sock.close()
 f.write('Closed\n')
 
 f.close()
-
-
-
-
-
-
-
-
-
-
-'''import socket
-
-hostMACAddress = '00:15:83:2A:49:E4' # The MAC address of a Bluetooth adapter on the server. The server might have multiple Bluetooth adapters.
-port = 3 # 3 is an arbitrary choice. However, it must match the port used by the client.
-backlog = 1
-size = 1024
-s = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
-s.bind((hostMACAddress,port))
-s.listen(backlog)
-try:
-    client, address = s.accept()
-    while 1:
-        data = client.recv(size)
-        if data:
-            print(data)
-            client.send(data)
-except:	
-    print("Closing socket")	
-    client.close()
-    s.close()'''
