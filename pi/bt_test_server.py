@@ -57,8 +57,8 @@ pi_ip = ""
 while pi_ip == "":
 	s = os.popen('ifconfig wlan0 | grep "inet\ addr" | cut -d: -f2 | 			cut -d" " -f1')
 	pi_ip = s.read()
-	#print("Reading ip: " + str(pi_ip))
-    f.write('Reading ip: ' + str(pi_ip) + '\n')
+	f.write('Reading ip: ' + str(pi_ip) + '\n')
+#print("Reading ip: " + str(pi_ip))
 
 try:
 	f.write('Sending IP\n')
