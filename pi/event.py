@@ -21,7 +21,7 @@ class Event:
         return Event(data[ID_INDEX], data[ARG_START_INDEX:])
 
     def process(self):
-        process_arguments(self.message_id, self.arguments)
+		self.arguments = process_arguments(self.message_id, self.arguments)
 
     def as_packet_data(self):
         return [self.message_id] + self.arguments

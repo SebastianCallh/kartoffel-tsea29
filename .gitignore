@@ -67,3 +67,6 @@ Debug/
 
 # Bluetooth
 pi/log.txt
+
+#Python
+*.pyc
