@@ -14,6 +14,9 @@
 *.la
 *.lo
 
+# Python compiled files
+*.pyc
+
 # Shared objects (inc. Windows DLLs)
 *.dll
 *.so
@@ -65,5 +68,6 @@ Debug/
 # IDEA
 .idea/
 
-# Bluetooth
+
+# Specific files
 pi/log.txt
