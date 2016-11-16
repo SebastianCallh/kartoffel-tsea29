@@ -1,31 +1,21 @@
 """
 Wrapper for the I2C bus with added functionality to support the packet protocol
 the robot is using.
-<<<<<<< HEAD
 
-=======
->>>>>>> navigera
 Packet protocol
 ----
 I2C supports two functions for interacting on the bus:
   Read address,
   Write address
-<<<<<<< HEAD
 
 There functions are in turn addressed to specific slaves and contain the address
 requested/set and a value when writing data. Each function write or read a
 single byte.
 
-=======
-There functions are in turn addressed to specific slaves and contain the address
-requested/set and a value when writing data. Each function write or read a
-single byte.
->>>>>>> navigera
 As the desired functionality requires data to be sent and received in multi-byte
 chunks this functionality must be abstracted away using a looser protocol. To
 accomplish this the read and written addresses are purposely used incorrectly
 to specify different states of receiving or sending data.
-<<<<<<< HEAD
 
 The protocol use two "addresses":
   PACKET_HEADER,
@@ -43,20 +33,6 @@ PACKET_DATA:
 Contains the data of the n:th read byte since the PACKET_HEADER. Reading data
 from a packet which has already been read to the end has undefined behaviour.
 
-=======
-The protocol use two "addresses":
-  PACKET_HEADER,
-  PACKET_DATA
-Using these two addresses it is possible to send data of the length 255 bytes by
-first sending the data length and then all bytes in the data array until every
-byte has been sent.
-PACKET_HEADER:
-Contains the length of the following data on the range 0 to 255. If there is no
-data to be sent the value returned is 0.
-PACKET_DATA:
-Contains the data of the n:th read byte since the PACKET_HEADER. Reading data
-from a packet which has already been read to the end has undefined behaviour.
->>>>>>> navigera
 The master-slave problem
 ----
 As requests to read and write data can only be made from the master unit there

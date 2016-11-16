@@ -1,20 +1,7 @@
-<<<<<<< HEAD
 """
 Main program code - where all the magic happens
 """
 
-import signal
-import sys
-import traceback
-from math import floor
-from datetime import datetime, timedelta
-
-from laser import Laser
-from eventbus import EventBus
-from outbound import request_sensor_data, \
-    set_motor_speed, set_right_motor_speed
-
-=======
 from datetime import datetime, timedelta
 
 from navigator import Navigator

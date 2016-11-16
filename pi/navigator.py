@@ -5,16 +5,16 @@ from autocontroller import AutoController
 class State:
     def run(self):
         assert 0, "run not implemented"
-    def sensor_data_received(self, data, new_ir_right, new_ir_left):
+    def sensor_data_received(self, data, new_ir_left, new_ir_right):
         assert 0, "sensor_data_received not implemented"
 		
 class auto_control(State):
 	
 	auto_controller = AutoController()
 	
-	def sensor_data_received(self, data, new_ir_right, new_ir_left):
+	def sensor_data_received(self, data, new_ir_left, new_ir_right):
 		##NOTE TO SELF: Kan inte reglera pa vanster sida nu!!!
-		right_speed, left_speed = auto_control.auto_controller.auto_control(new_ir_right, new_ir_left, 'right')
+		right_speed, left_speed = auto_control.auto_controller.auto_control(new_ir_left, new_ir_right, 'right')
 		#Duration set to something quite high to mimic running forever (until next update)
 		data['driver'].drive(left_speed, right_speed, 500)
 		
@@ -36,7 +36,7 @@ class auto_control(State):
 				
 class warmup(State):
 	
-	def sensor_data_received(self, data, new_ir_right, new_ir_left):
+	def sensor_data_received(self, data, new_ir_left, new_ir_right):
 		return #Do nothing
 		
 	def run(self, data):
@@ -46,7 +46,7 @@ class warmup(State):
 			return warmup()
 		
 class before_turn(State):
-	def sensor_data_received(self, data, new_ir_right, new_ir_left):
+	def sensor_data_received(self, data, new_ir_left, new_ir_right):
 		return #Do nothing. Only auto control uses it
 	
 	def run(self, data):
@@ -59,7 +59,7 @@ class before_turn(State):
 			return before_turn()
 
 class after_turn(State):
-	def sensor_data_received(self, data, new_ir_right, new_ir_left):
+	def sensor_data_received(self, data, new_ir_left, new_ir_right):
 		return #Do nothing. Only auto control uses it
 	
 	def run(self, data):
@@ -72,7 +72,7 @@ class after_turn(State):
 
 	
 class turn(State):
-	def sensor_data_received(self, data, new_ir_right, new_ir_left):
+	def sensor_data_received(self, data, new_ir_left, new_ir_right):
 		return #Do nothing. Only auto control uses it
 	
 	def run(self, data):
@@ -99,8 +99,8 @@ class Navigator:
 		self.data['driver'].drive(0, 0, 1000)
 		self.state = warmup()
 		
-						
-	def sensor_data_received(self, new_ir_right, new_ir_left):
+	
+	def sensor_data_received(self, new_ir_left, new_ir_right):
 		self.state.sensor_data_received(self.data, new_ir_left, new_ir_right)
 		self.data['old_ir_left'] = self.data['ir_left']
 		self.data['old_ir_right'] = self.data['ir_right']
