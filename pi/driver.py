@@ -11,7 +11,7 @@ class Driver:
     def __init__(self):
         self.drive_stop_time = 0
         self.tasks = []
-
+        self.task = None
    
     def driving(self):
         if self.drive_stop_time <= datetime.now():
@@ -53,15 +53,19 @@ class Driver:
     #Not intended for public use
 
     def _turn_left(self):
+        print('turn left')
         self.drive(-TURN_SPEED, TURN_SPEED, TURN_TIME)
 
   
     def _turn_right(self):
+        print('turn right')
         self.drive(TURN_SPEED, -TURN_SPEED, TURN_TIME)
    
    
     def _post_turn(self):
+        print('post turn')
         self.drive(40, 40, 300)
 
     def _pre_turn(self):
+        print('pre turn')
         self.drive(40, 40, 100)
