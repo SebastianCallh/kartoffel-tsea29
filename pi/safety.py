@@ -17,7 +17,7 @@ class Safety:
         signal.signal(signal.SIGINT, Safety.handle_abort)
 
     @staticmethod
-    def handle_abort():
+    def handle_abort(*args):
         # Stop motors to avoid robot running amok
         set_motor_speed(0)
         sys.exit(0)
