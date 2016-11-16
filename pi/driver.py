@@ -64,8 +64,8 @@ class Driver:
    
     def _post_turn(self):
         print('post turn')
-        self.drive(40, 40, 300)
+        self.drive(25, 25, 300)
 
     def _pre_turn(self):
         print('pre turn')
-        self.drive(40, 40, 100)
+        self.drive(25, 25, 100)
