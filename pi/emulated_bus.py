@@ -1,7 +1,7 @@
 import logging
 from queue import Queue
 
-from bus import PACKET_HEADER, PACKET_DATA, SENSOR_ADDR, STYR_ADDR
+from bus import PACKET_HEADER, PACKET_DATA, SENSOR_ADDR, STYR_ADDR, LASER_ADDR
 from protocol import CMD_REQUEST_SENSOR_DATA, CMD_RETURN_SENSOR_DATA
 
 log = logging.getLogger(__name__)
@@ -11,7 +11,8 @@ class EmulatedBus:
     def __init__(self):
         self.slaves = {
             SENSOR_ADDR: EmulatedSlave(SENSOR_ADDR),
-            STYR_ADDR: EmulatedSlave(STYR_ADDR)
+            STYR_ADDR: EmulatedSlave(STYR_ADDR),
+            LASER_ADDR: EmulatedLaser
         }
 
     def write_byte_data(self, address, data_id, data):
@@ -24,7 +25,7 @@ class EmulatedBus:
         if address in self.slaves:
             return self.slaves[address].read_byte_data(data_id)
         else:
-            log.error('Trying to read data to nonexistant slave.')
+            log.error('Trying to read data from nonexistant slave (address = {}).'.format(address))
             return None
 
 
@@ -86,3 +87,11 @@ class EmulatedSlave:
                 self.transmitted_packet = None
 
             return data
+
+
+class EmulatedLaser:
+    def write_byte_data(self, *args):
+        pass
+
+    def read_byte_data(self, *args):
+        return 0
