@@ -1,6 +1,9 @@
 import bluetooth
 import os
 
+f = open('log.txt', 'a')
+f.write('start')
+
 PI_ADDR = "B8:27:EB:FC:55:27"
 client_addr = ""
 
@@ -10,7 +13,7 @@ port = 3
 server_sock.bind((PI_ADDR, port))
 server_sock.listen(1)
 
-f = open('log.txt', 'a')
+
 f.write('Init perfomed\n')
 #print("Init performed")
 
