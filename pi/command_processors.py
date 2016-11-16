@@ -9,8 +9,8 @@ COMMAND_PROCESSORS = {}
 
 
 def process_arguments(message_id, arguments):
-    if message_id in COMMAND_PROCESSORS:
-        return COMMAND_PROCESSORS[message_id](*arguments)
+	if message_id in COMMAND_PROCESSORS:
+		return COMMAND_PROCESSORS[message_id](*arguments)
 
 	return arguments
 
