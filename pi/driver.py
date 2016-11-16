@@ -28,16 +28,16 @@ class Driver:
         set_motor_speed(left_speed, right_speed)
     
     def outer_turn_right(self):
-        self.tasks = [_nudge_forward, _turn_right, _nudge_forward]
+        self.tasks = [self._nudge_forward, self._turn_right, self._nudge_forward]
 
     def outer_turn_left(self):
-        self.tasks = [_nudge_forward, _turn_left, _nudge_forward]
+        self.tasks = [self._nudge_forward, self._turn_left, self._nudge_forward]
 
     def inner_turn_left(self):
-        self.tasks = [_turn_left]
+        self.tasks = [self._turn_left]
 
     def inner_turn_right(self):
-        self.tasks = [_turn_right]
+        self.tasks = [self._turn_right]
 
     def stop(self):
         set_motor_speed(0, 0)
