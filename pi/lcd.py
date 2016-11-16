@@ -15,7 +15,7 @@ GROUND 	30
 5V/VCC 	02
 R_W 	22
 E		40
-A		17
+A		02
 K		06
 '''
 
@@ -75,9 +75,9 @@ class LCD:
 			
 		#Write the data
 		GPIO.output(E, 1)
-		sleep_us(1)				#Larger than recommended wait
+		sleep_ms(1)				#Larger than recommended wait
 		GPIO.output(E, 0)
-		sleep_us(1)				#Larger than recommended wait
+		sleep_ms(1)				#Larger than recommended wait
 		
 		
 	def cleanup(self):
@@ -88,7 +88,7 @@ class LCD:
 def sleep_ms(t):
 	sleep(t / 1000)
 		
-#Sleep in mu
-def sleep_mu(t):
+#Sleep in us
+def sleep_us(t):
 	sleep(t / 10000)
 		
