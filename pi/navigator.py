@@ -93,7 +93,7 @@ class Navigator:
                     }
 
        #Stand still waiting for sensors
-        self.data['driver'].drive(0, 0, 1000)
+        self.data['driver'].drive(0, 0, 2000)
         self.state = warmup()
         
     def sensor_data_received(self, new_ir_left, new_ir_right):
