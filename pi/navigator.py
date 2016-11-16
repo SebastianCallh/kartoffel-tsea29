@@ -20,9 +20,6 @@ class auto_control(State):
 
 
     def is_at_right_turn(self, data):
-        #Temporary!!
-        return (data['ir_right'] - data['ir_left']) > 100 or data['ir_right'] == -1
-        
         right_diff = data['ir_right'] - data['old_ir_right']
         return right_diff >= Navigator.DISCONTINUITY_DIST and data['side'] == Navigator.RIGHT_SIDE
             
@@ -32,7 +29,11 @@ class auto_control(State):
         if self.is_at_left_turn(data) or self.is_at_right_turn(data):
             return
         
-        right_speed, left_speed = auto_control.auto_controller.auto_control(new_ir_left, new_ir_right, data['side'])
+        right_speed, left_speed, regulation = auto_control.auto_controller.auto_control(new_ir_left, new_ir_right, data['side'])
+        
+        if abs(regulation) >= 15: 
+            return 
+            
         #Duration set to something quite high to mimic running forever (until next update)
         data['driver'].drive(left_speed, right_speed, 500)
         
