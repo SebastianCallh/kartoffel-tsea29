@@ -14,10 +14,19 @@ class auto_control(State):
 
     auto_controller = AutoController()
 
-    def sensor_data_received(self, data, new_ir_left, new_ir_right):
-        left_diff = data['ir_left'] - data['old_ir_left']
+    def is_at_left_turn(self, data):
+        diff = data['ir_left'] - data['old_ir_left']
+        return diff >= Navigator.DISCONTINUITY_DIST and data['side'] == Navigator.LEFT_SIDE
+
+        
+    def is_at_right_turn(self, data):
         right_diff = data['ir_right'] - data['old_ir_right']
-        if right_diff >= Navigator.DISCONTINUITY_DIST and data['side'] == Navigator.RIGHT_SIDE:
+        return right_diff >= Navigator.DISCONTINUITY_DIST and data['side'] == Navigator.RIGHT_SIDE
+            
+        
+    def sensor_data_received(self, data, new_ir_left, new_ir_right):
+       
+        if auto_control.is_at_left_turn(data) or auto_control.is_at_right_turn(data):
             return
         
         right_speed, left_speed = auto_control.auto_controller.auto_control(new_ir_left, new_ir_right, data['side'])
@@ -30,12 +39,12 @@ class auto_control(State):
         
         print('ir right:' + str(data['ir_right']) + ' old ir right: ' + str(data['old_ir_right']) + ' right diff : ' + str(right_diff))
         #Outer turn, prioritize following right wall
-        if right_diff >= Navigator.DISCONTINUITY_DIST and data['side'] == Navigator.RIGHT_SIDE:
+        if auto_control.is_at_right_turn(data):
             data['driver'].outer_turn_right()
             print('outer turn right')
             return turn()
-            
-        if left_diff >= Navigator.DISCONTINUITY_DIST and data['side'] == Navigator.LEFT_SIDE:
+        
+        if auto_control.is_at_left_turn(data):
             data['driver'].outer_turn_left()
             print('outer turn left')
             return turn()
