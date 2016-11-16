@@ -37,7 +37,7 @@ class auto_control(State):
             return 
         
         #If left side, flip speeds
-        if data['sides'] == Navigator.LEFT_SIDE:
+        if data['side'] == Navigator.LEFT_SIDE:
             tmp = right_speed
             left_speed = right_speed
             left_speed = tmp
