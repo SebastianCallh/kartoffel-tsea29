@@ -25,7 +25,7 @@ class AutoController:
             print("u = 0, no reglering")
             time_last_regulation = time_now
             use_derivate = False
-            return SLOW_SPEED, SLOW_SPEED
+            return SLOW_SPEED, SLOW_SPEED, regulation
         elif (ir_left_mm != -1 and ir_right_mm != -1): # Regulate on right side
             reg_side = "right"
             sensor_data_dist = ir_right_mm
@@ -67,4 +67,4 @@ class AutoController:
 
         time_last_regulation = time_now
         
-        return int(speed_close_wall), int(speed_far_wall)
+        return int(speed_close_wall), int(speed_far_wall), regulation
