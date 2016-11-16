@@ -22,7 +22,6 @@ class Event:
 
     def process(self):
 		self.arguments = process_arguments(self.message_id, self.arguments)
-		print('arguments processed: ' + str(self.arguments))
 
     def as_packet_data(self):
         return [self.message_id] + self.arguments
