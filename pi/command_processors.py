@@ -12,6 +12,7 @@ def process_arguments(message_id, arguments):
     if message_id in COMMAND_PROCESSORS:
         return COMMAND_PROCESSORS[message_id](*arguments)
 
+	return arguments
 
 # Sensor data contains some arguments stored in 16-bit two's complement which
 # must be parsed into it's corresponding python values.
