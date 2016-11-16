@@ -92,17 +92,18 @@ class Navigator:
                     'side' : Navigator.RIGHT_SIDE
                     }
 
-        #Stand still for 100 ms, waiting for sensors
-        self.data['driver'].drive(0, 0, 1000)
+       #Stand still waiting for sensors
+        self.data['driver'].drive(0, 0, 4000)
         self.state = warmup()
         
     def sensor_data_received(self, new_ir_left, new_ir_right):
-        self.state.sensor_data_received(self.data, new_ir_left, new_ir_right)
+        print('sensor data received')
         self.data['old_ir_left'] = self.data['ir_left']
         self.data['old_ir_right'] = self.data['ir_right']
         self.data['ir_left'] = new_ir_left
         self.data['ir_right'] = new_ir_right
-
+        self.state.sensor_data_received(self.data, new_ir_left, new_ir_right)
+        
     #Runs the state. The states run method returns the next state
     def navigate(self):
         next_state = self.state.run(self.data)
