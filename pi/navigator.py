@@ -25,11 +25,11 @@ class auto_control(State):
         right_diff = data['ir_right'] - data['old_ir_right']
         
         #Outer turn, prioritize following right wall
-        if right_diff >= Navigator.DISCONTINUITY_DIST and data['side'] == RIGHT_SIDE:
+        if right_diff >= Navigator.DISCONTINUITY_DIST and data['side'] == Navigator.RIGHT_SIDE:
             data['driver'].outer_turn_right()
             return turn()
             
-        if left_diff >= Navigator.DISCONTINUITY_DIST and data['side'] == LEFT_SIDE:
+        if left_diff >= Navigator.DISCONTINUITY_DIST and data['side'] == Navigator.LEFT_SIDE:
             data['driver'].outer_turn_left()
             return turn()
         
