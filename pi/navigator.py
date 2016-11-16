@@ -57,7 +57,8 @@ class auto_control(State):
         print('laser distance: ' + str(data['laser'].read_data()))
         
         #Inner turn
-        if data['laser'].read_data() <=  Navigator.FACING_WALL_DIST and data['laser'].read_data() != -1:
+        laser_data =data['laser'].read_data()
+        if laser_data <=  Navigator.FACING_WALL_DIST and laser_data != -1:
             if data['side'] == Navigator.LEFT_SIDE:
                 data['driver'].inner_turn_right()
                 print('inner turn right')
