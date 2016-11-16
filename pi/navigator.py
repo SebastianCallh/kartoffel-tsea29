@@ -26,7 +26,7 @@ class auto_control(State):
         
     def sensor_data_received(self, data, new_ir_left, new_ir_right):
        
-        if auto_control.is_at_left_turn(data) or auto_control.is_at_right_turn(data):
+        if self.is_at_left_turn(data) or self.is_at_right_turn(data):
             return
         
         right_speed, left_speed = auto_control.auto_controller.auto_control(new_ir_left, new_ir_right, data['side'])
@@ -39,12 +39,12 @@ class auto_control(State):
         
         print('ir right:' + str(data['ir_right']) + ' old ir right: ' + str(data['old_ir_right']) + ' right diff : ' + str(right_diff))
         #Outer turn, prioritize following right wall
-        if auto_control.is_at_right_turn(data):
+        if self.is_at_right_turn(data):
             data['driver'].outer_turn_right()
             print('outer turn right')
             return turn()
         
-        if auto_control.is_at_left_turn(data):
+        if self.is_at_left_turn(data):
             data['driver'].outer_turn_left()
             print('outer turn left')
             return turn()
