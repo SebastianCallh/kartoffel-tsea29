@@ -21,7 +21,8 @@ class auto_control(State):
 
     def is_at_right_turn(self, data):
         #Temporary!!
-        return diff = data['ir_right'] - data['ir_left'] > 100 || data['ir_right] == -1
+        return (data['ir_right'] - data['ir_left']) > 100 or data['ir_right'] == -1
+        
         right_diff = data['ir_right'] - data['old_ir_right']
         return right_diff >= Navigator.DISCONTINUITY_DIST and data['side'] == Navigator.RIGHT_SIDE
             
