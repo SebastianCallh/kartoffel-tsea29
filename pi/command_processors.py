@@ -19,7 +19,7 @@ def process_sensor_data(left_ir_mm_hi, left_ir_mm_lo, right_ir_mm_hi, right_ir_m
 	left_ir_mm = twos_comp((left_ir_mm_hi << 8) | left_ir_mm_lo, 16)
 	right_ir_mm = twos_comp((right_ir_mm_hi << 8) | right_ir_mm_lo, 16)
 
-	print('ir_left: ' + str(ir_left_mm) + ' ir_right: ' + str(ir_right_mm) + ' args: ' + str(args))
+	print('ir_left: ' + str(left_ir_mm) + ' ir_right: ' + str(right_ir_mm) + ' args: ' + str(args))
 	print('concat: ' + [left_ir_mm, right_ir_mm] + list(args))
 	return [left_ir_mm, right_ir_mm] + list(args)
 
