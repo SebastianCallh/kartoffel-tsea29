@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from outbound import set_motor_speed
 	
 ###### METHODS FOR CONTROLLING THE WHEELS #######	
+# Tasks should be reversed since we pop them from the list 
 
 TURN_SPEED = 45
 TURN_TIME = 900
@@ -31,11 +32,11 @@ class Driver:
     
 
     def outer_turn_right(self):
-        self.tasks = [self._pre_turn, self._turn_right, self._post_turn]
+        self.tasks = [self._post_turn, self._turn_right, self._pre_turn]
 
    
     def outer_turn_left(self):
-        self.tasks = [self._pre_turn, self._turn_left, self._post_turn]
+        self.tasks = [self._post_turn, self._turn_left, self._pre_turn]
 
    
     def inner_turn_left(self):
@@ -64,8 +65,8 @@ class Driver:
    
     def _post_turn(self):
         print('post turn')
-        self.drive(25, 25, 300)
+        self.drive(25, 25, 700)
 
     def _pre_turn(self):
         print('pre turn')
-        self.drive(25, 25, 100)
+        self.drive(25, 25, 500)
