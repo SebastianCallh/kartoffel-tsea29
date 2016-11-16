@@ -31,7 +31,7 @@ class auto_control(State):
         
         right_speed, left_speed, regulation = auto_control.auto_controller.auto_control(new_ir_left, new_ir_right, data['side'])
         
-        if abs(regulation) >= 15: 
+        if abs(regulation) >= 30: 
             return 
             
         #Duration set to something quite high to mimic running forever (until next update)
