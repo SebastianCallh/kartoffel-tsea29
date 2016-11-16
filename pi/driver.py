@@ -31,11 +31,11 @@ class Driver:
     
 
     def outer_turn_right(self):
-        self.tasks = [self._nudge_forward, self._turn_right, self._nudge_forward]
+        self.tasks = [self._pre_turn, self._turn_right, self._post_turn]
 
    
     def outer_turn_left(self):
-        self.tasks = [self._nudge_forward, self._turn_left, self._nudge_forward]
+        self.tasks = [self._pre_turn, self._turn_left, self._post_turn]
 
    
     def inner_turn_left(self):
@@ -59,6 +59,9 @@ class Driver:
     def _turn_right(self):
         self.drive(TURN_SPEED, -TURN_SPEED, TURN_TIME)
    
+   
+    def _post_turn(self):
+        self.drive(40, 40, 300)
 
-    def _nudge_forward(self):
-        self.drive(20, 20, 800)
+    def _pre_turn(self):
+        self.drive(40, 40, 100)
