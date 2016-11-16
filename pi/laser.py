@@ -1,6 +1,6 @@
 from bus import LASER_ADDR
 from eventbus import EventBus
-
+from time import sleep
 
 class Laser:
     @staticmethod
