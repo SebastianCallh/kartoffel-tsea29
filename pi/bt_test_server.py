@@ -10,41 +10,51 @@ port = 3
 server_sock.bind((PI_ADDR, port))
 server_sock.listen(1)
 
-print("Init performed")
+f = open('log.txt', 'a')
+f.write('Init perfomed\n')
+#print("Init performed")
 
 (client_sock, client_addr) = server_sock.accept()
-print("Accepted connection from %s \n", client_addr)
+#print("Accepted connection from %s \n", client_addr)
+f.write("Accepted connection from %s \n" + str(client_addr) + '\n')
 
 data = ""
 
 try:
     while data == "":
-        print("getting data")
+        f.write('getting data\n')
+        # print("getting data")
         data = client_sock.recv(1024)
         if len(data) == 0:
             break
-        print("received " + str(data))
+        # print("received " + str(data))
+        f.write('Recieved ' + str(data) + '\n')
 except IOError:
-    print("Error = " + str(IOError))
+    # print("Error = " + str(IOError))
+    f.write('Error = ' + str(IOError) + '\n')
     pass
 
-f = os.popen('ifconfig wlan0 | grep "inet\ addr" | cut -d: -f2 | cut -d" " -f1')
-pi_ip=f.read()
-print("Reading ip: " + str(pi_ip))
+f1 = os.popen('ifconfig wlan0 | grep "inet\ addr" | cut -d: -f2 | cut -d" " -f1')
+pi_ip = f1.read()
+#print("Reading ip: " + str(pi_ip))
+f.write('Reading ip: ' + str(pi_ip) + '\n')
 
 try:
-    print("Sending IP")
+    # print("Sending IP")
+    f.write('Sending IP\n')
     client_sock.send("IP address: " + str(pi_ip))
-    print("IP sent")
+    # print("IP sent")
+    f.write('IP sent\n')
 except IOError:
-    print("Error = " + str(IOError))
+    # print("Error = " + str(IOError))
+    f.write('Error = ' + str(IOError) + '\n')
 
 
 server_sock.close()
-print("Closed")
+# print("Closed")
+f.write('Closed\n')
 
-
-
+f.close()
 
 
 
