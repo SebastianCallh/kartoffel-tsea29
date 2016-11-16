@@ -10,20 +10,23 @@ print("Created client sock")
 client_sock.connect((PI_ADDR,port))
 print("connected to %s \n", PI_ADDR)
 
-client_sock.send("Kartoffel paj")
-print("sent msg")
+while(true):
+	msg = input("To server: ")
 
-data = ""
+	client_sock.send(msg)
+	print("sent msg")
 
-try:
-    while data == "":
-        data = client_sock.recv(1024)
-        if len(data) == 0:
-            break
-        print("received " + str(data))
-except IOError:
-    print("Error = " + str(IOError))
-    pass
+	data = ""
+
+	try:
+	    while data == "":
+		data = client_sock.recv(1024)
+		if len(data) == 0:
+		    break
+		print("received " + str(data))
+	except IOError:
+	    print("Error = " + str(IOError))
+	    pass
 
 
 

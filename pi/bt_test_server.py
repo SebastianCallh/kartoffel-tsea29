@@ -30,19 +30,27 @@ f.write("Accepted connection from %s \n" + str(client_addr) + '\n')
 
 data = ""
 
-try:
-    while data == "":
-        f.write('getting data\n')
-        # print("getting data")
-        data = client_sock.recv(1024)
-        if len(data) == 0:
-            break
-        # print("received " + str(data))
-        f.write('Recieved ' + str(data) + '\n')
-except IOError:
-    # print("Error = " + str(IOError))
-    f.write('Error = ' + str(IOError) + '\n')
-    pass
+while(true):
+	try:
+	    while data == "":
+		f.write('getting data\n')
+		# print("getting data")
+		data = client_sock.recv(1024)
+		if len(data) == 0:
+		    break
+		# print("received " + str(data))
+		f.write('Recieved ' + str(data) + '\n')
+	except IOError:
+	    # print("Error = " + str(IOError))
+	    f.write('Error = ' + str(IOError) + '\n')
+	    pass
+
+
+	msg = input("To client: ")
+
+	client_sock.send(msg)
+	print("sent msg")
+
 
 pi_ip = ""
 
