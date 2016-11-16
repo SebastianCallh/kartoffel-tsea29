@@ -64,3 +64,6 @@ Debug/
 
 # IDEA
 .idea/
+
+# Bluetooth
+pi/log.txt
