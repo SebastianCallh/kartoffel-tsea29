@@ -44,10 +44,13 @@ except IOError:
     f.write('Error = ' + str(IOError) + '\n')
     pass
 
-f1 = os.popen('ifconfig wlan0 | grep "inet\ addr" | cut -d: -f2 | cut -d" " -f1')
-pi_ip = f1.read()
-#print("Reading ip: " + str(pi_ip))
-f.write('Reading ip: ' + str(pi_ip) + '\n')
+pi_ip = ""
+
+while pi_ip == "":
+	s = os.popen('ifconfig wlan0 | grep "inet\ addr" | cut -d: -f2 | 			cut -d" " -f1')
+	pi_ip = s.read()	
+	#print("Reading ip: " + str(pi_ip))
+	f.write('Reading ip: ' + str(pi_ip) + '\n')
 
 try:
     # print("Sending IP")
