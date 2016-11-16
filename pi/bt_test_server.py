@@ -7,7 +7,7 @@ from datetime import datetime
 
 time.sleep(5)
 
-f = open('~/Programming/program/kartoffel29/pi/log.txt', 'w')
+f = open('/home/pi/Programming/program/kartoffel29/pi/log.txt', 'w')
 f.write('start')
 f.write(str(datetime.now()))
 
