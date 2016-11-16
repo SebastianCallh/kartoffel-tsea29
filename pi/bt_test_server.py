@@ -1,6 +1,7 @@
 import bluetooth
 import os
 import time
+from datetime import datetime
 
 
 
@@ -8,6 +9,7 @@ time.sleep(20)
 
 f = open('log.txt', 'w')
 f.write('start')
+f.write(str(datetime.now()))
 
 PI_ADDR = "B8:27:EB:FC:55:27"
 client_addr = ""
