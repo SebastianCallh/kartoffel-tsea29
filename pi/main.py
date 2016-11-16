@@ -84,6 +84,8 @@ set_motor_speed(bus, curr_speed_r)
 try:
     while True:
         read_messages(bus)
+	#read_bt()
+	#rcv    check cmd    exc cmd   (send bt) 
 
         if not busy and datetime.now() - last_request > request_period:
             busy = True
