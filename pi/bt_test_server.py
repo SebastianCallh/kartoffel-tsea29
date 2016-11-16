@@ -33,16 +33,16 @@ data = ""
 while(True):
 	try:
 		while data == "":
-		f.write('getting data\n')
-		# print("getting data")
-		data = client_sock.recv(1024)
-		if len(data) == 0:
-			break
-		# print("received " + str(data))
-		f.write('Recieved ' + str(data) + '\n')
+			f.write('getting data\n')
+			# print("getting data")
+			data = client_sock.recv(1024)
+			if len(data) == 0:
+				break
+			# print("received " + str(data))
+			f.write('Recieved ' + str(data) + '\n')
 	except IOError:
 		# print("Error = " + str(IOError))
-	    f.write('Error = ' + str(IOError) + '\n')
+		f.write('Error = ' + str(IOError) + '\n')
 		pass
 
 
@@ -57,8 +57,8 @@ pi_ip = ""
 while pi_ip == "":
 	s = os.popen('ifconfig wlan0 | grep "inet\ addr" | cut -d: -f2 | 			cut -d" " -f1')
 	pi_ip = s.read()
-	#print("Reading ip: " + str(pi_ip))
-    f.write('Reading ip: ' + str(pi_ip) + '\n')
+	f.write('Reading ip: ' + str(pi_ip) + '\n')
+#print("Reading ip: " + str(pi_ip))
 
 try:
 	f.write('Sending IP\n')
