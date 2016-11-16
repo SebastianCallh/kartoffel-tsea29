@@ -42,10 +42,9 @@ pending data. When data read from PACKET_HEADER is not zero there is data
 available and the program can then read its data.
 """
 
-import smbus
-
 # Addresses for the units on the bus. Note that the laser cannot be queried
 # using the protocol described above.
+
 SENSOR_ADDR = 0x30
 STYR_ADDR = 0x40
 LASER_ADDR = 0x62
@@ -54,11 +53,13 @@ LASER_ADDR = 0x62
 PACKET_HEADER = 0
 PACKET_DATA = 1
 
+from busprovider import WIRED_BUS
+
 
 class Bus:
     def __init__(self, interface=1):
         self.interface = interface
-        self.bus = smbus.SMBus(1)
+        self.bus = WIRED_BUS
 
     def send(self, data, unit_addr):
         self._write_packet_start(len(data), unit_addr)
