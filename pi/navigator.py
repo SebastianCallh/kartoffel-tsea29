@@ -33,7 +33,7 @@ class auto_control(State):
             data['driver'].outer_turn_left()
             return turn()
         
-        print('Left distance: ' + str(left_distance) + ' right distance ' + str(right_distance))
+        print('Left diff: ' + str(left_diff) + ' right diff ' + str(right_diff))
         print('laser distance: ' + str(data['laser'].read_data()))
         
         #Inner turn
