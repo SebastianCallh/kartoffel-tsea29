@@ -83,6 +83,9 @@ def main():
 
     while True:
         EventBus.receive()
+    
+	#read_bt()
+	#rcv    check cmd    exc cmd   (send bt) 
 
         if not busy and datetime.now() - last_request > request_period:
             busy = True
