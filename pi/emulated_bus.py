@@ -25,7 +25,10 @@ class EmulatedBus:
         if address in self.slaves:
             return self.slaves[address].read_byte_data(data_id)
         else:
-            log.error('Trying to read data from nonexistant slave (address = {}).'.format(address))
+            log.error(
+                'Trying to read data from nonexistant slave (address = {}).'
+                .format(address)
+            )
             return None
 
 
@@ -46,14 +49,22 @@ class EmulatedSlave:
     def write_byte_data(self, event_type, data):
         if event_type == PACKET_HEADER:
             if self.read_packet is not None:
-                log.error('Data header incorrectly sent to address {} which still waits for more bytes'.format(self.address))
+                log.error(
+                    'Data header incorrectly sent to address {} '
+                    'which still waits for more bytes'
+                    .format(self.address)
+                )
 
             self.read_packet = []
             self.bytes_to_read = data
             self.current_read_byte = 0
         elif event_type == PACKET_DATA:
             if self.read_packet is None:
-                log.error('Data incorrectly sent to address {} without preceding packet header'.format(self.address))
+                log.error(
+                    'Data incorrectly sent to address {} '
+                    'without preceding packet header'
+                    .format(self.address)
+                )
 
             self.read_packet.append(data)
             self.current_read_byte += 1
@@ -67,7 +78,11 @@ class EmulatedSlave:
     def read_byte_data(self, data_id):
         if data_id == PACKET_HEADER:
             if self.transmitted_packet is not None:
-                log.error('Data header incorrectly requested from address {} which still sends bytes'.format(self.address))
+                log.error(
+                    'Data header incorrectly requested from address {} '
+                    'which still sends bytes'
+                    .format(self.address)
+                )
 
             if self.data_queue.empty():
                 return 0
@@ -78,7 +93,11 @@ class EmulatedSlave:
             return len(self.transmitted_packet)
         elif data_id == PACKET_DATA:
             if self.transmitted_packet is None:
-                log.error('Data incorrectly requested from address {} without preceding packet header'.format(self.address))
+                log.error(
+                    'Data incorrectly requested from address {} '
+                    'without preceding packet header'
+                    .format(self.address)
+                )
 
             data = self.transmitted_packet[self.current_transmitted_byte]
             self.current_transmitted_byte += 1
