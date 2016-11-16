@@ -38,10 +38,10 @@ class auto_control(State):
         
         #Inner turn
         if data['laser'].read_data() <=  Navigator.FACING_WALL_DIST:
-            if data['side'] == LEFT_SIDE:
+            if data['side'] == Navigator.LEFT_SIDE:
                 data['driver'].inner_turn_right()
                 return turn()
-            if data['side'] == RIGHT_SIDE:
+            if data['side'] == Navigator.RIGHT_SIDE:
                 data['driver'].inner_turn_left()
                 return turn()
                 
