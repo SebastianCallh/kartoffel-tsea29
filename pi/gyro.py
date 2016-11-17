@@ -28,7 +28,7 @@ class Gyro:
                     
             #To prevent garbage values while standing still
             if abs(two_comp_data) <= GYRO_LOWER_LIMIT:
-                return -1
+                return 0
                 
             return two_comp_data
             
