@@ -125,7 +125,7 @@ class DriveTask(Task):
 
 
     def driving(self):
-        print('time left driving: ' + str(self.stop_time <= datetime.now()))
+        print('time left driving: ' + str(self.stop_time - datetime.now()))
         return self.stop_time <= datetime.now()
 
 
@@ -134,12 +134,14 @@ class TurnTask(Task):
     
     def __init__(self, task_func, degrees, gyro):
         Task.__init__(self, task_func, self.turning)
+        self.total_degrees = 0
         self.degrees = degrees
         self.gyro = gyro
         
         
     def start(self):
         Task.start(self)
+        self.total_degrees = 0
         self.previous_time = datetime.now()
         
     
