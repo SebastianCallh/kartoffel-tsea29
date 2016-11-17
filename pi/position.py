@@ -2,6 +2,7 @@ from eventbus import EventBus
 from laser import Laser
 from protocol import CMD_TURN_STARTED, CMD_TURN_FINISHED
 from section import Section, NORTH
+from threading import Thread
 
 STATE_MEASURING = 0
 STATE_WAITING = 1
@@ -39,7 +40,9 @@ class Position:
 
     def on_turning_started(self):
         self.state = STATE_WAITING
-        self.save_current_section()
+        thread = Thread(target=self.save_current_section())
+        thread.start()
+        #self.save_current_section()
 
     def on_turning_finished(self, is_right_turn):
         self.begin_next_section(is_right_turn)
