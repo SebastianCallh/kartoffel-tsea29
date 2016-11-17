@@ -45,7 +45,7 @@ class Section:
 
             distance_diff = raw_distance - finish_distance
             time_diff = finish_time - measurement_time
-            time_diff_seconds = time_diff.total_seconds
+            time_diff_seconds = time_diff.total_seconds()
             if time_diff_seconds == 0:
                 # Avoid division by zero, skip last measurement
                 continue
@@ -54,7 +54,7 @@ class Section:
             ratio_sum += ratio
 
         average_ratio = ratio_sum / len(self.measurements)
-        total_measure_time_seconds = (finish_time - start_time).total_seconds
+        total_measure_time_seconds = (finish_time - start_time).total_seconds()
         estimated_start_distance = average_ratio * total_measure_time_seconds
 
         self.block_distance = math.floor(
