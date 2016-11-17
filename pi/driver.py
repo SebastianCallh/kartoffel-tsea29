@@ -39,19 +39,19 @@ class Driver:
 
 
     def turning(self):
-        print ("Turning")
+        print("Turning")
         data = self.gyro.read_data()
 
         if data == -1:
             raise Exception('Error reading gyro')
 
         time_delta = (self.previous_time - datetime.now()).total_seconds()
-        delta_degrees =  data * time_delta
+        delta_degrees = data * time_delta
         self.previous_time = datetime.now()        
-        total_degrees += delta_degrees
-        print('total degrees turned :' + str(total_degrees))
+        self.total_degrees += delta_degrees
+        print('total degrees turned :' + str(self.total_degrees))
 
-        return abs(total_degrees) >= 90
+        return abs(self.total_degrees) >= 90
 
 
     def drive(self, left_speed, right_speed, duration):
