@@ -126,3 +126,29 @@ Arguments:
 speed (1 byte, positive)
     Right motor speed in percentage of max speed ranging from 0 to 100.
 """
+
+
+# Indicates that the robot has started turning
+"""
+Event called internally within the main unit to indicate that a simple 90
+degree turn has been initiated.
+
+Target: Main unit
+
+Arguments: None
+"""
+CMD_TURN_STARTED = 8
+
+
+# Indicates that the robot has stopped turning
+"""
+Event called internally within the main unit to indicate that a simple 90
+degree turn has finished.
+
+Target: Main unit
+
+Arguments:
+is_right_turn (1 byte, boolean)
+    True for right turn, false for left turn.
+"""
+CMD_TURN_FINISHED = 9

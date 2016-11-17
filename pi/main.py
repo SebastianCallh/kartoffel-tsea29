@@ -10,6 +10,7 @@ from laser import Laser
 
 from eventbus import EventBus
 from outbound import request_sensor_data
+from position import Position
 
 from protocol import CMD_RETURN_SENSOR_DATA
 from safety import Safety
@@ -17,6 +18,7 @@ from safety import Safety
 laser = Laser()
 driver = Driver()
 navigator = Navigator(driver, laser)
+position = Position()
 
 # Update frequency
 last_request = datetime.now()
@@ -57,6 +59,7 @@ def main():
     while True:
         EventBus.receive()
         request_data()
+        position.update()
 
 
 Safety.run_safely(main)

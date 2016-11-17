@@ -1,13 +1,40 @@
+from eventbus import EventBus
+from laser import Laser
+from protocol import CMD_TURN_STARTED, CMD_TURN_FINISHED
+from section import Section, NORTH
+
+STATE_MEASURING = 0
+STATE_WAITING = 1
+
 
 class Position:
     def __init__(self):
-        pass
+        self.state = STATE_MEASURING
+        self.current_section = Section(NORTH)
+        self.saved_sections = []
+
+        EventBus.subscribe(CMD_TURN_STARTED, self.on_turning_started)
+        EventBus.subscribe(CMD_TURN_FINISHED, self.on_turning_finished)
 
     def update(self):
-        pass
+        if self.state == STATE_MEASURING:
+            distance = Laser.read_data()
+            self.current_section.add_distance_sample(distance)
+
+    def save_current_section(self):
+        self.current_section.finish()
+        self.saved_sections.append(self.current_section)
+
+    def begin_next_section(self, is_right_turn):
+        if is_right_turn:
+            self.current_section = self.current_section.for_right_turn()
+        else:
+            self.current_section = self.current_section.for_left_turn()
 
     def on_turning_started(self):
-        pass
+        self.state = STATE_WAITING
+        self.save_current_section()
 
-    def on_turning_finished(self):
-        pass
+    def on_turning_finished(self, is_right_turn):
+        self.begin_next_section(is_right_turn)
+        self.state = STATE_MEASURING
