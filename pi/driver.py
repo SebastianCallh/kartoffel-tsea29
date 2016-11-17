@@ -120,7 +120,7 @@ class DriveTask(Task):
 
 
     def start(self):
-        Task.start()
+        Task.start(self)
         self.stop_time = datetime.now() + timedelta(milliseconds=self.duration)
 
 
@@ -138,7 +138,7 @@ class TurnTask(Task):
         
         
     def start(self):
-        Task.start()
+        Task.start(self)
         self.previous_time = datetime.now()
         
     
