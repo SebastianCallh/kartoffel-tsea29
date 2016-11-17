@@ -15,7 +15,7 @@ class Driver:
         self.tasks = []
         self.task = None
         self.gyro = gyro
-        self.previous_time
+        self.previous_time = datetime.now()
         self.total_degrees = 0
 
     #Should probably be embedded in some strategy like thing involving a Task object
