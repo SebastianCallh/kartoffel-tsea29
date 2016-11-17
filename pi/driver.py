@@ -121,8 +121,7 @@ class Driver:
 
 
 class Task:
-    self.task_func = None
-    self.done_func = None
+    
     
     def __init__(self, task_func, done_func):
         self.task_func = task_func
