@@ -35,6 +35,7 @@ class Driver:
             
 
     def driving(self):
+        print("driving")
         return self.drive_stop_time <= datetime.now()
 
 
