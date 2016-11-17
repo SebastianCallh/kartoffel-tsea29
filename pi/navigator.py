@@ -34,8 +34,7 @@ class auto_control(State):
         if abs(regulation) >= 30: 
             return 
             
-        #Duration set to something quite high to mimic running forever (until next update)
-        data['driver'].drive(left_speed, right_speed, 500)
+        data['driver'].drive(left_speed, right_speed)
         
     def run(self, data):
         left_diff = data['ir_left'] - data['old_ir_left']
