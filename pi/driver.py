@@ -115,7 +115,7 @@ class DriveTask(Task):
     
 
     def __init__(self, task_func, duration):
-        Task.__init__(self, task_func, driving)
+        Task.__init__(self, task_func, self.driving)
         self.duration = duration
 
 
@@ -132,7 +132,7 @@ class TurnTask(Task):
 
     
     def __init__(self, task_func, degrees, gyro):
-        Task.__init__(self, task_func, turning)
+        Task.__init__(self, task_func, self.turning)
         self.degrees = degrees
         self.gyro = gyro
         
@@ -149,10 +149,10 @@ class TurnTask(Task):
             raise Exception('Error reading gyro')
         
         time_delta = (self.previous_time - datetime.now()).total_seconds()
-        delta_degrees =  data * time_delta
+        delta_degrees = data * time_delta
         self.previous_time = datetime.now()        
-        total_degrees += delta_degrees
-        print('total degrees turned :' + str(total_degrees))
+        self.total_degrees += delta_degrees
+        print('total degrees turned :' + str(self.total_degrees))
 
-        return abs(total_degrees) >= self.degrees
+        return abs(self.total_degrees) >= self.degrees
 
