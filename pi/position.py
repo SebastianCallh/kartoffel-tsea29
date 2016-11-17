@@ -41,7 +41,7 @@ class Position:
     def on_turning_started(self):
         self.state = STATE_WAITING
         thread = Thread(target=self.save_current_section)
-        thread.start()
+        #thread.start()
         #self.save_current_section()
 
     def on_turning_finished(self, is_right_turn):
