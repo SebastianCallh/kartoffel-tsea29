@@ -20,10 +20,6 @@ class Driver:
 
 
     def idle(self):
-        if self.task == None:
-            print("None")
-            return True
-
         if not self.task.done():
             print("Task Done")
             return False
@@ -90,7 +86,7 @@ class Driver:
     
     def start(self):
         print('starting')
-        self.tasks = [Task(self.drive(0, 0, 2000), self.driving)]
+        self.tasks = [Task((lambda: self.drive(0, 0, 2000)), self.driving)]
 
 
     def stop(self):
