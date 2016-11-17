@@ -41,16 +41,14 @@ class auto_control(State):
         left_diff = data['ir_left'] - data['old_ir_left']
         right_diff = data['ir_right'] - data['old_ir_right']
         
-        print('ir right:' + str(data['ir_right']) + ' old ir right: ' + str(data['old_ir_right']) + ' right diff : ' + str(right_diff))
+        #print('ir right:' + str(data['ir_right']) + ' old ir right: ' + str(data['old_ir_right']) + ' right diff : ' + str(right_diff))
         #Outer turn, prioritize following right wall
         if self.is_at_right_turn(data):
             data['driver'].outer_turn_right()
-            print('outer turn right')
             return pre_outer_turn()
         
         if self.is_at_left_turn(data):
             data['driver'].outer_turn_left()
-            print('outer turn left')
             return pre_outer_turn()
         
         laser_data = data['laser'].read_data()
@@ -61,11 +59,9 @@ class auto_control(State):
         if laser_data <=  Navigator.FACING_WALL_DIST and laser_data != -1:
             if data['side'] == Navigator.LEFT_SIDE:
                 data['driver'].inner_turn_right()
-                print('inner turn right')
                 return turn()
             if data['side'] == Navigator.RIGHT_SIDE:
                 data['driver'].inner_turn_left()
-                print('inner turn left')
                 return turn()
                 
         return auto_control()
@@ -77,11 +73,12 @@ class warmup(State):
         
     def run(self, data):
         if data['driver'].idle():
+            print('changin to auto control')
             return auto_control()
         else:
             return warmup()
 
-            
+
 class turn(State):
     def sensor_data_received(self, data, new_ir_left, new_ir_right):
         return #Do nothing. Only auto control uses it
@@ -92,6 +89,7 @@ class turn(State):
             return auto_control()
         else:
             return turn()
+
 
 ###### NAVIGATOR CLASS #######	
 class Navigator:
@@ -112,8 +110,8 @@ class Navigator:
                     'side' : Navigator.RIGHT_SIDE
                     }
 
-       #Stand still waiting for sensors
-        self.data['driver'].drive(0, 0, 2000)
+        #Stand still waiting for sensors
+        self.data['driver'].start()
         self.state = warmup()
         
     def sensor_data_received(self, new_ir_left, new_ir_right):

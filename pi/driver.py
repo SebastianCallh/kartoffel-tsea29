@@ -18,78 +18,77 @@ class Driver:
         self.previous_time = datetime.now()
         self.total_degrees = 0
 
-    #Should probably be embedded in some strategy like thing involving a Task object
-    def idle(self):
-        if self.task == self._pre_turn or self.task == self._post_turn:
-            print('we are driving')
-            return not driving()
-        elif self.task == self._turn_left or self.task == self._turn_right:
-            print('we are turning')
-            return not turning()
 
+    def idle(self):
+        if self.task == None:
+            return True
+
+        if not self.task.done():
+            return False
+        elif self.tasks:
+            self.task = self.tasks.pop()
+            self.task.start()
+            return False
+        else:
+            self.stop()
+            return True
+            
 
     def driving(self):
-        if self.drive_stop_time <= datetime.now():
-            #If tasks are complete, the robot is no longer driving
-            if not self.tasks:
-                self.stop()
-                return False
-            
-            self.task = self.tasks.pop()
-            self.task()
-            return True
-        return True
+        return self.drive_stop_time <= datetime.now()
 
 
     def turning(self):
-        
-        data = gyro.read_data()
-        
-        #Gyro error. Blow everything up and fix if it happens
+        data = self.gyro.read_data()
+
         if data == -1:
             raise Exception('Error reading gyro')
 
         time_delta = (self.previous_time - datetime.now()).total_seconds()
         delta_degrees =  data * time_delta
-        self.previous_time = datetime.now()
-        
+        self.previous_time = datetime.now()        
         total_degrees += delta_degrees
         print('total degrees turned :' + str(total_degrees))
-        
-        if abs(total_degrees) >= 90:
-            
-            if not self.tasks:
-                self.stop()
-                return False
-            
-            self.task = self.tasks.pop()
-            self.task()
-            return True
-            
-        return True
+
+        return abs(total_degrees) >= 90
+
 
     def drive(self, left_speed, right_speed, duration):
         self.drive_stop_time = datetime.now() + timedelta(milliseconds=duration)
         set_motor_speed(left_speed, right_speed)
-    
+
 
     def outer_turn_right(self):
-        self.tasks = [self._post_turn, self._turn_right, self._pre_turn]
+        print('outer turn right')
+        self.tasks = [Task(self._post_turn, self.driving), 
+                      Task(self._turn_right, self.turning), 
+                      Task(self._pre_turn, self.driving)]
 
    
     def outer_turn_left(self):
-        self.tasks = [self._post_turn, self._turn_left, self._pre_turn]
+        print('outer turn left')
+        self.tasks = [Task(self._post_turn, self.driving), 
+                      Task(self._turn_left, self.turning), 
+                      Task(self._pre_turn, self.driving)]
 
    
     def inner_turn_left(self):
-        self.tasks = [self._turn_left]
+        print('inner turn left')
+        self.tasks = [Task(self._turn_left, self.driving)]
 
    
     def inner_turn_right(self):
-        self.tasks = [self._turn_right]
+        print('inner turn right')
+        self.tasks = [Task(self._turn_right, self.driving)]
 
-   
+    
+    def start(self):
+        print('starting')
+        selt.tasks = [Task(self.drive(0, 0, 2000), self.driving)]
+
+
     def stop(self):
+        print('stopping')
         set_motor_speed(0, 0)
 
 
@@ -101,18 +100,38 @@ class Driver:
         self.previous_time = datetime.now()
         self.drive(-TURN_SPEED, TURN_SPEED, TURN_TIME)
 
-  
+
     def _turn_right(self):
         print('turn right')
         self.total_degrees = 0
         self.previous_time = datetime.now()
         self.drive(TURN_SPEED, -TURN_SPEED, TURN_TIME)
-   
-   
+
+
     def _post_turn(self):
         print('post turn')
         self.drive(25, 25, 700)
 
+
     def _pre_turn(self):
         print('pre turn')
         self.drive(25, 25, 500)
+
+
+
+
+class Task:
+    self.task_func = None
+    self.done_func = None
+    
+    def __init__(self, task_func, done_func):
+        self.task_func = task_func
+        self.done_func = done_func
+
+
+    def start(self):
+        self.task_func()
+
+
+    def done(self):
+        return self.done_func()
