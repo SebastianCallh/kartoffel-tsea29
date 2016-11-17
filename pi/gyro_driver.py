@@ -1,4 +1,5 @@
 from gyro import Gyro
+from time import sleep
 
 gyro = Gyro()
 gyro.initialize()
