@@ -19,6 +19,8 @@ class Gyro:
             hi = EventBus.bus.bus.read_byte_data(GYRO_ADDR, 0x2d)
             lo = EventBus.bus.bus.read_byte_data(GYRO_ADDR, 0x2c)
             data = (hi << 8) | lo
-            return twos_comp(data, 16)
+            
+            #Divided by gyro sensitivity 18/256 for 2000 dps
+            return 18 * twos_comp(data, 16) / 256
         except:
             return -1
