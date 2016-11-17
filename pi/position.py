@@ -25,8 +25,8 @@ class Position:
         self.current_section.finish()
 
         print('---- SECTION SAVED ----')
-        print('  direction: ' + self.current_section.direction)
-        print('  distance: ' + self.current_section.block_distance)
+        print('  direction: ' + str(self.current_section.direction))
+        print('  distance: ' + str(self.current_section.block_distance))
         print('-----------------------')
 
         self.saved_sections.append(self.current_section)
