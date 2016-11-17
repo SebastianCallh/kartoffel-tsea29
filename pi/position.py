@@ -23,6 +23,12 @@ class Position:
 
     def save_current_section(self):
         self.current_section.finish()
+
+        print('---- SECTION SAVED ----')
+        print('  direction: ' + self.current_section.direction)
+        print('  distance: ' + self.current_section.block_distance)
+        print('-----------------------')
+
         self.saved_sections.append(self.current_section)
 
     def begin_next_section(self, is_right_turn):
