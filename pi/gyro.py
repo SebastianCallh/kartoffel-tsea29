@@ -1,6 +1,8 @@
+from time import sleep
+
 from bus import GYRO_ADDR
 from eventbus import EventBus
-from time import sleep
+from utils import twos_comp
 
 class Gyro:
     
@@ -17,6 +19,6 @@ class Gyro:
             hi = EventBus.bus.bus.read_byte_data(GYRO_ADDR, 0x2d)
             lo = EventBus.bus.bus.read_byte_data(GYRO_ADDR, 0x2c)
             data = (hi << 8) | lo
-            return data
+            return twos_comp(data, 16)
         except:
             return -1
