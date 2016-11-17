@@ -39,6 +39,7 @@ class Driver:
 
 
     def turning(self):
+        print ("Turning")
         data = self.gyro.read_data()
 
         if data == -1:
