@@ -58,7 +58,7 @@ def main():
     while True:
         EventBus.receive()
         request_data()
-        position.update()
+        #position.update()
         navigator.navigate()
 
 
