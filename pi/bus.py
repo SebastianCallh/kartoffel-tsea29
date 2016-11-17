@@ -41,6 +41,7 @@ import smbus
 SENSOR_ADDR = 0x30
 STYR_ADDR = 0x40
 LASER_ADDR = 0x62
+GYRO_ADDR = 0x6b
 
 # Packet addresses
 PACKET_HEADER = 0
