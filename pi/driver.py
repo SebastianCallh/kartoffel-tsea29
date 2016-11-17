@@ -13,7 +13,7 @@ class Driver:
     def __init__(self, gyro):
         self.drive_stop_time = 0
         self.tasks = []
-        self.task = None
+        self.task = Task(None, (lambda: True))
         self.gyro = gyro
         self.previous_time = datetime.now()
         self.total_degrees = 0
