@@ -111,8 +111,9 @@ class Navigator:
                     }
 
         #Stand still waiting for sensors
-        self.data['driver'].start()
         self.state = warmup()
+        self.data['driver'].start()
+
         
     def sensor_data_received(self, new_ir_left, new_ir_right):
         self.data['old_ir_left'] = self.data['ir_left']
