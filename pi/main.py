@@ -35,7 +35,6 @@ def setup():
 def sensor_data_received(ir_left_mm, ir_right_mm):
     global busy, navigator
     busy = False
-    print('ir right ' + str(ir_right_mm))
     navigator.sensor_data_received(ir_left_mm, ir_right_mm)
 
 
@@ -60,6 +59,7 @@ def main():
         EventBus.receive()
         request_data()
         position.update()
+        navigator.navigate()
 
 
 Safety.run_safely(main)

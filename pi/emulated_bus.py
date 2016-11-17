@@ -1,8 +1,8 @@
 import logging
 from queue import Queue
 
-from bus import PACKET_HEADER, PACKET_DATA, SENSOR_ADDR, STYR_ADDR, LASER_ADDR
-from protocol import CMD_REQUEST_SENSOR_DATA, CMD_RETURN_SENSOR_DATA
+from protocol import CMD_REQUEST_SENSOR_DATA, CMD_RETURN_SENSOR_DATA, STYR_ADDR, \
+    SENSOR_ADDR, LASER_ADDR, PACKET_HEADER, PACKET_DATA
 
 log = logging.getLogger(__name__)
 

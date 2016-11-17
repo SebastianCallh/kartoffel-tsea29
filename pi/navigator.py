@@ -5,6 +5,8 @@ State machine for navigational states
 from autocontroller import AutoController
 
 
+
+
 class State:
     def run(self, data):
         assert 0, "run not implemented"
@@ -12,104 +14,117 @@ class State:
     def sensor_data_received(self, data, new_ir_left, new_ir_right):
         assert 0, "sensor_data_received not implemented"
 
+class auto_control(State):
 
-class AutoControl(State):
     auto_controller = AutoController()
 
+    def is_at_left_turn(self, data):
+        diff = data['ir_left'] - data['old_ir_left']
+        return diff >= Navigator.DISCONTINUITY_DIST and data['side'] == Navigator.LEFT_SIDE
+
+
+    def is_at_right_turn(self, data):
+        right_diff = data['ir_right'] - data['old_ir_right']
+        return right_diff >= Navigator.DISCONTINUITY_DIST and data['side'] == Navigator.RIGHT_SIDE
+            
+        
     def sensor_data_received(self, data, new_ir_left, new_ir_right):
-        # NOTE: Kan inte reglera pa vanster sida nu!!!
-        right_speed, left_speed = AutoControl.auto_controller.auto_control(
-            new_ir_left, new_ir_right, 'right')
-        # Duration set to something quite high to mimic running forever (until
-        # next update)
+       
+        if self.is_at_left_turn(data) or self.is_at_right_turn(data):
+            return
+
+        right_speed, left_speed, regulation = auto_control.auto_controller.auto_control(new_ir_left, new_ir_right, data['side'])
+        
+        if abs(regulation) >= 30: 
+            return 
+            
+        #Duration set to something quite high to mimic running forever (until next update)
         data['driver'].drive(left_speed, right_speed, 500)
-
+        
     def run(self, data):
-        # If sensor readings jump more than 5 mm we've discovered a turn
-        print('distance diff: ' + str(data['ir_right'] - data['old_ir_right']))
-        print('laser distance: ' + str(data['laser'].read_data()))
-        DISCONTINUITY_DIST = 20.0  # mm
-        if data['ir_right'] - data['old_ir_right'] >= DISCONTINUITY_DIST:
-            print('changing to preparing for turn')
-            data['driver'].prepare_for_turn()
-            return BeforeTurn()
-        else:
-            return AutoControl()
+        left_diff = data['ir_left'] - data['old_ir_left']
+        right_diff = data['ir_right'] - data['old_ir_right']
+        
+        print('ir right:' + str(data['ir_right']) + ' old ir right: ' + str(data['old_ir_right']) + ' right diff : ' + str(right_diff))
+        #Outer turn, prioritize following right wall
+        if self.is_at_right_turn(data):
+            data['driver'].outer_turn_right()
+            print('outer turn right')
+            return turn()
+        
+        if self.is_at_left_turn(data):
+            data['driver'].outer_turn_left()
+            print('outer turn left')
+            return turn()
+        
+        laser_data = data['laser'].read_data()
+        print('Left diff: ' + str(left_diff) + ' right diff ' + str(right_diff))
+        print('laser distance: ' + str(laser_data))
+        
+        #Inner turn
+        if laser_data <=  Navigator.FACING_WALL_DIST and laser_data != -1:
+            if data['side'] == Navigator.LEFT_SIDE:
+                data['driver'].inner_turn_right()
+                print('inner turn right')
+                return turn()
+            if data['side'] == Navigator.RIGHT_SIDE:
+                data['driver'].inner_turn_left()
+                print('inner turn left')
+                return turn()
+                
+        return auto_control()
 
-
-class Warmup(State):
+class warmup(State):
     def sensor_data_received(self, data, new_ir_left, new_ir_right):
-        return  # Do nothing
-
+        return #Do nothing
+        
     def run(self, data):
         if not data['driver'].driving():
-            return AutoControl()
+            return auto_control()
         else:
-            return Warmup()
+            return warmup()
 
-
-class BeforeTurn(State):
+class turn(State):
     def sensor_data_received(self, data, new_ir_left, new_ir_right):
-        return  # Do nothing. Only auto control uses it
+        return #Do nothing. Only auto control uses it
 
     def run(self, data):
-        print('running before turn')
-        if not data['driver'].driving():
-            print('changing to turn')
-            data['driver'].turn_right()
-            return Turn()
-        else:
-            return BeforeTurn()
-
-
-class AfterTurn(State):
-    def sensor_data_received(self, data, new_ir_left, new_ir_right):
-        return  # Do nothing. Only auto control uses it
-
-    def run(self, data):
-        print('running after turn')
         if not data['driver'].driving():
             print('changing to auto control')
-            return AutoControl()
+            return auto_control()
         else:
-            return AfterTurn()
+            return turn()
 
-
-class Turn(State):
-    def sensor_data_received(self, data, new_ir_left, new_ir_right):
-        return  # Do nothing. Only auto control uses it
-
-    def run(self, data):
-        if not data['driver'].driving():
-            print('changing to after turn')
-            data['driver'].prepare_for_turn()
-            return AfterTurn()
-        else:
-            return Turn()
-
-
+###### NAVIGATOR CLASS #######
 class Navigator:
+    LEFT_SIDE = 0
+    RIGHT_SIDE = 1
+
+    DISCONTINUITY_DIST = 10.0 #mm
+    FACING_WALL_DIST = 275 #mm
+
     def __init__(self, driver, laser):
         self.data = {'ir_left': 0,
-                     'ir_right': 0,
-                     'old_ir_right': 0,
-                     'old_ir_left': 0,
-                     'driver': driver,
-                     'laser': laser
-                     }
+                    'ir_right': 0,
+                    'old_ir_right': 0,
+                    'old_ir_left': 0,
+                    'driver' : driver,
+                    'laser' : laser,
+                    'side' : Navigator.RIGHT_SIDE
+                    }
 
-        # Stand still for 100 ms, waiting for sensors
-        self.data['driver'].drive(0, 0, 1000)
-        self.state = Warmup()
-
+       #Stand still waiting for sensors
+        self.data['driver'].drive(0, 0, 2000)
+        self.state = warmup()
+        
     def sensor_data_received(self, new_ir_left, new_ir_right):
-        self.state.sensor_data_received(self.data, new_ir_left, new_ir_right)
         self.data['old_ir_left'] = self.data['ir_left']
         self.data['old_ir_right'] = self.data['ir_right']
         self.data['ir_left'] = new_ir_left
         self.data['ir_right'] = new_ir_right
-
-    # Runs the state. The states run method returns the next state
+        self.state.sensor_data_received(self.data, new_ir_left, new_ir_right)
+        
+    #Runs the state. The states run method returns the next state
     def navigate(self):
         next_state = self.state.run(self.data)
         self.state = next_state
