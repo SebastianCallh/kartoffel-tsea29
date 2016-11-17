@@ -46,12 +46,12 @@ class auto_control(State):
         if self.is_at_right_turn(data):
             data['driver'].outer_turn_right()
             print('outer turn right')
-            return turn()
+            return pre_outer_turn()
         
         if self.is_at_left_turn(data):
             data['driver'].outer_turn_left()
             print('outer turn left')
-            return turn()
+            return pre_outer_turn()
         
         laser_data = data['laser'].read_data()
         print('Left diff: ' + str(left_diff) + ' right diff ' + str(right_diff))
@@ -70,22 +70,24 @@ class auto_control(State):
                 
         return auto_control()
 
+
 class warmup(State):
     def sensor_data_received(self, data, new_ir_left, new_ir_right):
         return #Do nothing
         
     def run(self, data):
-        if not data['driver'].driving():
+        if data['driver'].idle():
             return auto_control()
         else:
             return warmup()
 
+            
 class turn(State):
     def sensor_data_received(self, data, new_ir_left, new_ir_right):
         return #Do nothing. Only auto control uses it
 
     def run(self, data):
-        if not data['driver'].driving():
+        if data['driver'].idle():
             print('changing to auto control')
             return auto_control()
         else:

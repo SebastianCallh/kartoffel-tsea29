@@ -4,6 +4,9 @@ from bus import GYRO_ADDR
 from eventbus import EventBus
 from utils import twos_comp
 
+
+GYRO_LOWER_LIMIT = 10
+
 class Gyro:
     
     
@@ -21,6 +24,14 @@ class Gyro:
             data = (hi << 8) | lo
             
             #Divided by gyro sensitivity 18/256 for 2000 dps
-            return 18 * twos_comp(data, 16) / 256
+            two_comp_data = 18 * twos_comp(data, 16) / 256
+                    
+            #To prevent garbage values while standing still
+            if abs(two_comp_data) <= GYRO_LOWER_LIMIT:
+                return -1
+                
+            return two_comp_data
+            
         except:
             return -1
+            

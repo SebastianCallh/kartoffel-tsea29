@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from navigator import Navigator
 from driver import Driver
 from laser import Laser
+from gyro import Gyro
 
 from eventbus import EventBus
 from outbound import request_sensor_data, \
@@ -14,7 +15,8 @@ from safety import Safety
 
 
 laser = Laser()
-driver = Driver()
+gyro = Gyro()
+driver = Driver(gyro)
 navigator = Navigator(driver, laser)
 
 # Update frequency
