@@ -22,12 +22,15 @@ class Driver:
 
     def idle(self):
         if not self.task.done():
+            print("Task Done")
             return False
         elif self.tasks:
+            print("Popping taaaaasks")
             self.task = self.tasks.pop()
             self.task.start()
             return False
         else:
+            print("STANNA")
             self.stop()
             return True
             
