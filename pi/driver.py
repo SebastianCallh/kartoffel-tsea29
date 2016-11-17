@@ -75,12 +75,12 @@ class Driver:
    
     def inner_turn_left(self):
         print('inner turn left')
-        self.tasks = [Task(self._turn_left, self.driving)]
+        self.tasks = [Task(self._turn_left, self.turning)]
 
    
     def inner_turn_right(self):
         print('inner turn right')
-        self.tasks = [Task(self._turn_right, self.driving)]
+        self.tasks = [Task(self._turn_right, self.turning)]
 
     
     def start(self):
