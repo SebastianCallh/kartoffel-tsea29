@@ -14,8 +14,8 @@ class Gyro:
     @staticmethod
     def read_data():
         try:
-            hi = EventBus.bus.bus.read_byte_data(LASER_ADDR, 0x2d)
-            lo = EventBus.bus.bus.read_byte_data(LASER_ADDR, 0x2c)
+            hi = EventBus.bus.bus.read_byte_data(GYRO_ADDR, 0x2d)
+            lo = EventBus.bus.bus.read_byte_data(GYRO_ADDR, 0x2c)
             data = (hi << 8) | lo
             return data
         except:
