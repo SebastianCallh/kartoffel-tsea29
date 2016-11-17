@@ -84,7 +84,7 @@ class Driver:
     
     def start(self):
         print('starting')
-        selt.tasks = [Task(self.drive(0, 0, 2000), self.driving)]
+        self.tasks = [Task(self.drive(0, 0, 2000), self.driving)]
 
 
     def stop(self):
