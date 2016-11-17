@@ -45,11 +45,11 @@ class auto_control(State):
         #Outer turn, prioritize following right wall
         if self.is_at_right_turn(data):
             data['driver'].outer_turn_right()
-            return pre_outer_turn()
+            return turn()
         
         if self.is_at_left_turn(data):
             data['driver'].outer_turn_left()
-            return pre_outer_turn()
+            return turn()
         
         laser_data = data['laser'].read_data()
         print('Left diff: ' + str(left_diff) + ' right diff ' + str(right_diff))
