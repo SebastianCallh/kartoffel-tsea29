@@ -22,11 +22,11 @@ class Driver:
 
     def idle(self):
         if not self.task.done():
-            print("Task Done")
+            print("Task not done")
             return False
         elif self.tasks:
-            print("Popping taaaaasks")
             self.task = self.tasks.pop()
+            print("Next task: " + str(self.task))
             self.task.start()
             return False
         else:
@@ -125,6 +125,7 @@ class DriveTask(Task):
 
 
     def driving(self):
+        print('time left driving: ' + str(self.stop_time <= datetime.now()))
         return self.stop_time <= datetime.now()
 
 
@@ -153,6 +154,6 @@ class TurnTask(Task):
         self.previous_time = datetime.now()        
         self.total_degrees += delta_degrees
         print('total degrees turned :' + str(self.total_degrees))
-
+        
         return abs(self.total_degrees) >= self.degrees
 
