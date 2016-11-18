@@ -3,8 +3,6 @@ import os
 import time
 from datetime import datetime
 
-
-
 time.sleep(5)
 
 f = open('log.txt', 'w')
@@ -20,53 +18,49 @@ port = 3
 server_sock.bind((PI_ADDR, port))
 server_sock.listen(1)
 
-
 f.write('Init perfomed\n')
-#print("Init performed")
+# print("Init performed")
 
 (client_sock, client_addr) = server_sock.accept()
-#print("Accepted connection from %s \n", client_addr)
+# print("Accepted connection from %s \n", client_addr)
 f.write("Accepted connection from %s \n" + str(client_addr) + '\n')
 
 data = ""
 
-while(True):
-	"""try:
-		while data == "":
-			f.write('getting data\n')
-			# print("getting data")
-			data = client_sock.recv(1024)
-			if len(data) == 0:
-				break
-			# print("received " + str(data))
-			f.write('Recieved ' + str(data) + '\n')
-	except IOError:
-		# print("Error = " + str(IOError))
-		f.write('Error = ' + str(IOError) + '\n')
-		pass"""
+while (True):
+    """try:
+        while data == "":
+            f.write('getting data\n')
+            # print("getting data")
+            data = client_sock.recv(1024)
+            if len(data) == 0:
+                break
+            # print("received " + str(data))
+            f.write('Recieved ' + str(data) + '\n')
+    except IOError:
+        # print("Error = " + str(IOError))
+        f.write('Error = ' + str(IOError) + '\n')
+        pass"""
 
+    msg = input("To client: ")
 
-	msg = input("To client: ")
-
-	client_sock.send(msg)
-	print("sent msg")
-
+    client_sock.send(msg)
+    print("sent msg")
 
 pi_ip = ""
 
 while pi_ip == "":
-	s = os.popen('ifconfig wlan0 | grep "inet\ addr" | cut -d: -f2 | 			cut -d" " -f1')
-	pi_ip = s.read()
-	f.write('Reading ip: ' + str(pi_ip) + '\n')
-#print("Reading ip: " + str(pi_ip))
+    s = os.popen('ifconfig wlan0 | grep "inet\ addr" | cut -d: -f2 | 			cut -d" " -f1')
+    pi_ip = s.read()
+    f.write('Reading ip: ' + str(pi_ip) + '\n')
+# print("Reading ip: " + str(pi_ip))
 
 try:
-	f.write('Sending IP\n')
-	client_sock.send("IP address: " + str(pi_ip))
+    f.write('Sending IP\n')
+    client_sock.send("IP address: " + str(pi_ip))
 except IOError:
-	# print("Error = " + str(IOError))
-	f.write('Error = ' + str(IOError) + '\n')
-
+    # print("Error = " + str(IOError))
+    f.write('Error = ' + str(IOError) + '\n')
 
 server_sock.close()
 # print("Closed")
