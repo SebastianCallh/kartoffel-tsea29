@@ -10,7 +10,6 @@ class Accel:
     def initialize():
         #Set the PD flag to 1 to go from power-down mode to normal mode
         EventBus.bus.bus.write_byte_data(ACCEL_ADDR, 0x20, 0x57)
-        EventBus.bus.bus.write_byte_data(ACCEL_ADDR, 0x23, 0x30)
 
     @staticmethod
     def read_data():
