@@ -1,9 +1,17 @@
 import bt_server
-import bt_server_cmds
+import bt_server_cmds as bt_cmds
 
 PI_ADDR = "B8:27:EB:FC:55:27"
 PORT = 3
 BACKLOG = 1
+
+   
+def (bt_task):
+    if bt_task.cmd_id == 10:
+        bt_cmds.get_pi_ip()
+    
+
+
 
 """
   The main function initialize the server and runs it. 
@@ -31,7 +39,7 @@ def main():
                     continue
                 elif cmd_type == "rqst":
                     busy = True
-                server.post_to_taskqueue()
+                server.post_to_incoming()
 
         has_new_outgoing = server.update_outgoing()
         if (has_new_outgoing):

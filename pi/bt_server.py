@@ -36,14 +36,14 @@ class BT_Server:
     # if accp_client_addr == client_addr
 
 
-    def post_to_taskqueue(self):
-        bt_task_handler.post(self.incoming_data)
+    def post_to_incoming(self):
+        bt_task_handler.post_incoming(self.incoming_data)
 
     def send_data(self):
         self.client_sock.send(self.outgoing_data)
 
-    def _pop_from_taskqueue(self):
-        return bt_task_handler.pop()
+    def _pop_from_outgoing(self):
+        return bt_task_handler.pop_outgoing()
 
     """Updates incoming_data. Returns true if data was updated,
        false otherwise"""
@@ -63,6 +63,6 @@ class BT_Server:
         has_new_outgoing = False
         (cmd_id, data) = self._pop_from_taskqueue()
         if len(data) != 0:
-            outgoing_data = cmd_id + " " + data  # TODO will change when json
+            self.outgoing_data = cmd_id + " " + data  # TODO will change when json
             has_new_outoing = True
         return has_new_outgoing

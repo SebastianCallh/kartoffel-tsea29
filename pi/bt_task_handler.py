@@ -17,12 +17,22 @@ class BT_task:
         self.cmd_id = cmd_id
         self.data = data
 
+# kallas från main
+def post_outgoing(bt_task):
+    pickle.dump(bt_task, from_server_queue)
 
-def post(cmd_id, data=0):
-    task = BT_task(cmd_id, data)
-    pickle.dump(task, from_server_queue)
-
-
-def pop():
+# kallas från main
+def pop_incoming():
     task = pickle.load(to_server_queue)
-    return (task.cmd_id, task.data)
+    return task
+    
+# kallas från server
+def post_incoming(bt_task):
+    pickle.dump(bt_task, to_server_queue)
+
+# kallas från server
+def pop_outgoing():
+    task = pickle.load(from_server_queue)
+    return task
+    
+
