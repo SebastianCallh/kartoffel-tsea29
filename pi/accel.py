@@ -27,8 +27,8 @@ class Accel:
             y_two_comp_data = twos_comp(y_data, 16)
 
             #Multiplied by earths gravity and 0.001
-            x_two_comp_data = x_two_comp_data
-            y_two_comp_data = y_two_comp_data
+            x_two_comp_data = x_two_comp_data * 0.001
+            y_two_comp_data = y_two_comp_data * 0.001
             # To prevent garbage values while standing still
 
             return x_two_comp_data, y_two_comp_data
