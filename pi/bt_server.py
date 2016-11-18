@@ -63,6 +63,6 @@ class BT_Server:
         has_new_outgoing = False
         (cmd_id, data) = self._pop_from_taskqueue()
         if len(data) != 0:
-            outgoing_data = cmd_id + " " + data  # TODO will change when json
+            self.outgoing_data = cmd_id + " " + data  # TODO will change when json
             has_new_outoing = True
         return has_new_outgoing
