@@ -85,11 +85,8 @@ def main():
         EventBus.receive()
 
         # read_bt()
-        try:
-            bt_task = bt_task_handler.pop_incoming()
-        except PickleError:
-            
-        if bt_task:
+        bt_task = bt_task_handler.pop_incoming()
+        
 
         # rcv    check cmd    exc cmd   (send bt)
 
