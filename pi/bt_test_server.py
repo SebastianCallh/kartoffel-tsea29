@@ -28,7 +28,7 @@ f.write("Accepted connection from %s \n" + str(client_addr) + '\n')
 data = ""
 
 while (True):
-    try:
+    """try:
         while data == "":
             f.write('getting data\n')
             # print("getting data")
@@ -40,7 +40,7 @@ while (True):
     except IOError:
         # print("Error = " + str(IOError))
         f.write('Error = ' + str(IOError) + '\n')
-        pass
+        pass"""
 
     msg = input("To client: ")
 
