@@ -31,7 +31,7 @@ class Accel:
             y_two_comp_data = y_two_comp_data * 0.001 * 9.82
             # To prevent garbage values while standing still
 
-            return x_data, y_data
+            return x_two_comp_data, y_two_comp_data
 
         except:
             return -1
