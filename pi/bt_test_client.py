@@ -1,4 +1,5 @@
 import bluetooth
+import time
 
 PI_ADDR = "B8:27:EB:FC:55:27"
 USB_BT_ADDR = ""
@@ -25,9 +26,9 @@ while(True):
 		if len(data) == 0:
 		    break
 		print("received " + str(data))
-		time.sleep(3)
-	except IOError:
-		print("Error = " + str(IOError))
+		time.sleep(5)
+	except IOError or OSError:
+		#print("Error = " + str(IOError))
 		pass
 
 

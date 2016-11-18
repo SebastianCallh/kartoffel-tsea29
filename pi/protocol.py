@@ -114,3 +114,31 @@ Arguments:
 speed (1 byte, positive)
     Right motor speed in percentage of max speed ranging from 0 to 100.
 """
+
+#-------------------- Bluetooth commands ---------------------
+
+
+
+REQUEST_PI_IP = 10
+
+
+
+# List of commands that are of the type data requests, i.e. the client requests
+# data from server
+DATA_REQUESTS = [REQUEST_PI_IP]
+
+# List of commands that are of the type direct operations, which 
+# controls the robot directly.  
+# The client does not excpect an answer.
+DIRECT_OPERATIONS = []
+
+
+
+
+
+
+
+
+
+
+
