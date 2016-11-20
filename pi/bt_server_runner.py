@@ -1,5 +1,8 @@
+print("1")
 import bt_server
+print("2")
 import bt_server_cmds
+print("3")
 
 PI_ADDR = "B8:27:EB:FC:55:27"
 PORT = 3
