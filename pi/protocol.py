@@ -121,6 +121,8 @@ speed (1 byte, positive)
 
 REQUEST_PI_IP = 10
 
+SEND_PI_IP = 11
+
 
 
 # List of commands that are of the type data requests, i.e. the client requests

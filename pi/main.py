@@ -86,6 +86,9 @@ def main():
 
         # read_bt()
         bt_task = bt_task_handler.pop_incoming()
+        if(bt_task.cmd_id == protocol.REQUEST_PI_IP):
+            ip = bt_server_cmds.get_pi_ip()
+            bt_task_handler.post_outgoing(BT_task(protocol.SEND_PI_IP, ip))
         
 
         # rcv    check cmd    exc cmd   (send bt)
