@@ -85,7 +85,7 @@ def main():
         # read_bt()
         bt_task = bt_task_handler.pop_incoming()
         if bt_task == None:
-            print("main: bt_task == None")
+            #print("main: bt_task == None")
             pass
         elif bt_task.cmd_id == protocol.REQUEST_PI_IP:
             print("main: bt_task.cmd_id = ", bt_task.cmd_id)
