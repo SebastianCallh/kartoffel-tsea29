@@ -3,10 +3,10 @@ import os
 
 
 def validate_cmd(cmd_id):
-    if (cmd_id in protocol.DATA_REQUESTS):
+    if (int(cmd_id) in protocol.DATA_REQUESTS):
         print("command is a request")
         return "rqst"
-    elif (cmd_id in protocol.DIRECT_OPERATIONS):
+    elif (int(cmd_id) in protocol.DIRECT_OPERATIONS):
         return "direct"
     else:
         return ""
