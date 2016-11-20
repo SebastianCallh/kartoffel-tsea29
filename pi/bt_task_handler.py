@@ -19,13 +19,13 @@ class BT_task:
 # kallas från main
 def post_outgoing(bt_task):  
     from_server_queue = open("from_server.txt", "wb")
-    pickle.dump(bt_task, from_server_queue)
+    pickle.dumps(bt_task, from_server_queue)
 
 # kallas från main
 def pop_incoming():
     to_server_queue = open("to_server.txt", "rb")
     try:
-        BT_task(task) = pickle.load(to_server_queue)
+        BT_task(task) = pickle.loads(to_server_queue)
         print("task typ ar: ", type(task))
     except EOFError:
         task = None
@@ -36,13 +36,13 @@ def pop_incoming():
 def post_incoming(bt_task):
     to_server_queue = open("to_server.txt", "wb")
     print("task type in post_incoming ", type(bt_task))
-    pickle.dump(bt_task, to_server_queue)
+    pickle.dumps(bt_task, to_server_queue)
 
 # kallas från server
 def pop_outgoing():
     from_server_queue = open("from_server.txt", "rb")
     try:
-        task = pickle.load(from_server_queue)
+        task = pickle.loads(from_server_queue)
     except EOFError:
         task = None
     return task
