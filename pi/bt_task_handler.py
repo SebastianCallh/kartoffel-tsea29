@@ -32,7 +32,7 @@ def pop_incoming():
     
 # kallas från server
 def post_incoming(bt_task):
-    from_server_queue = open("to_server.txt", "wb")
+    to_server_queue = open("to_server.txt", "wb")
     pickle.dump(bt_task, to_server_queue)
 
 # kallas från server
