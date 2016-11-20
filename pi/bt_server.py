@@ -52,7 +52,7 @@ class BT_Server:
 
     def update_incoming(self):
         has_new_incoming = False
-        data = self.client_sock.recv(1024)
+        data = self.client_sock.recv(1024).decode('utf-8')
         print("bt_server: Data =", data)
         if len(data) != 0:  # TODO or None? (using json)
             self.incoming_data = data
