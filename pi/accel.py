@@ -12,7 +12,7 @@ class Accel:
             accel_x, accel_y, accel_z = accel
             mag_x, mag_y, mag_z = mag
             accel_x = accel_x * 0.001 * 9.82
-            if(accel_x < 0.1):
+            if(abs(accel_x) < 0.2):
                 return 0
             return accel_x
         except:
