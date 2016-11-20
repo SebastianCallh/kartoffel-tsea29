@@ -15,17 +15,21 @@ class BT_task:
         self.cmd_id = cmd_id
         self.data = data
   
+def clean_queue_files():
+    #Create files or erase previous content
+    from_server = open("from_server.txt","w")
+    to_server = open("to_server.txt","w")
 
 # kallas från main
 def post_outgoing(bt_task):  
-    from_server_queue = open("from_server.txt", "wb")
-    pickle.dumps(bt_task, from_server_queue)
+    from_server_queue = open("from_server.txt", "ab")
+    pickle.dump(bt_task, from_server_queue)
 
 # kallas från main
 def pop_incoming():
     to_server_queue = open("to_server.txt", "rb")
     try:
-        BT_task(task) = pickle.loads(to_server_queue)
+        BT_task(task) = pickle.load(to_server_queue)
         print("task typ ar: ", type(task))
     except EOFError:
         task = None
@@ -34,15 +38,15 @@ def pop_incoming():
     
 # kallas från server
 def post_incoming(bt_task):
-    to_server_queue = open("to_server.txt", "wb")
+    to_server_queue = open("to_server.txt", "ab")
     print("task type in post_incoming ", type(bt_task))
-    pickle.dumps(bt_task, to_server_queue)
+    pickle.dump(bt_task, to_server_queue)
 
 # kallas från server
 def pop_outgoing():
     from_server_queue = open("from_server.txt", "rb")
     try:
-        task = pickle.loads(from_server_queue)
+        task = pickle.load(from_server_queue)
     except EOFError:
         task = None
     return task
