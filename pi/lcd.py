@@ -132,11 +132,11 @@ class LCD:
         #ugly ugly
         self._send(self.bit_pattern(' '))
         self._send(self.bit_pattern(' '))
+        self._send(self.bit_pattern(' '))
         
         GPIO.output(RS, 1)		#Select data register
         
         for d in data.replace('\n', ''):
-            print('sending ' + d)
             self._send(self.bit_pattern(d))
 
    
