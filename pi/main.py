@@ -73,7 +73,7 @@ return u"""
 def setup():
     Safety.setup_terminal_abort()
     EventBus.subscribe(CMD_RETURN_SENSOR_DATA, sensor_data_received)
-    #Laser.initialize()
+    # Laser.initialize()
 
 
 def main():
@@ -84,12 +84,12 @@ def main():
 
         # read_bt()
         bt_task = bt_task_handler.pop_incoming()
-        #print("type of task =", type(bt_task))
-        #print("task =", bt_task)
+        # print("type of task =", type(bt_task))
+        # print("task =", bt_task)
         if bt_task == None:
-            #print("main: bt_task == None")
+            # print("main: bt_task == None")
             pass
-        elif bt_task.cmd_id == protocol.REQUEST_PI_IP:
+        elif int(bt_task.cmd_id) == protocol.REQUEST_PI_IP:
             print("main: bt_task.cmd_id = ", bt_task.cmd_id)
             ip = bt_server_cmds.get_pi_ip()
             bt_task_handler.post_outgoing(bt_task_handler.BT_task(protocol.SEND_PI_IP, ip))
@@ -104,9 +104,6 @@ def main():
             laser_distance = Laser.read_data()
 
             request_sensor_data()"""
-
-
-
 
 
 Safety.run_safely(main)
