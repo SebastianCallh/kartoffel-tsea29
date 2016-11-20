@@ -20,7 +20,6 @@ def main():
     print("before accept_connection")
     server.accept_connection()
     print("after accept_connection")
-    bt_task_handler.open_medetiary_files()
 
     # TODO add exit/restart options (conditions in loop)
     while True:
