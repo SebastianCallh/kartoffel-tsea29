@@ -19,7 +19,7 @@ K		06
 '''
 
 #29 is MSB, 38 LSB
-pins = [29, 31, 32, 33, 35, 36, 37, 38]
+PINS = [29, 31, 32, 33, 35, 36, 37, 38]
 RS = 22
 E = 40
 
@@ -83,7 +83,7 @@ class LCD:
         #Configure output pins
         GPIO.setup(RS, GPIO.OUT)
         GPIO.setup(E, GPIO.OUT)
-        GPIO.setup(pins, GPIO.OUT)
+        GPIO.setup(PINS, GPIO.OUT)
 
         
         #Power up sequence
@@ -97,11 +97,10 @@ class LCD:
         sleep_ms(4)				    #Make sure that 1.53 ms has passed
         self._send(ENTRY_MODE_SET)
         sleep_ms(10)
+        
         #End of power up sequence. Display is off
-
         #Turn on display
         #self._send(DISPLAY_ON)
-        sleep_us(80)				#Wait a lot 
 
 
     def clear(self):
@@ -131,7 +130,7 @@ class LCD:
         GPIO.output(RS, 1)		#Select data register
 
         #Put the data on the pins
-        for d, p in zip(data, pins):
+        for d, p in zip(data, PINS):
             GPIO.output(p, d)
 
         #Write the data
