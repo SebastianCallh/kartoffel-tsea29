@@ -1,8 +1,5 @@
-print("1")
 import bt_server
-print("2")
 import bt_server_cmds
-print("3")
 
 PI_ADDR = "B8:27:EB:FC:55:27"
 PORT = 3
@@ -30,15 +27,19 @@ def main():
             has_new_incoming = server.update_incoming()
             # TODO Change assumption that data only contains ID!!
             if has_new_incoming:
+                print("bt_runner: has new incoming!")
+                print("Data = ", server.incoming_data)
                 cmd_type = bt_server_cmds.validate_cmd(server.incoming_data)
                 if cmd_type == "":
                     continue
                 elif cmd_type == "rqst":
                     busy = True
                 server.post_to_incoming()
+        print("bt_runner: waiting for outgoing")
 
         has_new_outgoing = server.update_outgoing()
         if (has_new_outgoing):
+            print("bt_runner: sending data")
             server.send_data()
             busy = False
 
