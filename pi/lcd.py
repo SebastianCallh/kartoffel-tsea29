@@ -109,7 +109,7 @@ class LCD:
 
     def send(self, data):
         for d in data:
-            self._send(bit_pattern(d))
+            self._send(self.bit_pattern(d))
 
     def bit_pattern(self, char):
         return BIT_PATTERN[data.upper()]
