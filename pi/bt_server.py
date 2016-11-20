@@ -39,7 +39,7 @@ class BT_Server:
 
 
     def post_to_incoming(self):
-        bt_task_handler.post_incoming(bt_task_handler.BT_task(self.incoming_data))
+        bt_task_handler.post_incoming(bt_task_handler.BT_task(self.incoming_data, ""))
 
     def send_data(self):
         self.client_sock.send(self.outgoing_data)
