@@ -16,8 +16,9 @@ def main():
     busy = False
 
     server = bt_server.BT_Server(PI_ADDR, PORT, BACKLOG)
-
+    print("before accept_connection")
     server.accept_connection()
+    print("after accept_connection")
 
     # TODO add exit/restart options (conditions in loop)
     while True:

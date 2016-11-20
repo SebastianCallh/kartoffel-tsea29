@@ -31,6 +31,7 @@ class BT_Server:
 
     def accept_connection(self):
         # TODO: Accept connection from valid client (requires change of backlog)
+        print("in accept_connection")
         (self.client_sock, self.accp_client_addr) = self.server_sock.accept()
 
     # if accp_client_addr == client_addr
