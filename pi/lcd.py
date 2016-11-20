@@ -29,6 +29,49 @@ DISPLAY_CLEAR = [0, 0, 0, 0, 0, 0, 0, 1]
 ENTRY_MODE_SET = [0, 0, 0, 0, 0, 1, 1, 0] #increment mode, entire shift off
 DISPLAY_ON = [0, 0, 0, 0, 1, 1, 0, 0]	
 
+
+LOOKUP = {
+    'A': '01000001',
+    'B': '01000010',
+    'C': '01000011',
+    'D': '01000100',
+    'E': '01000101',
+    'F': '01000110',
+    'G': '01000111',
+    'H': '01001000',
+    'I': '01001001',
+    'J': '01001010',
+    'K': '01001011',
+    'L': '01001100',
+    'M': '01001101',
+    'N': '01001110',
+    'O': '01001111',
+    'P': '01010000',
+    'Q': '01010001',
+    'R': '01010010',
+    'S': '01010011',
+    'T': '01010100',
+    'U': '01010101',
+    'V': '01010110',
+    'W': '01010111',
+    'X': '01011000',
+    'Y': '01011001',
+    'Z': '01011010',
+    'Å': '11110100',
+    'Ö': '11100001',
+    '0': '11101111',
+    '1': '00110001',
+    '2': '00110010',
+    '3': '00110011',
+    '4': '00110100',
+    '5': '00110101',
+    '6': '00110110',
+    '7': '00110111',
+    '8': '00111000',
+    '9': '00111001',
+    '.': '00101110',
+    ' ': '00100000'
+}
 class LCD:
 
 
@@ -41,11 +84,11 @@ class LCD:
         GPIO.setup(E, GPIO.OUT)
         GPIO.setup(pins, GPIO.OUT)
 
-
+        sleep_ms(100)				#Make sure at least 30 ms has passed since power on
+        
         #Power up sequence
         GPIO.output(RS, 0)		    #Select instruction register
-        
-        sleep_ms(100)				#Make sure at least 30 ms has passed since power on
+        sleep_us(80)
         self.send(FUNCTION_SET)
         sleep_us(80)				#Make super sure that 39 us has passed
         self.send(DISPLAY_ONOFF_CONTROL)
@@ -62,6 +105,11 @@ class LCD:
 
 
     def send(self, data):
+        for d in data:
+            self._send(LOOKUP[d])
+
+
+    def _send(self, data):
         GPIO.output(E, 0) 		#Make sure E is initially low
         GPIO.output(RS, 1)		#Select data register
 
@@ -84,7 +132,7 @@ class LCD:
 def sleep_ms(t):
     sleep(t / 1000)
 
-    
+
 #Sleep in us
 def sleep_us(t):
     sleep(t / 10000)
