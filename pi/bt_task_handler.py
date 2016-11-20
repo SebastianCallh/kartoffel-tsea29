@@ -4,8 +4,8 @@ import pickle
 # NOTE: If multiple instances of bt_server_intermediary
 # are running simultaneously, the may erase each others
 # content
-to_server_queue = open("to_server.txt", "wb")
-from_server_queue = open("from_server.txt", "wb")
+to_server_queue = open("to_server.txt", "wb+")
+from_server_queue = open("from_server.txt", "wb+")
 
 
 class BT_task:
