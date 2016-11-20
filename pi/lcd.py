@@ -30,7 +30,7 @@ ENTRY_MODE_SET = [0, 0, 0, 0, 0, 1, 1, 0] #increment mode, entire shift off
 DISPLAY_ON = [0, 0, 0, 0, 1, 1, 0, 0]	
 
 
-LOOKUP = {
+BIT_PATTERN = {
     'A': '01000001',
     'B': '01000010',
     'C': '01000011',
@@ -89,18 +89,18 @@ class LCD:
         #Power up sequence
         GPIO.output(RS, 0)		    #Select instruction register
         sleep_us(80)
-        self.send(FUNCTION_SET)
+        self._send(FUNCTION_SET)
         sleep_us(80)				#Make super sure that 39 us has passed
-        self.send(DISPLAY_ONOFF_CONTROL)
+        self._send(DISPLAY_ONOFF_CONTROL)
         sleep_us(80)				#Make super sure that 39 us has passed again
-        self.send(DISPLAY_CLEAR)
+        self._send(DISPLAY_CLEAR)
         sleep_ms(4)				    #Make sure that 1.53 ms has passed
-        self.send(ENTRY_MODE_SET)
+        self._send(ENTRY_MODE_SET)
         sleep_ms(10)
         #End of power up sequence. Display is off
 
         #Turn on display
-        #self.send(DISPLAY_ON)
+        #self._send(DISPLAY_ON)
         sleep_us(80)				#Wait a lot 
 
     def clear(self):
@@ -108,7 +108,7 @@ class LCD:
 
     def send(self, data):
         for d in data:
-            self._send(LOOKUP[d])
+            self._send(BIT_PATTERN[d])
 
 
     def _send(self, data):
