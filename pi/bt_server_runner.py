@@ -1,5 +1,6 @@
 import bt_server
 import bt_server_cmds
+import bt_task_handler
 
 PI_ADDR = "B8:27:EB:FC:55:27"
 PORT = 3
@@ -19,6 +20,7 @@ def main():
     print("before accept_connection")
     server.accept_connection()
     print("after accept_connection")
+    bt_task_handler.open_medetiary_files()
 
     # TODO add exit/restart options (conditions in loop)
     while True:
@@ -30,11 +32,13 @@ def main():
                 print("bt_runner: has new incoming!")
                 print("Data = ", server.incoming_data)
                 cmd_type = bt_server_cmds.validate_cmd(server.incoming_data)
+                print("Cmd id in runner-main: ", cmd_type)
                 if cmd_type == "":
                     continue
                 elif cmd_type == "rqst":
                     busy = True
                 server.post_to_incoming()
+                print("posted to incoming")
         print("bt_runner: waiting for outgoing")
 
         has_new_outgoing = server.update_outgoing()
