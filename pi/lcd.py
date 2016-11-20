@@ -129,6 +129,10 @@ class LCD:
         self.clear()
         self.reset_cursor()
         
+        #ugly ugly
+        self._send(self.bit_pattern(' '))
+        self._send(self.bit_pattern(' '))
+        
         GPIO.output(RS, 1)		#Select data register
         
         for d in data:
