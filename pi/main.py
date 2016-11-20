@@ -95,13 +95,13 @@ def main():
 
         # rcv    check cmd    exc cmd   (send bt)
 
-        if not busy and datetime.now() - last_request > request_period:
+        """if not busy and datetime.now() - last_request > request_period:
             busy = True
             last_request = datetime.now()
 
             laser_distance = Laser.read_data()
 
-            request_sensor_data()
+            request_sensor_data()"""
 
 
 
