@@ -8,5 +8,5 @@ accel = Accel()
 
 while (True):
     data = accel.read_data()
-    print("x-accel: " + str(data[0]) + " Y-accel: "+ str(data[1]) + " Z-accel: " + str(data[2]))
+    print("x-accel: " + str(data))
     sleep(0.2)
