@@ -59,7 +59,7 @@ BIT_PATTERN = {
     'X': [0,1,0,1,1,0,0,0],
     'Y': [0,1,0,1,1,0,0,1],
     'Z': [0,1,0,1,1,0,1,0],
-    '0': [1,1,1,0,1,1,1,1],
+    '0': [0,0,1,1,0,0,0,0],
     '1': [0,0,1,1,0,0,0,1],
     '2': [0,0,1,1,0,0,1,0],
     '3': [0,0,1,1,0,0,1,1],
@@ -135,7 +135,7 @@ class LCD:
         
         GPIO.output(RS, 1)		#Select data register
         
-        for d in data:
+        for d in data.replace('\n', ''):
             print('sending ' + d)
             self._send(self.bit_pattern(d))
 
