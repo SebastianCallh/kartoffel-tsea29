@@ -112,7 +112,7 @@ class LCD:
             self._send(self.bit_pattern(d))
 
     def bit_pattern(self, char):
-        return BIT_PATTERN[data.upper()]
+        return BIT_PATTERN[char.upper()]
 
     def _send(self, data):
         GPIO.output(E, 0) 		#Make sure E is initially low
