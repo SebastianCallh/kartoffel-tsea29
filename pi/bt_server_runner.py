@@ -39,7 +39,6 @@ def main():
                     busy = True
                 server.post_to_incoming()
                 print("posted to incoming")
-        print("bt_runner: waiting for outgoing")
 
         has_new_outgoing = server.update_outgoing()
         if (has_new_outgoing):
