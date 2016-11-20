@@ -85,11 +85,10 @@ class LCD:
         GPIO.setup(E, GPIO.OUT)
         GPIO.setup(pins, GPIO.OUT)
 
-        sleep_ms(100)				#Make sure at least 30 ms has passed since power on
         
         #Power up sequence
         GPIO.output(RS, 0)		    #Select instruction register
-        sleep_us(80)
+        sleep_ms(100)				#Make sure at least 30 ms has passed since power on
         self._send(FUNCTION_SET)
         sleep_us(80)				#Make super sure that 39 us has passed
         self._send(DISPLAY_ONOFF_CONTROL)
@@ -133,7 +132,7 @@ class LCD:
 
         #Put the data on the pins
         for d, p in zip(data, pins):
-            GPIO.output(p, int(d))
+            GPIO.output(p, d)
 
         #Write the data
         GPIO.output(E, 1)
