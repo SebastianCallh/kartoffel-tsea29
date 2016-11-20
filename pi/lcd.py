@@ -30,7 +30,7 @@ DISPLAY_ONOFF_CONTROL = [0, 0, 0, 0, 1, 0, 1, 1] #display, cursor, blink on
 DISPLAY_CLEAR = [0, 0, 0, 0, 0, 0, 0, 1]
 ENTRY_MODE_SET = [0, 0, 0, 0, 0, 1, 1, 0] #increment mode, entire shift off
 DISPLAY_ON = [0, 0, 0, 0, 1, 1, 1, 1]	
-RESET_CURSOR = [0, 0, 0, 0, 0, 0, 1]
+RESET_CURSOR = [0, 0, 0, 0, 0, 0, 1, 0]
 
 BIT_PATTERN = {
     'A': [0,1,0,0,0,0,0,1],
@@ -132,6 +132,7 @@ class LCD:
         GPIO.output(RS, 1)		#Select data register
         
         for d in data:
+            print('sending ' + d)
             self._send(self.bit_pattern(d))
 
    
