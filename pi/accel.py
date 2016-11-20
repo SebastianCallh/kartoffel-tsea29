@@ -11,6 +11,9 @@ class Accel:
             accel, mag = lsm303.read()
             accel_x, accel_y, accel_z = accel
             mag_x, mag_y, mag_z = mag
-            return accel_x * 0.001 * 9.82, accel_y * 0.001 * 9.82, accel_z * 0.001 * 9.82,
+            accel_x = accel_x * 0.001 * 9.82
+            if(accel_x < 0.1):
+                return 0
+            return accel_x
         except:
             return -1
