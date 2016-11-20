@@ -10,7 +10,7 @@ client_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 print("Created client sock")
 client_sock.connect((PI_ADDR, port))
 print("connected to %s \n", PI_ADDR)
-client_sock.settimeout(1)
+#client_sock.settimeout(1)
 
 while (True):
     msg = input("To server: ")
@@ -26,7 +26,7 @@ while (True):
         if len(data) == 0:
             break
         print("received " + str(data))
-        time.sleep(5)
+        #time.sleep(5)
     except IOError or OSError:
         # print("Error = " + str(IOError))
         pass
