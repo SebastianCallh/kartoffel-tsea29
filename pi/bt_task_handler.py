@@ -23,7 +23,10 @@ def post_outgoing(bt_task):
 
 # kallas från main
 def pop_incoming():
-    task = pickle.load(to_server_queue)
+    try:
+        task = pickle.load(to_server_queue)
+    except EOFError:
+        task = None
     return task
     
 # kallas från server
@@ -32,7 +35,10 @@ def post_incoming(bt_task):
 
 # kallas från server
 def pop_outgoing():
-    task = pickle.load(from_server_queue)
+    try:
+        task = pickle.load(from_server_queue)
+    except EOFError:
+        task = None
     return task
     
 
