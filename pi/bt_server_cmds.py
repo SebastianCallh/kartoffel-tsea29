@@ -17,4 +17,4 @@ def get_pi_ip():
     return pi_ip
     
 def rotate_right():
-    main.rotate_right()
+    #main.rotate_right()
