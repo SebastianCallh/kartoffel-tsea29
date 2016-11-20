@@ -129,6 +129,8 @@ class LCD:
         self.clear()
         self.reset_cursor()
         
+        GPIO.output(RS, 1)		#Select data register
+        
         for d in data:
             self._send(self.bit_pattern(d))
 
@@ -139,7 +141,6 @@ class LCD:
 
     def _send(self, data):
         GPIO.output(E, 0) 		#Make sure E is initially low
-        GPIO.output(RS, 1)		#Select data register
 
         #Put the data on the pins
         for d, p in zip(data, PINS):
