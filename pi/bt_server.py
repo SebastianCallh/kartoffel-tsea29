@@ -52,7 +52,7 @@ class BT_Server:
 
     def update_incoming(self):
         has_new_incoming = False
-        data = self.client_sock.recv(1024)
+        data = self.client_sock.recv(1024).decode('utf-8')
         print("bt_server: Data =", data)
         if len(data) != 0:  # TODO or None? (using json)
             self.incoming_data = data
@@ -64,8 +64,8 @@ class BT_Server:
 
     def update_outgoing(self):
         has_new_outgoing = False
-        (cmd_id, data) = self._pop_from_outgoing()
-        if len(data) != 0:
+        task = self._pop_from_outgoing()
+        if task.cmd_id != 0:
             self.outgoing_data = cmd_id + " " + data  # TODO will change when json
             has_new_outoing = True
         return has_new_outgoing

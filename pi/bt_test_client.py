@@ -22,7 +22,7 @@ while (True):
 
     try:
         while data == "":
-            data = client_sock.recv(1024)
+            data = client_sock.recv(1024).decode('utf-8')
         if len(data) == 0:
             break
         print("received " + str(data))
