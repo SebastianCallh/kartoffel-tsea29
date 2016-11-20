@@ -28,7 +28,7 @@ DISPLAY_ONOFF_CONTROL = [0, 0, 0, 0, 1, 1, 1, 1] #display, cursor, blink on
 DISPLAY_CLEAR = [0, 0, 0, 0, 0, 0, 0, 1]
 ENTRY_MODE_SET = [0, 0, 0, 0, 0, 1, 1, 0] #increment mode, entire shift off
 DISPLAY_ON = [0, 0, 0, 0, 1, 1, 0, 0]	
-
+RESET_CURSOR = [0, 0, 0, 0, 0, 0, 1]
 
 BIT_PATTERN = {
     'A': '01000001',
@@ -104,15 +104,28 @@ class LCD:
         #self._send(DISPLAY_ON)
         sleep_us(80)				#Wait a lot 
 
+
     def clear(self):
+        GPIO.output(RS, 0)
         self._send(DISPLAY_CLEAR)
 
+
+    def reset_cursor(self):
+        GPIO.output(RS, 0)
+        self._send(RESET_CURSOR)
+
+
     def send(self, data):
+        self.clear()
+        self.reset_cursor()
+        
         for d in data:
             self._send(self.bit_pattern(d))
 
+   
     def bit_pattern(self, char):
         return BIT_PATTERN[char.upper()]
+
 
     def _send(self, data):
         GPIO.output(E, 0) 		#Make sure E is initially low
