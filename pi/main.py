@@ -15,7 +15,7 @@ from outbound import request_sensor_data, \
 
 # Update frequency
 from protocol import CMD_RETURN_SENSOR_DATA
-from saftey import Safety
+from safety import Safety
 
 # For bluetooth
 import protocol
