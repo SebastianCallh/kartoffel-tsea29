@@ -65,7 +65,7 @@ class BT_Server:
     def update_outgoing(self):
         has_new_outgoing = False
         task = self._pop_from_outgoing()
-        if task.cmd_id != 0:
+        if type(task) == bt_task_handler.BT_task and task.cmd_id != 0:
             self.outgoing_data = cmd_id + " " + data  # TODO will change when json
             has_new_outoing = True
         return has_new_outgoing

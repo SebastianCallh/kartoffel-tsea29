@@ -10,6 +10,7 @@ client_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 print("Created client sock")
 client_sock.connect((PI_ADDR, port))
 print("connected to %s \n", PI_ADDR)
+client_sock.setblocking(True)
 #client_sock.settimeout(1)
 
 while (True):
