@@ -78,20 +78,24 @@ def setup():
 
 def main():
     global busy, last_request
-
+    print("Main 1")
     setup()
-
+    print("Main 2")
     while True:
         EventBus.receive()
 
         # read_bt()
+        print("Main 3")
         bt_task = bt_task_handler.pop_incoming()
+        print("Main 4")
         if bt_task == None:
+            print("Main 5")
             pass
         elif bt_task.cmd_id == protocol.REQUEST_PI_IP:
+            print("Main 6")
             ip = bt_server_cmds.get_pi_ip()
             bt_task_handler.post_outgoing(bt_task_handler.BT_task(protocol.SEND_PI_IP, ip))
-        
+        print("Main 7")
 
         # rcv    check cmd    exc cmd   (send bt)
 
