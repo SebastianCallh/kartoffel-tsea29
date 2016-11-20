@@ -12,7 +12,7 @@ class BT_task:
     # it might not need to check it when it arrives?
 
     def __init__(self, cmd_id = 0, data = 0):
-        self.cmd_id = cmd_id
+        self.cmd_id = int(cmd_id)
         self.data = data
   
 def clean_queue_files():
