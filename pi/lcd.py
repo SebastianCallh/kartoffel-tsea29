@@ -103,6 +103,8 @@ class LCD:
         #self.send(DISPLAY_ON)
         sleep_us(80)				#Wait a lot 
 
+    def clear(self):
+        self._send(DISPLAY_CLEAR)
 
     def send(self, data):
         for d in data:
