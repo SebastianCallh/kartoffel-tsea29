@@ -27,7 +27,8 @@ class BT_Server:
         # Data to be sent to client
         self.outgoing_data = None
 
-        self.client_sock, self.accp_client_addr = None
+        self.client_sock = None
+        self.accp_client_addr = None
 
     def accept_connection(self):
         # TODO: Accept connection from valid client (requires change of backlog)
