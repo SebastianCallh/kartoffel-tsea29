@@ -85,6 +85,7 @@ def main():
         # read_bt()
         bt_task = bt_task_handler.pop_incoming()
         print("type of task =", type(bt_task))
+        print("task =", task)
         if bt_task == None:
             #print("main: bt_task == None")
             pass
