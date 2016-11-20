@@ -72,6 +72,7 @@ BIT_PATTERN = {
     '.': '00101110',
     ' ': '00100000'
 }
+
 class LCD:
 
 
@@ -108,8 +109,10 @@ class LCD:
 
     def send(self, data):
         for d in data:
-            self._send(BIT_PATTERN[d])
+            self._send(bit_pattern(d))
 
+    def bit_pattern(self, char):
+        return BIT_PATTERN[data.upper()]
 
     def _send(self, data):
         GPIO.output(E, 0) 		#Make sure E is initially low
@@ -117,7 +120,7 @@ class LCD:
 
         #Put the data on the pins
         for d, p in zip(data, pins):
-            GPIO.output(p, d)
+            GPIO.output(p, int(d))
 
         #Write the data
         GPIO.output(E, 1)
