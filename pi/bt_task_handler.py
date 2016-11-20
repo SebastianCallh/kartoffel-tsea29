@@ -29,7 +29,7 @@ def post_outgoing(bt_task):
 def pop_incoming():
     to_server_queue = open("to_server.txt", "rb")
     try:
-        BT_task(task) = pickle.load(to_server_queue)
+        task = pickle.load(to_server_queue)
         print("task typ ar: ", type(task))
     except EOFError:
         task = None
