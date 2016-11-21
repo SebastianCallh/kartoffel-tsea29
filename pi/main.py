@@ -80,7 +80,7 @@ def main():
     global busy, last_request
     setup()
     while True:
-        EventBus.receive()
+        #EventBus.receive()
 
         # read_bt()
         bt_task = bt_task_handler.pop_incoming()
