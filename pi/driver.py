@@ -160,10 +160,11 @@ class DistanceTask(Task):
         self.previous_time = datetime.now()
 
     def distance_task(self):
-        laser_data = self.laser.read_data()
 
-        if laser_data == -1:
-            raise Exception('Error reading laser')
+        laser_data = -1
+        while laser_data == -1:
+            laser_data = self.laser.read_data()
+            print("Distance Task Laser: " + str(laser_data - self.destination))
 
         return self.destination >= laser_data
 
