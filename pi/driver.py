@@ -12,7 +12,7 @@ POST_TURN_TIME = 700
 PRE_TURN_TIME = 500
 WARMUP_TIME = 2000
 POST_TURN_DISTANCE = 250
-PRE_TURN_DISTANCE = 300
+PRE_TURN_DISTANCE = 225
 
 class Driver:
     def __init__(self, gyro, laser):
