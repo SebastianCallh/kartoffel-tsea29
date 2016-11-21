@@ -3,12 +3,14 @@ from autocontroller import AutoController
 ###### STATE MACHINE FOR NAVIGATIONAL STATES ########
 
 
-
 class State:
-    def run(self):
+
+    def run(self, data):
         assert 0, "run not implemented"
+
     def sensor_data_received(self, data, new_ir_left, new_ir_right):
         assert 0, "sensor_data_received not implemented"
+
 
 class auto_control(State):
 
