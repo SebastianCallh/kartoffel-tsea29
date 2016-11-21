@@ -1,5 +1,4 @@
 import pickle
-import shutil
 
 # Files in which to store BT_task objects in transition
 
@@ -32,14 +31,15 @@ def pop_incoming():
     command_queue = open("bt_commands.txt", "rb")
     try: 
         task = pickle.load(command_queue)
-        
+        print("Able to load, task-ID =", task.cmd_id)
         # Remove first command in queue
         tasks = command_queue.readlines()
         del tasks[0]
         target_command_queue = open("bt_commands.txt","wb")
         target_command_queue.writelines(tasks)
         #print("task typ ar: ", type(task))
-    except EOFError:
+    except EOFError or MemoryError:
+        print("error = ", str(MemoryError))
         task = None
     #print("task värde på id: ", task.cmd_id)
     return task
@@ -55,13 +55,14 @@ def pop_outgoing():
     answer_queue = open("bt_answers.txt", "rb")
     try:
         task = pickle.load(answer_queue)
-        
+        print("Able to load, task-ID =", task.cmd_id)
         # Remove first command in queue
         tasks = answer_queue.readlines()
         del tasks[0]
         target_answer_queue = open("bt_answers.txt","wb")
         target_answer_queue.writelines(tasks)
-    except EOFError:
+    except EOFError or MemoryError:
+        print("error = ", str(MemoryError))
         task = None
     return task
     
