@@ -33,7 +33,7 @@ class auto_control(State):
 
         right_speed, left_speed, regulation = auto_control.auto_controller.auto_control(new_ir_left, new_ir_right, data['side'])
         
-        if abs(regulation) >= 30: 
+        if abs(regulation) >= 40:
             return 
             
         data['driver'].drive(left_speed, right_speed)
