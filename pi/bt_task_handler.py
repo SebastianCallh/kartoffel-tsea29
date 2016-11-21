@@ -50,10 +50,11 @@ def pop_incoming():
         print("Able to load, task-ID =", task.cmd_id)
         # Remove first command in queue
         tasks = command_queue.readlines()
-        del tasks[0]
-        target_command_queue = open("bt_commands.txt","wb")
-        target_command_queue.writelines(tasks)
-        target_command_queue.close()
+        if tasks:
+            del tasks[0]
+            target_command_queue = open("bt_commands.txt","wb")
+            target_command_queue.writelines(tasks)
+            target_command_queue.close()
         # print("task typ ar: ", type(task))
     except EOFError:
         pass
