@@ -42,6 +42,8 @@ def main():
             server.send_data()'''
     log.close()
 
+    busy = false
+
     # TODO add exit/restart options (conditions in loop)
     while True:
         # Loop and wait for server commands
