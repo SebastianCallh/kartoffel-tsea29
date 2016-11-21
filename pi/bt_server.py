@@ -18,7 +18,7 @@ class BT_Server:
 
         # Set up server socket
         self.server_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-        client_sock.setblocking(True)
+        self.server_sock.setblocking(True)
         self.server_sock.bind((server_addr, port))
         # Enable the server to accept connections
         self.server_sock.listen(backlog)
