@@ -40,7 +40,6 @@ def main():
         if (has_new_outgoing):
             log.write("bt_runner: sending data")
             server.send_data()'''
-    log.close()
 
     busy = False
 
