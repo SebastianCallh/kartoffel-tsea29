@@ -42,7 +42,7 @@ def main():
             server.send_data()'''
     log.close()
 
-    busy = false
+    busy = False
 
     # TODO add exit/restart options (conditions in loop)
     while True:
