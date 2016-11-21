@@ -20,11 +20,14 @@ def clean_queue_files():
     command_queue = open("bt_commands.txt","w")
     command_queue.seek(0)
     command_queue.truncate()
+    answer_queue.close()
+    command_queue.close()
 
 # kallas från main
 def post_outgoing(bt_task):  
     answer_queue = open("bt_answers.txt", "ab")
     pickle.dump(bt_task, answer_queue)
+    answer_queue.close()
 
 # kallas från main
 def pop_incoming():
@@ -37,11 +40,13 @@ def pop_incoming():
         del tasks[0]
         target_command_queue = open("bt_commands.txt","wb")
         target_command_queue.writelines(tasks)
+        target_command_queue.close()
         #print("task typ ar: ", type(task))
     except EOFError or MemoryError:
-        print("error = ", str(MemoryError))
+        print("pop_in: error = ", str(MemoryError))
         task = None
     #print("task värde på id: ", task.cmd_id)
+    command_queue.close()
     return task
     
 # kallas från server
@@ -49,6 +54,7 @@ def post_incoming(bt_task):
     command_queue = open("bt_commands.txt", "ab")
     print("task type in post_incoming ", type(bt_task))
     pickle.dump(bt_task, command_queue)
+    command_queue.close()
 
 # kallas från server
 def pop_outgoing():
@@ -61,9 +67,11 @@ def pop_outgoing():
         del tasks[0]
         target_answer_queue = open("bt_answers.txt","wb")
         target_answer_queue.writelines(tasks)
+        target_answer_queue.close()
     except EOFError or MemoryError:
-        print("error = ", str(MemoryError))
+        print("pop_out: error = ", str(MemoryError))
         task = None
+    answer_queue.close()
     return task
     
 
