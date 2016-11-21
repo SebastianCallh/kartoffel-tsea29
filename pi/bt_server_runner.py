@@ -25,7 +25,7 @@ def main():
     bt_task_handler.clean_queue_files()
 
 
-    # TODO add exit/restart options (conditions in loop)
+    '''# TODO add exit/restart options (conditions in loop)
     while True:
         # Loop and wait for server commands
         has_new_incoming = server.update_incoming()
@@ -39,10 +39,10 @@ def main():
         has_new_outgoing = server.update_outgoing()
         if (has_new_outgoing):
             log.write("bt_runner: sending data")
-            server.send_data()
+            server.send_data()'''
     log.close()
 
-    '''# TODO add exit/restart options (conditions in loop)
+    # TODO add exit/restart options (conditions in loop)
     while True:
         # Loop and wait for server commands
         while not busy:
@@ -64,7 +64,7 @@ def main():
         if (has_new_outgoing):
             log.write("bt_runner: sending data")
             server.send_data()
-            busy = False'''
+            busy = False
 
 
 main()
