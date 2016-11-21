@@ -3,7 +3,11 @@ import pickle
 import traceback, sys
 
 # Files in which to store BT_task objects in transition
-
+def peek_line(f):
+    pos = f.tell()
+    line = f.readline()
+    f.seek(pos)
+    return line
 
 class BT_task:
 
@@ -37,6 +41,7 @@ def pop_incoming():
     command_queue = open("bt_commands.txt", "rb")
     try:
         #psutil.phymem_usage()
+        print("peek coomad_queue: ", peek_line(command_queue))
         task = pickle.load(command_queue)
         print("Able to load, task-ID =", task.cmd_id)
         # Remove first command in queue
@@ -70,6 +75,7 @@ def pop_outgoing():
     answer_queue = open("bt_answers.txt", "rb")
     try:
         #psutil.phymem_usage()
+        print("peek coomad_queue: ", peek_line(answer_queue))
         task = pickle.load(answer_queue)
         print("Able to load, task-ID =", task.cmd_id)
         #psutil.phymem_usage()
