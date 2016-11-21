@@ -14,13 +14,16 @@ BACKLOG = 1
 
 
 def main():
+    log = open("log.txt","w")
+    log.write("In main")
     busy = False
 
     server = bt_server.BT_Server(PI_ADDR, PORT, BACKLOG)
-    print("before accept_connection")
+    log.write("before accept_connection")
     server.accept_connection()
-    print("after accept_connection")
+    log.write("after accept_connection")
     bt_task_handler.clean_queue_files()
+
 
     # TODO add exit/restart options (conditions in loop)
     while True:
@@ -29,20 +32,20 @@ def main():
             has_new_incoming = server.update_incoming()
             # TODO Change assumption that data only contains ID!!
             if has_new_incoming:
-                print("bt_runner: has new incoming!")
-                print("Data = ", server.incoming_data)
+                log.write("bt_runner: has new incoming!")
+                log.write("Data = ", server.incoming_data)
                 cmd_type = bt_server_cmds.validate_cmd(server.incoming_data)
-                print("Cmd id in runner-main: ", cmd_type)
+                log.write("Cmd id in runner-main: ", cmd_type)
                 if cmd_type == "":
                     continue
                 elif cmd_type == "rqst":
                     busy = True
                 server.post_to_incoming()
-                print("posted to incoming")
+                log.write("posted to incoming")
 
         has_new_outgoing = server.update_outgoing()
         if (has_new_outgoing):
-            print("bt_runner: sending data")
+            log.write("bt_runner: sending data")
             server.send_data()
             busy = False
 
