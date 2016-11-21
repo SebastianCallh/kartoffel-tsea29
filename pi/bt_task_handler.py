@@ -1,4 +1,5 @@
 import pickle
+import shutil
 
 # Files in which to store BT_task objects in transition
 # NOTE: If multiple instances of bt_server_intermediary
@@ -17,19 +18,24 @@ class BT_task:
   
 def clean_queue_files():
     #Create files or erase previous content
-    from_server = open("from_server.txt","w")
-    to_server = open("to_server.txt","w")
+    answer_queue = open("bt_answers.txt","w")
+    command_queue = open("bt_commands.txt","w")
 
 # kallas från main
 def post_outgoing(bt_task):  
-    from_server_queue = open("from_server.txt", "ab")
-    pickle.dump(bt_task, from_server_queue)
+    answer_queue = open("bt_answers.txt", "ab")
+    pickle.dump(bt_task, answer_queue)
 
 # kallas från main
 def pop_incoming():
-    to_server_queue = open("to_server.txt", "rb")
-    try:
-        task = pickle.load(to_server_queue)
+    command_queue = open("bt_commands.txt", "rb")
+    try: 
+        task = pickle.load(command_queue)       
+        
+        # Remove first command in queue
+        command_queue.readline()
+        target_command_queue = open("bt_commands.txt","wb")
+        shutil.copyfileobj(command_queue, target_command_queue)
         #print("task typ ar: ", type(task))
     except EOFError:
         task = None
@@ -38,15 +44,20 @@ def pop_incoming():
     
 # kallas från server
 def post_incoming(bt_task):
-    to_server_queue = open("to_server.txt", "ab")
+    command_queue = open("bt_commands.txt", "ab")
     print("task type in post_incoming ", type(bt_task))
-    pickle.dump(bt_task, to_server_queue)
+    pickle.dump(bt_task, command_queue)
 
 # kallas från server
 def pop_outgoing():
-    from_server_queue = open("from_server.txt", "rb")
+    answer_queue = open("bt_answers.txt", "rb")
     try:
-        task = pickle.load(from_server_queue)
+        task = pickle.load(answer_queue)
+        
+        # Remove first command in queue
+        answer_queue.readline()
+        target_answer_queue = open("bt_answers.txt","wb")
+        shutil.copyfileobj(answer_queue, target_answer_queue)
     except EOFError:
         task = None
     return task
