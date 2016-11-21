@@ -33,9 +33,9 @@ def main():
             # TODO Change assumption that data only contains ID!!
             if has_new_incoming:
                 log.write("bt_runner: has new incoming!")
-                log.write("Data = ", server.incoming_data)
+                log.write("Data = " + server.incoming_data)
                 cmd_type = bt_server_cmds.validate_cmd(server.incoming_data)
-                log.write("Cmd id in runner-main: ", cmd_type)
+                log.write("Cmd id in runner-main: " + cmd_type)
                 if cmd_type == "":
                     continue
                 elif cmd_type == "rqst":
