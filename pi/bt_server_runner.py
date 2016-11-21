@@ -17,7 +17,6 @@ BACKLOG = 1
 def main():
     log = open("log.txt","w")
     log.write("In main" + str(datetime.now()))
-    busy = False
 
     server = bt_server.BT_Server(PI_ADDR, PORT, BACKLOG)
     log.write("before accept_connection")
@@ -27,6 +26,25 @@ def main():
 
 
     # TODO add exit/restart options (conditions in loop)
+    while True:
+        # Loop and wait for server commands
+        has_new_incoming = server.update_incoming()
+        # TODO Change assumption that data only contains ID!!
+        if has_new_incoming:
+            log.write("bt_runner: has new incoming!")
+            log.write("Data = " + server.incoming_data)
+            server.post_to_incoming()
+            log.write("posted to incoming")
+
+        has_new_outgoing = server.update_outgoing()
+        if (has_new_outgoing):
+            log.write("bt_runner: sending data")
+            server.send_data()
+
+
+
+
+    '''# TODO add exit/restart options (conditions in loop)
     while True:
         # Loop and wait for server commands
         while not busy:
@@ -48,7 +66,7 @@ def main():
         if (has_new_outgoing):
             log.write("bt_runner: sending data")
             server.send_data()
-            busy = False
+            busy = False'''
 
 
 main()

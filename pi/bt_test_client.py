@@ -25,7 +25,7 @@ while (True):
     data = ""
 
     try:
-        for i in range(1,2):
+        for i in range(0,2):
             while data == "":
                 data = client_sock.recv(1024).decode('utf-8')
             if len(data) == 0:
