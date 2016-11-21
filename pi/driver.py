@@ -121,9 +121,10 @@ class DegreeTask(Task):
         self.gyro = gyro
 
     def start(self):
-        Task.start(self)
         self.total_degrees = 0
         self.previous_time = datetime.now()
+        Task.start(self)
+
 
     def degree_task(self):
         data = self.gyro.read_data()
@@ -149,8 +150,6 @@ class DistanceTask(Task):
         self.laser = laser
 
     def start(self):
-        Task.start(self)
-
         laser_data = -1
         while laser_data == -1:
             laser_data = self.laser.read_data()
@@ -158,6 +157,8 @@ class DistanceTask(Task):
 
         self.destination = laser_data - self.distance
         self.previous_time = datetime.now()
+
+        Task.start(self)
 
     def distance_task(self):
 
