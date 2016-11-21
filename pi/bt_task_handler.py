@@ -19,7 +19,11 @@ class BT_task:
 def clean_queue_files():
     #Create files or erase previous content
     answer_queue = open("bt_answers.txt","w")
+    answer_queue.seek(0)
+    answer_queue.truncate()
     command_queue = open("bt_commands.txt","w")
+    command_queue.seek(0)
+    command_queue.truncate()
 
 # kallas från main
 def post_outgoing(bt_task):  
