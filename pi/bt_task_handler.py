@@ -2,9 +2,6 @@ import pickle
 import shutil
 
 # Files in which to store BT_task objects in transition
-# NOTE: If multiple instances of bt_server_intermediary
-# are running simultaneously, the may erase each others
-# content
 
 
 class BT_task:
@@ -34,12 +31,13 @@ def post_outgoing(bt_task):
 def pop_incoming():
     command_queue = open("bt_commands.txt", "rb")
     try: 
-        task = pickle.load(command_queue)       
+        task = pickle.load(command_queue)
         
         # Remove first command in queue
-        command_queue.readline()
+        tasks = command_queue.readlines()
+        del tasks[0]
         target_command_queue = open("bt_commands.txt","wb")
-        shutil.copyfileobj(command_queue, target_command_queue)
+        target_command_queue.writelines(tasks)
         #print("task typ ar: ", type(task))
     except EOFError:
         task = None
@@ -59,9 +57,10 @@ def pop_outgoing():
         task = pickle.load(answer_queue)
         
         # Remove first command in queue
-        answer_queue.readline()
+        tasks = answer_queue.readlines()
+        del tasks[0]
         target_answer_queue = open("bt_answers.txt","wb")
-        shutil.copyfileobj(answer_queue, target_answer_queue)
+        target_answer_queue.writelines(tasks)
     except EOFError:
         task = None
     return task
