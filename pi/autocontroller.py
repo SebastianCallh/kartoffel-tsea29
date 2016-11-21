@@ -22,7 +22,7 @@ class AutoController:
 
         if (ir_left_mm == -1 and ir_right_mm == -1): # Don't regulate
             regulation = 0
-            print("u = 0, no reglering")
+            #print("u = 0, no reglering")
             time_last_regulation = time_now
             use_derivate = False
             return SLOW_SPEED, SLOW_SPEED, regulation
@@ -45,7 +45,7 @@ class AutoController:
         if(use_derivate == False):
             regulation = floor((Kp * regulation_error))
             use_derivate = True
-            print("No derivate")
+            #print("No derivate")
         else:
             regulation = floor((Kp * regulation_error) + (Kd / delta_t * (regulation_error - old_error)))
 
@@ -55,15 +55,15 @@ class AutoController:
             speed_close_wall = STANDARD_SPEED + regulation
         else:
             speed_close_wall = 10
-        print("speed_close_wall = " + str(speed_close_wall))
+        #print("speed_close_wall = " + str(speed_close_wall))
 
         if (regulation < 10):
             speed_far_wall = STANDARD_SPEED - regulation
         else:
             speed_far_wall = 10
-        print("speed_far_wall = " + str(speed_far_wall))
+        #print("speed_far_wall = " + str(speed_far_wall))
 
-        print("u: " + str(regulation))
+        #print("u: " + str(regulation))
 
         time_last_regulation = time_now
         

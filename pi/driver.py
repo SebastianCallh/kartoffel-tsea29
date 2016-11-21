@@ -23,7 +23,7 @@ class Driver:
 
     def idle(self):
         if not self.task.done():
-            print("Task not done")
+            #print("Task not done")
             return False
         elif self.tasks:
             self.task = self.tasks.pop()

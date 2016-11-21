@@ -34,6 +34,7 @@ class auto_control(State):
         right_speed, left_speed, regulation = auto_control.auto_controller.auto_control(new_ir_left, new_ir_right, data['side'])
         
         if abs(regulation) >= 40:
+            print("Regulation to high: " + str(regulation))
             return 
             
         data['driver'].drive(left_speed, right_speed)
@@ -53,18 +54,18 @@ class auto_control(State):
             return turn()
         
         laser_data = data['laser'].read_data()
-        print('Left diff: ' + str(left_diff) + ' right diff ' + str(right_diff))
-        print('laser distance: ' + str(laser_data))
+        #print('Left diff: ' + str(left_diff) + ' right diff ' + str(right_diff))
+        #print('laser distance: ' + str(laser_data))
         
         #Inner turn
-        if laser_data <=  Navigator.FACING_WALL_DIST and laser_data != -1:
+        if laser_data <= Navigator.FACING_WALL_DIST and laser_data != -1:
+            print("laserdata: "+ str(laser_data))
             if data['side'] == Navigator.LEFT_SIDE:
                 data['driver'].inner_turn_right()
                 return turn()
             if data['side'] == Navigator.RIGHT_SIDE:
                 data['driver'].inner_turn_left()
                 return turn()
-                
         return auto_control()
 
 
