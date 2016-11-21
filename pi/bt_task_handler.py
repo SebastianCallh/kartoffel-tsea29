@@ -50,7 +50,7 @@ def pop_incoming():
         #print("Able to load, task-ID =", task.cmd_id)
         # Remove first command in queue
         tasks = command_queue.readlines()
-        print("tasks =", tasks)
+        print("tasks in=", tasks)
         if tasks:
             del tasks[0]
             target_command_queue = open("bt_commands.txt","wb")
@@ -90,6 +90,7 @@ def pop_outgoing():
         # psutil.phymem_usage()
         # Remove first command in queue
         tasks = answer_queue.readlines()
+        print("tasks out=", tasks)
         if tasks:
             del tasks[0]
             target_answer_queue = open("bt_answers.txt","wb")
