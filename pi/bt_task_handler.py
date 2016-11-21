@@ -45,7 +45,7 @@ def pop_incoming():
     task = None
     try:
         # psutil.phymem_usage()
-        print("peek incoming command_queue: ", peek_line(command_queue))
+        #print("peek incoming command_queue: ", peek_line(command_queue))
         task = pickle.load(command_queue)
         print("Able to load, task-ID =", task.cmd_id)
         # Remove first command in queue
@@ -82,9 +82,9 @@ def pop_outgoing():
     task = None
     try:
         # psutil.phymem_usage()
-        print("peek outgoing command_queue: ", peek_line(answer_queue))
+        #print("peek outgoing command_queue: ", peek_line(answer_queue))
         task = pickle.load(answer_queue)
-        print("Able to load, task-ID =", task.cmd_id)
+        #print("Able to load, task-ID =", task.cmd_id)
         # psutil.phymem_usage()
         # Remove first command in queue
         '''tasks = answer_queue.readlines()
