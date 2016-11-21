@@ -47,7 +47,7 @@ def pop_incoming():
         # psutil.phymem_usage()
         #print("peek incoming command_queue: ", peek_line(command_queue))
         task = pickle.load(command_queue)
-        print("Able to load, task-ID =", task.cmd_id)
+        #print("Able to load, task-ID =", task.cmd_id)
         # Remove first command in queue
         tasks = command_queue.readlines()
         if tasks:
@@ -89,10 +89,11 @@ def pop_outgoing():
         # psutil.phymem_usage()
         # Remove first command in queue
         tasks = answer_queue.readlines()
-        del tasks[0]
-        target_answer_queue = open("bt_answers.txt","wb")
-        target_answer_queue.writelines(tasks)
-        target_answer_queue.close()
+        if tasks:
+            del tasks[0]
+            target_answer_queue = open("bt_answers.txt","wb")
+            target_answer_queue.writelines(tasks)
+            target_answer_queue.close()
     except EOFError:
         pass
     except MemoryError:

@@ -90,7 +90,7 @@ def main():
             # print("main: bt_task == None")
             pass
         elif int(bt_task.cmd_id) == protocol.REQUEST_PI_IP:
-            print("main: bt_task.cmd_id = ", bt_task.cmd_id)
+            #print("main: bt_task.cmd_id = ", bt_task.cmd_id)
             ip = bt_server_cmds.get_pi_ip()
             bt_task_handler.post_outgoing(bt_task_handler.BT_task(protocol.SEND_PI_IP, ip))
         elif int(bt_task.cmd_id) == 12:
