@@ -27,6 +27,7 @@ def clean_queue_files():
 def post_outgoing(bt_task):  
     answer_queue = open("bt_answers.txt", "ab")
     pickle.dump(bt_task, answer_queue)
+    pickle.Pickler.clear_memo()
     answer_queue.close()
 
 # kallas från main
@@ -54,6 +55,7 @@ def post_incoming(bt_task):
     command_queue = open("bt_commands.txt", "ab")
     print("task type in post_incoming ", type(bt_task))
     pickle.dump(bt_task, command_queue)
+    pickle.Pickler.clear_memo()
     command_queue.close()
 
 # kallas från server
