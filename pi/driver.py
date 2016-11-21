@@ -40,15 +40,15 @@ class Driver:
 
     def outer_turn_right(self):
         print('outer turn right')
-        self.tasks = [DistanceTask(self._post_turn, POST_TURN_DISTANCE),
+        self.tasks = [DistanceTask(self._post_turn, POST_TURN_DISTANCE, self.laser),
                       DegreeTask(self._turn_right, TURN_DEGREES, self.gyro),
-                      DistanceTask(self._pre_turn, PRE_TURN_DISTANCE)]
+                      DistanceTask(self._pre_turn, PRE_TURN_DISTANCE, self.laser)]
 
     def outer_turn_left(self):
         print('outer turn left')
-        self.tasks = [DistanceTask(self._post_turn, POST_TURN_DISTANCE),
+        self.tasks = [DistanceTask(self._post_turn, POST_TURN_DISTANCE, self.laser),
                       DegreeTask(self._turn_left, TURN_DEGREES, self.gyro),
-                      DistanceTask(self._pre_turn, PRE_TURN_DISTANCE)]
+                      DistanceTask(self._pre_turn, PRE_TURN_DISTANCE, self.laser)]
 
     def inner_turn_left(self):
         print('inner turn left')
