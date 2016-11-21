@@ -1,5 +1,5 @@
 import pickle
-import psutil
+#import psutil
 import traceback, sys
 
 # Files in which to store BT_task objects in transition
@@ -36,7 +36,7 @@ def post_outgoing(bt_task):
 def pop_incoming():
     command_queue = open("bt_commands.txt", "rb")
     try:
-        psutil.phymem_usage()
+        #psutil.phymem_usage()
         task = pickle.load(command_queue)
         print("Able to load, task-ID =", task.cmd_id)
         # Remove first command in queue
@@ -48,7 +48,7 @@ def pop_incoming():
         #print("task typ ar: ", type(task))
     except EOFError or MemoryError:
         print("pop_in: error = ", str(MemoryError))
-        psutil.phymem_usage()
+        #psutil.phymem_usage()
         traceback.print_exc(file=sys.stdout)
         task = None
     #print("task värde på id: ", task.cmd_id)
@@ -67,10 +67,10 @@ def post_incoming(bt_task):
 def pop_outgoing():
     answer_queue = open("bt_answers.txt", "rb")
     try:
-        psutil.phymem_usage()
+        #psutil.phymem_usage()
         task = pickle.load(answer_queue)
         print("Able to load, task-ID =", task.cmd_id)
-        psutil.phymem_usage()
+        #psutil.phymem_usage()
         # Remove first command in queue
         tasks = answer_queue.readlines()
         del tasks[0]
@@ -79,7 +79,7 @@ def pop_outgoing():
         target_answer_queue.close()
     except EOFError or MemoryError:
         print("pop_out: error = ", str(MemoryError))
-        psutil.phymem_usage()
+        #psutil.phymem_usage()
         task = None
     answer_queue.close()
     return task
