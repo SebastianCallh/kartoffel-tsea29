@@ -134,6 +134,8 @@ class DegreeTask(Task):
 
         time_delta = (self.previous_time - datetime.now()).total_seconds()
         delta_degrees = data * time_delta
+        print("time_delta: " + str(time_delta))
+        print("delta_degrees: " + str(delta_degrees))
         self.previous_time = datetime.now()
         self.total_degrees += delta_degrees
         print('total degrees turned :' + str(self.total_degrees))
