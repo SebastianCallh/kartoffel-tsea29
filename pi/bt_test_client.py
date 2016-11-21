@@ -18,16 +18,20 @@ while (True):
 
     client_sock.send(msg)
     print("sent msg")
+    
+    msg2 = input("To server: ")
+    client_sock.send(msg2)
 
     data = ""
 
     try:
-        while data == "":
-            data = client_sock.recv(1024).decode('utf-8')
-        if len(data) == 0:
-            break
-        print("received " + str(data))
-        #time.sleep(5)
+        for i in range(1,2):
+            while data == "":
+                data = client_sock.recv(1024).decode('utf-8')
+            if len(data) == 0:
+                break
+            print("received " + str(data))
+            #time.sleep(5)
     except IOError or OSError:
         # print("Error = " + str(IOError))
         pass
