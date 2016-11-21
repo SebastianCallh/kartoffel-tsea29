@@ -1,6 +1,7 @@
 import bt_server
 import bt_server_cmds
 import bt_task_handler
+from datetime import datetime
 
 PI_ADDR = "B8:27:EB:FC:55:27"
 PORT = 3
@@ -15,7 +16,7 @@ BACKLOG = 1
 
 def main():
     log = open("log.txt","w")
-    log.write("In main")
+    log.write("In main" + str(datetime.now()))
     busy = False
 
     server = bt_server.BT_Server(PI_ADDR, PORT, BACKLOG)
