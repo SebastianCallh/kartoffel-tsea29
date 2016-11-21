@@ -16,7 +16,7 @@ from safety import Safety
 
 laser = Laser()
 gyro = Gyro()
-driver = Driver(gyro)
+driver = Driver(gyro, laser)
 navigator = Navigator(driver, laser)
 
 # Update frequency
