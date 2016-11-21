@@ -94,6 +94,7 @@ def main():
             ip = bt_server_cmds.get_pi_ip()
             bt_task_handler.post_outgoing(bt_task_handler.BT_task(protocol.SEND_PI_IP, ip))
         elif int(bt_task.cmd_id) == 12:
+            print("main: test_request")
             msg = bt_server_cmds.test_rqst()
             bt_task_handler.post_outgoing(bt_task_handler.BT_task(12,msg))
             break

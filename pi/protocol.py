@@ -123,11 +123,13 @@ REQUEST_PI_IP = 10
 
 SEND_PI_IP = 11
 
+TEST_HI = 12
+
 
 
 # List of commands that are of the type data requests, i.e. the client requests
 # data from server
-DATA_REQUESTS = [REQUEST_PI_IP]
+DATA_REQUESTS = [REQUEST_PI_IP, TEST_HI]
 
 # List of commands that are of the type direct operations, which 
 # controls the robot directly.  
