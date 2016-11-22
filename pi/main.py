@@ -100,6 +100,8 @@ def main():
             msg = bt_server_cmds.test_rqst()
             bt_task_handler.post_outgoing(bt_task_handler.BT_task(12,msg))
             break
+        else:
+            print("Main else, don't know what to do")
 
         # rcv    check cmd    exc cmd   (send bt)
 

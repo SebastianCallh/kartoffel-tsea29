@@ -13,7 +13,7 @@ log = open("log.txt","w")
 
 def setup_server():
     global log
-    log.write("In main" + str(datetime.now()))
+    #log.write("In main" + str(datetime.now()))
     server = bt_server.BT_Server(PI_ADDR, PORT, BACKLOG)
     print("before accept_connection")
     server.accept_connection()
@@ -69,9 +69,16 @@ def main():
                 cmd_type = bt_server_cmds.validate_cmd(server.incoming_data)
                 print("Cmd id in runner-main: " + cmd_type)
                 if cmd_type == "":
+                    print("Runner: cmd_type == empty")
                     continue
                 elif cmd_type == "rqst":
+                    print("Runner: cmd_type == rqst")
                     busy = True
+                elif cmd_type == "direct":
+                    print("Runner: cmd_typ == direct")
+                else:
+                    print("Runner: cmd_type is something unknown")
+                    continue
                 server.post_to_incoming()
                 print("posted to incoming")
 
