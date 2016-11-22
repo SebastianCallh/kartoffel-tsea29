@@ -11,10 +11,10 @@ from datetime import datetime, timedelta
 from laser import Laser
 from eventbus import EventBus
 from outbound import request_sensor_data, \
-    set_motor_speed, set_right_motor_speed
+    set_motor_speed, set_right_motor_speed, test_ho, return_ip
 
 # Update frequency
-from protocol import CMD_RETURN_SENSOR_DATA
+from protocol import CMD_RETURN_SENSOR_DATA, REQUEST_PI_IP, TEST_HI
 from safety import Safety
 
 # For bluetooth
@@ -40,74 +40,28 @@ def sensor_data_received(ir_left_mm, ir_right_mm):
     # print('ir_left_mm: ' + str(ir_left_mm))
     print('ir_right_mm: ' + str(ir_right_mm))
 
+def ip_requested():
+    ip = bt_server_cmds.get_pi_ip()
+    # Put IP on the bus
+    return_ip(ip)
 
-# Reglerteknik
-"""def auto_ctrl(ir_right_mm):
-    global curr_speed_r, old_t
-    t = datetime.now()
-
-    if (t - old_t >= 500):
-        if (ir_right_mm == -1):
-            u = 0
-            print("no reglering")
-            set_motor_speed(curr_speed_l)
-        else:
-            e = DESIRED_DIST - ir_right_mm # reglerfelet
-
-            # **** P-reglering *********
-            u = floor(Kp * e) # styrsignal
-
-            # ****** PD-reglering *********
-
-global old_e
-u = Kp * e + Kd / (t - old_t) * (e - old_e)
-old_e = e
-
-curr_speed_r = curr_speed_r + u
-set_right_motor_speed(curr_speed_r)
-old_t = t
-
-return u"""
-
+def return_hi():
+    test_ho()
 
 def setup():
     Safety.setup_terminal_abort()
-    EventBus.subscribe(CMD_RETURN_SENSOR_DATA, sensor_data_received)
+    #EventBus.subscribe(CMD_RETURN_SENSOR_DATA, sensor_data_received)
+    EventBus.subscribe(REQUEST_PI_IP, ip_requested)
+    EventBus.subscribe(TEST_HI, return_hi)
     # Laser.initialize()
 
 
 def main():
     global busy, last_request
     setup()
-    none_counter = 0
-    processed_cmds = 0
-    while True:
-        #EventBus.receive()
 
-        # read_bt()
-        bt_task = bt_task_handler.pop_incoming()
-        #print("type of task =", type(bt_task))
-        # print("task =", bt_task)
-        if bt_task == None:
-            none_counter += 1
-            if none_counter % 1000 == 0:
-                print("main: bt_task == None")
-                print("processed_cmds = ", processed_cmds)
-            pass
-        elif int(bt_task.cmd_id) == protocol.REQUEST_PI_IP:
-            processed_cmds += 1
-            print("main: bt_task.cmd_id = ", bt_task.cmd_id)
-            ip = bt_server_cmds.get_pi_ip()
-            print("IP = ", ip)
-            bt_task_handler.post_outgoing(bt_task_handler.BT_task(protocol.SEND_PI_IP, ip))
-            print("sent IP")
-        elif int(bt_task.cmd_id) == 12:
-            print("main: test_request")
-            msg = bt_server_cmds.test_rqst()
-            bt_task_handler.post_outgoing(bt_task_handler.BT_task(12,msg))
-            break
-        else:
-            print("Main else, don't know what to do")
+    while True:
+        EventBus.receive()
 
         # rcv    check cmd    exc cmd   (send bt)
 
