@@ -34,9 +34,13 @@ def clean_queue_files():
 
 # kallas från main
 def post_outgoing(bt_task):
+    print("in post_outgoing")
     answer_queue = open("bt_answers.txt", "ab")
+    print("could open file")
     pickle.dump(bt_task, answer_queue)
+    print("have dumped to pickle!")
     answer_queue.close()
+    print("closing file and returning to main!")
 
 
 # kallas från main
