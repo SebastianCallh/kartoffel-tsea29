@@ -15,7 +15,7 @@ class State:
     def run(self, data):
         assert 0, "run not implemented"
 
-    def sensor_data_received(self, data, new_ir_left, new_ir_right):
+    def sensor_data_received(self, data, new_ir_left, new_ir_right, new_ir_right2):
         assert 0, "sensor_data_received not implemented"
 
 
@@ -33,7 +33,7 @@ class auto_control(State):
         return right_diff >= Navigator.DISCONTINUITY_DIST and data['side'] == Navigator.RIGHT_SIDE
             
         
-    def sensor_data_received(self, data, new_ir_left, new_ir_right):
+    def sensor_data_received(self, data, new_ir_left, new_ir_right, new_ir_right2):
        
         if self.is_at_left_turn(data) or self.is_at_right_turn(data):
             return
@@ -82,7 +82,7 @@ class auto_control(State):
 
 
 class warmup(State):
-    def sensor_data_received(self, data, new_ir_left, new_ir_right):
+    def sensor_data_received(self, data, new_ir_left, new_ir_right, new_ir_right2):
         return #Do nothing
         
     def run(self, data):
@@ -97,7 +97,7 @@ class turn(State):
     def __init__(self, is_right_turn):
         self.is_right_turn = is_right_turn
 
-    def sensor_data_received(self, data, new_ir_left, new_ir_right):
+    def sensor_data_received(self, data, new_ir_left, new_ir_right, new_ir_right2):
         return #Do nothing. Only auto control uses it
 
     def run(self, data):
@@ -131,12 +131,12 @@ class Navigator:
         self.state = warmup()
 
 
-    def sensor_data_received(self, new_ir_left, new_ir_right):
+    def sensor_data_received(self, new_ir_left, new_ir_right, new_ir_right2):
         self.data['old_ir_left'] = self.data['ir_left']
         self.data['old_ir_right'] = self.data['ir_right']
         self.data['ir_left'] = new_ir_left
         self.data['ir_right'] = new_ir_right
-        self.state.sensor_data_received(self.data, new_ir_left, new_ir_right)
+        self.state.sensor_data_received(self.data, new_ir_left, new_ir_right, new_ir_right2)
         
     #Runs the state. The states run method returns the next state
     def navigate(self):
