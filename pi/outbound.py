@@ -14,11 +14,34 @@ For more information see eventbus.py.
 from bus import STYR_ADDR, SENSOR_ADDR
 from event import Event
 from eventbus import EventBus
-from protocol import CMD_REQUEST_SENSOR_DATA, CMD_SET_MOTOR_SPEED, \
-    CMD_SET_LEFT_MOTOR_SPEED, CMD_SET_RIGHT_MOTOR_SPEED
+from protocol import BLUETOOTH_ADDR, CMD_REQUEST_SENSOR_DATA, CMD_SET_MOTOR_SPEED, \
+    CMD_SET_LEFT_MOTOR_SPEED, CMD_SET_RIGHT_MOTOR_SPEED, RETURN_PI_IP, TEST_HO
 
 # NOTE: Function comments are purposely left out from this file in favor of the
 # complete definitions of every found command in proctol.py.
+
+
+def return_ip(ip):
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        Event(
+            message_id=RETURN_PI_IP,
+            arguments=[
+                ip
+            ]
+        )
+    )
+
+def test_ho():
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        Event(
+            message_id=TEST_HO,
+            arguments=[
+                "ho"
+            ]
+        )
+    )
 
 
 def request_sensor_data():

@@ -7,6 +7,8 @@ All commands may be sent in any direction but the implementations will probably
 choose to ignore irrelevant one. For messages originating from the main unit,
 see outbound.py.
 """
+BLUETOOTH_ADDR = 0xBEEF
+
 
 
 # Request data from the sensor unit
@@ -120,14 +122,14 @@ speed (1 byte, positive)
 
 
 REQUEST_PI_IP = 10
-
-SEND_PI_IP = 11
+RETURN_PI_IP = 11
 
 TEST_HI = 12
+TEST_HO = 13
 
-RESTART_SERVER = 13
+RESTART_SERVER = 14
 
-EXIT_SERVER = 14
+EXIT_SERVER = 15
 
 
 #TODO: If queue works properly, these lists won't be necessary
