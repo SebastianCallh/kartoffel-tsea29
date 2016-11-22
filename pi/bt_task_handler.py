@@ -126,7 +126,7 @@ def pop_outgoing():
             break
     answer_queue = open("bt_answers.txt", "wb")
     if tasks:
-        task = BT_task(tasks[0].cmd_id, tasks[0].data)
+        next_task = BT_task(tasks[0].cmd_id, tasks[0].data)
         print("Poppar task med id från ans",next_task.cmd_id)
         del tasks[0]
         for task in tasks:
