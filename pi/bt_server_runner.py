@@ -15,9 +15,9 @@ def setup_server():
     global log
     log.write("In main" + str(datetime.now()))
     server = bt_server.BT_Server(PI_ADDR, PORT, BACKLOG)
-    log.write("before accept_connection")
+    print("before accept_connection")
     server.accept_connection()
-    log.write("after accept_connection")
+    print("after accept_connection")
     bt_task_handler.clean_queue_files()
     return server
 
@@ -36,8 +36,8 @@ def main():
         has_new_incoming = server.update_incoming()
         # TODO Change assumption that data only contains ID!!
         if has_new_incoming:
-            log.write("bt_runner: has new incoming!")
-            log.write("Data = " + server.incoming_data)
+            print("bt_runner: has new incoming!")
+            print("Data = " + server.incoming_data)
             if server.incoming_data == protocol.SERVER_RESTART:
                 server.shutdown_server()
                 del server
@@ -46,11 +46,11 @@ def main():
             elif server.incoming_data == protocol.SERVER_EXIT:
                 break
             server.post_to_incoming()
-            log.write("posted to incoming")
+            print("posted to incoming")
 
         has_new_outgoing = server.update_outgoing()
         if (has_new_outgoing):
-            log.write("bt_runner: sending data")
+            print("bt_runner: sending data")
             server.send_data()'''
 
     #server.shutdown_server()
@@ -64,20 +64,20 @@ def main():
             has_new_incoming = server.update_incoming()
             # TODO Change assumption that data only contains ID!!
             if has_new_incoming:
-                log.write("bt_runner: has new incoming!")
-                log.write("Data = " + server.incoming_data)
+                print("bt_runner: has new incoming!")
+                print("Data = " + server.incoming_data)
                 cmd_type = bt_server_cmds.validate_cmd(server.incoming_data)
-                log.write("Cmd id in runner-main: " + cmd_type)
+                print("Cmd id in runner-main: " + cmd_type)
                 if cmd_type == "":
                     continue
                 elif cmd_type == "rqst":
                     busy = True
                 server.post_to_incoming()
-                log.write("posted to incoming")
+                print("posted to incoming")
 
         has_new_outgoing = server.update_outgoing()
         if (has_new_outgoing):
-            log.write("bt_runner: sending data")
+            print("bt_runner: sending data")
             server.send_data()
             busy = False
 
