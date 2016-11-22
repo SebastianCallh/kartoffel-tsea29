@@ -131,6 +131,18 @@ BT_SERVER_RESTART = 14
 
 BT_SERVER_EXIT = 15
 
+BT_REQUEST_SENSOR_DATA = 16
+
+BT_REQUEST_MAP_DATA = 17
+
+BT_REQUEST_SERVO_DATA = 18
+
+BT_SEND_SENSOR_DATA = 19
+
+BT_SEND_MAP_DATA = 20
+
+BT_SEND_SERVO_DATA = 21
+
 
 #TODO: If queue works properly, these lists won't be necessary
 # List of commands that are of the type data requests, i.e. the client requests
