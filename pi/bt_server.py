@@ -71,3 +71,6 @@ class BT_Server:
             self.outgoing_data = str(task.cmd_id) + " " + str(task.data)  # TODO will change when json
             has_new_outgoing = True
         return has_new_outgoing
+        
+    def shutdown_server():
+        self.server_sock.shutdown(socket.SHUT_RDWR)

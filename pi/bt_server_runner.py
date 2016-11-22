@@ -1,29 +1,34 @@
 import bt_server
 import bt_server_cmds
 import bt_task_handler
+import protocol
 from datetime import datetime
 
 PI_ADDR = "B8:27:EB:FC:55:27"
 PORT = 3
 BACKLOG = 1
 
-"""
-  The main function initialize the server and runs it. 
-  The function handles the flow of information between
-  the intermediary, server and client. 
-"""
+log = open("log.txt","w")
 
 
-def main():
-    log = open("log.txt","w")
+def setup_server():
+    global log
     log.write("In main" + str(datetime.now()))
-
     server = bt_server.BT_Server(PI_ADDR, PORT, BACKLOG)
     log.write("before accept_connection")
     server.accept_connection()
     log.write("after accept_connection")
     bt_task_handler.clean_queue_files()
+    return server
 
+"""
+  The main function initialize the server and runs it. 
+  The function handles the flow of information between
+  the intermediary, server and client. 
+"""
+def main():
+    global log
+    server = setup_server()
 
     '''# TODO add exit/restart options (conditions in loop)
     while True:
@@ -33,6 +38,13 @@ def main():
         if has_new_incoming:
             log.write("bt_runner: has new incoming!")
             log.write("Data = " + server.incoming_data)
+            if server.incoming_data == protocol.SERVER_RESTART:
+                server.shutdown_server()
+                del server
+                server = setup_server()
+                continue
+            elif server.incoming_data == protocol.SERVER_EXIT:
+                break
             server.post_to_incoming()
             log.write("posted to incoming")
 
@@ -41,6 +53,8 @@ def main():
             log.write("bt_runner: sending data")
             server.send_data()'''
 
+    #server.shutdown_server()
+    #del server
     busy = False
 
     # TODO add exit/restart options (conditions in loop)

@@ -125,16 +125,20 @@ SEND_PI_IP = 11
 
 TEST_HI = 12
 
+RESTART_SERVER = 13
+
+EXIT_SERVER = 14
 
 
+#TODO: If queue works properly, these lists won't be necessary
 # List of commands that are of the type data requests, i.e. the client requests
 # data from server
 DATA_REQUESTS = [REQUEST_PI_IP, TEST_HI]
 
 # List of commands that are of the type direct operations, which 
-# controls the robot directly.  
+# controls the robot (or bluetooth server) directly.  
 # The client does not excpect an answer.
-DIRECT_OPERATIONS = []
+DIRECT_OPERATIONS = [RESTART_SERVER, EXIT_SERVER]
 
 
 

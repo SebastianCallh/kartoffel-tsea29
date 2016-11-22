@@ -42,20 +42,11 @@ def post_outgoing(bt_task):
 # kallas från main
 def pop_incoming():
     command_queue = open("bt_commands.txt", "rb")
-    task = None
-    try:
+    next_task = None
+    '''try:
         # psutil.phymem_usage()
         #print("peek incoming command_queue: ", peek_line(command_queue))
-        task = pickle.load(command_queue)
-        #print("Able to load, task-ID =", task.cmd_id)
-        # Remove first command in queue
-        tasks = command_queue.readlines()
-        print("tasks in=", tasks)
-        if tasks:
-            del tasks[0]
-            target_command_queue = open("bt_commands.txt","wb")
-            target_command_queue.writelines(tasks)
-            target_command_queue.close()
+        task = pickle.load(command_queue)       
         # print("task typ ar: ", type(task))
     except EOFError:
         pass
@@ -63,10 +54,24 @@ def pop_incoming():
         print("pop_in: error = ", str(MemoryError))
         # psutil.phymem_usage()
         traceback.print_exc(file=sys.stdout)
-        task = None
-    # print("task värde på id: ", task.cmd_id)
+        task = None'''
+        
+    # Remove first command in queue and return it
+    tasks = []
+    while(True):
+        try:
+            task = pickle.load(command_queue)
+            tasks.append(task)
+        except EOFerror:
+            break
+    command_queue = open("bt_commands.txt", "wb")
+    if tasks
+        next_task = tasks[0]
+        tasks del tasks [0]
+        for task in tasks:
+            pickle.dump(task,command_queue)
     command_queue.close()
-    return task
+    return next_task
 
 
 # kallas från server
@@ -81,8 +86,8 @@ def post_incoming(bt_task):
 # kallas från server
 def pop_outgoing():
     answer_queue = open("bt_answers.txt", "rb")
-    task = None
-    try:
+    next_task = None
+    '''try:
         # psutil.phymem_usage()
         #print("peek outgoing command_queue: ", peek_line(answer_queue))
         task = pickle.load(answer_queue)
@@ -102,6 +107,21 @@ def pop_outgoing():
         print("pop_in: error = ", str(MemoryError))
         # psutil.phymem_usage()
         traceback.print_exc(file=sys.stdout)
-        task = None
+        task = None'''
+    # Remove first command in queue and return it
+    tasks = []
+    while(True):
+        try:
+            task = pickle.load(answer_queue)
+            tasks.append(task)
+        except EOFerror:
+            break
+    answer_queue = open("bt_commands.txt", "wb")
+    if tasks
+        next_task = tasks[0]
+        tasks del tasks [0]
+        for task in tasks:
+            pickle.dump(task,answer_queue)
     answer_queue.close()
-    return task
+    return next_task
+
