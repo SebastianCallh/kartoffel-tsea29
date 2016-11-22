@@ -19,8 +19,8 @@ while (True):
     client_sock.send(msg)
     print("sent msg")
     
-    msg2 = input("To server: ")
-    client_sock.send(msg2)
+    '''msg2 = input("To server: ")
+    client_sock.send(msg2)'''
 
     data = ""
 

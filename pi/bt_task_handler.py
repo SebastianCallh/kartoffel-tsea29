@@ -67,8 +67,10 @@ def pop_incoming():
     command_queue = open("bt_commands.txt", "wb")
     if tasks:
         next_task = tasks[0]
+        print("Poppar task med id från cmds ",next_task.cmd_id)
         del tasks[0]
         for task in tasks:
+            print("Lagger tillbaks task med id ", task.cmd_id, " i cmd queue")
             pickle.dump(task,command_queue)
     command_queue.close()
     return next_task
@@ -119,9 +121,11 @@ def pop_outgoing():
     answer_queue = open("bt_answers.txt", "wb")
     if tasks:
         next_task = tasks[0]
+        print("Poppar task med id från ans",next_task.cmd_id)
         del tasks[0]
         for task in tasks:
             pickle.dump(task,answer_queue)
+            print("Lagger tillbaks task från med id ", task.cmd_id, " i ans queue")
     answer_queue.close()
     return next_task
 
