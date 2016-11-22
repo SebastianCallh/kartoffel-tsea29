@@ -127,9 +127,9 @@ RETURN_PI_IP = 11
 TEST_HI = 12
 TEST_HO = 13
 
-RESTART_SERVER = 14
+BT_SERVER_RESTART = 14
 
-EXIT_SERVER = 15
+BT_SERVER_EXIT = 15
 
 
 #TODO: If queue works properly, these lists won't be necessary
