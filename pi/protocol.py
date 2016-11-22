@@ -140,7 +140,7 @@ DATA_REQUESTS = [REQUEST_PI_IP, TEST_HI]
 # List of commands that are of the type direct operations, which 
 # controls the robot (or bluetooth server) directly.  
 # The client does not excpect an answer.
-DIRECT_OPERATIONS = [RESTART_SERVER, EXIT_SERVER]
+DIRECT_OPERATIONS = [BT_SERVER_RESTART, BT_SERVER_EXIT]
 
 
 
