@@ -46,9 +46,9 @@ class BT_Server:
 
     def send_data(self, data=None):
         print("Server: sending!")
-        if not data
+        if not data:
             self.client_sock.send(self.outgoing_data)
-        else
+        else:
             self.client_sock.send(data)
         print("Server: sent! Returning to main")
 
