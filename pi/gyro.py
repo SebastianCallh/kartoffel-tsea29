@@ -35,4 +35,3 @@ class Gyro:
             
         except:
             return -1
-            
