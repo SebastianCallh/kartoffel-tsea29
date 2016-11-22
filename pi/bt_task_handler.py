@@ -62,12 +62,12 @@ def pop_incoming():
         try:
             task = pickle.load(command_queue)
             tasks.append(task)
-        except EOFerror:
+        except EOFError:
             break
     command_queue = open("bt_commands.txt", "wb")
-    if tasks
+    if tasks:
         next_task = tasks[0]
-        tasks del tasks [0]
+        del tasks[0]
         for task in tasks:
             pickle.dump(task,command_queue)
     command_queue.close()
@@ -114,12 +114,12 @@ def pop_outgoing():
         try:
             task = pickle.load(answer_queue)
             tasks.append(task)
-        except EOFerror:
+        except EOFError:
             break
     answer_queue = open("bt_commands.txt", "wb")
-    if tasks
+    if tasks:
         next_task = tasks[0]
-        tasks del tasks [0]
+        del tasks[0]
         for task in tasks:
             pickle.dump(task,answer_queue)
     answer_queue.close()
