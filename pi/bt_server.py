@@ -45,7 +45,9 @@ class BT_Server:
         print("Server done posting to incoming, returning to main")
 
     def send_data(self):
+        print("Server: sending!")
         self.client_sock.send(self.outgoing_data)
+        print("Server: sent! Returning to main")
 
     def _pop_from_outgoing(self):
         return bt_task_handler.pop_outgoing()
