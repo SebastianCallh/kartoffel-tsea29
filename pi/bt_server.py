@@ -44,9 +44,12 @@ class BT_Server:
         bt_task_handler.post_incoming(bt_task_handler.BT_task(self.incoming_data, ""))
         print("Server done posting to incoming, returning to main")
 
-    def send_data(self):
+    def send_data(self, data=None):
         print("Server: sending!")
-        self.client_sock.send(self.outgoing_data)
+        if not data
+            self.client_sock.send(self.outgoing_data)
+        else
+            self.client_sock.send(data)
         print("Server: sent! Returning to main")
 
     def _pop_from_outgoing(self):
