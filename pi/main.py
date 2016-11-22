@@ -35,11 +35,10 @@ def setup():
     Gyro.initialize()
 
 
-def sensor_data_received(ir_left_mm, ir_right_mm, ir_right2_mm):
+def sensor_data_received(ir_left_mm, ir_right_mm):
     global busy, navigator
     busy = False
-    print(ir_right2_mm)
-    navigator.sensor_data_received(ir_left_mm, ir_right_mm, ir_right2_mm)
+    navigator.sensor_data_received(ir_left_mm, ir_right_mm)
 
 
 def request_data():
@@ -62,8 +61,8 @@ def main():
     while True:
         EventBus.receive()
         request_data()
-        #position.update()
-        #navigator.navigate()
+        position.update()
+        navigator.navigate()
 
 
 Safety.run_safely(main)

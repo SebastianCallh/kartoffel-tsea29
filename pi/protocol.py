@@ -53,9 +53,6 @@ ir_left_mm (2 bytes, two's complement)
 ir_right_mm (2 bytes, two's complement)
     Distance recorded by the right IR sensor in mm, or -1 if the distance is
     not within the supported range.
-ir_right2_mm (2 bytes, two's complement)
-    Distance recorded by the second IR sensor on the right in mm, or -1 if the
-    distance is not withing the supported range.
 """
 
 
