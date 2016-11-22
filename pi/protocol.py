@@ -125,6 +125,17 @@ SEND_PI_IP = 11
 
 TEST_HI = 12
 
+BT_REQUEST_SENSOR_DATA = 13
+
+BT_REQUEST_MAP_DATA = 14
+
+BT_REQUEST_SERVO_DATA = 15
+
+BT_SEND_SENSOR_DATA = 13
+
+BT_SEND_MAP_DATA = 14
+
+BT_SEND_SERVO_DATA = 15
 
 
 # List of commands that are of the type data requests, i.e. the client requests

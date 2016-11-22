@@ -15,7 +15,9 @@ from bus import STYR_ADDR, SENSOR_ADDR
 from event import Event
 from eventbus import EventBus
 from protocol import CMD_REQUEST_SENSOR_DATA, CMD_SET_MOTOR_SPEED, \
-    CMD_SET_LEFT_MOTOR_SPEED, CMD_SET_RIGHT_MOTOR_SPEED
+    CMD_SET_LEFT_MOTOR_SPEED, CMD_SET_RIGHT_MOTOR_SPEED, \
+    BT_REQUEST_MAP_DATA, BT_REQUEST_SENSOR_DATA, BT_REQUEST_SERVO_DATA, \
+    BT_SEND_MAP_DATA, BT_SEND_SENSOR_DATA, BT_SEND_SERVO_DATA
 
 # NOTE: Function comments are purposely left out from this file in favor of the
 # complete definitions of every found command in proctol.py.
@@ -28,6 +30,61 @@ def request_sensor_data():
             message_id=CMD_REQUEST_SENSOR_DATA
         )
     )
+
+
+def bt_request_sensor_data():
+    EventBus.post(
+        SENSOR_ADDR,
+        Event(
+            message_id=BT_REQUEST_SENSOR_DATA
+        )
+    )
+
+
+def bt_request_map_data():
+    EventBus.post(
+        SENSOR_ADDR,
+        Event(
+            message_id=BT_REQUEST_MAP_DATA
+        )
+    )
+
+
+def bt_request_servo_data():
+    EventBus.post(
+        SENSOR_ADDR,
+        Event(
+            message_id=BT_REQUEST_SERVO_DATA
+        )
+    )
+
+
+def bt_send_sensor_data():
+    EventBus.post(
+        SENSOR_ADDR,
+        Event(
+            message_id=BT_SEND_SENSOR_DATA
+        )
+    )
+
+
+def bt_send_map_data():
+    EventBus.post(
+        SENSOR_ADDR,
+        Event(
+            message_id=BT_SEND_MAP_DATA
+        )
+    )
+
+
+def bt_send_servo_data():
+    EventBus.post(
+        SENSOR_ADDR,
+        Event(
+            message_id=BT_SEND_SERVO_DATA
+        )
+    )
+
 
 
 def set_motor_speed(left_speed, right_speed=None):
