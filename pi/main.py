@@ -61,7 +61,8 @@ def main():
     setup()
 
     while True:
-        EventBus.receive()
+        #EventBus.receive()
+        EventBus.receive_from_addr(0xBEEF)
 
         # rcv    check cmd    exc cmd   (send bt)
 
