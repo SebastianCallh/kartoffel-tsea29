@@ -6,8 +6,8 @@ time_last_regulation = datetime.datetime.now()
 use_derivate = True
 old_error = 0
 
-class AutoController:
 
+class AutoController:
     def auto_control(self, ir_left_mm, ir_right_mm, reg_side):
         global use_derivate, time_last_regulation, old_error
         

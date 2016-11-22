@@ -1,3 +1,7 @@
+"""
+Methods for controlling the wheels
+"""
+
 from datetime import datetime, timedelta
 from outbound import set_motor_speed
 
@@ -14,8 +18,10 @@ WARMUP_TIME = 2000
 POST_TURN_DISTANCE = 200
 PRE_TURN_DISTANCE = 200
 
+
 class Driver:
     def __init__(self, gyro, laser):
+        self.drive_stop_time = 0
         self.tasks = []
         self.task = Task(None, lambda: True)
         self.gyro = gyro

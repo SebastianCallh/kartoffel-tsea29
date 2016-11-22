@@ -1,3 +1,7 @@
+"""
+Main program code - where all the magic happens
+"""
+
 from datetime import datetime, timedelta
 
 from navigator import Navigator
@@ -6,18 +10,17 @@ from laser import Laser
 from gyro import Gyro
 
 from eventbus import EventBus
-from outbound import request_sensor_data, \
-set_motor_speed
-
+from outbound import request_sensor_data
+from position import Position
 
 from protocol import CMD_RETURN_SENSOR_DATA
 from safety import Safety
-
 
 laser = Laser()
 gyro = Gyro()
 driver = Driver(gyro, laser)
 navigator = Navigator(driver, laser)
+position = Position()
 
 # Update frequency
 last_request = datetime.now()
@@ -43,7 +46,10 @@ def request_data():
     if not busy and datetime.now() - last_request > request_period:
         busy = True
         last_request = datetime.now()
-        laser_distance = Laser.read_data()
+
+        # TODO: Uncomment below line when reading from laser
+        # laser_distance = Laser.read_data()
+
         request_sensor_data()
 
 
@@ -55,6 +61,8 @@ def main():
     while True:
         EventBus.receive()
         request_data()
+        position.update()
         navigator.navigate()
+
 
 Safety.run_safely(main)

@@ -65,6 +65,9 @@ Debug/
 # IDEA
 .idea/
 
+# Bluetooth
+pi/log.txt
 
-#Python
+# Python
+__pycache__/
 *.pyc
