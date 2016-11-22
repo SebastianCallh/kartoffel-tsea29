@@ -7,6 +7,8 @@ All commands may be sent in any direction but the implementations will probably
 choose to ignore irrelevant one. For messages originating from the main unit,
 see outbound.py.
 """
+BLUETOOTH_ADDR = 0xBEEF
+
 
 
 # Request data from the sensor unit
@@ -120,32 +122,37 @@ speed (1 byte, positive)
 
 
 REQUEST_PI_IP = 10
-
-SEND_PI_IP = 11
+RETURN_PI_IP = 11
 
 TEST_HI = 12
+TEST_HO = 13
 
-BT_REQUEST_SENSOR_DATA = 13
+BT_SERVER_RESTART = 14
 
-BT_REQUEST_MAP_DATA = 14
+BT_SERVER_EXIT = 15
 
-BT_REQUEST_SERVO_DATA = 15
+BT_REQUEST_SENSOR_DATA = 16
 
-BT_SEND_SENSOR_DATA = 13
+BT_REQUEST_MAP_DATA = 17
 
-BT_SEND_MAP_DATA = 14
+BT_REQUEST_SERVO_DATA = 18
 
-BT_SEND_SERVO_DATA = 15
+BT_SEND_SENSOR_DATA = 19
+
+BT_SEND_MAP_DATA = 20
+
+BT_SEND_SERVO_DATA = 21
 
 
+#TODO: If queue works properly, these lists won't be necessary
 # List of commands that are of the type data requests, i.e. the client requests
 # data from server
 DATA_REQUESTS = [REQUEST_PI_IP, TEST_HI]
 
 # List of commands that are of the type direct operations, which 
-# controls the robot directly.  
+# controls the robot (or bluetooth server) directly.  
 # The client does not excpect an answer.
-DIRECT_OPERATIONS = []
+DIRECT_OPERATIONS = [BT_SERVER_RESTART, BT_SERVER_EXIT]
 
 
 

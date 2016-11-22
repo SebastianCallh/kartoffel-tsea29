@@ -70,6 +70,6 @@ Debug/
 
 
 # Specific files
-pi/from_server.txt
-pi/to_server.txt
+pi/bt_answers.txt
+pi/bt_commands.txt
 pi/log.txt

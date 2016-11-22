@@ -40,10 +40,17 @@ class BT_Server:
 
 
     def post_to_incoming(self):
+        print("Server: staring to post to incoming")
         bt_task_handler.post_incoming(bt_task_handler.BT_task(self.incoming_data, ""))
+        print("Server done posting to incoming, returning to main")
 
-    def send_data(self):
-        self.client_sock.send(self.outgoing_data)
+    def send_data(self, data=None):
+        print("Server: sending!")
+        if not data
+            self.client_sock.send(self.outgoing_data)
+        else
+            self.client_sock.send(data)
+        print("Server: sent! Returning to main")
 
     def _pop_from_outgoing(self):
         return bt_task_handler.pop_outgoing()
@@ -71,3 +78,6 @@ class BT_Server:
             self.outgoing_data = str(task.cmd_id) + " " + str(task.data)  # TODO will change when json
             has_new_outgoing = True
         return has_new_outgoing
+        
+    def shutdown_server(self):
+        self.server_sock.close()

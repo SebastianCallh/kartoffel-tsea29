@@ -16,8 +16,10 @@ the command has been subscribed to.
 Supported commands and their arguments are defined in protocol.py.
 """
 from bus import Bus, SENSOR_ADDR, STYR_ADDR
+from protocol import BLUETOOTH_ADDR
 from event import Event
 from observer import Observer
+import bt_task_handler
 
 # As reading from the bus is a blocking operation it might cause actual program
 # code to execute too late if there are many pending commands available. In
@@ -32,14 +34,21 @@ class EventBus:
 
     @staticmethod
     def post(addr, message):
-        EventBus.bus.send(message.as_packet_data(), addr)
+        if addr == BLUETOOTH_ADDR:
+            bt_task_handler.post_outgoing(bt_task_handler.BT_task(message.message_id,message.arguments[0]))
+        else:
+            EventBus.bus.send(message.as_packet_data(), addr)
 
     @staticmethod
     def pop(unit_addr):
-        return EventBus.bus.try_receive(unit_addr)
+        if unit_addr == BLUETOOTH_ADDR:
+            return bt_task_handler.pop_incoming()       #bluetooth pop()
+        else:
+            return EventBus.bus.try_receive(unit_addr)
 
     @staticmethod
     def receive():
+        EventBus.receive_from_addr(BLUETOOTH_ADDR)
         EventBus.receive_from_addr(SENSOR_ADDR)
         EventBus.receive_from_addr(STYR_ADDR)
 
@@ -50,11 +59,13 @@ class EventBus:
             if data is None:
                 break
 
-            command = Event.parse(data)
-            command.process()
+            if unit_addr == BLUETOOTH_ADDR:
+                EventBus.notify(data.cmd_id, *data.data)
+            else:
+                command = Event.parse(data)
+                command.process()
 
-            EventBus.notify(command.message_id, *command.arguments)
-
+                EventBus.notify(command.message_id, *command.arguments)
 
     @staticmethod
     def subscribe(command_id, handler):

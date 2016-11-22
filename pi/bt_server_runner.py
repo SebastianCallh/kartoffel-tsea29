@@ -1,11 +1,26 @@
 import bt_server
 import bt_server_cmds
 import bt_task_handler
+import protocol
 from datetime import datetime
 
 PI_ADDR = "B8:27:EB:FC:55:27"
 PORT = 3
 BACKLOG = 1
+
+log = open("log.txt", "w")
+
+
+def setup_server():
+    global log
+    # log.write("In main" + str(datetime.now()))
+    server = bt_server.BT_Server(PI_ADDR, PORT, BACKLOG)
+    print("before accept_connection")
+    server.accept_connection()
+    print("after accept_connection")
+    bt_task_handler.clean_queue_files()
+    return server
+
 
 """
   The main function initialize the server and runs it. 
@@ -15,15 +30,8 @@ BACKLOG = 1
 
 
 def main():
-    log = open("log.txt","w")
-    log.write("In main" + str(datetime.now()))
-
-    server = bt_server.BT_Server(PI_ADDR, PORT, BACKLOG)
-    log.write("before accept_connection")
-    server.accept_connection()
-    log.write("after accept_connection")
-    bt_task_handler.clean_queue_files()
-
+    global log
+    server = setup_server()
 
     # TODO add exit/restart options (conditions in loop)
     while True:
@@ -31,42 +39,56 @@ def main():
         has_new_incoming = server.update_incoming()
         # TODO Change assumption that data only contains ID!!
         if has_new_incoming:
-            log.write("bt_runner: has new incoming!")
-            log.write("Data = " + server.incoming_data)
+            print("bt_runner: has new incoming!")
+            print("Data = " + server.incoming_data)
+            if server.incoming_data == protocol.BT_SERVER_RESTART:
+                server.shutdown_server()
+                del server
+                server = setup_server()
+                continue
+            elif server.incoming_data == protocol.BT_SERVER_EXIT:
+                break
             server.post_to_incoming()
-            log.write("posted to incoming")
+            print("posted to incoming")
 
         has_new_outgoing = server.update_outgoing()
         if (has_new_outgoing):
-            log.write("bt_runner: sending data")
+            print("bt_runner: sending data")
             server.send_data()
 
+    # server.shutdown_server()
+    # del server
+    """busy = False
 
-
-
-    '''# TODO add exit/restart options (conditions in loop)
+    # TODO add exit/restart options (conditions in loop)
     while True:
         # Loop and wait for server commands
         while not busy:
             has_new_incoming = server.update_incoming()
             # TODO Change assumption that data only contains ID!!
             if has_new_incoming:
-                log.write("bt_runner: has new incoming!")
-                log.write("Data = " + server.incoming_data)
+                print("bt_runner: has new incoming!")
+                print("Data = " + server.incoming_data)
                 cmd_type = bt_server_cmds.validate_cmd(server.incoming_data)
-                log.write("Cmd id in runner-main: " + cmd_type)
+                print("Cmd id in runner-main: " + cmd_type)
                 if cmd_type == "":
+                    print("Runner: cmd_type == empty")
                     continue
                 elif cmd_type == "rqst":
+                    print("Runner: cmd_type == rqst")
                     busy = True
+                elif cmd_type == "direct":
+                    print("Runner: cmd_typ == direct")
+                else:
+                    print("Runner: cmd_type is something unknown")
+                    continue
                 server.post_to_incoming()
-                log.write("posted to incoming")
+                print("posted to incoming")
 
         has_new_outgoing = server.update_outgoing()
         if (has_new_outgoing):
-            log.write("bt_runner: sending data")
+            print("bt_runner: sending data")
             server.send_data()
-            busy = False'''
+            busy = False"""
 
-
-main()
+# main()

@@ -9,7 +9,7 @@ client_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 
 print("Created client sock")
 client_sock.connect((PI_ADDR, port))
-print("connected to %s \n", PI_ADDR)
+print("connected to ", PI_ADDR)
 client_sock.setblocking(True)
 #client_sock.settimeout(1)
 
@@ -19,8 +19,8 @@ while (True):
     client_sock.send(msg)
     print("sent msg")
     
-    msg2 = input("To server: ")
-    client_sock.send(msg2)
+    '''msg2 = input("To server: ")
+    client_sock.send(msg2)'''
 
     data = ""
 
