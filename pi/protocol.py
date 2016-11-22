@@ -14,6 +14,8 @@ see outbound.py.
 SENSOR_ADDR = 0x30
 STYR_ADDR = 0x40
 LASER_ADDR = 0x62
+GYRO_ADDR = 0x6b
+ACCEL_ADDR = 0x19
 
 # Packet addresses
 PACKET_HEADER = 0

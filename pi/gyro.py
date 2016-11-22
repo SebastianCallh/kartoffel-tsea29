@@ -1,6 +1,6 @@
 from time import sleep
 
-from bus import GYRO_ADDR
+from protocol import GYRO_ADDR
 from eventbus import EventBus
 from utils import twos_comp
 

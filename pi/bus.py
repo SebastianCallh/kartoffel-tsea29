@@ -45,14 +45,6 @@ available and the program can then read its data.
 from busprovider import WIRED_BUS
 from protocol import PACKET_HEADER, PACKET_DATA
 
-# Addresses for the units on the bus. Note that the laser cannot be queried
-# using the protocol described above.
-SENSOR_ADDR = 0x30
-STYR_ADDR = 0x40
-LASER_ADDR = 0x62
-GYRO_ADDR = 0x6b
-ACCEL_ADDR = 0x19
-
 
 class Bus:
     def __init__(self, interface=1):
