@@ -116,7 +116,7 @@ def pop_outgoing():
             tasks.append(task)
         except EOFError:
             break
-    answer_queue = open("bt_commands.txt", "wb")
+    answer_queue = open("bt_answers.txt", "wb")
     if tasks:
         next_task = tasks[0]
         del tasks[0]
