@@ -79,6 +79,8 @@ def setup():
 def main():
     global busy, last_request
     setup()
+    none_counter = 0
+    processed_cmds = 0
     while True:
         #EventBus.receive()
 
@@ -87,9 +89,13 @@ def main():
         #print("type of task =", type(bt_task))
         # print("task =", bt_task)
         if bt_task == None:
-            # print("main: bt_task == None")
+            none_counter += 1
+            if none_counter % 1000 == 0:
+                print("main: bt_task == None")
+                print("processed_cmds = ", processed_cmds)
             pass
         elif int(bt_task.cmd_id) == protocol.REQUEST_PI_IP:
+            processed_cmds += 1
             print("main: bt_task.cmd_id = ", bt_task.cmd_id)
             ip = bt_server_cmds.get_pi_ip()
             print("IP = ", ip)
