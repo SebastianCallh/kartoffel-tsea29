@@ -40,7 +40,9 @@ class BT_Server:
 
 
     def post_to_incoming(self):
+        print("Server: staring to post to incoming")
         bt_task_handler.post_incoming(bt_task_handler.BT_task(self.incoming_data, ""))
+        print("Server done posting to incoming, returning to main")
 
     def send_data(self):
         self.client_sock.send(self.outgoing_data)

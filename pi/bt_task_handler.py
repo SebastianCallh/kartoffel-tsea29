@@ -85,8 +85,10 @@ def post_incoming(bt_task):
     command_queue = open("bt_commands.txt", "ab")
     print("task type in post_incoming ", type(bt_task))
     pickle.dump(bt_task, command_queue)
+    print("Could dump to pickle in post_incoming")
     # pickle.Pickler.clear_memo(self=)
     command_queue.close()
+    print("Closing file and return to bt_server")
 
 
 # kallas från server
