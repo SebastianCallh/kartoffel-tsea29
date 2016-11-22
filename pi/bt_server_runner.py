@@ -8,12 +8,12 @@ PI_ADDR = "B8:27:EB:FC:55:27"
 PORT = 3
 BACKLOG = 1
 
-log = open("log.txt","w")
+log = open("log.txt", "w")
 
 
 def setup_server():
     global log
-    #log.write("In main" + str(datetime.now()))
+    # log.write("In main" + str(datetime.now()))
     server = bt_server.BT_Server(PI_ADDR, PORT, BACKLOG)
     print("before accept_connection")
     server.accept_connection()
@@ -21,11 +21,14 @@ def setup_server():
     bt_task_handler.clean_queue_files()
     return server
 
+
 """
   The main function initialize the server and runs it. 
   The function handles the flow of information between
   the intermediary, server and client. 
 """
+
+
 def main():
     global log
     server = setup_server()
@@ -53,8 +56,8 @@ def main():
             print("bt_runner: sending data")
             server.send_data()
 
-    #server.shutdown_server()
-    #del server
+    # server.shutdown_server()
+    # del server
     """busy = False
 
     # TODO add exit/restart options (conditions in loop)
@@ -88,5 +91,4 @@ def main():
             server.send_data()
             busy = False"""
 
-
-main()
+# main()
