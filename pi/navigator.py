@@ -112,7 +112,7 @@ class Navigator:
     LEFT_SIDE = 0
     RIGHT_SIDE = 1
 
-    DISCONTINUITY_DIST = 25.0 #mm
+    DISCONTINUITY_DIST = 20.0 #mm
     FACING_WALL_DIST = 150 #mm
 
     def __init__(self, driver, laser):
