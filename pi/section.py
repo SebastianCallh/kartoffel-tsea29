@@ -58,8 +58,8 @@ class Section:
         estimated_start_distance = average_ratio * total_measure_time_seconds
         print("Estimated start distance: " + str(estimated_start_distance))
         print("Non rounded blockdistance: " + str(estimated_start_distance/BLOCK_LENGTH_MM))
-        self.block_distance = math.floor(
-            estimated_start_distance / BLOCK_LENGTH_MM + 0.5
+        self.block_distance = math.ceil(
+            estimated_start_distance / BLOCK_LENGTH_MM
         )
 
     def for_right_turn(self):

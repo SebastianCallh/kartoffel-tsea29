@@ -11,7 +11,7 @@ class AutoController:
     def auto_control(self, ir_left_mm, ir_right_mm, reg_side):
         global use_derivate, time_last_regulation, old_error
         
-        DESIRED_DISTANCE = 125  # Desired distance to wall
+        DESIRED_DISTANCE = 120  # Desired distance to wall
         STANDARD_SPEED = 25
         SLOW_SPEED = 20
         
