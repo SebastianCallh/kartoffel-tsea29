@@ -5,18 +5,20 @@ from math import floor
 time_last_regulation = datetime.datetime.now()
 use_derivate = True
 old_error = 0
+integral = 0
 
 
 class AutoController:
     def auto_control(self, ir_left_mm, ir_right_mm, reg_side):
-        global use_derivate, time_last_regulation, old_error
-        
+        global use_derivate, time_last_regulation, old_error, integral
+
         DESIRED_DISTANCE = 120  # Desired distance to wall
         STANDARD_SPEED = 25
         SLOW_SPEED = 20
         
         Kp = float(0.3)
         Kd = float(0.2)
+        Ki = float(0.1)
 
         time_now = datetime.datetime.now()
 
@@ -41,13 +43,16 @@ class AutoController:
 
         regulation_error = DESIRED_DISTANCE - sensor_data_dist
         delta_t = (time_now - time_last_regulation).microseconds / 1000
+        integral = integral + (regulation_error * delta_t)
+
 
         if(use_derivate == False):
             regulation = floor((Kp * regulation_error))
             use_derivate = True
             #print("No derivate")
         else:
-            regulation = floor((Kp * regulation_error) + (Kd / delta_t * (regulation_error - old_error)))
+
+            regulation = floor((Kp * regulation_error) + (Kd / delta_t * (regulation_error - old_error)) + (Ki * integral))
 
         old_error = regulation_error
 
