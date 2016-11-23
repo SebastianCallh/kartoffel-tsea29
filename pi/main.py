@@ -53,7 +53,7 @@ def setup():
     #EventBus.subscribe(CMD_RETURN_SENSOR_DATA, sensor_data_received)
     EventBus.subscribe(REQUEST_PI_IP, ip_requested)
     EventBus.subscribe(TEST_HI, return_hi)
-    # Laser.initialize()
+    Laser.initialize()
 
 
 def main():
@@ -61,8 +61,7 @@ def main():
     setup()
 
     while True:
-        #EventBus.receive()
-        EventBus.receive_from_addr(0xBEEF)
+        EventBus.receive()
 
         # rcv    check cmd    exc cmd   (send bt)
 

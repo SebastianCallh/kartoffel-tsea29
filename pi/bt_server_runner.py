@@ -87,8 +87,9 @@ def main():
 
         has_new_outgoing = server.update_outgoing()
         if (has_new_outgoing):
-            print("bt_runner: sending data")
-            server.send_data()
+            print("bt_runner: sending data")            
             busy = False
+            server.send_data()
+
 
 main()
