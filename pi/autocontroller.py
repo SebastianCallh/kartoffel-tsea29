@@ -24,7 +24,7 @@ class AutoController:
             regulation = 0
             #print("u = 0, no reglering")
             time_last_regulation = time_now
-            use_derivate = False
+            #use_derivate = False
             return SLOW_SPEED, SLOW_SPEED, regulation
         elif (ir_left_mm != -1 and ir_right_mm != -1):  # Regulate on right side
             reg_side = "right"
