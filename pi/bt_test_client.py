@@ -14,9 +14,9 @@ client_sock.setblocking(True)
 #client_sock.settimeout(1)
 
 while (True):
-    #msg = input("To server: ")
+    msg = input("To server: ")
 
-    #client_sock.send(msg)
+    client_sock.send(msg)
     #print("sent msg")
     
     '''msg2 = input("To server: ")

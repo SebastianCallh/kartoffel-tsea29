@@ -68,7 +68,9 @@ def pop_incoming():
             tasks.append(task)
         except EOFError:
             break
-    #command_queue = open("bt_commands.txt", "wb")
+    command_queue = open("bt_commands.txt", "wb")
+    command_queue.seek(0)
+    command_queue.truncate()
     if tasks:
         next_task = tasks[0]
         print("Poppar task med id från cmds ",next_task.cmd_id)
@@ -124,7 +126,10 @@ def pop_outgoing():
             tasks.append(task)
         except EOFError:
             break
-    #answer_queue = open("bt_answers.txt", "wb")
+    answer_queue = open("bt_answers.txt", "wb")
+    #Clean file
+    answer_queue.seek(0)
+    asnwer_queue.truncate()
     if tasks:
         next_task = BT_task(tasks[0].cmd_id, tasks[0].data)
         print("Poppar task med id från ans",next_task.cmd_id)
