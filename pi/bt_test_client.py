@@ -17,11 +17,12 @@ while (True):
     msg = input("To server: ")
 
     client_sock.send(msg)
-    #print("sent msg")
+    print("sent msg")
     
     if msg == 14:
         client_sock.connect((PI_ADDR,port))
         client_sock.setblocking(True)
+        continue
     elif msg == 15:
         client_sock.close()
         break

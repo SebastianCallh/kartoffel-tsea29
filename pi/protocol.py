@@ -119,7 +119,8 @@ speed (1 byte, positive)
 
 #-------------------- Bluetooth commands ---------------------
 
-
+BT_CLIENT_COMMANDS = [REQUEST_PI_IP,TEST_HI,BT_SERVER_RESTART,BT_SERVER_EXIT, \
+BT_REQUEST_SENSOR_DATA,BT_REQUEST_MAP_DATA,BT_REQUEST_SERVO_DATA]
 
 REQUEST_PI_IP = 10
 RETURN_PI_IP = 11
