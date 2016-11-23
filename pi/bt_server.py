@@ -67,7 +67,7 @@ class BT_Server:
             if len(data) != 0:  # TODO or None? (using json)
                 self.incoming_data = data
                 has_new_incoming = True
-        except BluetoothError:
+        except bluetooth.btcommon.BluetoothError:
             pass
         return has_new_incoming
 
