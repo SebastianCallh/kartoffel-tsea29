@@ -53,7 +53,7 @@ def setup():
     #EventBus.subscribe(CMD_RETURN_SENSOR_DATA, sensor_data_received)
     EventBus.subscribe(REQUEST_PI_IP, ip_requested)
     EventBus.subscribe(TEST_HI, return_hi)
-    Laser.initialize()
+    #Laser.initialize()
 
 
 def main():
