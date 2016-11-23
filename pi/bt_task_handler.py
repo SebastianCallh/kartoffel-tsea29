@@ -23,11 +23,11 @@ class BT_task:
 def clean_queue_files():
     # Create files or erase previous content
     answer_queue = open("bt_answers.txt", "w")
-    # answer_queue.seek(0)
-    # answer_queue.truncate()
+    answer_queue.seek(0)
+    answer_queue.truncate()
     command_queue = open("bt_commands.txt", "w")
-    # command_queue.seek(0)
-    # command_queue.truncate()
+    command_queue.seek(0)
+    command_queue.truncate()
     answer_queue.close()
     command_queue.close()
 
@@ -35,7 +35,7 @@ def clean_queue_files():
 # kallas från main
 def post_outgoing(bt_task):
     print("in post_outgoing")
-    answer_queue = open("bt_answers.txt", "ab")
+    answer_queue = open("bt_answers.txt", "wb")
     print("could open file")
     pickle.dump(bt_task, answer_queue)
     print("have dumped to pickle!")
@@ -46,33 +46,23 @@ def post_outgoing(bt_task):
 # kallas från main
 def pop_incoming():
     command_queue = open("bt_commands.txt", "rb")
-    next_task = None
+    task = None
         
     # Remove first command in queue and return it
-    tasks = []
-    while(True):
-        try:
-            task = pickle.load(command_queue)
-            tasks.append(task)
-        except EOFError:
-            break
+    try:
+        task = pickle.load(command_queue)
+    except EOFError:
+        pass
     command_queue = open("bt_commands.txt", "wb")
     command_queue.seek(0)
     command_queue.truncate()
-    if tasks:
-        next_task = tasks[0]
-        print("Poppar task med id från cmds ",next_task.cmd_id)
-        '''del tasks[0]
-        for task in tasks:
-            print("Lagger tillbaks task med id ", task.cmd_id, " i cmd queue")
-            pickle.dump(task,command_queue)'''
     command_queue.close()
-    return next_task
+    return task
 
 
 # kallas från server
 def post_incoming(bt_task):
-    command_queue = open("bt_commands.txt", "ab")
+    command_queue = open("bt_commands.txt", "wb")
     print("task type in post_incoming ", type(bt_task))
     pickle.dump(bt_task, command_queue)
     print("Could dump to pickle in post_incoming")
@@ -84,26 +74,16 @@ def post_incoming(bt_task):
 # kallas från server
 def pop_outgoing():
     answer_queue = open("bt_answers.txt", "rb")
-    next_task = None
+    task = None
     # Remove first command in queue and return it
-    tasks = []
-    while(True):
-        try:
-            task = pickle.load(answer_queue)
-            tasks.append(task)
-        except EOFError:
-            break
+    try:
+        task = pickle.load(answer_queue)
+    except EOFError:
+        pass
     answer_queue = open("bt_answers.txt", "wb")
     #Clean file
     answer_queue.seek(0)
     answer_queue.truncate()
-    if tasks:
-        next_task = BT_task(tasks[0].cmd_id, tasks[0].data)
-        print("Poppar task med id från ans",next_task.cmd_id)
-        '''del tasks[0]
-        for task in tasks:
-            pickle.dump(task,answer_queue)
-            print("Lagger tillbaks task från med id ", task.cmd_id, " i ans queue")'''
     answer_queue.close()
-    return next_task
+    return task
 
