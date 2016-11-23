@@ -36,7 +36,7 @@ def main():
     # TODO add exit/restart options (conditions in loop)
     while True:
         # Loop and wait for server commands
-        server.server_sock.settimeout(0.1)
+        server.client_sock.settimeout(0.1)
         has_new_incoming = server.update_incoming()
         # TODO Change assumption that data only contains ID!!
         if has_new_incoming:
