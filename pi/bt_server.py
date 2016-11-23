@@ -88,3 +88,4 @@ class BT_Server:
         
     def shutdown_server(self):
         self.server_sock.close()
+        self.client_sock.close()

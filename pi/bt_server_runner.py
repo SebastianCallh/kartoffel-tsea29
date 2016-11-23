@@ -57,6 +57,7 @@ def main():
             print("bt_runner: sending data")
             server.send_data()
 
+    print("out while not exit loop")
     server.shutdown_server()
     del server
     '''busy = False
