@@ -60,11 +60,15 @@ class BT_Server:
 
     def update_incoming(self):
         has_new_incoming = False
-        data = self.client_sock.recv(1024).decode('utf-8')
-        print("bt_server: Data =", data)
-        if len(data) != 0:  # TODO or None? (using json)
-            self.incoming_data = data
-            has_new_incoming = True
+        try:
+            client_sock.settimeout(0.1)
+            data = self.client_sock.recv(1024).decode('utf-8')
+            print("bt_server: Data =", data)
+            if len(data) != 0:  # TODO or None? (using json)
+                self.incoming_data = data
+                has_new_incoming = True
+        except BluetoothError:
+            pass
         return has_new_incoming
 
     """Updates outgoing_data. Returns true if data was updated,
