@@ -31,10 +31,11 @@ def setup_server():
 
 def main():
     global log
+    exit = False
     server = setup_server()
 
     # TODO add exit/restart options (conditions in loop)
-    while True:
+    while not exit:
         # Loop and wait for server commands
         has_new_incoming = server.update_incoming()
         # TODO Change assumption that data only contains ID!!
@@ -47,7 +48,7 @@ def main():
                 server = setup_server()
                 continue
             elif server.incoming_data == protocol.BT_SERVER_EXIT:
-                break
+                exit = True
             server.post_to_incoming()
             print("posted to incoming")
 
@@ -56,8 +57,8 @@ def main():
             print("bt_runner: sending data")
             server.send_data()
 
-    # server.shutdown_server()
-    # del server
+    server.shutdown_server()
+    del server
     '''busy = False
 
     # TODO add exit/restart options (conditions in loop)
