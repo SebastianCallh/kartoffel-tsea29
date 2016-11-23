@@ -129,7 +129,7 @@ def pop_outgoing():
     answer_queue = open("bt_answers.txt", "wb")
     #Clean file
     answer_queue.seek(0)
-    asnwer_queue.truncate()
+    answer_queue.truncate()
     if tasks:
         next_task = BT_task(tasks[0].cmd_id, tasks[0].data)
         print("Poppar task med id från ans",next_task.cmd_id)
