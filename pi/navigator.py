@@ -24,21 +24,21 @@ class auto_control(State):
 
     auto_controller = AutoController()
 
-    def is_at_left_turn(self, data, new_ir_left):
-        left_diff = abs(data['ir_left'] - data['old_ir_left'])
-        left_second_diff = abs(new_ir_left - data ['old_ir_left'])
+    def is_at_left_turn(self, data):
+        left_old_diff = abs(data['ir_left'] - data['old_ir_left'])
+        left_new_diff = abs(data['new_ir_left'] - data['old_ir_left'])
 
-        return left_diff >= Navigator.DISCONTINUITY_DIST and\
-               left_second_diff >= Navigator.DISCONTINUITY_DIST and\
+        return left_old_diff >= Navigator.DISCONTINUITY_DIST and\
+               left_new_diff >= Navigator.DISCONTINUITY_DIST and\
                data['side'] == Navigator.LEFT_SIDE
 
 
-    def is_at_right_turn(self, data, new_ir_right):
-        right_diff = abs(data['ir_right'] - data['old_ir_right'])
-        right_second_diff = abs(new_ir_right - data['old_ir_right'])
+    def is_at_right_turn(self, data):
+        right_old_diff = abs(data['ir_right'] - data['old_ir_right'])
+        right_new_diff = abs(data['new_ir_right'] - data['old_ir_right'])
 
-        return right_diff >= Navigator.DISCONTINUITY_DIST and \
-               right_second_diff >= Navigator.DISCONTINUITY_DIST and \
+        return right_old_diff >= Navigator.DISCONTINUITY_DIST and \
+               right_new_diff >= Navigator.DISCONTINUITY_DIST and \
                data['side'] == Navigator.RIGHT_SIDE
             
         
@@ -126,12 +126,14 @@ class Navigator:
 
     def __init__(self, driver, laser):
         self.data = {'ir_left': 0,
-                    'ir_right': 0,
-                    'old_ir_right': 0,
-                    'old_ir_left': 0,
-                    'driver' : driver,
-                    'laser' : laser,
-                    'side' : Navigator.RIGHT_SIDE
+                     'ir_right': 0,
+                     'old_ir_right': 0,
+                     'old_ir_left': 0,
+                     'driver': driver,
+                     'laser': laser,
+                     'side': Navigator.RIGHT_SIDE,
+                     'new_ir_right': 0,
+                     'new_ir_left': 0
                     }
 
         #Stand still waiting for sensors
@@ -147,9 +149,11 @@ class Navigator:
             return
         self.data['old_ir_left'] = self.data['ir_left']
         self.data['old_ir_right'] = self.data['ir_right']
-        self.data['ir_left'] = new_ir_left
-        self.data['ir_right'] = new_ir_right
+        self.data['ir_left'] = self.data['new_ir_left']
+        self.data['ir_right'] = self.data['new_ir_right']
         self.state.sensor_data_received(self.data, new_ir_left, new_ir_right)
+        self.data['new_ir_right'] = new_ir_right
+        self.data['new_ir_left'] = new_ir_left
         self.last_updated_time = datetime.now()
         
     #Runs the state. The states run method returns the next state
