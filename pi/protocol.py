@@ -119,7 +119,7 @@ TEST_HO = 13
 
 BT_SERVER_RESTART = 14
 
-BT_SERVER_EXIT = 15
+BT_SERVER_SHUTDOWN = 15
 
 BT_REQUEST_SENSOR_DATA = 16
 
@@ -133,7 +133,7 @@ BT_SEND_MAP_DATA = 20
 
 BT_SEND_SERVO_DATA = 21
 
-BT_CLIENT_COMMANDS = [REQUEST_PI_IP, TEST_HI, BT_SERVER_RESTART, BT_SERVER_EXIT,
+BT_CLIENT_COMMANDS = [REQUEST_PI_IP, TEST_HI, BT_SERVER_RESTART, BT_SERVER_SHUTDOWN,
                       BT_REQUEST_SENSOR_DATA, BT_REQUEST_MAP_DATA, BT_REQUEST_SERVO_DATA]
 
 # TODO: If queue works properly, these lists won't be necessary
@@ -144,4 +144,4 @@ DATA_REQUESTS = [REQUEST_PI_IP, TEST_HI]
 # List of commands that are of the type direct operations, which 
 # controls the robot (or bluetooth server) directly.  
 # The client does not excpect an answer.
-DIRECT_OPERATIONS = [BT_SERVER_RESTART, BT_SERVER_EXIT]
+DIRECT_OPERATIONS = [BT_SERVER_RESTART, BT_SERVER_SHUTDOWN]
