@@ -23,14 +23,22 @@ class auto_control(State):
 
     auto_controller = AutoController()
 
-    def is_at_left_turn(self, data):
-        diff = abs(data['ir_left'] - data['old_ir_left'])
-        return diff >= Navigator.DISCONTINUITY_DIST and data['side'] == Navigator.LEFT_SIDE
+    def is_at_left_turn(self, data, new_ir_left):
+        left_diff = abs(data['ir_left'] - data['old_ir_left'])
+        left_second_diff = abs(new_ir_left - data ['old_ir_left'])
+
+        return left_diff >= Navigator.DISCONTINUITY_DIST and\
+               left_second_diff >= Navigator.DISCONTINUITY_DIST and\
+               data['side'] == Navigator.LEFT_SIDE
 
 
-    def is_at_right_turn(self, data):
+    def is_at_right_turn(self, data, new_ir_right):
         right_diff = abs(data['ir_right'] - data['old_ir_right'])
-        return right_diff >= Navigator.DISCONTINUITY_DIST and data['side'] == Navigator.RIGHT_SIDE
+        right_second_diff = abs(new_ir_right - data['old_ir_right'])
+
+        return right_diff >= Navigator.DISCONTINUITY_DIST and \
+               right_second_diff >= Navigator.DISCONTINUITY_DIST and \
+               data['side'] == Navigator.RIGHT_SIDE
             
         
     def sensor_data_received(self, data, new_ir_left, new_ir_right):
