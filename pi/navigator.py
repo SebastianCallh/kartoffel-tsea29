@@ -156,9 +156,9 @@ class Navigator:
         self.data['old_ir_right'] = self.data['ir_right']
         self.data['ir_left'] = self.data['new_ir_left']
         self.data['ir_right'] = self.data['new_ir_right']
-        self.state.sensor_data_received(self.data, new_ir_left, new_ir_right)
         self.data['new_ir_right'] = new_ir_right
         self.data['new_ir_left'] = new_ir_left
+        self.state.sensor_data_received(self.data, new_ir_left, new_ir_right)
         self.last_updated_time = datetime.now()
         
     #Runs the state. The states run method returns the next state
