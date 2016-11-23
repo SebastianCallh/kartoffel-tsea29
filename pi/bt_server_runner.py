@@ -33,7 +33,7 @@ def main():
     global log
     server = setup_server()
 
-    '''# TODO add exit/restart options (conditions in loop)
+    # TODO add exit/restart options (conditions in loop)
     while True:
         # Loop and wait for server commands
         has_new_incoming = server.update_incoming()
@@ -57,8 +57,8 @@ def main():
             server.send_data()
 
     # server.shutdown_server()
-    # del server'''
-    busy = False
+    # del server
+    '''busy = False
 
     # TODO add exit/restart options (conditions in loop)
     while True:
@@ -89,7 +89,7 @@ def main():
         if (has_new_outgoing):
             print("bt_runner: sending data")      
             busy = False
-            server.send_data()
+            server.send_data()'''
 
 
 main()
