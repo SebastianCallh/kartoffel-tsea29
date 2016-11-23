@@ -51,8 +51,9 @@ class AutoController:
             use_derivate = True
             #print("No derivate")
         else:
-
-            regulation = floor((Kp * regulation_error) + (Kd / delta_t * (regulation_error - old_error))) / abs(ir_right_mm - ir_left_mm) #+ (Ki * integral)
+            wall_error = abs(ir_right_mm - ir_left_mm)
+            if wall_error == 0: wall_error = 1  
+            regulation = floor((Kp * regulation_error) + (Kd / delta_t * (regulation_error - old_error))) / wall_error #+ (Ki * integral)
 
         old_error = regulation_error
 
