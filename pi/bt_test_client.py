@@ -26,28 +26,6 @@ def main():
         client_sock.send(msg)
         print("sent msg")
 
-        if int(msg) == 14:
-            debug_count = 0
-            while True:
-                debug_count += 1
-                try:
-                    if debug_count % 100 == 0:
-                        print("Top of try")
-                    client_sock.close()
-                    del client_sock
-                    client_sock = setup_bt_client(PI_ADDR, PORT)
-                    print("restarting")
-                    break
-                except bluetooth.btcommon.BluetoothError:
-                    if debug_count % 1000 == 0:
-                        print("Error = ", bluetooth.btcommon.BluetoothError)
-                    continue
-            continue
-        elif int(msg) == 15:
-            print("Exiting")
-            client_sock.close()
-            break
-
         data = ""
 
         try:
@@ -56,10 +34,21 @@ def main():
             if len(data) == 0:
                 break
             print("received " + str(data))
+        except EOFError:
+            # Recieved when server responds to shutdown
+            client_sock.close()
+            del client_sock
+            if int(msg) == 14:
+                # Restart requested
+                client_sock = setup_bt_client(PI_ADDR, PORT)
+            elif int(msg) == 15:
+                # Shutdown requested
+                break
         except IOError:
             print("Error = " + str(IOError))
         except OSError:
             print("Error = " + str(OSError))
+
 
     print("closed")
 
