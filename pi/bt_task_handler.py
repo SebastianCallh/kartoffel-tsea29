@@ -51,6 +51,7 @@ def pop_incoming():
     # Remove first command in queue and return it
     try:
         task = pickle.load(command_queue)
+        print("Poped task från command with id ", task.cmd_id)
     except EOFError:
         pass
     command_queue = open("bt_commands.txt", "wb")
@@ -78,6 +79,7 @@ def pop_outgoing():
     # Remove first command in queue and return it
     try:
         task = pickle.load(answer_queue)
+        print("Popade från answers with id ", task.cmd_id)
     except EOFError:
         pass
     answer_queue = open("bt_answers.txt", "wb")
