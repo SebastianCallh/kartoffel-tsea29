@@ -3,53 +3,64 @@ import time
 
 PI_ADDR = "B8:27:EB:FC:55:27"
 USB_BT_ADDR = ""
-port = 3
+PORT = 3
 
-client_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 
-print("Created client sock")
-client_sock.connect((PI_ADDR, port))
-print("connected to ", PI_ADDR)
-client_sock.setblocking(True)
-# client_sock.settimeout(1)
+def setup_bt_client(addr, port):
+    client_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+    print("Created client sock")
+    client_sock.connect((addr, port))
+    print("connected to ", addr)
+    client_sock.setblocking(True)
+    # client_sock.settimeout(1)
+    return client_sock
 
-while (True):
-    msg = input("To server: ")
 
-    client_sock.send(msg)
-    print("sent msg")
+def main():
+    client_sock = setup_bt_client(PI_ADDR, PORT)
 
-    if int(msg) == 14:
-        debug_count = 0
-        while True:
-            debug_count += 1
-            try:
-                if debug_count % 1000 == 0:
-                    print("Top of try")
-                client_sock.connect((PI_ADDR, port))
-                client_sock.setblocking(True)
-                print("restarting")
-                break
-            except bluetooth.btcommon.BluetoothError:
-                print("Error = ", bluetooth.btcommon.BluetoothError)
-                continue
-        continue
-    elif int(msg) == 15:
-        print("Exiting")
-        client_sock.close()
-        break
+    while (True):
+        msg = input("To server: ")
 
-    data = ""
+        client_sock.send(msg)
+        print("sent msg")
 
-    try:
-        while data == "":
-            data = client_sock.recv(1024).decode('utf-8')
-        if len(data) == 0:
+        if int(msg) == 14:
+            debug_count = 0
+            while True:
+                debug_count += 1
+                try:
+                    if debug_count % 100 == 0:
+                        print("Top of try")
+                    client_sock.close()
+                    del client_sock
+                    client_sock = setup_bt_client(PI_ADDR, PORT)
+                    print("restarting")
+                    break
+                except bluetooth.btcommon.BluetoothError:
+                    if debug_count % 1000 == 0:
+                        print("Error = ", bluetooth.btcommon.BluetoothError)
+                    continue
+            continue
+        elif int(msg) == 15:
+            print("Exiting")
+            client_sock.close()
             break
-        print("received " + str(data))
-    except IOError:
-        print("Error = " + str(IOError))
-    except OSError:
-        print("Error = " + str(OSError))
 
-print("closed")
+        data = ""
+
+        try:
+            while data == "":
+                data = client_sock.recv(1024).decode('utf-8')
+            if len(data) == 0:
+                break
+            print("received " + str(data))
+        except IOError:
+            print("Error = " + str(IOError))
+        except OSError:
+            print("Error = " + str(OSError))
+
+    print("closed")
+    
+
+main()
