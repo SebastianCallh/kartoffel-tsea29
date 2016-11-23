@@ -148,8 +148,8 @@ class Navigator:
 
     def sensor_data_received(self, new_ir_left, new_ir_right):
 
-        if datetime.now() - self.last_updated_time < timedelta(milliseconds=UPDATE_FREQUENCY):
-            return
+        #if datetime.now() - self.last_updated_time < timedelta(milliseconds=UPDATE_FREQUENCY):
+            #return
         self.data['old_ir_left'] = self.data['ir_left']
         self.data['old_ir_right'] = self.data['ir_right']
         self.data['ir_left'] = self.data['new_ir_left']
