@@ -9,7 +9,7 @@ from protocol import CMD_TURN_STARTED, CMD_TURN_FINISHED
 
 TURN_DIRECTION_RIGHT = True
 TURN_DIRECTION_LEFT = False
-UPDATE_FREQUENCY = 200
+UPDATE_FREQUENCY = 250
 
 class State:
 
@@ -124,11 +124,12 @@ class Navigator:
     LEFT_SIDE = 0
     RIGHT_SIDE = 1
 
-    DISCONTINUITY_DIST = 75.0 #mm
-    FACING_WALL_DIST = 150 #mm
+    DISCONTINUITY_DIST = 20.0  # mm
+    FACING_WALL_DIST = 150  # mm
 
     def __init__(self, driver, laser):
-        self.data = {'ir_left': 0,
+        self.data = {
+                     'ir_left': 0,
                      'ir_right': 0,
                      'old_ir_right': 0,
                      'old_ir_left': 0,
@@ -148,8 +149,9 @@ class Navigator:
 
     def sensor_data_received(self, new_ir_left, new_ir_right):
 
-        #if datetime.now() - self.last_updated_time < timedelta(milliseconds=UPDATE_FREQUENCY):
-            #return
+        if datetime.now() - self.last_updated_time < timedelta(milliseconds=UPDATE_FREQUENCY):
+            return
+
         self.data['old_ir_left'] = self.data['ir_left']
         self.data['old_ir_right'] = self.data['ir_right']
         self.data['ir_left'] = self.data['new_ir_left']
