@@ -81,6 +81,7 @@ def pop_outgoing():
         task = pickle.load(answer_queue)
         print("Popade från answers with id ", task.cmd_id)
     except EOFError:
+        print("EOF pop outgoing")
         pass
     answer_queue = open("bt_answers.txt", "wb")
     #Clean file
