@@ -49,7 +49,21 @@ def pop_incoming():
     command_queue = open("bt_commands.txt", "rb")
     task = None
         
-    # Remove first command in queue and return it
+    task_q = []
+    while(True):
+        try:
+            task_i = pickle.load(command_queue)
+            task_q.append(task_i)
+        except EOFError:
+            break
+    if task_q:
+        task = BT_task(task_q[0].cmd_id, task_q[0].data)
+        del task_q[0]
+        command_queue = open("bt_commands.txt","wb")
+        for task_i in task_q:
+            pickle.dump(task_i,command_queue)
+        
+    '''# Remove first command in queue and return it
     try:
         task = pickle.load(command_queue)
         print("Poped task från command with id ", task.cmd_id)
@@ -58,7 +72,7 @@ def pop_incoming():
         command_queue.truncate()
         print("Cleaned commands")
     except EOFError:
-        pass
+        pass'''
     command_queue.close()
     return task
 
@@ -78,7 +92,22 @@ def post_incoming(bt_task):
 def pop_outgoing():
     answer_queue = open("bt_answers.txt", "rb")
     task = None
-    # Remove first command in queue and return it
+    
+    task_q = []
+    while(True):
+        try:
+            task_i = pickle.load(answer_queue)
+            task_q.append(task_i)
+        except EOFError:
+            break
+    if tasks_q:
+        task = BT_task(task_q[0].cmd_id, task_q[0].data)
+        del task_q[0]
+        answer_queue = open("bt_answers.txt","wb")
+        for task_i in task_q:
+            pickle.dump(task_i,answer_queue)
+      
+    '''# Remove first command in queue and return it
     try:
         task = pickle.load(answer_queue)
         print("Popade från answers with id ", task.cmd_id)
@@ -89,7 +118,7 @@ def pop_outgoing():
         print("Clean answers")
     except EOFError:
         #print("EOF pop outgoing")
-        pass
+        pass'''
     answer_queue.close()
     return task
 
