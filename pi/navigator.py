@@ -1,6 +1,7 @@
 """
 State machine for navigational states
 """
+from datetime import datetime, timedelta
 
 from autocontroller import AutoController
 from eventbus import EventBus
@@ -8,7 +9,7 @@ from protocol import CMD_TURN_STARTED, CMD_TURN_FINISHED
 
 TURN_DIRECTION_RIGHT = True
 TURN_DIRECTION_LEFT = False
-
+UPDATE_FREQUENCY = 200
 
 class State:
 
@@ -137,14 +138,19 @@ class Navigator:
 
         self.data['driver'].warmup()
         self.state = warmup()
+        self.last_updated_time = datetime.now()
 
 
     def sensor_data_received(self, new_ir_left, new_ir_right):
+
+        if datetime.now() - self.last_updated_time < timedelta(milliseconds=UPDATE_FREQUENCY):
+            return
         self.data['old_ir_left'] = self.data['ir_left']
         self.data['old_ir_right'] = self.data['ir_right']
         self.data['ir_left'] = new_ir_left
         self.data['ir_right'] = new_ir_right
         self.state.sensor_data_received(self.data, new_ir_left, new_ir_right)
+        self.last_updated_time = datetime.now()
         
     #Runs the state. The states run method returns the next state
     def navigate(self):
