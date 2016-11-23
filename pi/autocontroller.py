@@ -18,7 +18,6 @@ class AutoController:
         
         Kp = float(0.3)
         Kd = float(0.2)
-        #Ki = float(0.005)
 
         time_now = datetime.datetime.now()
 
@@ -43,7 +42,6 @@ class AutoController:
 
         regulation_error = DESIRED_DISTANCE - sensor_data_dist
         delta_t = (time_now - time_last_regulation).microseconds / 1000
-        #integral = integral + (regulation_error * delta_t)
 
 
         if(use_derivate == False):
@@ -51,9 +49,7 @@ class AutoController:
             use_derivate = True
             #print("No derivate")
         else:
-            wall_error = abs(ir_right_mm - ir_left_mm)
-            if wall_error == 0: wall_error = 1  
-            regulation = floor((Kp * regulation_error) + (Kd / delta_t * (regulation_error - old_error))) / wall_error #+ (Ki * integral)
+            regulation = floor((Kp * regulation_error) + (Kd / delta_t * (regulation_error - old_error)))
 
         old_error = regulation_error
 
