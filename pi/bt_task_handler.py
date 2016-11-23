@@ -47,18 +47,6 @@ def post_outgoing(bt_task):
 def pop_incoming():
     command_queue = open("bt_commands.txt", "rb")
     next_task = None
-    '''try:
-        # psutil.phymem_usage()
-        #print("peek incoming command_queue: ", peek_line(command_queue))
-        task = pickle.load(command_queue)       
-        # print("task typ ar: ", type(task))
-    except EOFError:
-        pass
-    except MemoryError:
-        print("pop_in: error = ", str(MemoryError))
-        # psutil.phymem_usage()
-        traceback.print_exc(file=sys.stdout)
-        task = None'''
         
     # Remove first command in queue and return it
     tasks = []
@@ -97,27 +85,6 @@ def post_incoming(bt_task):
 def pop_outgoing():
     answer_queue = open("bt_answers.txt", "rb")
     next_task = None
-    '''try:
-        # psutil.phymem_usage()
-        #print("peek outgoing command_queue: ", peek_line(answer_queue))
-        task = pickle.load(answer_queue)
-        #print("Able to load, task-ID =", task.cmd_id)
-        # psutil.phymem_usage()
-        # Remove first command in queue
-        tasks = answer_queue.readlines()
-        print("tasks out=", tasks)
-        if tasks:
-            del tasks[0]
-            target_answer_queue = open("bt_answers.txt","wb")
-            target_answer_queue.writelines(tasks)
-            target_answer_queue.close()
-    except EOFError:
-        pass
-    except MemoryError:
-        print("pop_in: error = ", str(MemoryError))
-        # psutil.phymem_usage()
-        traceback.print_exc(file=sys.stdout)
-        task = None'''
     # Remove first command in queue and return it
     tasks = []
     while(True):
