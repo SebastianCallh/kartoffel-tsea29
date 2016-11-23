@@ -20,6 +20,7 @@ def main():
     client_sock = setup_bt_client(PI_ADDR, PORT)
 
     while (True):
+        global client_sock
         msg = input("To server: ")
 
         client_sock.send(msg)
@@ -32,7 +33,7 @@ def main():
                 try:
                     if debug_count % 100 == 0:
                         print("Top of try")
-                    if client_sock:
+                    if client_sock != None:
                         print("Client_sock exsist, wow!")
                     client_sock.close()
                     del client_sock
