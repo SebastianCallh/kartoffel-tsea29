@@ -18,7 +18,7 @@ class AutoController:
         
         Kp = float(0.3)
         Kd = float(0.2)
-        Ki = float(0.1)
+        Ki = float(0.01)
 
         time_now = datetime.datetime.now()
 
