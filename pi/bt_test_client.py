@@ -20,13 +20,18 @@ while (True):
     print("sent msg")
 
     if int(msg) == 14:
+        debug_count = 0
         while True:
+            debug_count += 1
             try:
+                if debug_count % 1000 == 0:
+                    print("Top of try")
                 client_sock.connect((PI_ADDR, port))
                 client_sock.setblocking(True)
                 print("restarting")
                 break
             except bluetooth.btcommon.BluetoothError:
+                print("Error = ", bluetooth.btcommon.BluetoothError)
                 continue
         continue
     elif int(msg) == 15:
