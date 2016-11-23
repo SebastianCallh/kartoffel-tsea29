@@ -144,7 +144,7 @@ class DegreeTask(Task):
         #print("delta_degrees: " + str(delta_degrees))
         self.previous_time = datetime.now()
         self.total_degrees += delta_degrees
-        #print('total degrees turned :' + str(self.total_degrees))
+        print('total degrees turned :' + str(self.total_degrees))
 
         return abs(self.total_degrees) >= self.degrees
 
