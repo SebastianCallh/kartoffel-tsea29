@@ -19,12 +19,12 @@ while (True):
     client_sock.send(msg)
     print("sent msg")
 
-    if msg == 14:
+    if int(msg) == 14:
         print("restarting")
         client_sock.connect((PI_ADDR, port))
         client_sock.setblocking(True)
         continue
-    elif msg == 15:
+    elif int(msg) == 15:
         print("Exiting")
         client_sock.close()
         break
