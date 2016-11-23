@@ -34,6 +34,7 @@ def clean_queue_files():
 
 # kallas från main
 def post_outgoing(bt_task):
+    global busy_outgoing
     print("in post_outgoing and dumpint task with id", bt_task.cmd_id)
     answer_queue = open("bt_answers.txt", "wb")
     print("could open file")
