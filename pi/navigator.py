@@ -110,12 +110,12 @@ class turn(State):
         self.is_right_turn = is_right_turn
 
     def sensor_data_received(self, data, new_ir_left, new_ir_right):
-        self.data['old_ir_left'] = new_ir_left
-        self.data['old_ir_right'] = new_ir_right
-        self.data['ir_left'] = new_ir_left
-        self.data['ir_right'] = new_ir_right
-        self.data['new_ir_right'] = new_ir_right
-        self.data['new_ir_left'] = new_ir_left
+        data['old_ir_left'] = new_ir_left
+        data['old_ir_right'] = new_ir_right
+        data['ir_left'] = new_ir_left
+        data['ir_right'] = new_ir_right
+        data['new_ir_right'] = new_ir_right
+        data['new_ir_left'] = new_ir_left
         return #Do nothing. Only auto control uses it
 
     def run(self, data):
