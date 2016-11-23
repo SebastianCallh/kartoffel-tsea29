@@ -69,6 +69,8 @@ class BT_Server:
                 has_new_incoming = True
         except bluetooth.btcommon.BluetoothError:
             pass
+        finally:
+            self.client_sock.settimeout(None)
         return has_new_incoming
 
     """Updates outgoing_data. Returns true if data was updated,
