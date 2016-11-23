@@ -40,20 +40,23 @@ def sensor_data_received(ir_left_mm, ir_right_mm):
     # print('ir_left_mm: ' + str(ir_left_mm))
     print('ir_right_mm: ' + str(ir_right_mm))
 
+
 def ip_requested():
     ip = bt_server_cmds.get_pi_ip()
     # Put IP on the bus
     return_ip(ip)
 
+
 def return_hi():
     test_ho()
 
+
 def setup():
     Safety.setup_terminal_abort()
-    #EventBus.subscribe(CMD_RETURN_SENSOR_DATA, sensor_data_received)
+    # EventBus.subscribe(CMD_RETURN_SENSOR_DATA, sensor_data_received)
     EventBus.subscribe(REQUEST_PI_IP, ip_requested)
     EventBus.subscribe(TEST_HI, return_hi)
-    #Laser.initialize()
+    # Laser.initialize()
 
 
 def main():
@@ -61,7 +64,7 @@ def main():
     setup()
 
     while True:
-        #EventBus.receive()
+        # EventBus.receive()
         EventBus.receive_from_addr(0xBEEF)
 
         # rcv    check cmd    exc cmd   (send bt)

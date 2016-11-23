@@ -35,14 +35,14 @@ class EventBus:
     @staticmethod
     def post(addr, message):
         if addr == BLUETOOTH_ADDR:
-            bt_task_handler.post_outgoing(bt_task_handler.BT_task(message.message_id,message.arguments[0]))
+            bt_task_handler.post_outgoing(bt_task_handler.BT_task(message.message_id, message.arguments[0]))
         else:
             EventBus.bus.send(message.as_packet_data(), addr)
 
     @staticmethod
     def pop(unit_addr):
         if unit_addr == BLUETOOTH_ADDR:
-            return bt_task_handler.pop_incoming()       #bluetooth pop()
+            return bt_task_handler.pop_incoming()  # bluetooth pop()
         else:
             return EventBus.bus.try_receive(unit_addr)
 

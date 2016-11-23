@@ -43,7 +43,7 @@ def main():
             print("bt_runner: has new incoming!")
             print("Data = " + server.incoming_data)
             if server.incoming_data == protocol.BT_SERVER_RESTART:
-                server.shutdown_server()
+                #server.shutdown_server()
                 del server
                 server = setup_server()
                 continue

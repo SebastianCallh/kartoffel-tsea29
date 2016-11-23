@@ -3,7 +3,6 @@ import bt_task_handler
 
 
 class BT_Server:
-
     """Create the server socket with predefined port and backlog value
        Returns a BluetoothSocket"""
 
@@ -79,13 +78,13 @@ class BT_Server:
     def update_outgoing(self):
         has_new_outgoing = False
         task = self._pop_from_outgoing()
-        #print("Updated outgoing task in server ", str(task))
+        # print("Updated outgoing task in server ", str(task))
         if type(task) == bt_task_handler.BT_task and task.cmd_id != 0:
             print("update_outgoing: i if-sats")
             self.outgoing_data = str(task.cmd_id) + " " + str(task.data)  # TODO will change when json
             has_new_outgoing = True
         return has_new_outgoing
-        
+
     def shutdown_server(self):
         self.server_sock.close()
         self.client_sock.close()

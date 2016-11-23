@@ -11,19 +11,21 @@ print("Created client sock")
 client_sock.connect((PI_ADDR, port))
 print("connected to ", PI_ADDR)
 client_sock.setblocking(True)
-#client_sock.settimeout(1)
+# client_sock.settimeout(1)
 
 while (True):
     msg = input("To server: ")
 
     client_sock.send(msg)
     print("sent msg")
-    
+
     if msg == 14:
-        client_sock.connect((PI_ADDR,port))
+        print("restarting")
+        client_sock.connect((PI_ADDR, port))
         client_sock.setblocking(True)
         continue
     elif msg == 15:
+        print("Exiting")
         client_sock.close()
         break
 
@@ -37,7 +39,7 @@ while (True):
         print("received " + str(data))
     except IOError:
         print("Error = " + str(IOError))
-    except OSError: 
+    except OSError:
         print("Error = " + str(OSError))
 
 print("closed")

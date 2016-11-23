@@ -9,8 +9,6 @@ see outbound.py.
 """
 BLUETOOTH_ADDR = 0xBEEF
 
-
-
 # Request data from the sensor unit
 CMD_REQUEST_SENSOR_DATA = 1
 """
@@ -22,7 +20,6 @@ Target: Sensor unit
 
 Arguments: None
 """
-
 
 # Return sensor data from the sensor unit
 CMD_RETURN_SENSOR_DATA = 2
@@ -43,7 +40,6 @@ ir_right_mm (2 bytes, two's complement)
     within the supported range.
 """
 
-
 # Ping a unit
 CMD_PING = 3
 """
@@ -56,7 +52,6 @@ Target: Any AVR unit
 Arguments: None
 """
 
-
 # Pong a unit
 CMD_PONG = 4
 """
@@ -66,7 +61,6 @@ Target: Main unit
 
 Arguments: None
 """
-
 
 # Set both motor speeds in the control unit
 CMD_SET_MOTOR_SPEED = 5
@@ -87,7 +81,6 @@ right_motor_speed (1 byte, positive or negative)
     Right motor speed in percentage of max speed ranging from from -100 to 100.
 """
 
-
 # Set left motor speed only in control unit
 CMD_SET_LEFT_MOTOR_SPEED = 6
 """
@@ -101,7 +94,6 @@ Arguments:
 speed (1 byte, positive)
     Left motor speed in percentage of max speed ranging from 0 to 100.
 """
-
 
 # Set right motor speed in the control unit
 CMD_SET_RIGHT_MOTOR_SPEED = 7
@@ -117,7 +109,7 @@ speed (1 byte, positive)
     Right motor speed in percentage of max speed ranging from 0 to 100.
 """
 
-#-------------------- Bluetooth commands ---------------------
+# -------------------- Bluetooth commands ---------------------
 
 REQUEST_PI_IP = 10
 RETURN_PI_IP = 11
@@ -141,11 +133,10 @@ BT_SEND_MAP_DATA = 20
 
 BT_SEND_SERVO_DATA = 21
 
-BT_CLIENT_COMMANDS = [REQUEST_PI_IP,TEST_HI,BT_SERVER_RESTART,BT_SERVER_EXIT,
-BT_REQUEST_SENSOR_DATA,BT_REQUEST_MAP_DATA,BT_REQUEST_SERVO_DATA]
+BT_CLIENT_COMMANDS = [REQUEST_PI_IP, TEST_HI, BT_SERVER_RESTART, BT_SERVER_EXIT,
+                      BT_REQUEST_SENSOR_DATA, BT_REQUEST_MAP_DATA, BT_REQUEST_SERVO_DATA]
 
-
-#TODO: If queue works properly, these lists won't be necessary
+# TODO: If queue works properly, these lists won't be necessary
 # List of commands that are of the type data requests, i.e. the client requests
 # data from server
 DATA_REQUESTS = [REQUEST_PI_IP, TEST_HI]
@@ -154,14 +145,3 @@ DATA_REQUESTS = [REQUEST_PI_IP, TEST_HI]
 # controls the robot (or bluetooth server) directly.  
 # The client does not excpect an answer.
 DIRECT_OPERATIONS = [BT_SERVER_RESTART, BT_SERVER_EXIT]
-
-
-
-
-
-
-
-
-
-
-
