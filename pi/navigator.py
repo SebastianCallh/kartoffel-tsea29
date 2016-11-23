@@ -28,7 +28,7 @@ class auto_control(State):
         left_old_diff = abs(data['ir_left'] - data['old_ir_left'])
         left_new_diff = abs(data['new_ir_left'] - data['old_ir_left'])
 
-        print("At left turn, old diff: " + str(left_old_diff) + ", new diff: "+ str(left_new_diff))
+        #print("At left turn, old diff: " + str(left_old_diff) + ", new diff: "+ str(left_new_diff))
 
         return left_old_diff >= Navigator.DISCONTINUITY_DIST and\
                left_new_diff >= Navigator.DISCONTINUITY_DIST and\
