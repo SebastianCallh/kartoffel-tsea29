@@ -28,13 +28,8 @@ def setup_server():
   the intermediary, server and client. 
 """
 
-
-def main():
-    global log
+def run(server):
     exit = False
-    server = setup_server()
-
-    # TODO add exit/restart options (conditions in loop)
     while not exit:
         # Loop and wait for server commands
         has_new_incoming = server.update_incoming()
@@ -42,13 +37,16 @@ def main():
         if has_new_incoming:
             print("bt_runner: has new incoming!")
             print("Data = " + server.incoming_data)
+            if has_new_incoming == bt_server.BT_EOF:
+                server.shutdown_server()
+
             if int(server.incoming_data) == protocol.BT_SERVER_RESTART:
                 print("Starting to restart")
-                #server.shutdown_server()
+                # server.shutdown_server()
                 del server
                 server = setup_server()
                 continue
-            elif int(server.incoming_data) == protocol.BT_SERVER_EXIT:
+            elif int(server.incoming_data) == protocol.BT_SERVER_SHUTDOWN:
                 print("Setting exit to true")
                 exit = True
                 continue
@@ -59,42 +57,23 @@ def main():
         if (has_new_outgoing):
             print("bt_runner: sending data")
             server.send_data()
+    return xx # TODO Should return values based on restart or shutdown
+
+
+
+def main():
+    global log
+
+    server = setup_server()
+    xx = run(server)
+
+
 
     print("out while not exit loop")
-    server.shutdown_server()
-    del server
-    '''busy = False
+    #server.shutdown_server()
+    #del server
 
-    # TODO add exit/restart options (conditions in loop)
-    while True:
-        # Loop and wait for server commands
-        while not busy:
-            has_new_incoming = server.update_incoming()
-            # TODO Change assumption that data only contains ID!!
-            if has_new_incoming:
-                print("bt_runner: has new incoming!")
-                print("Data = " + server.incoming_data)
-                cmd_type = bt_server_cmds.validate_cmd(server.incoming_data)
-                print("Cmd id in runner-main: " + cmd_type)
-                if cmd_type == "":
-                    print("Runner: cmd_type == empty")
-                    continue
-                elif cmd_type == "rqst":
-                    print("Runner: cmd_type == rqst")
-                    busy = True
-                elif cmd_type == "direct":
-                    print("Runner: cmd_typ == direct")
-                else:
-                    print("Runner: cmd_type is something unknown")
-                    continue
-                server.post_to_incoming()
-                print("posted to incoming")
 
-        has_new_outgoing = server.update_outgoing()
-        if (has_new_outgoing):
-            print("bt_runner: sending data")      
-            busy = False
-            server.send_data()'''
 
 
 main()

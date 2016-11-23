@@ -1,6 +1,11 @@
 import bluetooth
 import bt_task_handler
 
+NEW_DATA = 1
+NO_NEW_DATA = 0
+BT_EOF = -1
+
+
 
 class BT_Server:
     """Create the server socket with predefined port and backlog value
@@ -86,5 +91,4 @@ class BT_Server:
         return has_new_outgoing
 
     def shutdown_server(self):
-        self.server_sock.close()
-        self.client_sock.close()
+        self.shutdown(2)
