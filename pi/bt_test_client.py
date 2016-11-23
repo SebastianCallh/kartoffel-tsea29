@@ -20,9 +20,14 @@ while (True):
     print("sent msg")
 
     if int(msg) == 14:
-        print("restarting")
-        client_sock.connect((PI_ADDR, port))
-        client_sock.setblocking(True)
+        while True:
+            try:
+                pass
+            except bluetooth.btcommon.BluetoothError:
+                print("restarting")
+                client_sock.connect((PI_ADDR, port))
+                client_sock.setblocking(True)
+                break
         continue
     elif int(msg) == 15:
         print("Exiting")
