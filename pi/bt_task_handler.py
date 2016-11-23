@@ -58,6 +58,7 @@ def pop_incoming():
     command_queue = open("bt_commands.txt", "wb")
     command_queue.seek(0)
     command_queue.truncate()
+    print("Cleaned commands")
     command_queue.close()
     return task
 
@@ -88,6 +89,7 @@ def pop_outgoing():
     #Clean file
     answer_queue.seek(0)
     answer_queue.truncate()
+    print("Clean answers")
     answer_queue.close()
     return task
 
