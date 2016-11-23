@@ -48,7 +48,9 @@ def main():
                 server = setup_server()
                 continue
             elif server.incoming_data == protocol.BT_SERVER_EXIT:
+                print("Setting exit to true")
                 exit = True
+                continue
             server.post_to_incoming()
             print("posted to incoming")
 

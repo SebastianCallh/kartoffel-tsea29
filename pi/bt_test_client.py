@@ -19,7 +19,12 @@ while (True):
     client_sock.send(msg)
     #print("sent msg")
     
-    
+    if msg == 14:
+        client_sock.connect((PI_ADDR,port))
+        client_sock.setblocking(True)
+    elif msg == 15:
+        client_sock.close()
+        break
 
     data = ""
 
@@ -34,5 +39,4 @@ while (True):
     except OSError: 
         print("Error = " + str(OSError))
 
-client_sock.close()
 print("closed")
