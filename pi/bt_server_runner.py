@@ -42,13 +42,13 @@ def main():
         if has_new_incoming:
             print("bt_runner: has new incoming!")
             print("Data = " + server.incoming_data)
-            if server.incoming_data == protocol.BT_SERVER_RESTART:
+            if int(server.incoming_data) == protocol.BT_SERVER_RESTART:
                 print("Starting to restart")
                 #server.shutdown_server()
                 del server
                 server = setup_server()
                 continue
-            elif server.incoming_data == protocol.BT_SERVER_EXIT:
+            elif int(server.incoming_data) == protocol.BT_SERVER_EXIT:
                 print("Setting exit to true")
                 exit = True
                 continue
