@@ -8,7 +8,8 @@ PORT = 3
 
 def setup_bt_client(addr, port):
     client_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-    print("Created client sock")
+    if client_sock != None:
+        print("Client_sock created, wow!")
     client_sock.connect((addr, port))
     print("connected to ", addr)
     client_sock.setblocking(True)
@@ -20,7 +21,6 @@ def main():
     client_sock = setup_bt_client(PI_ADDR, PORT)
 
     while (True):
-        global client_sock
         msg = input("To server: ")
 
         client_sock.send(msg)
@@ -33,8 +33,6 @@ def main():
                 try:
                     if debug_count % 100 == 0:
                         print("Top of try")
-                    if client_sock != None:
-                        print("Client_sock exsist, wow!")
                     client_sock.close()
                     del client_sock
                     client_sock = setup_bt_client(PI_ADDR, PORT)
