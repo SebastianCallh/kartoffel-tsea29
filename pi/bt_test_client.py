@@ -14,10 +14,10 @@ client_sock.setblocking(True)
 #client_sock.settimeout(1)
 
 while (True):
-    msg = input("To server: ")
+    #msg = input("To server: ")
 
-    client_sock.send(msg)
-    print("sent msg")
+    #client_sock.send(msg)
+    #print("sent msg")
     
     '''msg2 = input("To server: ")
     client_sock.send(msg2)'''
@@ -25,16 +25,15 @@ while (True):
     data = ""
 
     try:
-        for i in range(0,2):
-            while data == "":
-                data = client_sock.recv(1024).decode('utf-8')
-            if len(data) == 0:
-                break
-            print("received " + str(data))
-            #time.sleep(5)
-    except IOError or OSError:
-        # print("Error = " + str(IOError))
-        pass
+        while data == "":
+            data = client_sock.recv(1024).decode('utf-8')
+        if len(data) == 0:
+            break
+        print("received " + str(data))
+    except IOError:
+        print("Error = " + str(IOError))
+    except OSError: 
+        print("Error = " + str(OSError))
 
 client_sock.close()
 print("closed")
