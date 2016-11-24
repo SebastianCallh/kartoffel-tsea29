@@ -1,5 +1,4 @@
 import datetime
-
 from math import floor
 
 time_last_regulation = datetime.datetime.now()
@@ -14,20 +13,22 @@ class AutoController:
 
         DESIRED_DISTANCE = 120  # Desired distance to wall
         STANDARD_SPEED = 25
-        SLOW_SPEED = 20
-        
+
+
         Kp = float(0.3)
         Kd = float(0.2)
 
         time_now = datetime.datetime.now()
-        sensor_data_dist = ir_right_mm
+        sensor_data_front = ir_right_mm
+        sensor_data_back = ir_left_mm
+        dist_diff = (sensor_data_front - sensor_data_back) / 10
 
 
 
-        regulation_error = DESIRED_DISTANCE - sensor_data_dist
+        regulation_error = DESIRED_DISTANCE - sensor_data_front
         delta_t = (time_now - time_last_regulation).microseconds / 1000
 
-        regulation = floor((Kp * regulation_error) + (Kd / delta_t * (regulation_error - old_error)))
+        regulation = floor((Kp * regulation_error) + dist_diff )#(Kd / delta_t * (regulation_error - old_error)))
 
         old_error = regulation_error
 
