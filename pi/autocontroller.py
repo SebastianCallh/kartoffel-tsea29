@@ -21,14 +21,14 @@ class AutoController:
         time_now = datetime.datetime.now()
         sensor_data_front = ir_right_mm
         sensor_data_back = ir_left_mm
-        dist_diff = (sensor_data_front - sensor_data_back) / 10
+        dist_diff = (sensor_data_back - sensor_data_front)
 
 
 
         regulation_error = DESIRED_DISTANCE - sensor_data_front
         delta_t = (time_now - time_last_regulation).microseconds / 1000
 
-        regulation = floor((Kp * regulation_error) + (Kd / delta_t * (regulation_error - old_error)))
+        regulation = floor((Kp * regulation_error) + dist_diff) #(Kd / delta_t * (regulation_error - old_error)))
 
         old_error = regulation_error
 
