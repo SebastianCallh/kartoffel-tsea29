@@ -12,6 +12,8 @@ void parse_sensor_data_packet(struct indexed_packet* ip) {
 	struct sensor_data* sd = malloc(sizeof(struct sensor_data));
 	sd->ir_left_mm = (read_byte(ip) << 8) & read_byte(ip);
 	sd->ir_right_mm = (read_byte(ip) << 8) & read_byte(ip);
+	sd->ir_right_back_mm = (read_byte(ip) << 8) & read_byte(ip);
+	sd->ir_left_back_mm = (read_byte(ip) << 8) & read_byte(ip);
 	
 	notify_sensor_data_returned(sd);
 	free(sd);

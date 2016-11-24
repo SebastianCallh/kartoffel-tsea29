@@ -29,5 +29,9 @@ void return_sensor_data(struct sensor_data* sd) {
 	write_byte(&ip, sd->ir_left_mm & 0xFF);
 	write_byte(&ip, sd->ir_right_mm >> 8);
 	write_byte(&ip, sd->ir_right_mm & 0xFF);
+	write_byte(&ip, sd->ir_right_back_mm >> 8);
+	write_byte(&ip, sd->ir_right_back_mm & 0xFF);
+	write_byte(&ip, sd->ir_left_back_mm >> 8);
+	write_byte(&ip, sd->ir_left_back_mm & 0xFF);		
 	send_data(ip.p);
 }

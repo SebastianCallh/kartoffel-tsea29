@@ -33,11 +33,20 @@ void handle_loop()
 		}
 		else if (channel == MUX1) {
 			sd.ir_left_mm = to_mm(ADCW);
+			channel = MUX2;
+		}
+		else if (channel == MUX2) {
+			sd.ir_right_back_mm = to_mm(ADCW);
+			channel = MUX3;
+		}
+		else if (channel == MUX3) {
+			sd.ir_left_back_mm = ADCW;
 			channel = MUX0;
 		}
 		adc_start(channel);
 	}
 }
+
 
 int main(void)
 {

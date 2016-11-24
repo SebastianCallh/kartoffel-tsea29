@@ -16,7 +16,7 @@ class State:
     def run(self, data):
         assert 0, "run not implemented"
 
-    def sensor_data_received(self, data, new_ir_left, new_ir_right):
+    def sensor_data_received(self, data, new_ir_left, new_ir_right, new_ir_right_back_mm, new_ir_left_back_mm):
         assert 0, "sensor_data_received not implemented"
 
 
@@ -50,7 +50,7 @@ class auto_control(State):
                data['side'] == Navigator.RIGHT_SIDE
             
         
-    def sensor_data_received(self, data, new_ir_left, new_ir_right):
+    def sensor_data_received(self, data, new_ir_left, new_ir_right, new_ir_right_back_mm, new_ir_left_back_mm):
        
         if self.is_at_left_turn(data) or self.is_at_right_turn(data):
             return
@@ -99,7 +99,7 @@ class auto_control(State):
 
 
 class warmup(State):
-    def sensor_data_received(self, data, new_ir_left, new_ir_right):
+    def sensor_data_received(self, data, new_ir_left, new_ir_right, new_ir_right_back_mm, new_ir_left_back_mm):
         return #Do nothing
         
     def run(self, data):
@@ -114,7 +114,7 @@ class turn(State):
     def __init__(self, is_right_turn):
         self.is_right_turn = is_right_turn
 
-    def sensor_data_received(self, data, new_ir_left, new_ir_right):
+    def sensor_data_received(self, data, new_ir_left, new_ir_right, new_ir_right_back_mm, new_ir_left_back_mm):
         return #Do nothing. Only auto control uses it
 
     def run(self, data):
@@ -152,7 +152,7 @@ class Navigator:
         self.last_updated_time = datetime.now()
 
 
-    def sensor_data_received(self, new_ir_left, new_ir_right):
+    def sensor_data_received(self, new_ir_left, new_ir_right, new_ir_right_back_mm, new_ir_left_back_mm):
 
         if datetime.now() - self.last_updated_time < timedelta(milliseconds=UPDATE_FREQUENCY):
             return
