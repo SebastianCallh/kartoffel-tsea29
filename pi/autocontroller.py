@@ -35,6 +35,8 @@ class AutoController:
 
         if (regulation > 20):
             regulation = 20
+        elif (regulation < -20):
+            regulation = -20
 
         if (regulation > -10):
             speed_close_wall = STANDARD_SPEED + regulation
