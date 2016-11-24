@@ -23,7 +23,8 @@ class AutoController:
         sensor_data_back = ir_left_mm
         dist_diff = (sensor_data_back - sensor_data_front)
 
-
+        if (ir_right_mm == -1 or ir_left_mm == -1):
+            dist_diff = 0
 
         regulation_error = DESIRED_DISTANCE - sensor_data_front
         delta_t = (time_now - time_last_regulation).microseconds / 1000
