@@ -32,6 +32,8 @@ class AutoController:
 
         old_error = regulation_error
 
+        if (regulation > 20):
+            regulation = 20
 
         if (regulation > -10):
             speed_close_wall = STANDARD_SPEED + regulation
