@@ -15,7 +15,7 @@ class AutoController:
         STANDARD_SPEED = 25
 
 
-        Kp = float(0.3)
+        Kp = float(0.6)
         Kd = float(0.2)
 
         time_now = datetime.datetime.now()
