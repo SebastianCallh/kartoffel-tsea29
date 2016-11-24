@@ -18,9 +18,6 @@ from safety import Safety
 
 laser = Laser()
 gyro = Gyro()
-driver = Driver(gyro, laser)
-navigator = Navigator(driver, laser)
-position = Position()
 
 # Update frequency
 last_request = datetime.now()
@@ -38,7 +35,10 @@ def setup():
 def sensor_data_received(ir_left_mm, ir_right_mm, ir_right_back_mm, ir_left_back_mm):
     global busy, navigator
     busy = False
-    navigator.sensor_data_received(ir_left_mm, ir_right_mm, ir_right_back_mm, ir_left_back_mm)
+    print("LF: " + str(ir_left_mm))
+    print("RF: " + str(ir_right_mm))
+    print("RBack: " + str(ir_right_back_mm))
+    print("LBack: " + str(ir_left_back_mm))
 
 
 def request_data():
@@ -48,8 +48,8 @@ def request_data():
         last_request = datetime.now()
 
         # TODO: Uncomment below line when reading from laser
-        # laser_distance = Laser.read_data()
-
+        laser_distance = Laser.read_data()
+        print("Laser distance: " + str(laser_distance))
         request_sensor_data()
 
 
@@ -61,8 +61,5 @@ def main():
     while True:
         EventBus.receive()
         request_data()
-        position.update()
-        navigator.navigate()
-
 
 Safety.run_safely(main)
