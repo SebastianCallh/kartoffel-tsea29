@@ -1,10 +1,6 @@
 import bluetooth
 import bt_task_handler
 
-NEW_DATA = 1
-NO_NEW_DATA = 0
-BT_EOF = -1
-
 
 
 class BT_Server:
@@ -63,17 +59,14 @@ class BT_Server:
        false otherwise"""
 
     def update_incoming(self):
-        has_new_incoming = NO_NEW_DATA
+        has_new_incoming = False
         try:
             self.client_sock.settimeout(0.1)
             data = self.client_sock.recv(1024).decode('utf-8')
             print("bt_server: Data =", data)
             if len(data) != 0:  # TODO or None? (using json)
                 self.incoming_data = data
-                has_new_incoming = NEW_DATA
-        except EOFError:
-            print("Server recieved shutdown init from client")
-            has_new_incoming = BT_EOF
+                has_new_incoming = True
         except bluetooth.btcommon.BluetoothError:
             pass
         finally:

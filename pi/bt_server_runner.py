@@ -6,7 +6,6 @@ import protocol
 PI_ADDR = "B8:27:EB:FC:55:27"
 PORT = 3
 BACKLOG = 1
-EOF = -1
 RESTART = 14
 SHUTDOWN = 15
 GOT_DATA = 1
@@ -37,10 +36,7 @@ def recieve(server):
     has_new_incoming = server.update_incoming()
     # TODO Change assumption that data only contains ID!!
 
-    if has_new_incoming == bt_server.BT_EOF:
-        print("Runner got EOF")
-        return EOF
-    elif has_new_incoming == bt_server.NEW_DATA:
+    if has_new_incoming:
         print("Runner got new data")
         if int(server.incoming_data) == protocol.BT_SERVER_RESTART:
             print("Runner got restart")
@@ -75,10 +71,6 @@ def main():
             has_sent = False
             while has_sent:
                 has_sent = send(server)
-
-            waiting = NO_DATA
-            while waiting != EOF:
-                waiting = recieve(server)
 
             server.shutdown_server()
             del server
