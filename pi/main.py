@@ -10,13 +10,13 @@ from laser import Laser
 from gyro import Gyro
 
 from eventbus import EventBus
-from outbound import request_sensor_data, test_ho, return_ip
 from position import Position
 
-from protocol import CMD_RETURN_SENSOR_DATA, REQUEST_PI_IP, TEST_HI
+from protocol import *
 from safety import Safety
 
 import bt_server_cmds
+import outbound
 
 laser = Laser()
 gyro = Gyro()
@@ -58,11 +58,11 @@ def sensor_data_received(ir_left_mm, ir_right_mm):
 def ip_requested():
     ip = bt_server_cmds.get_pi_ip()
     # Put IP on the bus
-    return_ip(ip)
+    outbound.return_ip(ip)
 
 
 def return_hi():
-    test_ho()
+    outbound.test_ho()
 
 
 def request_data():
@@ -74,7 +74,7 @@ def request_data():
         # TODO: Uncomment below line when reading from laser
         # laser_distance = Laser.read_data()
 
-        request_sensor_data()
+        outbound.request_sensor_data()
 
 
 def main():
