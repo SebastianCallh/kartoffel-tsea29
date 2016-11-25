@@ -85,7 +85,7 @@ def main():
         EventBus.receive()
         request_data()
         position.update()
-        #navigator.navigate()
+        navigator.navigate()
 
 
 Safety.run_safely(main)
