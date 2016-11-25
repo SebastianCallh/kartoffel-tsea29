@@ -44,10 +44,10 @@ def main():
             elif int(msg) == 15:
                 # Shutdown requested
                 break
-        except IOError:
+        '''except IOError:
             print("Error = " + str(IOError))
         except OSError:
-            print("Error = " + str(OSError))
+            print("Error = " + str(OSError))'''
 
 
     print("closed")

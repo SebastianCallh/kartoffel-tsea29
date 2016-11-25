@@ -21,13 +21,15 @@ def setup_server():
     bt_task_handler.clean_queue_files()
     return server
 
+def validate_cmd(data):
+    return True if data in protocol.BT_CLIENT_COMMANDS else False
+
 
 """
   The main function initialize the server and runs it. 
   The function handles the flow of information between
   the intermediary, server and client. 
 """
-
 
 def main():
     global log
@@ -39,7 +41,7 @@ def main():
         # Loop and wait for server commands
         has_new_incoming = server.update_incoming()
         # TODO Change assumption that data only contains ID!!
-        if has_new_incoming:
+        if has_new_incoming and validate_cmd:
             print("bt_runner: has new incoming!")
             print("Data = " + server.incoming_data)
             if int(server.incoming_data) == protocol.BT_SERVER_RESTART:

@@ -81,7 +81,7 @@ class BT_Server:
         # print("Updated outgoing task in server ", str(task))
         if type(task) == bt_task_handler.BT_task and task.cmd_id != 0:
             print("update_outgoing: i if-sats")
-            self.outgoing_data = str(task.cmd_id) + " " + str(task.data)  # TODO will change when json
+            self.outgoing_data = str(task.cmd_id) + ", " + str(task.data)  # TODO will change when json
             has_new_outgoing = True
         return has_new_outgoing
 
