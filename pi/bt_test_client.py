@@ -9,7 +9,6 @@ PORT = 3
 
 def setup_bt_client(addr, port):
     client_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-    print("Sock :", str(client_sock))
     client_sock.setblocking(True)
     timeout = 10
     while timeout > 0:
