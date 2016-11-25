@@ -24,6 +24,7 @@ def main():
         msg = input("To server: ")
 
         if int(msg) == 14 or int(msg) == 15:
+            client_sock.send(msg)
             client_sock.shutdown(2)
         else:
             client_sock.send(msg)
