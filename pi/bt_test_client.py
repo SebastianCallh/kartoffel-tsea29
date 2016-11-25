@@ -20,7 +20,7 @@ def setup_bt_client(addr, port):
             time.sleep(1)
             timeout -= 1
             print("waiting for connection...")
-            #print(traceback.format_exc())
+            print(traceback.format_exc())
             continue
         
     if timeout==0:
@@ -60,7 +60,7 @@ def run():
         except bluetooth.btcommon.BluetoothError:
             print("Catching bluettoth error")
             # Recieved when server responds to shutdown
-            client_sock.shutdown(2)
+            #client_sock.shutdown(2)
             client_sock.close()
             del client_sock
             if int(msg) == 14:
