@@ -6,8 +6,6 @@ import protocol
 PI_ADDR = "B8:27:EB:FC:55:27"
 PORT = 3
 BACKLOG = 1
-RESTART = 14
-SHUTDOWN = 15
 GOT_DATA = 1
 NO_DATA = 0
 
@@ -41,10 +39,10 @@ def recieve(server):
         print("Runner got new data")
         if int(server.incoming_data) == protocol.BT_SERVER_RESTART:
             print("Runner got restart")
-            return RESTART
+            return protocol.BT_SERVER_RESTART
         elif int(server.incoming_data) == protocol.BT_SERVER_SHUTDOWN:
             print("Runner got shutdown")
-            return SHUTDOWN
+            return protocol.BT_SERVER_SHUTDOWN
         else:
             print("bt_runner: has new incoming!")
             print("Data = " + server.incoming_data)
@@ -64,10 +62,10 @@ def recieve(server):
 def main():
     server = setup_server()
     exit = NO_DATA
-    while exit != SHUTDOWN:
+    while exit != protocol.BT_SERVER_SHUTDOWN:
         exit = recieve(server)
         send(server)
-        if exit == RESTART or exit == SHUTDOWN:
+        if exit == protocol.BT_SERVER_RESTART or exit == protocol.BT_SERVER_SHUTDOWN:
             print("Runner.main : exit == ", exit)
             has_sent = False
             while has_sent:
@@ -78,7 +76,7 @@ def main():
             del server
             print("Runner: Deleted server and client sock")
 
-            if exit == RESTART:
+            if exit == protocol.BT_SERVER_RESTART:
                 server = setup_server()
                 print("Runner: NEW client_sock =", server.client_sock)
                 exit = NO_DATA

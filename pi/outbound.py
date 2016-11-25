@@ -19,93 +19,11 @@ from protocol import *
 # NOTE: Function comments are purposely left out from this file in favor of the
 # complete definitions of every found command in proctol.py.
 
-
-def return_ip(ip):
-    EventBus.post(
-        BLUETOOTH_ADDR,
-        Event(
-            message_id=RETURN_PI_IP,
-            arguments=[
-                ip
-            ]
-        )
-    )
-
-
-def test_ho():
-    EventBus.post(
-        BLUETOOTH_ADDR,
-        Event(
-            message_id=TEST_HO,
-            arguments=[
-                "ho"
-            ]
-        )
-    )
-
-
 def request_sensor_data():
     EventBus.post(
         SENSOR_ADDR,
         Event(
             message_id=CMD_REQUEST_SENSOR_DATA
-        )
-    )
-
-
-def bt_request_sensor_data():
-    EventBus.post(
-        SENSOR_ADDR,
-        Event(
-            message_id=BT_REQUEST_SENSOR_DATA
-        )
-    )
-
-
-def bt_request_map_data():
-    EventBus.post(
-        SENSOR_ADDR,
-        Event(
-            message_id=BT_REQUEST_MAP_DATA
-        )
-    )
-
-
-def bt_request_servo_data():
-    EventBus.post(
-        SENSOR_ADDR,
-        Event(
-            message_id=BT_REQUEST_SERVO_DATA
-        )
-    )
-
-
-def bt_send_sensor_data(data):
-    EventBus.post(
-        SENSOR_ADDR,
-        Event(
-            message_id=BT_SEND_SENSOR_DATA,
-            arguments=data
-        )
-    )
-
-
-def bt_send_map_data(data):
-    EventBus.post(
-        SENSOR_ADDR,
-        Event(
-            message_id=BT_SEND_MAP_DATA,
-            arguments=data
-        )
-    )
-
-
-def bt_send_servo_data(data):
-    EventBus.post(
-        SENSOR_ADDR,
-        Event(
-            message_id=BT_SEND_SERVO_DATA,
-            arguments=data
         )
     )
 
@@ -146,5 +64,59 @@ def set_right_motor_speed(speed):
             arguments=[
                 speed
             ]
+        )
+    )
+
+
+def return_ip(ip):
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        Event(
+            message_id=RETURN_PI_IP,
+            arguments=[
+                ip
+            ]
+        )
+    )
+
+
+def test_ho():
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        Event(
+            message_id=TEST_HO,
+            arguments=[
+                "ho"
+            ]
+        )
+    )
+
+
+def bt_return_sensor_data(data):
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        Event(
+            message_id=BT_RETURN_SENSOR_DATA,
+            arguments=data
+        )
+    )
+
+
+def bt_return_servo_data(data):
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        Event(
+            message_id=BT_RETURN_SERVO_DATA,
+            arguments=data
+        )
+    )
+
+
+def bt_return_map_data(data):
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        Event(
+            message_id=BT_RETURN_MAP_DATA,
+            arguments=data
         )
     )
