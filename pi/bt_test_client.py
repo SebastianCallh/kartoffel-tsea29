@@ -46,7 +46,8 @@ def main():
             print("Shutdown or restart")
             client_sock.send(msg)
             print("Has sent restart or shutdown")
-            client_sock.shutdown(2)
+            client_sock = setup_bt_client(PI_ADDR, PORT)
+            #client_sock.shutdown(2)
             #client_sock.close()
             print("Sent shutdown")
         else:
@@ -57,14 +58,16 @@ def main():
         data = ""
 
         try:
-            while data == "":
-                data = client_sock.recv(1024).decode('utf-8')
-            if len(data) == 0:
-                break
-            print("received " + str(data))
+            if not msg == 14 or msg == 15:
+                while data == "":
+                    data = client_sock.recv(1024).decode('utf-8')
+                if len(data) == 0:
+                    break
+                print("received " + str(data))
         except bluetooth.btcommon.BluetoothError:
             print("Catching bluettoth error")
             # Recieved when server responds to shutdown
+            client.shutdown(2)
             client_sock.close()
             del client_sock
             if int(msg) == 14:
