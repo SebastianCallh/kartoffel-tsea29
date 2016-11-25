@@ -86,5 +86,5 @@ class BT_Server:
         return has_new_outgoing
 
     def shutdown_server(self):
-        self.server_sock.shutdown(2)
+        #self.server_sock.shutdown(2)
         self.server_sock.close()
