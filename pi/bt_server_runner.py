@@ -41,6 +41,7 @@ def recieve(server):
         print("Runner got EOF")
         return EOF
     elif has_new_incoming == bt_server.NEW_DATA:
+        print("Runner got new data")
         if int(server.incoming_data) == protocol.BT_SERVER_RESTART:
             print("Runner got restart")
             return RESTART
@@ -70,6 +71,7 @@ def main():
         exit = recieve(server)
         send(server)
         if exit == RESTART or exit == SHUTDOWN:
+            print("Runner.main : exit == ", exit)
             has_sent = False
             while has_sent:
                 has_sent = send(server)
