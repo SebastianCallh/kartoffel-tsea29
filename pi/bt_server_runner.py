@@ -21,6 +21,9 @@ def setup_server():
     bt_task_handler.clean_queue_files()
     return server
 
+def validate_cmd(data):
+    return True if data in protocol.BT_CLIENT_COMMANDS else False
+
 
 def send(server):
     has_new_outgoing = server.update_outgoing()
