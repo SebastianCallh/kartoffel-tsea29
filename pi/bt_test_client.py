@@ -23,7 +23,10 @@ def main():
     while (True):
         msg = input("To server: ")
 
-        client_sock.send(msg)
+        if int(msg) == 14 or int(msg) == 15:
+            client_sock.shutdown(2)
+        else:
+            client_sock.send(msg)
         print("sent msg")
 
         data = ""
@@ -48,7 +51,6 @@ def main():
             print("Error = " + str(IOError))
         except OSError:
             print("Error = " + str(OSError))'''
-
 
     print("closed")
 
