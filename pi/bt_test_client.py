@@ -36,6 +36,7 @@ def main():
     restart = ""
     while not restart == "EXIT":
         restart = run()
+        time.sleep(1)
 
 
 
