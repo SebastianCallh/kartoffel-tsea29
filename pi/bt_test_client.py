@@ -9,8 +9,7 @@ PORT = 3
 
 def setup_bt_client(addr, port):
     client_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-    if client_sock:
-        print("Client_sock created, wow!")
+    print("Sock :", str(client_sock))
     client_sock.setblocking(True)
     timeout = 10
     while timeout > 0:
@@ -34,56 +33,45 @@ def setup_bt_client(addr, port):
 
 
 def main():
-    client_sock = setup_bt_client(PI_ADDR, PORT)
-    if not client_sock:
-        return
+    restart = ""
+    while not restart == "EXIT":
+        restart = run()
+
+
+
+
+def run():
+    client_sock = setup_bt_client(PI_ADDR,PORT)
 
     while (True):
-        print("Sock :", str(client_sock))
         msg = input("To server: ")
 
-        if int(msg) == 14 or int(msg) == 15:
-            print("Shutdown or restart")
-            client_sock.send(msg)
-            print("Has sent restart or shutdown")
-            client_sock = setup_bt_client(PI_ADDR, PORT)
-            #client_sock.shutdown(2)
-            #client_sock.close()
-            print("Sent shutdown")
-        else:
-            print("Sock i else: ",str(client_sock))
-            client_sock.send(msg)
+        client_sock.send(msg)     
         print("sent msg")
 
         data = ""
 
         try:
-            if not msg == 14 or msg == 15:
-                while data == "":
-                    data = client_sock.recv(1024).decode('utf-8')
-                if len(data) == 0:
-                    break
-                print("received " + str(data))
+            while data == "":
+                data = client_sock.recv(1024).decode('utf-8')
+            if len(data) == 0:
+                break
+            print("received " + str(data))
         except bluetooth.btcommon.BluetoothError:
             print("Catching bluettoth error")
             # Recieved when server responds to shutdown
-            client.shutdown(2)
+            client_sock.shutdown(2)
             client_sock.close()
             del client_sock
             if int(msg) == 14:
                 print("Got msg == 14 in bluetoothError")
                 # Restart requested
-                client_sock = setup_bt_client(PI_ADDR, PORT)
+                #print("Sock after restart: ",str(client_sock))
+                return "RESTART"
             elif int(msg) == 15:
                 # Shutdown requested
                 print("Got msg == 15 in bluetoothError")
-                break
-        '''except IOError:
-            print("Error = " + str(IOError))
-        except OSError:
-            print("Error = " + str(OSError))'''
-
-    print("closed")
+                return "EXIT"
 
 
 main()
