@@ -1,5 +1,6 @@
 import bluetooth
 import time
+import traceback
 
 PI_ADDR = "B8:27:EB:FC:55:27"
 USB_BT_ADDR = ""
@@ -8,21 +9,24 @@ PORT = 3
 
 def setup_bt_client(addr, port):
     client_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-    if client_sock != None:
+    if client_sock:
         print("Client_sock created, wow!")
     client_sock.setblocking(True)
     timeout = 10
-    while timeout >= 0:
+    while timeout > 0:
         try:
             client_sock.connect((addr, port))
             timeout = -1
         except bluetooth.btcommon.BluetoothError:
             time.sleep(1)
             timeout -= 1
+            print("waiting for connection...")
+            #print(traceback.format_exc())
             continue
+        
     if timeout==0:
         print("Could not connect to server! PLZ try again and hope for better luck")
-        return None
+        return client_sock
     else:     
         print("connected to ", addr)
         # client_sock.settimeout(1)
@@ -43,7 +47,7 @@ def main():
             client_sock.send(msg)
             print("Has sent restart or shutdown")
             client_sock.shutdown(2)
-            client_sock.close()
+            #client_sock.close()
             print("Sent shutdown")
         else:
             print("Sock i else: ",str(client_sock))
