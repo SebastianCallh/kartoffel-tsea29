@@ -39,17 +39,18 @@ def main():
             if len(data) == 0:
                 break
             print("received " + str(data))
-        except EOFError:
+        except bluetooth.btcommon.BluetoothError:
+            print("Catching bluettoth error")
             # Recieved when server responds to shutdown
             client_sock.close()
             del client_sock
             if int(msg) == 14:
-                print("Got msg == 14 in EOFError")
+                print("Got msg == 14 in bluetoothError")
                 # Restart requested
                 client_sock = setup_bt_client(PI_ADDR, PORT)
             elif int(msg) == 15:
                 # Shutdown requested
-                print("Got msg == 15 in EOFError")
+                print("Got msg == 15 in bluetoothError")
                 break
         '''except IOError:
             print("Error = " + str(IOError))
