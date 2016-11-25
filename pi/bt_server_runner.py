@@ -5,7 +5,7 @@ import protocol
 
 PI_ADDR = "B8:27:EB:FC:55:27"
 PORT = 3
-BACKLOG = 30
+BACKLOG = 1
 RESTART = 14
 SHUTDOWN = 15
 GOT_DATA = 1
