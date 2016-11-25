@@ -1,6 +1,7 @@
 import bluetooth
 import time
 import traceback
+import protocol
 
 PI_ADDR = "B8:27:EB:FC:55:27"
 USB_BT_ADDR = ""
@@ -63,14 +64,14 @@ def run():
             #client_sock.shutdown(2)
             client_sock.close()
             del client_sock
-            if int(msg) == 14:
-                print("Got msg == 14 in bluetoothError")
+            if int(msg) == protocol.BT_SERVER_RESTART:
+                print("Got restart in bluetoothError")
                 # Restart requested
                 #print("Sock after restart: ",str(client_sock))
                 return "RESTART"
-            elif int(msg) == 15:
+            elif int(msg) == protocol.BT_SERVER_SHUTDOWN:
                 # Shutdown requested
-                print("Got msg == 15 in bluetoothError")
+                print("Got msg exit in bluetoothError")
                 return "EXIT"
 
 

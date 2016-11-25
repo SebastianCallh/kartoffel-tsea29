@@ -97,7 +97,9 @@ def bt_return_sensor_data(data):
         BLUETOOTH_ADDR,
         Event(
             message_id=BT_RETURN_SENSOR_DATA,
-            arguments=data
+            arguments=[
+                data
+            ]
         )
     )
 

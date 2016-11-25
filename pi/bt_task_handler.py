@@ -63,16 +63,6 @@ def pop_incoming():
         for task_i in task_q:
             pickle.dump(task_i, command_queue)
 
-    '''# Remove first command in queue and return it
-    try:
-        task = pickle.load(command_queue)
-        print("Poped task från command with id ", task.cmd_id)
-        command_queue = open("bt_commands.txt", "wb")
-        command_queue.seek(0)
-        command_queue.truncate()
-        print("Cleaned commands")
-    except EOFError:
-        pass'''
     command_queue.close()
     return task
 
@@ -106,18 +96,6 @@ def pop_outgoing():
         answer_queue = open("bt_answers.txt", "wb")
         for task_i in task_q:
             pickle.dump(task_i, answer_queue)
-
-    '''# Remove first command in queue and return it
-    try:
-        task = pickle.load(answer_queue)
-        print("Popade från answers with id ", task.cmd_id)
-        answer_queue = open("bt_answers.txt", "wb")
-        #Clean file
-        answer_queue.seek(0)
-        answer_queue.truncate()
-        print("Clean answers")
-    except EOFError:
-        #print("EOF pop outgoing")
-        pass'''
+            
     answer_queue.close()
     return task
