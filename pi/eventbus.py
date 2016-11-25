@@ -52,7 +52,7 @@ class EventBus:
     @staticmethod
     def receive():
         EventBus.receive_from_addr(BLUETOOTH_ADDR)
-        EventBus.receive_from_addr(SENSOR_ADDR)
+        #EventBus.receive_from_addr(SENSOR_ADDR)
         EventBus.receive_from_addr(STYR_ADDR)
 
     @staticmethod
