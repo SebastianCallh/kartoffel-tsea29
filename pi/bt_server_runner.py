@@ -20,6 +20,7 @@ def setup_server():
     bt_task_handler.clean_queue_files()
     return server
 
+
 def validate_cmd(data):
     return True if data in protocol.BT_CLIENT_COMMANDS else False
 
@@ -77,7 +78,7 @@ def main():
 
             if exit == RESTART:
                 server = setup_server()
-                exit = 0
+                exit = NO_DATA
                 # Breaks if exit == SHUTDOWN
 
 
