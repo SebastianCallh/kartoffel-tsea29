@@ -38,11 +38,14 @@ def recieve(server):
     # TODO Change assumption that data only contains ID!!
 
     if has_new_incoming == bt_server.BT_EOF:
+        print("Runner got EOF")
         return EOF
     elif has_new_incoming == bt_server.NEW_DATA:
         if int(server.incoming_data) == protocol.BT_SERVER_RESTART:
+            print("Runner got restart")
             return RESTART
         elif int(server.incoming_data) == protocol.BT_SERVER_SHUTDOWN:
+            print("Runner got shutdown")
             return SHUTDOWN
         else:
             print("bt_runner: has new incoming!")

@@ -26,6 +26,7 @@ def main():
         if int(msg) == 14 or int(msg) == 15:
             client_sock.send(msg)
             client_sock.shutdown(2)
+            print("Sent shutdown")
         else:
             client_sock.send(msg)
         print("sent msg")
@@ -43,10 +44,12 @@ def main():
             client_sock.close()
             del client_sock
             if int(msg) == 14:
+                print("Got msg == 14 in EOFError")
                 # Restart requested
                 client_sock = setup_bt_client(PI_ADDR, PORT)
             elif int(msg) == 15:
                 # Shutdown requested
+                print("Got msg == 15 in EOFError")
                 break
         '''except IOError:
             print("Error = " + str(IOError))
