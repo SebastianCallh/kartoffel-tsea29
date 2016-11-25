@@ -73,11 +73,14 @@ def main():
             while has_sent:
                 has_sent = send(server)
 
+            print("Runner: server.client_sock =", server.client_sock)
             server.shutdown_server()
             del server
+            print("Runner: Deleted server and client sock")
 
             if exit == RESTART:
                 server = setup_server()
+                print("Runner: NEW client_sock =", server.client_sock)
                 exit = NO_DATA
                 # Breaks if exit == SHUTDOWN
 
