@@ -68,8 +68,10 @@ Debug/
 # IDEA
 .idea/
 
-
-# Specific files
+# Bluetooth
 pi/bt_answers.txt
 pi/bt_commands.txt
-pi/log.txt
+
+# Python
+__pycache__/
+*.pyc

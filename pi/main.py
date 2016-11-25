@@ -2,43 +2,46 @@
 Main program code - where all the magic happens
 """
 
-import signal
-import sys
-import traceback
-from math import floor
 from datetime import datetime, timedelta
 
+from navigator import Navigator
+from driver import Driver
 from laser import Laser
-from eventbus import EventBus
-from outbound import request_sensor_data, \
-    set_motor_speed, set_right_motor_speed, test_ho, return_ip
+from gyro import Gyro
 
-# Update frequency
+from eventbus import EventBus
+from outbound import request_sensor_data, test_ho, return_ip
+from position import Position
+
 from protocol import CMD_RETURN_SENSOR_DATA, REQUEST_PI_IP, TEST_HI
 from safety import Safety
 
-# For bluetooth
-import protocol
 import bt_server_cmds
-import bt_task_handler
 
+laser = Laser()
+gyro = Gyro()
+driver = Driver(gyro, laser)
+navigator = Navigator(driver, laser)
+position = Position()
+
+# Update frequency
 last_request = datetime.now()
 request_period = timedelta(milliseconds=1)
 busy = False
 
-DESIRED_DIST = 100  # Desired distance to wall
-
-old_e = 0
-old_t = datetime.now()
-Kp = 0.1
+def setup():
+    Safety.setup_terminal_abort()
+    EventBus.subscribe(CMD_RETURN_SENSOR_DATA, sensor_data_received)
+    EventBus.subscribe(REQUEST_PI_IP, ip_requested)
+    EventBus.subscribe(TEST_HI, return_hi)
+    Laser.initialize()
+    Gyro.initialize()
 
 
 def sensor_data_received(ir_left_mm, ir_right_mm):
-    global busy
+    global busy, navigator
     busy = False
-
-    # print('ir_left_mm: ' + str(ir_left_mm))
-    print('ir_right_mm: ' + str(ir_right_mm))
+    navigator.sensor_data_received(ir_left_mm, ir_right_mm)
 
 
 def ip_requested():
@@ -51,12 +54,16 @@ def return_hi():
     test_ho()
 
 
-def setup():
-    Safety.setup_terminal_abort()
-    # EventBus.subscribe(CMD_RETURN_SENSOR_DATA, sensor_data_received)
-    EventBus.subscribe(REQUEST_PI_IP, ip_requested)
-    EventBus.subscribe(TEST_HI, return_hi)
-    # Laser.initialize()
+def request_data():
+    global busy, last_request, request_period
+    if not busy and datetime.now() - last_request > request_period:
+        busy = True
+        last_request = datetime.now()
+
+        # TODO: Uncomment below line when reading from laser
+        # laser_distance = Laser.read_data()
+
+        request_sensor_data()
 
 
 def main():
@@ -64,18 +71,10 @@ def main():
     setup()
 
     while True:
-        # EventBus.receive()
-        EventBus.receive_from_addr(0xBEEF)
-
-        # rcv    check cmd    exc cmd   (send bt)
-
-        """if not busy and datetime.now() - last_request > request_period:
-            busy = True
-            last_request = datetime.now()
-
-            laser_distance = Laser.read_data()
-
-            request_sensor_data()"""
+        EventBus.receive()
+        request_data()
+        position.update()
+        navigator.navigate()
 
 
 Safety.run_safely(main)

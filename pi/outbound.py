@@ -4,20 +4,16 @@ All functions defined here are outbound which mean they go from the main unit
 to one of the AVR units.
 
 The message passing function is implemented as a distributed event bus which
-in its distributed nature depends on asynchronous functionality. This means that
-messages sent are not executed immediately and there is no guarantee that the
-sent command is actually executed on the receiving unit.
+in its distributed nature depends on asynchronous functionality. This means
+that messages sent are not executed immediately and there is no guarantee that
+the sent command is actually executed on the receiving unit.
 
 For more information see eventbus.py.
 """
 
-from bus import STYR_ADDR, SENSOR_ADDR
 from event import Event
 from eventbus import EventBus
-from protocol import CMD_REQUEST_SENSOR_DATA, CMD_SET_MOTOR_SPEED, \
-    CMD_SET_LEFT_MOTOR_SPEED, CMD_SET_RIGHT_MOTOR_SPEED, \
-    BT_REQUEST_MAP_DATA, BT_REQUEST_SENSOR_DATA, BT_REQUEST_SERVO_DATA, \
-    BT_SEND_MAP_DATA, BT_SEND_SENSOR_DATA, BT_SEND_SERVO_DATA, RETURN_PI_IP, TEST_HO, BLUETOOTH_ADDR
+from protocol import *
 
 
 # NOTE: Function comments are purposely left out from this file in favor of the

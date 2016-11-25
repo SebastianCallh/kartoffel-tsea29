@@ -2,29 +2,32 @@
 Distributed event bus which is shared between all units on the main bus and via
 Bluetooth.
 
-The event bus provides a way to send data back and forth between different units
-on the I2C bus and via Bluetooth by applying asynchronous transmission of all
-events, it is therefore not guaranteed that messages are received on the other
-end. As not all commands must be subscribed to it is also not certain that the
-receiving unit actually reacts on the commands it receive.
+The event bus provides a way to send data back and forth between different
+units on the I2C bus and via Bluetooth by applying asynchronous transmission of
+all events, it is therefore not guaranteed that messages are received on the
+other end. As not all commands must be subscribed to it is also not certain
+that the receiving unit actually reacts on the commands it receive.
 
-In order for the event bus to function both ways the bus must be manually polled
-for incoming messages by calling EventBus.receive(). This will read pending
-commands from all connected AVR units and then call their respective handlers if
-the command has been subscribed to.
+In order for the event bus to function both ways the bus must be manually
+polled for incoming messages by calling EventBus.receive(). This will read
+pending commands from all connected AVR units and then call their respective
+handlers if the command has been subscribed to.
 
 Supported commands and their arguments are defined in protocol.py.
 """
-from bus import Bus, SENSOR_ADDR, STYR_ADDR
-from protocol import BLUETOOTH_ADDR
+
+from bus import Bus
 from event import Event
 from observer import Observer
 import bt_task_handler
+
+from protocol import SENSOR_ADDR, STYR_ADDR, BLUETOOTH_ADDR
 
 # As reading from the bus is a blocking operation it might cause actual program
 # code to execute too late if there are many pending commands available. In
 # order to prevent the read operation to consume too much time the amount of
 # messages read each iteration is limited.
+
 MAX_READ_COUNT = 10
 
 
