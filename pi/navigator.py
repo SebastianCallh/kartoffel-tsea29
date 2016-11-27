@@ -39,7 +39,7 @@ class auto_control(State):
         right_old_diff = abs(data['ir_right'] - data['old_ir_right'])
         right_new_diff = abs(data['new_ir_right'] - data['old_ir_right'])
 
-        if datetime.now() - data['last_updated_time'] < timedelta(milliseconds=UPDATE_FREQUENCY):
+        if datetime.now() - data['last_updated_time'] > timedelta(milliseconds=UPDATE_FREQUENCY):
             print("old_ir: " + str(data['old_ir_right']))
             print("cur_ir: " + str(data['ir_right']))
             print("new_ir: " + str(data['new_ir_right']))
