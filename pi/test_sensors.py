@@ -38,15 +38,10 @@ def setup():
 def sensor_data_received(ir_left_mm, ir_right_mm, ir_right_back_mm, ir_left_back_mm):
     global busy, navigator
     busy = False
-
-    if datetime.now() - l_r > r_p:
-        diff = ir_right_back_mm - ir_right_mm
-        print ("Diff: " + str(diff))
-        print ("Wall dist: " + str(floor(120 - (ir_right_mm) + abs(diff / 10))))
-    #print("LF: " + str(ir_left_mm))
-    #print("RF: " + str(ir_right_mm))
-    #print("RBack: " + str(ir_right_back_mm))
-    #print("LBack: " + str(ir_left_back_mm))
+    print("LF: " + str(ir_left_mm))
+    print("RF: " + str(ir_right_mm))
+    print("RBack: " + str(ir_right_back_mm))
+    print("LBack: " + str(ir_left_back_mm))
 
 
 def request_data():
@@ -57,7 +52,7 @@ def request_data():
 
         # TODO: Uncomment below line when reading from laser
         laser_distance = Laser.read_data()
-        #print("Laser distance: " + str(laser_distance))
+        print("Laser distance: " + str(laser_distance))
         request_sensor_data()
 
 
