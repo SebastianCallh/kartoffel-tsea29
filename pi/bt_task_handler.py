@@ -1,24 +1,4 @@
 import pickle
-# import psutil
-import traceback, sys
-
-
-# Files in which to store BT_task objects in transition
-def peek_line(f):
-    pos = f.tell()
-    line = f.readline()
-    f.seek(pos)
-    return line
-
-
-class BT_task:
-    # NOTE If the client always asks for certain data
-    # it might not need to check it when it arrives?
-
-    def __init__(self, cmd_id=0, data=0):
-        self.cmd_id = int(cmd_id)
-        self.data = data
-
 
 def clean_queue_files():
     # Create files or erase previous content
@@ -96,6 +76,6 @@ def pop_outgoing():
         answer_queue = open("bt_answers.txt", "wb")
         for task_i in task_q:
             pickle.dump(task_i, answer_queue)
-            
+
     answer_queue.close()
     return task
