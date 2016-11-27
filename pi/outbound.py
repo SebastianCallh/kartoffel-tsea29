@@ -16,6 +16,7 @@ from eventbus import EventBus
 from protocol import *
 import bt_task_handler
 
+
 # NOTE: Function comments are purposely left out from this file in favor of the
 # complete definitions of every found command in proctol.py.
 
@@ -77,26 +78,11 @@ def return_ip(ip):
     )
 
 
-def test_ho():
-    EventBus.post(
-        BLUETOOTH_ADDR,
-        Event(
-            message_id=TEST_HO,
-            arguments=[
-                "ho"
-            ]
-        )
-    )
-
-
 def bt_return_sensor_data(data):
     EventBus.post(
         BLUETOOTH_ADDR,
-        Event(
-            message_id=BT_RETURN_SENSOR_DATA,
-            arguments=[
-                data
-            ]
+        bt_task_handler.BT_task(
+            BT_RETURN_SENSOR_DATA, data
         )
     )
 
@@ -104,9 +90,8 @@ def bt_return_sensor_data(data):
 def bt_return_servo_data(data):
     EventBus.post(
         BLUETOOTH_ADDR,
-        Event(
-            message_id=BT_RETURN_SERVO_DATA,
-            arguments=data
+        bt_task_handler.BT_task(
+            BT_RETURN_SERVO_DATA, data
         )
     )
 
@@ -114,8 +99,7 @@ def bt_return_servo_data(data):
 def bt_return_map_data(data):
     EventBus.post(
         BLUETOOTH_ADDR,
-        Event(
-            message_id=BT_RETURN_MAP_DATA,
-            arguments=data
+        bt_task_handler.BT_task(
+            BT_RETURN_MAP_DATA, data
         )
     )
