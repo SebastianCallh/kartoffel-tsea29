@@ -14,7 +14,7 @@ For more information see eventbus.py.
 from event import Event
 from eventbus import EventBus
 from protocol import *
-
+import bt_task_handler
 
 # NOTE: Function comments are purposely left out from this file in favor of the
 # complete definitions of every found command in proctol.py.
@@ -71,11 +71,8 @@ def set_right_motor_speed(speed):
 def return_ip(ip):
     EventBus.post(
         BLUETOOTH_ADDR,
-        Event(
-            message_id=RETURN_PI_IP,
-            arguments=[
-                ip
-            ]
+        bt_task_handler.BT_task(
+            RETURN_PI_IP, ip
         )
     )
 
