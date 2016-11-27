@@ -166,7 +166,7 @@ class Navigator:
         self.data['new_ir_left'] = new_ir_left
         self.data['new_ir_left_back'] = new_ir_left_back_mm
         self.data['new_ir_right_back'] = new_ir_right_back_mm
-        self.data['last_updated_tine'] = datetime.now()
+        self.data['last_updated_time'] = datetime.now()
         self.state.sensor_data_received(self.data, new_ir_left, new_ir_right, new_ir_right_back_mm, new_ir_left_back_mm)
         self.last_updated_time = datetime.now()
         
