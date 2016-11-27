@@ -1,5 +1,6 @@
 import bluetooth
 import bt_task_handler
+from bt_task import BT_task
 
 
 class BT_Server:
@@ -40,7 +41,7 @@ class BT_Server:
 
     def post_to_incoming(self):
         print("Server: staring to post to incoming")
-        bt_task_handler.post_incoming(bt_task_handler.BT_task(self.incoming_data, ""))
+        bt_task_handler.post_incoming(BT_task(self.incoming_data, ""))
         print("Server done posting to incoming, returning to main")
 
     def send_data(self, data=None):
@@ -79,7 +80,7 @@ class BT_Server:
         has_new_outgoing = False
         task = self._pop_from_outgoing()
         # print("Updated outgoing task in server ", str(task))
-        if type(task) == bt_task_handler.BT_task and task.cmd_id != 0:
+        if type(task) == BT_task and task.cmd_id != 0:
             print("update_outgoing: i if-sats")
             self.outgoing_data = str(task.cmd_id) + ", " + str(task.data)  # TODO will change when json
             has_new_outgoing = True

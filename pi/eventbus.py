@@ -21,6 +21,7 @@ from event import Event
 from observer import Observer
 import bt_task_handler
 
+
 from protocol import SENSOR_ADDR, STYR_ADDR, BLUETOOTH_ADDR
 
 # As reading from the bus is a blocking operation it might cause actual program

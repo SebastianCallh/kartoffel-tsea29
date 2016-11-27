@@ -14,7 +14,7 @@ For more information see eventbus.py.
 from event import Event
 from eventbus import EventBus
 from protocol import *
-import bt_task_handler
+from bt_task import BT_task
 
 
 # NOTE: Function comments are purposely left out from this file in favor of the
@@ -72,7 +72,7 @@ def set_right_motor_speed(speed):
 def return_ip(ip):
     EventBus.post(
         BLUETOOTH_ADDR,
-        bt_task_handler.BT_task(
+        BT_task(
             RETURN_PI_IP, ip
         )
     )
@@ -81,7 +81,7 @@ def return_ip(ip):
 def bt_return_sensor_data(data):
     EventBus.post(
         BLUETOOTH_ADDR,
-        bt_task_handler.BT_task(
+        BT_task(
             BT_RETURN_SENSOR_DATA, data
         )
     )
@@ -90,7 +90,7 @@ def bt_return_sensor_data(data):
 def bt_return_servo_data(data):
     EventBus.post(
         BLUETOOTH_ADDR,
-        bt_task_handler.BT_task(
+        BT_task(
             BT_RETURN_SERVO_DATA, data
         )
     )
@@ -99,7 +99,7 @@ def bt_return_servo_data(data):
 def bt_return_map_data(data):
     EventBus.post(
         BLUETOOTH_ADDR,
-        bt_task_handler.BT_task(
+        BT_task(
             BT_RETURN_MAP_DATA, data
         )
     )
