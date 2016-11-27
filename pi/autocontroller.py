@@ -13,9 +13,10 @@ class AutoController:
 
         DESIRED_DISTANCE = 120  # Desired distance to wall
         STANDARD_SPEED = 25
+        MAX_REGULATION = 30
 
 
-        Kp = float(0.6)
+        Kp = float(0.3)
         Kd = float(0.2)
 
         time_now = datetime.datetime.now()
@@ -33,10 +34,10 @@ class AutoController:
 
         old_error = regulation_error
 
-        if (regulation > 20):
-            regulation = 20
-        elif (regulation < -20):
-            regulation = -20
+        if (regulation > MAX_REGULATION):
+            regulation = MAX_REGULATION
+        elif (regulation < -MAX_REGULATION):
+            regulation = -MAX_REGULATION
 
         if (regulation > -10):
             speed_close_wall = STANDARD_SPEED + regulation
