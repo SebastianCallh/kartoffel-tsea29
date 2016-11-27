@@ -187,4 +187,9 @@ class Navigator:
             self.data['ir_left'] = self.data['new_ir_left']
             self.data['ir_right'] = self.data['new_ir_right']
 
+            
+        if self.data['old_ir_right'] == -1 and self.data['ir_right'] == -1:
+            self.data['ir_right'] = self.data['new_ir_right']
+            self.data['old_ir_right'] = self.data['new_ir_right']
+
         self.state = next_state
