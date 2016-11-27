@@ -24,6 +24,9 @@ last_request = datetime.now()
 request_period = timedelta(milliseconds=1)
 busy = False
 
+l_r = datetime.now()
+r_p = timedelta(milliseconds=250)
+
 
 def setup():
     Safety.setup_terminal_abort()
@@ -36,8 +39,9 @@ def sensor_data_received(ir_left_mm, ir_right_mm, ir_right_back_mm, ir_left_back
     global busy, navigator
     busy = False
 
-    print ("Wall diff: " + str(ir_right_back_mm - ir_right_mm))
-    print ("Wall dist: " + str(120 - min(ir_right_mm, ir_right_back_mm)))
+    if datetime.now() - l_r > r_p:
+        print ("Diff: " + str(ir_right_back_mm - ir_right_mm))
+        print ("Wall dist: " + str(120 - min(ir_right_mm, ir_right_back_mm)) )
     #print("LF: " + str(ir_left_mm))
     #print("RF: " + str(ir_right_mm))
     #print("RBack: " + str(ir_right_back_mm))
