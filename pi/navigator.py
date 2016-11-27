@@ -71,12 +71,12 @@ class auto_control(State):
         #Outer turn, prioritize following right wall
         if self.is_at_right_turn(data):
             data['driver'].outer_turn_right()
-            print('outer turn right')
+            print('NAVIGATOR: outer turn right')
             return turn(TURN_DIRECTION_RIGHT)
         
         if self.is_at_left_turn(data):
             data['driver'].outer_turn_left()
-            print('outer turn left')
+            print('NAVIGATOR: outer turn left')
             return turn(TURN_DIRECTION_LEFT)
         
         laser_data = data['laser'].read_data()
@@ -85,14 +85,14 @@ class auto_control(State):
         
         #Inner turn
         if laser_data <= Navigator.FACING_WALL_DIST and laser_data != -1:
-            print("laserdata: "+ str(laser_data))
+            print("NAVIGATOR: laserdata: "+ str(laser_data))
             if data['side'] == Navigator.LEFT_SIDE:
                 data['driver'].inner_turn_right()
-                print('inner turn right')
+                print('NAVIGATOR: inner turn right')
                 return turn(TURN_DIRECTION_RIGHT)
             if data['side'] == Navigator.RIGHT_SIDE:
                 data['driver'].inner_turn_left()
-                print('inner turn left')
+                print('NAVIGATOR: inner turn left')
                 return turn(TURN_DIRECTION_LEFT)
                 
         return auto_control()
@@ -104,7 +104,7 @@ class warmup(State):
         
     def run(self, data):
         if data['driver'].idle():
-            print('changin to auto control')
+            print('NAVIGATOR: changin to auto control')
             return auto_control()
         else:
             return warmup()
@@ -119,7 +119,7 @@ class turn(State):
 
     def run(self, data):
         if data['driver'].idle():
-            print('changing to auto control')
+            print('NAVIGATOR: changing to auto control')
             return auto_control()
         else:
             return turn(self.is_right_turn)
