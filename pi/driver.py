@@ -19,6 +19,19 @@ POST_TURN_DISTANCE = 200
 PRE_TURN_DISTANCE = 200
 
 
+"""
+Thoughts on post_turn distance:
+
+It appears that after a turn (at least on the track created yesterday) the laser will set a
+destination at around 900 in start, but then as soon as it starts running distance_task
+the laser values jumps up to 1300, and therefore it will travel too far before begining
+to auto control. Not sure if it reads the laser value too soon, as in before it has finished
+turning and instead reads a value on a wall to the side instead of the opposite wall, or if
+it's something else. But that apprears to be the problem, and only when the distance is quite
+far, >1m or so.
+"""
+
+
 class Driver:
     def __init__(self, gyro, laser):
         self.drive_stop_time = 0
