@@ -146,7 +146,11 @@ class DegreeTask(Task):
         self.total_degrees += delta_degrees
         print('total degrees turned :' + str(self.total_degrees))
 
-        return abs(self.total_degrees) >= self.degrees
+        if (abs(self.total_degrees) >= self.degrees):
+            Driver.task = Task(None, lambda: True)
+            return True
+        else:
+            return False
 
 
 class DistanceTask(Task):
