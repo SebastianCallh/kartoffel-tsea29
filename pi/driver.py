@@ -16,7 +16,7 @@ POST_TURN_TIME = 700
 PRE_TURN_TIME = 500
 WARMUP_TIME = 2000
 POST_TURN_DISTANCE = 200
-PRE_TURN_DISTANCE = 0
+PRE_TURN_DISTANCE = 200
 
 
 class Driver:
@@ -29,7 +29,7 @@ class Driver:
 
     def idle(self):
         if not self.task.done():
-            print("Task not done")
+            #print("Task not done")
             return False
         elif self.tasks:
             self.task = self.tasks.pop()
