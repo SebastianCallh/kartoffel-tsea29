@@ -1,7 +1,7 @@
 """
 Main program code - where all the magic happens
 """
-
+from math import floor
 from datetime import datetime, timedelta
 
 from navigator import Navigator
@@ -40,8 +40,9 @@ def sensor_data_received(ir_left_mm, ir_right_mm, ir_right_back_mm, ir_left_back
     busy = False
 
     if datetime.now() - l_r > r_p:
-        print ("Diff: " + str(ir_right_back_mm - ir_right_mm))
-        print ("Wall dist: " + str(120 - (ir_right_mm)))
+        diff = ir_right_back_mm - ir_right_mm
+        print ("Diff: " + str())
+        print ("Wall dist: " + str(floor(120 - (ir_right_mm) + abs(diff / 10))))
     #print("LF: " + str(ir_left_mm))
     #print("RF: " + str(ir_right_mm))
     #print("RBack: " + str(ir_right_back_mm))
