@@ -53,16 +53,19 @@ class Driver:
 
     def outer_turn_left(self):
         print('outer turn left')
+        self.task = Task(None, lambda: True)
         self.tasks = [DistanceTask(self._post_turn, POST_TURN_DISTANCE, self.laser),
                       DegreeTask(self._turn_left, TURN_DEGREES, self.gyro),
                       DistanceTask(self._pre_turn, PRE_TURN_DISTANCE, self.laser)]
 
     def inner_turn_left(self):
         print('inner turn left')
+        self.task = Task(None, lambda: True)
         self.tasks = [DegreeTask(self._turn_left, TURN_DEGREES, self.gyro)]
 
     def inner_turn_right(self):
         print('inner turn right')
+        self.task = Task(None, lambda: True)
         self.tasks = [DegreeTask(self._turn_right, TURN_DEGREES, self.gyro)]
 
     def warmup(self):
@@ -164,7 +167,11 @@ class DistanceTask(Task):
             laser_data = self.laser.read_data()
             print("RUN RUN RUN LASER READINGS")
 
+        print("Distance: " + str(self.distance))
+        print("Laser data: " + str(laser_data))
+
         self.destination = laser_data - self.distance
+        print("Destination: " + self.destination)
         self.previous_time = datetime.now()
 
         Task.start(self)
