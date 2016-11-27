@@ -15,7 +15,7 @@ TURN_DEGREES = 80
 POST_TURN_TIME = 700
 PRE_TURN_TIME = 500
 WARMUP_TIME = 2000
-POST_TURN_DISTANCE = 50
+POST_TURN_DISTANCE = 200
 PRE_TURN_DISTANCE = 200
 
 
@@ -174,7 +174,7 @@ class DistanceTask(Task):
         laser_data = -1
         while laser_data == -1:
             laser_data = self.laser.read_data()
-            #print("Distance Task Laser: " + str(laser_data - self.destination))
+            print("Distance Task Laser: " + str(laser_data - self.destination))
 
         return self.destination >= laser_data
 
