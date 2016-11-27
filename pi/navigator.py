@@ -119,6 +119,7 @@ class turn(State):
         return #Do nothing. Only auto control uses it
 
     def run(self, data):
+        print("NAVIGATOR: In turn run")
         if data['driver'].idle():
             print('NAVIGATOR: changing to auto control')
             return auto_control()
