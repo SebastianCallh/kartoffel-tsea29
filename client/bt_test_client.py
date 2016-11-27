@@ -22,11 +22,11 @@ def setup_bt_client(addr, port):
             print("waiting for connection...")
             print(traceback.format_exc())
             continue
-        
-    if timeout==0:
+
+    if timeout == 0:
         print("Could not connect to server! PLZ try again and hope for better luck")
         return client_sock
-    else:     
+    else:
         print("connected to ", addr)
         # client_sock.settimeout(1)
         return client_sock
@@ -39,15 +39,13 @@ def main():
         time.sleep(1)
 
 
-
-
 def run():
-    client_sock = setup_bt_client(PI_ADDR,PORT)
+    client_sock = setup_bt_client(PI_ADDR, PORT)
 
     while (True):
         msg = input("To server: ")
 
-        client_sock.send(msg)     
+        client_sock.send(msg)
         print("sent msg")
 
         data = ""
@@ -61,13 +59,13 @@ def run():
         except bluetooth.btcommon.BluetoothError:
             print("Catching bluettoth error")
             # Recieved when server responds to shutdown
-            #client_sock.shutdown(2)
+            # client_sock.shutdown(2)
             client_sock.close()
             del client_sock
             if int(msg) == protocol.BT_SERVER_RESTART:
                 print("Got restart in bluetoothError")
                 # Restart requested
-                #print("Sock after restart: ",str(client_sock))
+                # print("Sock after restart: ",str(client_sock))
                 return "RESTART"
             elif int(msg) == protocol.BT_SERVER_SHUTDOWN:
                 # Shutdown requested
