@@ -55,7 +55,7 @@ class auto_control(State):
         if self.is_at_left_turn(data) or self.is_at_right_turn(data):
             return
 
-        right_speed, left_speed, regulation = auto_control.auto_controller.auto_control(new_ir_left, new_ir_right, data['side'])
+        right_speed, left_speed, regulation = auto_control.auto_controller.auto_control(new_ir_right, new_ir_right_back_mm, data['side'])
         
         if abs(regulation) >= 33:
             print("Regulation to high: " + str(regulation))

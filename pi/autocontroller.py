@@ -5,32 +5,38 @@ time_last_regulation = datetime.datetime.now()
 use_derivate = True
 old_error = 0
 integral = 0
+last_diff = 0
 
 
 class AutoController:
-    def auto_control(self, ir_left_mm, ir_right_mm, reg_side):
-        global use_derivate, time_last_regulation, old_error, integral
+    def auto_control(self, ir_right_mm, ir_right_back_mm, reg_side):
+        global use_derivate, time_last_regulation, old_error, integral, last_diff
 
         DESIRED_DISTANCE = 120  # Desired distance to wall
         STANDARD_SPEED = 25
         MAX_REGULATION = 30
 
 
-        Kp = float(0.3)
+        Kp = float(0.1)
         Kd = float(0.2)
+
+        diff = ir_right_back_mm - ir_right_mm
+        print ("Diff: " + str(diff))
+        print ("Wall dist: " + str(floor(120 - (ir_right_mm) + abs(diff / 10))))
+
 
         time_now = datetime.datetime.now()
         sensor_data_front = ir_right_mm
-        sensor_data_back = ir_left_mm
+        sensor_data_back = ir_right_back_mm
         dist_diff = (sensor_data_back - sensor_data_front)
 
-        if (ir_right_mm == -1 or ir_left_mm == -1):
+        if (sensor_data_front == -1 or sensor_data_back == -1):
             dist_diff = 0
 
-        regulation_error = DESIRED_DISTANCE - sensor_data_front
+        regulation_error = DESIRED_DISTANCE - sensor_data_front + abs(dist_diff / 10)
         delta_t = (time_now - time_last_regulation).microseconds / 1000
 
-        regulation = floor((Kp * regulation_error) + dist_diff) #(Kd / delta_t * (regulation_error - old_error)))
+        regulation = floor((Kp * regulation_error) + dist_diff / 5) #(Kd / delta_t * (regulation_error - old_error)))
 
         old_error = regulation_error
 
