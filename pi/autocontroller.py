@@ -20,11 +20,6 @@ class AutoController:
         Ka = float(0.3)
         Kd = float(0.2)
 
-        diff = ir_right_back_mm - ir_right_mm
-        print ("Diff: " + str(diff))
-        print ("Wall dist: " + str(floor(120 - (ir_right_mm) + abs(diff / 10))))
-
-
         time_now = datetime.datetime.now()
         sensor_data_front = ir_right_mm
         sensor_data_back = ir_right_back_mm
