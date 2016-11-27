@@ -16,8 +16,8 @@ class AutoController:
         STANDARD_SPEED = 25
         MAX_REGULATION = 30
 
-
-        Kp = float(0.1)
+        Kp = float(0.2)
+        Ka = float(0.3)
         Kd = float(0.2)
 
         diff = ir_right_back_mm - ir_right_mm
@@ -36,7 +36,7 @@ class AutoController:
         regulation_error = DESIRED_DISTANCE - sensor_data_front + abs(dist_diff / 10)
         delta_t = (time_now - time_last_regulation).microseconds / 1000
 
-        regulation = floor((Kp * regulation_error) + dist_diff / 5) #(Kd / delta_t * (regulation_error - old_error)))
+        regulation = floor((Kp * regulation_error) + Ka * dist_diff) #(Kd / delta_t * (regulation_error - old_error)))
 
         old_error = regulation_error
 
