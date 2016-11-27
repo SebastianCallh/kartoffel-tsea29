@@ -171,7 +171,7 @@ class DistanceTask(Task):
         print("Laser data: " + str(laser_data))
 
         self.destination = laser_data - self.distance
-        print("Destination: " + self.destination)
+        print("Destination: " + str(self.destination))
         self.previous_time = datetime.now()
 
         Task.start(self)
