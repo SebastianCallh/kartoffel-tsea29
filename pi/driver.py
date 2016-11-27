@@ -46,6 +46,7 @@ class Driver:
 
     def outer_turn_right(self):
         print('outer turn right')
+        self.task = Task(None, lambda: True)
         self.tasks = [DistanceTask(self._post_turn, POST_TURN_DISTANCE, self.laser),
                       DegreeTask(self._turn_right, TURN_DEGREES, self.gyro),
                       DistanceTask(self._pre_turn, PRE_TURN_DISTANCE, self.laser)]
@@ -146,11 +147,7 @@ class DegreeTask(Task):
         self.total_degrees += delta_degrees
         print('total degrees turned :' + str(self.total_degrees))
 
-        if (abs(self.total_degrees) >= self.degrees):
-            Driver.task = Task(None, lambda: True)
-            return True
-        else:
-            return False
+        return abs(self.total_degrees) >= self.degrees
 
 
 class DistanceTask(Task):
