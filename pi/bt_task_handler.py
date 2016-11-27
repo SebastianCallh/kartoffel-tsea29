@@ -1,4 +1,5 @@
 import pickle
+from bt_task import BT_task
 
 def clean_queue_files():
     # Create files or erase previous content
