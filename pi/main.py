@@ -49,6 +49,7 @@ def setup():
 
 def sensor_data_received(ir_left_mm, ir_right_mm):
     global busy, navigator,current_ir_left_mm,current_ir_right_mm
+    print("Sensor data in main: ", ir_left_mm, ",", ir_right_mm)
     current_ir_left_mm = ir_left_mm
     current_ir_right_mm = ir_right_mm
     busy = False
