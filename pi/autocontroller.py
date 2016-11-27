@@ -26,7 +26,7 @@ class AutoController:
         dist_diff = (sensor_data_back - sensor_data_front)
 
         if (sensor_data_front == -1 or sensor_data_back == -1):
-            dist_diff = 0
+            dist_diff = last_diff
 
         regulation_error = DESIRED_DISTANCE - sensor_data_front + abs(dist_diff / 10)
         delta_t = (time_now - time_last_regulation).microseconds / 1000
@@ -34,7 +34,8 @@ class AutoController:
         regulation = floor((Kp * regulation_error) + Ka * dist_diff) #(Kd / delta_t * (regulation_error - old_error)))
 
         old_error = regulation_error
-
+        last_diff = dist_diff
+        
         if (regulation > MAX_REGULATION):
             regulation = MAX_REGULATION
         elif (regulation < -MAX_REGULATION):
