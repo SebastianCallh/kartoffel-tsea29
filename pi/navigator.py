@@ -39,7 +39,7 @@ class auto_control(State):
         right_old_diff = abs(data['ir_right'] - data['old_ir_right'])
         right_new_diff = abs(data['new_ir_right'] - data['old_ir_right'])
 
-        if datetime.now() - Navigator.last_updated_time < timedelta(milliseconds=UPDATE_FREQUENCY):
+        if datetime.now() - data['last_updated_time'] < timedelta(milliseconds=UPDATE_FREQUENCY):
             print("old_ir: " + str(data['old_ir_right']))
             print("cur_ir: " + str(data['ir_right']))
             print("new_ir: " + str(data['new_ir_right']))
@@ -166,6 +166,7 @@ class Navigator:
         self.data['new_ir_left'] = new_ir_left
         self.data['new_ir_left_back'] = new_ir_left_back_mm
         self.data['new_ir_right_back'] = new_ir_right_back_mm
+        self.data['last_updated_tine'] = datetime.now()
         self.state.sensor_data_received(self.data, new_ir_left, new_ir_right, new_ir_right_back_mm, new_ir_left_back_mm)
         self.last_updated_time = datetime.now()
         
