@@ -130,7 +130,7 @@ class TimedTask(Task):
         self.stop_time = datetime.now() + timedelta(milliseconds=self.duration)
 
     def timed_task(self):
-        print('time left driving: ' + str(self.stop_time - datetime.now()))
+        #print('time left driving: ' + str(self.stop_time - datetime.now()))
         return self.stop_time <= datetime.now()
 
 
@@ -160,7 +160,7 @@ class DegreeTask(Task):
         #print("delta_degrees: " + str(delta_degrees))
         self.previous_time = datetime.now()
         self.total_degrees += delta_degrees
-        print('total degrees turned :' + str(self.total_degrees))
+        #print('total degrees turned :' + str(self.total_degrees))
 
         return abs(self.total_degrees) >= self.degrees
 
@@ -179,11 +179,11 @@ class DistanceTask(Task):
             laser_data = self.laser.read_data()
             print("RUN RUN RUN LASER READINGS")
 
-        print("Distance: " + str(self.distance))
-        print("Laser data: " + str(laser_data))
+        #print("Distance: " + str(self.distance))
+        #print("Laser data: " + str(laser_data))
 
         self.destination = laser_data - self.distance
-        print("Destination: " + str(self.destination))
+        #print("Destination: " + str(self.destination))
         self.previous_time = datetime.now()
         Task.start(self)
 
@@ -191,8 +191,8 @@ class DistanceTask(Task):
         laser_data = -1
         while laser_data == -1:
             laser_data = self.laser.read_data()
-            print("Laser data: " + str(laser_data))
-            print("Distance Task Laser: " + str(laser_data - self.destination))
+            #print("Laser data: " + str(laser_data))
+            #print("Distance Task Laser: " + str(laser_data - self.destination))
 
         return self.destination >= laser_data
 
