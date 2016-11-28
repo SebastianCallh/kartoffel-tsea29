@@ -36,8 +36,8 @@ class auto_control(State):
 
 
     def is_at_right_turn(self, data):
-        right_old_diff = data['ir_right'] - data['old_ir_right']
-        right_new_diff = data['new_ir_right'] - data['old_ir_right']
+        right_old_diff = abs(data['ir_right'] - data['old_ir_right'])
+        right_new_diff = abs(data['new_ir_right'] - data['old_ir_right'])
 
         print("old_ir: " + str(data['old_ir_right']))
         print("cur_ir: " + str(data['ir_right']))
@@ -47,6 +47,7 @@ class auto_control(State):
 
         return right_old_diff >= Navigator.DISCONTINUITY_DIST and \
                 right_new_diff >= Navigator.DISCONTINUITY_DIST and \
+                not (data['ir_right'] > 0 and data['ir_right'] < data['old_ir_right']) and \
                 data['new_ir_right_back'] != -1 and \
                 data['side'] == Navigator.RIGHT_SIDE
             
