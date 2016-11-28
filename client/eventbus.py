@@ -16,12 +16,10 @@ handlers if the command has been subscribed to.
 Supported commands and their arguments are defined in protocol.py.
 """
 
-from bus import Bus
-from event import Event
 from observer import Observer
 import bt_task_handler
 
-from protocol import SENSOR_ADDR, STYR_ADDR, BLUETOOTH_ADDR
+from protocol import BLUETOOTH_ADDR
 
 # As reading from the bus is a blocking operation it might cause actual program
 # code to execute too late if there are many pending commands available. In
@@ -32,7 +30,6 @@ MAX_READ_COUNT = 10
 
 
 class EventBus:
-    bus = Bus()
     observers = {}
 
     @staticmethod

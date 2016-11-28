@@ -11,7 +11,6 @@ the sent command is actually executed on the receiving unit.
 For more information see eventbus.py.
 """
 
-from event import Event
 from eventbus import EventBus
 from protocol import *
 from bt_task import BT_task
