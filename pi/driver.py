@@ -186,11 +186,11 @@ class DistanceTask(Task):
         self.destination = laser_data - self.distance
         print("Destination: " + str(self.destination))
         self.previous_time = datetime.now()
-        print("Time of destination read: " + datetime.now())
+        print("Time of destination read: " + str(datetime.now()))
         Task.start(self)
 
     def distance_task(self):
-        print("Reading Laser data in distance_tasks: " + datetime.now())
+        print("Reading Laser data in distance_tasks: " + str(datetime.now()))
         laser_data = -1
         while laser_data == -1:
             laser_data = self.laser.read_data()
