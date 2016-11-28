@@ -13,13 +13,12 @@ For more information see eventbus.py.
 
 from event import Event
 from eventbus import EventBus
-from protocol import CMD_REQUEST_SENSOR_DATA, CMD_SET_MOTOR_SPEED, \
-    CMD_SET_LEFT_MOTOR_SPEED, CMD_SET_RIGHT_MOTOR_SPEED, SENSOR_ADDR, STYR_ADDR
+from protocol import *
+from bt_task import BT_task
 
 
 # NOTE: Function comments are purposely left out from this file in favor of the
 # complete definitions of every found command in proctol.py.
-
 
 def request_sensor_data():
     EventBus.post(
@@ -66,5 +65,41 @@ def set_right_motor_speed(speed):
             arguments=[
                 speed
             ]
+        )
+    )
+
+
+def return_ip(ip):
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        BT_task(
+            RETURN_PI_IP, ip
+        )
+    )
+
+
+def bt_return_sensor_data(data):
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        BT_task(
+            BT_RETURN_SENSOR_DATA, data
+        )
+    )
+
+
+def bt_return_servo_data(data):
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        BT_task(
+            BT_RETURN_SERVO_DATA, data
+        )
+    )
+
+
+def bt_return_map_data(data):
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        BT_task(
+            BT_RETURN_MAP_DATA, data
         )
     )

@@ -21,7 +21,6 @@ from event import Event
 from observer import Observer
 import bt_task_handler
 
-
 from protocol import SENSOR_ADDR, STYR_ADDR, BLUETOOTH_ADDR
 
 # As reading from the bus is a blocking operation it might cause actual program
@@ -38,23 +37,15 @@ class EventBus:
 
     @staticmethod
     def post(addr, message):
-        if addr == BLUETOOTH_ADDR:
-            bt_task_handler.post_outgoing(message)
-        else:
-            EventBus.bus.send(message.as_packet_data(), addr)
+        bt_task_handler.post_outgoing(message)
 
     @staticmethod
     def pop(unit_addr):
-        if unit_addr == BLUETOOTH_ADDR:
-            return bt_task_handler.pop_incoming()  # bluetooth pop()
-        else:
-            return EventBus.bus.try_receive(unit_addr)
+        return bt_task_handler.pop_incoming()  # bluetooth pop()
 
     @staticmethod
     def receive():
         EventBus.receive_from_addr(BLUETOOTH_ADDR)
-        EventBus.receive_from_addr(SENSOR_ADDR)
-        EventBus.receive_from_addr(STYR_ADDR)
 
     @staticmethod
     def receive_from_addr(unit_addr):
@@ -63,13 +54,7 @@ class EventBus:
             if data is None:
                 break
 
-            if unit_addr == BLUETOOTH_ADDR:
-                EventBus.notify(data.cmd_id, *data.data)
-            else:
-                command = Event.parse(data)
-                command.process()
-
-                EventBus.notify(command.message_id, *command.arguments)
+            EventBus.notify(data.cmd_id, *data.data)
 
     @staticmethod
     def subscribe(command_id, handler):
