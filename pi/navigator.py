@@ -42,6 +42,7 @@ class auto_control(State):
         print("old_ir: " + str(data['old_ir_right']))
         print("cur_ir: " + str(data['ir_right']))
         print("new_ir: " + str(data['new_ir_right']))
+        print("right_back: " + str(data['new_ir_right_back']))
 
         print("At right turn, old diff: " + str(right_old_diff) + ", new diff: " + str(right_new_diff))
 
