@@ -39,11 +39,11 @@ class auto_control(State):
         right_old_diff = abs(data['ir_right'] - data['old_ir_right'])
         right_new_diff = abs(data['new_ir_right'] - data['old_ir_right'])
 
-        print("old_ir: " + str(data['old_ir_right']))
-        print("cur_ir: " + str(data['ir_right']))
-        print("new_ir: " + str(data['new_ir_right']))
-        print("right_back: " + str(data['new_ir_right_back']))
-        print("At right turn, old diff: " + str(right_old_diff) + ", new diff: " + str(right_new_diff))
+        #print("old_ir: " + str(data['old_ir_right']))
+        #print("cur_ir: " + str(data['ir_right']))
+        #print("new_ir: " + str(data['new_ir_right']))
+        #print("right_back: " + str(data['new_ir_right_back']))
+        #print("At right turn, old diff: " + str(right_old_diff) + ", new diff: " + str(right_new_diff))
 
         return right_old_diff >= Navigator.DISCONTINUITY_DIST and \
                right_new_diff >= Navigator.DISCONTINUITY_DIST and \
