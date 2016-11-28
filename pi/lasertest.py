@@ -7,7 +7,8 @@ def setup():
 
 setup()
 while(True):
-    laser_distance = Laser.read_data()
+    laser.read_data()
+    laser_distance = laser.get_data()
     if laser_distance >0 :
         print("Laser avstånd:"+str(laser_distance)+"\n")
     else:

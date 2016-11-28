@@ -8,6 +8,8 @@ from navigator import Navigator
 from driver import Driver
 from laser import Laser
 from gyro import Gyro
+from ir import IR
+from bluetooth import Bluetooth
 
 from eventbus import EventBus
 from position import Position
@@ -22,36 +24,20 @@ laser = Laser()
 gyro = Gyro()
 driver = Driver(gyro, laser)
 navigator = Navigator(driver, laser)
-position = Position()
-
-# Update frequency
-last_request = datetime.now()
-request_period = timedelta(milliseconds=1)
-busy = False
-
-current_ir_left_mm = 0
-current_ir_right_mm = 0
-
-
-def sensor_data_requested():
-    outbound.bt_return_sensor_data(str(current_ir_left_mm) + ", " + str(current_ir_right_mm))
+ir = IR(navigator)
+position = Position(laser)
+bluetooth = Bluetooth(ir, laser, gyro, driver, position)
 
 
 def setup():
     Safety.setup_terminal_abort()
-    EventBus.subscribe(BT_REQUEST_SENSOR_DATA, sensor_data_requested)
-    EventBus.subscribe(CMD_RETURN_SENSOR_DATA, sensor_data_received)
+    EventBus.subscribe(BT_REQUEST_SENSOR_DATA, bluetooth.send_sensor_data())
+    EventBus.subscribe(BT_REQUEST_SERVO_DATA, bluetooth.send_servo_data())
+    EventBus.subscribe(BT_REQUEST_MAP_DATA, bluetooth.send_map_data())
+    EventBus.subscribe(CMD_RETURN_SENSOR_DATA, ir.sensor_data_received)
     EventBus.subscribe(REQUEST_PI_IP, ip_requested)
     Laser.initialize()
     Gyro.initialize()
-
-
-def sensor_data_received(ir_left_mm, ir_right_mm):
-    global busy, navigator, current_ir_left_mm, current_ir_right_mm
-    current_ir_left_mm = ir_left_mm
-    current_ir_right_mm = ir_right_mm
-    busy = False
-    navigator.sensor_data_received(ir_left_mm, ir_right_mm)
 
 
 def ip_requested():
@@ -60,25 +46,12 @@ def ip_requested():
     outbound.return_ip(ip)
 
 
-def request_data():
-    global busy, last_request, request_period
-    if not busy and datetime.now() - last_request > request_period:
-        busy = True
-        last_request = datetime.now()
-
-        # TODO: Uncomment below line when reading from laser
-        # laser_distance = Laser.read_data()
-
-        outbound.request_sensor_data()
-
-
 def main():
-    global busy, last_request
     setup()
 
     while True:
         EventBus.receive()
-        request_data()
+        ir.request_data()
         position.update()
         navigator.navigate()
 
