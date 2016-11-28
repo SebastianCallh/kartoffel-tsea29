@@ -26,8 +26,8 @@ class AutoController:
 
         regulation_error = DESIRED_DISTANCE - sensor_data_front + abs(dist_diff / 10)
 
-        
-        if (sensor_data_front == -1 and sensor_data_back == -1):
+
+        if (sensor_data_front == -1 or sensor_data_back == -1):
             dist_diff = 0
             regulation_error = 0
 
