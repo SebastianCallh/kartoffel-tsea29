@@ -33,37 +33,46 @@ class BT_Server:
 
     def accept_connection(self):
         # TODO: Accept connection from valid client (requires change of backlog)
-        print("in accept_connection")
+        #print("in accept_connection")
         (self.client_sock, self.accp_client_addr) = self.server_sock.accept()
 
-    # if accp_client_addr == client_addr
 
 
     def post_to_incoming(self):
-        print("Server: staring to post to incoming")
+        """
+        Puts saved incoming data to queue to robot.
+        """
+        #print("Server: staring to post to incoming")
         bt_task_handler.post_incoming(BT_task(self.incoming_data, ""))
-        print("Server done posting to incoming, returning to main")
+        #print("Server done posting to incoming, returning to main")
 
     def send_data(self, data=None):
-        print("Server: sending!")
+        """
+        Sends data via bluetooth to connected client.
+        Sends data saved in server, unless data is passed.
+        """
+        #print("Server: sending!")
         if not data:
             self.client_sock.send(self.outgoing_data)
         else:
             self.client_sock.send(data)
-        print("Server: sent! Returning to main")
+        #print("Server: sent! Returning to main")
 
     def _pop_from_outgoing(self):
         return bt_task_handler.pop_outgoing()
 
-    """Updates incoming_data. Returns true if data was updated,
-       false otherwise"""
 
     def update_incoming(self):
+        """
+        Updates incoming data aimed for the robot by receiving via bluetooth.
+        Saves the new data in itself.
+        Returns True/False whether or not new data was received.
+        """
         has_new_incoming = False
         try:
             self.client_sock.settimeout(0.1)
             data = self.client_sock.recv(1024).decode('utf-8')
-            print("bt_server: Data =", data)
+            #print("bt_server: Data =", data)
             if len(data) != 0:  # TODO or None? (using json)
                 self.incoming_data = data
                 has_new_incoming = True
@@ -73,22 +82,28 @@ class BT_Server:
             self.client_sock.settimeout(None)
         return has_new_incoming
 
-    """Updates outgoing_data. Returns true if data was updated,
-       false otherwise"""
 
     def update_outgoing(self):
+        """
+        Updates outgoing_data aimed for client by poping from robots queue.
+        Saves the new data in itself.
+        Returns true if data was updated, false otherwise
+        """
         has_new_outgoing = False
         task = self._pop_from_outgoing()
         # print("Updated outgoing task in server ", str(task))
         if type(task) == BT_task and task.cmd_id != 0:
-            print("update_outgoing: i if-sats")
+            #print("update_outgoing: i if-sats")
             self.outgoing_data = str(task.cmd_id) + ", " + str(task.data)  # TODO will change when json
             has_new_outgoing = True
         return has_new_outgoing
 
     def shutdown_server(self):
-        print("server: client_sock =", self.client_sock)
+        """
+        Shuts down itself by closing server and client sockets.
+        """
+        #print("server: client_sock =", self.client_sock)
         self.server_sock.shutdown(2)
         self.server_sock.close()
         self.client_sock.close()
-        print("server: Closed client_sock =", self.client_sock)
+        #print("server: Closed client_sock =", self.client_sock)

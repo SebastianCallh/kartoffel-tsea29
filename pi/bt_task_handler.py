@@ -16,13 +16,13 @@ def clean_queue_files():
 # kallas från main
 def post_outgoing(bt_task):
     global busy_outgoing
-    print("in post_outgoing and dumpint task with id", bt_task.cmd_id)
+    #print("in post_outgoing and dumpint task with id", bt_task.cmd_id)
     answer_queue = open("bt_answers.txt", "wb")
-    print("could open file")
+    #print("could open file")
     pickle.dump(bt_task, answer_queue)
-    print("have dumped to pickle!")
+    #print("have dumped to pickle!")
     answer_queue.close()
-    print("closing file and returning to main!")
+    #print("closing file and returning to main!")
 
 
 # kallas från main
@@ -51,12 +51,12 @@ def pop_incoming():
 # kallas från server
 def post_incoming(bt_task):
     command_queue = open("bt_commands.txt", "wb")
-    print("task type in post_incoming ", type(bt_task))
+    #print("task type in post_incoming ", type(bt_task))
     pickle.dump(bt_task, command_queue)
-    print("Could dump to pickle in post_incoming")
+    #print("Could dump to pickle in post_incoming")
     # pickle.Pickler.clear_memo(self=)
     command_queue.close()
-    print("Closing file and return to bt_server")
+    #print("Closing file and return to bt_server")
 
 
 # kallas från server
