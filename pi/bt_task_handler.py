@@ -1,8 +1,11 @@
 import pickle
 from bt_task import BT_task
 
+
 def clean_queue_files():
-    # Create files or erase previous content
+    """
+    Creates clean files for queues between server and main unit.
+    """
     answer_queue = open("bt_answers.txt", "w")
     answer_queue.seek(0)
     answer_queue.truncate()
@@ -13,20 +16,22 @@ def clean_queue_files():
     command_queue.close()
 
 
-# kallas från main
-def post_outgoing(bt_task):
-    global busy_outgoing
-    #print("in post_outgoing and dumpint task with id", bt_task.cmd_id)
+def post_outgoing(task):
+    """
+    Called from main unit.
+    Posts BT_task processed by main unit to answer queue.
+    """
     answer_queue = open("bt_answers.txt", "wb")
-    #print("could open file")
-    pickle.dump(bt_task, answer_queue)
-    #print("have dumped to pickle!")
+    pickle.dump(task, answer_queue)
     answer_queue.close()
-    #print("closing file and returning to main!")
 
 
-# kallas från main
 def pop_incoming():
+    """
+    Called from main unit.
+    Pops and returns next BT_task from commands queue,
+    to be processed by the main unit.
+    """
     command_queue = open("bt_commands.txt", "rb")
     task = None
 
@@ -48,19 +53,24 @@ def pop_incoming():
     return task
 
 
-# kallas från server
-def post_incoming(bt_task):
+def post_incoming(task):
+    """
+    Called from server.
+    Posts given BT_task to command queue,
+    to be processed by main unit.
+    """
     command_queue = open("bt_commands.txt", "wb")
-    #print("task type in post_incoming ", type(bt_task))
-    pickle.dump(bt_task, command_queue)
-    #print("Could dump to pickle in post_incoming")
-    # pickle.Pickler.clear_memo(self=)
+    pickle.dump(task, command_queue)
     command_queue.close()
-    #print("Closing file and return to bt_server")
 
 
-# kallas från server
 def pop_outgoing():
+    """
+    Called from server.
+    Pops next outgoing BT_task from answer queue,
+    tasks already processed by main unit.
+    Returns popped task.
+    """
     answer_queue = open("bt_answers.txt", "rb")
     task = None
 

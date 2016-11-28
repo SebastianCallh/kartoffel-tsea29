@@ -148,12 +148,50 @@ CMD_TURN_FINISHED = 9
 
 # -------------------- Bluetooth commands ---------------------
 
+# Ask for IP address of robot
 REQUEST_PI_IP = 10
+"""
+Command sent from Bluetooth client to Bluetooth server. Issues a request
+to the to the server prompting it to send its IP address back to the client.
+
+Target: Bluetooth server
+
+Arguments: None
+"""
+
+# Return IP address from the robot
 RETURN_PI_IP = 11
+"""
+Command sent from Bluetooth server to Bluetooth client after a request
+for its IP address has been made.
 
+Target: Bluetooth client
+
+Arguments: ip
+    Sent as a string.
+"""
+
+# Demand Bluetooth server to restart
 BT_SERVER_RESTART = 12
+"""
+Command sent from Bluetooth client to Bluetooth server to restart server
+and renew the Bluetooth connection.
 
+Target: Bluetooth server
+
+Arguments: None
+"""
+
+# Demand Bluetooth server to shut down
 BT_SERVER_SHUTDOWN = 13
+"""
+Command sent from Bluetooth client to Bluetooth server to shutdown server
+and close the Bluetooth connection.
+
+Target: Bluetooth server
+
+Arguments: None
+"""
 
 BT_REQUEST_SENSOR_DATA = 14
 BT_RETURN_SENSOR_DATA = 15
