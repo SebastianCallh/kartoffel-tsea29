@@ -18,7 +18,6 @@ class AutoController:
 
         Kp = float(0.2)
         Ka = float(0.3)
-        Kd = float(0.2)
 
         time_now = datetime.datetime.now()
         sensor_data_front = ir_right_mm
@@ -27,13 +26,14 @@ class AutoController:
 
         regulation_error = DESIRED_DISTANCE - sensor_data_front + abs(dist_diff / 10)
 
-        if (sensor_data_front == -1 or sensor_data_back == -1):
-            dist_diff = last_diff
-            regulation_error = old_error
+        if (sensor_data_back == -1 and sensor_data_front == -1):
+            dist_diff = 0
+            regulation_error = 0
 
-        delta_t = (time_now - time_last_regulation).microseconds / 1000
+        if (sensor_data_front != -1 and sensor_data_back == -1):
+            regulation_error = DESIRED_DISTANCE - sensor_data_front
 
-        regulation = floor((Kp * regulation_error) + Ka * dist_diff) #(Kd / delta_t * (regulation_error - old_error)))
+        regulation = floor((Kp * regulation_error) + Ka * dist_diff)
 
         old_error = regulation_error
         last_diff = dist_diff
