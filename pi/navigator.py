@@ -45,7 +45,7 @@ class auto_control(State):
 
         print("At right turn, old diff: " + str(right_old_diff) + ", new diff: " + str(right_new_diff))
 
-        return  right_old_diff >= Navigator.DISCONTINUITY_DIST and \
+        return right_old_diff >= Navigator.DISCONTINUITY_DIST and \
                 right_new_diff >= Navigator.DISCONTINUITY_DIST and \
                 data['new_ir_right_back'] != -1 and \
                 data['side'] == Navigator.RIGHT_SIDE
