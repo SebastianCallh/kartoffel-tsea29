@@ -8,7 +8,6 @@ import threading
 
 class BT_client(threading.Thread):
     PI_ADDR = "B8:27:EB:FC:55:27"
-    USB_BT_ADDR = ""
     PORT = 3
     
     '''
