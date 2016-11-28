@@ -69,11 +69,11 @@ def set_right_motor_speed(speed):
     )
 
 
-def return_ip(ip):
+def bt_return_ip(ip):
     EventBus.post(
         BLUETOOTH_ADDR,
         BT_task(
-            RETURN_PI_IP, ip
+            BT_RETURN_PI_IP, ip
         )
     )
 

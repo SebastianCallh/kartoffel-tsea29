@@ -1,5 +1,7 @@
 import outbound
 
+from utils import get_ip
+
 class Bluetooth:
     def __init__(self, ir, laser, gyro, driver, position):
         self.ir = ir
@@ -34,3 +36,6 @@ class Bluetooth:
     '''
     def send_map_data(self):
         outbound.bt_return_map_data(str(self.position.get_map_data()))
+
+    def send_ip(self):
+        outbound.bt_return_ip(get_ip())

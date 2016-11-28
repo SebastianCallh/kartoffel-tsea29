@@ -1,4 +1,3 @@
-import outbound
 from datetime import datetime, timedelta
 
 
@@ -25,14 +24,13 @@ class IR:
     def get_ir_right_back(self):
         return self.ir_right_back
 
-    def sensor_data_requested(self):
-        outbound.bt_return_sensor_data(str(self.ir_left) + ", " + str(self.ir_right))
-
-    def sensor_data_received(self, ir_left_mm, ir_right_mm):
+    def sensor_data_received(ir_left_mm, ir_right_mm, ir_right_back_mm, ir_left_back_mm):
         self.ir_left = ir_left_mm
         self.ir_right = ir_right_mm
+        self.ir_right_back = ir_right_back_mm
+        self.ir_left_back_mm = ir_left_back_mm
         self.busy = False
-        self.navigator.sensor_data_received(ir_left_mm, ir_right_mm)
+        self.navigator.sensor_data_received(ir_left_mm, ir_right_mm, ir_right_back_mm, ir_left_back_mm)
 
     def request_data(self):
         if not self.busy and datetime.now() - self.last_request > self.request_period:

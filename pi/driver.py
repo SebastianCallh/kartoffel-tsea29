@@ -74,7 +74,7 @@ class Driver:
 
     def stop(self):
         print('stopping')
-        set_motor_speed(0, 0)
+        self.drive(0, 0)
 
     def get_right_speed(self):
         return self.right_speed

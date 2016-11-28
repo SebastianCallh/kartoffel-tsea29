@@ -17,8 +17,7 @@ from position import Position
 from protocol import *
 from safety import Safety
 
-import bt_server_cmds
-import outbound
+
 
 laser = Laser()
 gyro = Gyro()
@@ -31,27 +30,23 @@ bluetooth = Bluetooth(ir, laser, gyro, driver, position)
 
 def setup():
     Safety.setup_terminal_abort()
-    EventBus.subscribe(BT_REQUEST_SENSOR_DATA, bluetooth.send_sensor_data())
-    EventBus.subscribe(BT_REQUEST_SERVO_DATA, bluetooth.send_servo_data())
-    EventBus.subscribe(BT_REQUEST_MAP_DATA, bluetooth.send_map_data())
+    EventBus.subscribe(BT_REQUEST_SENSOR_DATA, bluetooth.send_sensor_data)
+    EventBus.subscribe(BT_REQUEST_SERVO_DATA, bluetooth.send_servo_data)
+    EventBus.subscribe(BT_REQUEST_MAP_DATA, bluetooth.send_map_data)
+    EventBus.subscribe(BT_REQUEST_PI_IP, bluetooth.send_ip)
     EventBus.subscribe(CMD_RETURN_SENSOR_DATA, ir.sensor_data_received)
-    EventBus.subscribe(REQUEST_PI_IP, ip_requested)
     Laser.initialize()
     Gyro.initialize()
-
-
-def ip_requested():
-    ip = bt_server_cmds.get_pi_ip()
-    # Put IP on the bus
-    outbound.return_ip(ip)
-
 
 def main():
     setup()
 
     while True:
-        EventBus.receive()
+        laser.read_data()
+        gyro.read_data()
         ir.request_data()
+        
+        EventBus.receive()
         position.update()
         navigator.navigate()
 
