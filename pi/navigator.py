@@ -39,17 +39,18 @@ class auto_control(State):
         right_old_diff = abs(data['ir_right'] - data['old_ir_right'])
         right_new_diff = abs(data['new_ir_right'] - data['old_ir_right'])
 
-        print("old_ir: " + str(data['old_ir_right']))
-        print("cur_ir: " + str(data['ir_right']))
-        print("new_ir: " + str(data['new_ir_right']))
-        print("right_back: " + str(data['new_ir_right_back']))
-        print("At right turn, old diff: " + str(right_old_diff) + ", new diff: " + str(right_new_diff))
+        #print("old_ir: " + str(data['old_ir_right']))
+        #print("cur_ir: " + str(data['ir_right']))
+        #print("new_ir: " + str(data['new_ir_right']))
+        #print("right_back: " + str(data['new_ir_right_back']))
+        #print("At right turn, old diff: " + str(right_old_diff) + ", new diff: " + str(right_new_diff))
 
         return right_old_diff >= Navigator.DISCONTINUITY_DIST and \
-                right_new_diff >= Navigator.DISCONTINUITY_DIST and \
-                not (data['ir_right'] > 0 and data['ir_right'] < data['old_ir_right']) and \
-                data['new_ir_right_back'] != -1 and \
-                data['side'] == Navigator.RIGHT_SIDE
+               right_new_diff >= Navigator.DISCONTINUITY_DIST and \
+               not (data['ir_right'] > 0 and data['ir_right'] < data['old_ir_right']) and \
+               not (data['new_ir_right'] > 0 and data['new_ir_right'] < data['old_ir_right']) and \
+               data['new_ir_right_back'] != -1 and \
+               data['side'] == Navigator.RIGHT_SIDE
             
         
     def sensor_data_received(self, data, new_ir_left, new_ir_right, new_ir_right_back_mm, new_ir_left_back_mm):
