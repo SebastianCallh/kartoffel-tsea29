@@ -39,11 +39,13 @@ class Position:
             self.current_section = self.current_section.for_left_turn()
 
     def on_turning_started(self):
+        print("POSITION: Turn started distance: " + str(Laser.read_data()))
         self.state = STATE_WAITING
         thread = Thread(target=self.save_current_section())
         thread.start()
         #self.save_current_section()
 
     def on_turning_finished(self, is_right_turn):
+        print("POSITION: Turn finished distance: " + str(Laser.read_data()))
         self.begin_next_section(is_right_turn)
         self.state = STATE_MEASURING
