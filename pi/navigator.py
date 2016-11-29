@@ -39,19 +39,10 @@ class auto_control(State):
         right_old_diff = abs(data['ir_right'] - data['old_ir_right'])
         right_new_diff = abs(data['new_ir_right'] - data['old_ir_right'])
 
-        #print("old_ir: " + str(data['old_ir_right']))
-        #print("cur_ir: " + str(data['ir_right']))
-        #print("new_ir: " + str(data['new_ir_right']))
-        #print("right_back: " + str(data['new_ir_right_back']))
-        #print("At right turn, old diff: " + str(right_old_diff) + ", new diff: " + str(right_new_diff))
+        return data['new_ir_right'] == -1 and \
+               data['new_ir_right_back'] == -1 and \
+               Navigator.enable_right_turn == True
 
-        return right_old_diff >= Navigator.DISCONTINUITY_DIST and \
-               right_new_diff >= Navigator.DISCONTINUITY_DIST and \
-               not (data['ir_right'] > 0 and data['ir_right'] < data['old_ir_right']) and \
-               not (data['new_ir_right'] > 0 and data['new_ir_right'] < data['old_ir_right']) and \
-               data['new_ir_right_back'] != -1 and \
-               data['side'] == Navigator.RIGHT_SIDE
-            
         
     def sensor_data_received(self, data, new_ir_left, new_ir_right, new_ir_right_back_mm, new_ir_left_back_mm):
        
@@ -59,19 +50,10 @@ class auto_control(State):
             return
 
         right_speed, left_speed, regulation = auto_control.auto_controller.auto_control(new_ir_right, new_ir_right_back_mm, data['side'])
-        
-        if abs(regulation) >= 33:
-            #print("Regulation to high: " + str(regulation))
-            return 
-            
         data['driver'].drive(left_speed, right_speed)
         
     def run(self, data):
-        left_diff = data['ir_left'] - data['old_ir_left']
-        right_diff = data['ir_right'] - data['old_ir_right']
-        
-        #print('ir right:' + str(data['ir_right']) + ' old ir right: ' + str(data['old_ir_right']) + ' right diff : ' + str(right_diff))
-        #Outer turn, prioritize following right wall
+
         if self.is_at_right_turn(data):
             data['driver'].outer_turn_right()
             print('NAVIGATOR: outer turn right')
@@ -83,12 +65,13 @@ class auto_control(State):
             return turn(TURN_DIRECTION_LEFT)
         
         laser_data = data['laser'].read_data()
-        #print('Left diff: ' + str(left_diff) + ' right diff ' + str(right_diff))
-        #print('laser distance: ' + str(laser_data))
+
+        if (not Navigator.enable_right_turn):
+            Navigator.enable_right_turn = (data['new_ir_right'] != -1 and data['new_ir_right_back'] != -1)
         
         #Inner turn
         if laser_data <= Navigator.FACING_WALL_DIST and laser_data != -1:
-            #print("NAVIGATOR: laserdata: "+ str(laser_data))
+
             if data['side'] == Navigator.LEFT_SIDE:
                 data['driver'].inner_turn_right()
                 print('NAVIGATOR: inner turn right')
@@ -121,6 +104,7 @@ class turn(State):
         return #Do nothing. Only auto control uses it
 
     def run(self, data):
+        Navigator.enable_right_turn = False
         if data['driver'].idle():
             print('NAVIGATOR: changing to auto control')
             return auto_control()
@@ -134,6 +118,8 @@ class Navigator:
 
     DISCONTINUITY_DIST = 25.0  # mm
     FACING_WALL_DIST = 200  # mm
+
+    enable_right_turn = True
 
     def __init__(self, driver, laser):
         self.data = {
