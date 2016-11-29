@@ -41,7 +41,7 @@ class auto_control(State):
 
         return data['new_ir_right'] == -1 and \
                data['new_ir_right_back'] == -1 and \
-               Navigator.enable_right_turn == True
+               Navigator.right_turn_enabled
 
         
     def sensor_data_received(self, data, new_ir_left, new_ir_right, new_ir_right_back_mm, new_ir_left_back_mm):
@@ -66,8 +66,8 @@ class auto_control(State):
         
         laser_data = data['laser'].read_data()
 
-        if (not Navigator.enable_right_turn):
-            Navigator.enable_right_turn = (data['new_ir_right'] != -1 and data['new_ir_right_back'] != -1)
+        if (not Navigator.right_turn_enabled):
+            Navigator.right_turn_enabled = (data['new_ir_right'] != -1 and data['new_ir_right_back'] != -1)
         
         #Inner turn
         if laser_data <= Navigator.FACING_WALL_DIST and laser_data != -1 and data['new_ir_right'] != -1:
@@ -104,7 +104,9 @@ class turn(State):
         return #Do nothing. Only auto control uses it
 
     def run(self, data):
-        Navigator.enable_right_turn = False
+        if Navigator.right_turn_enabled:
+            Navigator.right_turn_enabled = False
+
         if data['driver'].idle():
             print('NAVIGATOR: changing to auto control')
             return auto_control()
@@ -119,7 +121,7 @@ class Navigator:
     DISCONTINUITY_DIST = 25.0  # mm
     FACING_WALL_DIST = 200  # mm
 
-    enable_right_turn = True
+    right_turn_enabled = True
 
     def __init__(self, driver, laser):
         self.data = {
