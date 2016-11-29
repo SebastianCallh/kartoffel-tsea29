@@ -19,7 +19,7 @@ class Section:
     def add_distance_sample(self, distance):
         # TODO: Verify distance validity by checking if the delta distance is
         # reasonable.
-        if distance != -1:
+        if distance > 50:
             self.measurements.append((distance, datetime.now()))
 
     def finish(self):
