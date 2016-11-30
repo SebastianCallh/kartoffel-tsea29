@@ -68,7 +68,7 @@ class BT_client(threading.Thread):
             # Try to get task from queue
             # Blocking set to false
             bt_out_task = self.out_queue.get(False)
-            self.currennt_out_task = bt_out_task
+            self.current_out_task = bt_out_task
         except queue.Empty:
             # No task avaiable
             pass
@@ -108,7 +108,7 @@ class BT_client(threading.Thread):
         finally:
             client_sock.settimeout(None)
           
-        data_items = data.split(',')
+        data_items = data.split(', ')
         bt_in_task = BT_task(data_items[0],data_items[1:])
                   
         try:
