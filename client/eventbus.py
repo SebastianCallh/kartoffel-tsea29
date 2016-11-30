@@ -52,7 +52,7 @@ class EventBus:
             if data is None:
                 break
 
-            EventBus.notify(data.cmd_id, *data.data)
+            EventBus.notify(data.cmd_id, data.data)
 
     @staticmethod
     def subscribe(command_id, handler):

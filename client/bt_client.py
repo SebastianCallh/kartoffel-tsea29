@@ -62,16 +62,19 @@ class BT_client(threading.Thread):
 
     def _send(self):
         bt_out_task = self.queue_handler.pop_out_queue()
-        self.current_out_task = bt_out_task
 
         # TODO Possible fix! Concatenate cmd_id and data
         if bt_out_task:
+            self.current_out_task = bt_out_task
             try:
-                self.client_sock.send(str(bt_out_task.cmd_id))
+                self.client_sock.send(str(bt_out_task.cmd_id))       
+                print("sent msg")
             except bluetooth.btcommon.BluetoothError:
                 print(traceback.format_exc())
+        else:
+            self.current_out_task = BT_task(0,0)
 
-            print("sent msg")
+
 
     def _receive(self):
         # Wait for incoming messages for 0.1 seconds
