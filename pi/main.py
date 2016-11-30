@@ -9,7 +9,7 @@ from driver import Driver
 from laser import Laser
 from gyro import Gyro
 from ir import IR
-from bluetooth import Bluetooth
+from bt_data_handler import Data_handler
 
 from eventbus import EventBus
 from position import Position
@@ -25,15 +25,15 @@ driver = Driver(gyro, laser)
 navigator = Navigator(driver, laser)
 ir = IR(navigator)
 position = Position(laser)
-bluetooth = Bluetooth(ir, laser, gyro, driver, position)
+data_handler = Data_handler(ir, laser, gyro, driver, position)
 
 
 def setup():
     Safety.setup_terminal_abort()
-    EventBus.subscribe(BT_REQUEST_SENSOR_DATA, bluetooth.send_sensor_data)
-    EventBus.subscribe(BT_REQUEST_SERVO_DATA, bluetooth.send_servo_data)
-    EventBus.subscribe(BT_REQUEST_MAP_DATA, bluetooth.send_map_data)
-    EventBus.subscribe(BT_REQUEST_PI_IP, bluetooth.send_ip)
+    EventBus.subscribe(BT_REQUEST_SENSOR_DATA, data_handler.send_sensor_data)
+    EventBus.subscribe(BT_REQUEST_SERVO_DATA, data_handler.send_servo_data)
+    EventBus.subscribe(BT_REQUEST_MAP_DATA, data_handler.send_map_data)
+    EventBus.subscribe(BT_REQUEST_PI_IP, data_handler.send_ip)
     EventBus.subscribe(CMD_RETURN_SENSOR_DATA, ir.sensor_data_received)
     Laser.initialize()
     Gyro.initialize()

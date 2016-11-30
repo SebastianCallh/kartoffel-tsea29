@@ -3,6 +3,7 @@ Various functions which does not belong in any other file.
 
 NOTE: This file might have to be split if the list of functions grow too large.
 """
+import os
 
 
 # Returns the two's complementary value in it's python representation
