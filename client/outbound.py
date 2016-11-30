@@ -19,7 +19,7 @@ from bt_task import BT_task
 # NOTE: Function comments are purposely left out from this file in favor of the
 # complete definitions of every found command in proctol.py.
 
-def request_ip():
+def request_ip(queue):
     EventBus.post(
         BLUETOOTH_ADDR,
         BT_task(

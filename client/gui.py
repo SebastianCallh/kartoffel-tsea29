@@ -1,5 +1,4 @@
 from tkinter import *
-from eventbus import EventBus
 import outbound
 import datetime
 
@@ -13,7 +12,7 @@ class GUI:
     UPDATE_INTERVAL = 0.25  # seconds
     DATA_REQUEST_INTERVAL = 1  # seconds
 
-    def __init__(self):
+    def __init__(self, queue_handler):
         self.last_data_request_time = datetime.datetime.now()
 
         self.root = Tk()
@@ -30,6 +29,7 @@ class GUI:
         self.gyro_list.pack()
         self.servo_list = Listbox(self.root)
         self.servo_list.pack()
+        self.queue_handler = queue_handler
 
     '''
     Values should be a list containing of [ir_left,ir_right,ir_left_back,
@@ -59,7 +59,7 @@ class GUI:
         outbound.bt_request_map_data()
 
     def _update(self):
-        EventBus.receive()
+        self.queue_handler.eventbus.receive()
         if (datetime.datetime.now() - self.last_data_request_time) > datetime.timedelta(
                 seconds=GUI.DATA_REQUEST_INTERVAL):
             self._request_data()

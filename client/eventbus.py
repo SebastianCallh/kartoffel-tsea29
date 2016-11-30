@@ -17,8 +17,6 @@ Supported commands and their arguments are defined in protocol.py.
 """
 
 from observer import Observer
-import client_main
-
 from protocol import BLUETOOTH_ADDR
 
 # As reading from the bus is a blocking operation it might cause actual program
@@ -31,14 +29,15 @@ MAX_READ_COUNT = 10
 
 class EventBus:
     observers = {}
+    queue_handler = None
 
     @staticmethod
     def post(addr, message):
-        bt_task_handler.post_outgoing(message)
+        EventBus.queue_handler.post_out_queue(message)
 
     @staticmethod
-    def pop(unit_addr):
-        return
+    def pop(addr):
+        return EventBus.queue_handler.pop_in_queue()
 
     @staticmethod
     def receive():

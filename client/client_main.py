@@ -1,40 +1,50 @@
-import queue
-from protocol import *
-import inbound
-from eventbus import EventBus
 from bt_client import BT_client
 from gui import GUI
+import queue_handlers
+import inbound
+from protocol import *
 
-QUEUE_MAX_SIZE = 20
-
-
-def create_task_queues():
-    in_queue = queue.Queue(QUEUE_MAX_SIZE)
-    out_queue = queue.Queue(QUEUE_MAX_SIZE)
-    return (in_queue, out_queue)
+gui = None
 
 
-(in_queue, out_queue) = create_task_queues()
-
-
-def setup_subscriptions():
-    EventBus.subscribe(RETURN_PI_IP, inbound.printIP)
-    EventBus.subscribe(BT_RETURN_SENSOR_DATA, inbound.add_sensor_data)
-    EventBus.subscribe(BT_RETURN_SERVO_DATA, inbound.add_servo_data)
-    EventBus.subscribe(BT_RETURN_MAP_DATA, inbound.update_map)
-
-
-def run_bt_client(in_queue, out_queue):
-    bt_client = BT_client(in_queue, out_queue)
+def run_bt_client(queue_handler):
+    bt_client = BT_client(queue_handler)
     bt_client.start()
 
 
+def printIP(task):
+    global gui
+    gui.printIP()
+
+
+def add_sensor_data(task):
+    global gui
+    gui.add_sensor_data(task.data)
+
+
+def add_servo_data(task):
+    global gui
+    gui.add_servo_data(task.data)
+
+
+def update_map(task):
+    global gui
+    gui.update_map(task.data)
+
+
+def setup_subscriptions(eventbus):
+    eventbus.subscribe(RETURN_PI_IP, printIP)
+    eventbus.subscribe(BT_RETURN_SENSOR_DATA, add_sensor_data)
+    eventbus.subscribe(BT_RETURN_SERVO_DATA, add_servo_data)
+    eventbus.subscribe(BT_RETURN_MAP_DATA, update_map)
+
+
 def main():
-    (in_queue, out_queue) = create_task_queues()
-    run_bt_client(in_queue, out_queue)
-    gui = GUI()
+    queue_handler = queue_handlers.Queue_handler()
+    setup_subscriptions(queue_handler.eventbus)
+    run_bt_client(queue_handler)
+    gui = GUI(queue_handler)
     inbound.gui = gui
-    setup_subscriptions()
     gui.start()
 
 

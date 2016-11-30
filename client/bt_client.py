@@ -11,9 +11,8 @@ class BT_client(threading.Thread):
     PI_ADDR = "B8:27:EB:FC:55:27"
     PORT = 3
 
-    def __init__(self, in_queue, out_queue):
-        self.in_queue = in_queue
-        self.out_queue = out_queue
+    def __init__(self, queue_handler):
+        self.queue_handler = queue_handler
         self.current_out_task = None
         self.client_sock = None
         threading.Thread.__init__(self)
@@ -55,21 +54,14 @@ class BT_client(threading.Thread):
         self.client_sock = self._setup_bt_client()
 
         while (True):
-            status = self._send()
-            self._receive()
+            self._send()
+            status = self._receive()
             if status != "":
                 return status
 
     def _send(self):
-        try:
-            # Try to get task from queue
-            # Blocking set to false
-            bt_out_task = self.out_queue.get(False)
-            self.current_out_task = bt_out_task
-        except queue.Empty:
-            # No task available
-            bt_out_task = None
-            pass
+        bt_out_task = self.queue_handler.pop_out_queue()
+        self.current_out_task = bt_out_task
 
         # TODO Possible fix! Concatenate cmd_id and data
         try:
@@ -106,13 +98,10 @@ class BT_client(threading.Thread):
         finally:
             self.client_sock.settimeout(None)
 
-        data_items = data.split(',')
+        data_items = data.split(', ')
         bt_in_task = BT_task(data_items[0], data_items[1:])
 
-        try:
-            self.in_queue.put(bt_in_task, timeout=0.75)
-        except queue.Full:
-            print("In queue max size reached! (discarding item)")
+        self.queue_handler.post_in_queue(bt_in_task)
 
         return ""
 
