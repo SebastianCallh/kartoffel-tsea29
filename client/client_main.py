@@ -47,15 +47,14 @@ def setup_subscriptions():
 
 def request_data():
     outbound.bt_request_sensor_data()
-    outbound.bt_request_servo_data()
-    outbound.bt_request_map_data()
+    #outbound.bt_request_servo_data()
+    #outbound.bt_request_map_data()
 
 def update():
     global gui, last_data_request_time
     EventBus.receive()
     if (datetime.datetime.now() - last_data_request_time) > datetime.timedelta(
             seconds=DATA_REQUEST_INTERVAL):
-        print("request sensor data")
         request_data()
         last_data_request_time = datetime.datetime.now()
     gui.canvas.after(GUI.UPDATE_INTERVAL, update)

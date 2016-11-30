@@ -10,10 +10,8 @@ class GUI:
     MAX_LIST_ITEMS = 10
 
     UPDATE_INTERVAL = 250  # milliseconds
-    DATA_REQUEST_INTERVAL = 3  # seconds
 
     def __init__(self):
-        self.last_data_request_time = datetime.datetime.now()
 
         self.root = Tk()
         self.canvas = Canvas(self.root,
@@ -38,8 +36,9 @@ class GUI:
     '''
 
     def add_sensor_data(self, values):
-        ir_values = str(values[2]) + "," + str(values[0]) + "," + str(values[1]) + "," + str(values[3])
+        '''ir_values = str(values[2]) + "," + str(values[0]) + "," + str(values[1]) + "," + str(values[3])'''
 
+        ir_values = str(values)
         self.ir_list.insert(END, ir_values)
         self.laser_list.insert(END, str(values[4]))
         self.gyro_list.insert(END, str(values[5]))
