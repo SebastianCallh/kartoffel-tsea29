@@ -26,6 +26,8 @@ class Driver:
         self.task = Task(None, lambda: True)
         self.gyro = gyro
         self.laser = laser
+        self.right_speed = 0
+        self.left_speed = 0
 
     def idle(self):
         if not self.task.done():
@@ -42,6 +44,8 @@ class Driver:
             return True
 
     def drive(self, left_speed, right_speed):
+        self.left_speed = left_speed
+        self.right_speed = right_speed
         set_motor_speed(left_speed, right_speed)
 
     def outer_turn_right(self):
@@ -70,7 +74,14 @@ class Driver:
 
     def stop(self):
         print('stopping')
-        set_motor_speed(0, 0)
+        self.drive(0, 0)
+
+    def get_right_speed(self):
+        return self.right_speed
+
+    def get_left_speed(self):
+        return self.left_speed
+
 
     # Not intended for public use
 
@@ -133,7 +144,7 @@ class DegreeTask(Task):
 
 
     def degree_task(self):
-        data = self.gyro.read_data()
+        data = self.gyro.get_data()
 
         if data == -1:
             raise Exception('Error reading gyro')
@@ -160,7 +171,7 @@ class DistanceTask(Task):
     def start(self):
         laser_data = -1
         while laser_data == -1:
-            laser_data = self.laser.read_data()
+            laser_data = self.laser.get_data()
             print("RUN RUN RUN LASER READINGS")
 
         self.destination = laser_data - self.distance
@@ -172,7 +183,7 @@ class DistanceTask(Task):
 
         laser_data = -1
         while laser_data == -1:
-            laser_data = self.laser.read_data()
+            laser_data = self.laser.get_data()
             #print("Distance Task Laser: " + str(laser_data - self.destination))
 
         return self.destination >= laser_data

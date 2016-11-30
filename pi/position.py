@@ -9,7 +9,8 @@ STATE_WAITING = 1
 
 
 class Position:
-    def __init__(self):
+    def __init__(self, laser):
+        self.laser = laser
         self.state = STATE_MEASURING
         self.current_section = Section(NORTH)
         self.saved_sections = []
@@ -19,7 +20,7 @@ class Position:
 
     def update(self):
         if self.state == STATE_MEASURING:
-            distance = Laser.read_data()
+            distance = self.laser.get_data()
             self.current_section.add_distance_sample(distance)
 
     def save_current_section(self):
@@ -47,3 +48,9 @@ class Position:
     def on_turning_finished(self, is_right_turn):
         self.begin_next_section(is_right_turn)
         self.state = STATE_MEASURING
+
+    '''
+    Returns a list of tuples with coordinates of all the corners
+    '''
+    def get_map_data(self):
+        return [(10, 20), (30, 10)]
