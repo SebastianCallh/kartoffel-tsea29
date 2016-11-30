@@ -18,6 +18,7 @@ Supported commands and their arguments are defined in protocol.py.
 
 from observer import Observer
 from protocol import BLUETOOTH_ADDR
+from queue_handlers import Queue_handler
 
 # As reading from the bus is a blocking operation it might cause actual program
 # code to execute too late if there are many pending commands available. In
@@ -29,7 +30,8 @@ MAX_READ_COUNT = 10
 
 class EventBus:
     observers = {}
-    queue_handler = None
+    queue_handler = Queue_handler()
+    
 
     @staticmethod
     def post(addr, message):

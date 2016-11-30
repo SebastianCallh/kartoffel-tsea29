@@ -1,16 +1,11 @@
 import queue
-from protocol import *
-import inbound
-from eventbus import EventBus
 
 QUEUE_MAX_SIZE = 20
 
 
 class Queue_handler:
     def __init__(self):
-        self.eventbus = EventBus()
         (self.in_queue, self.out_queue) = self.create_task_queues()
-        self.eventbus.queue_handler = self
 
     def create_task_queues(self):
         self.in_queue = queue.Queue(QUEUE_MAX_SIZE)

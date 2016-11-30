@@ -4,15 +4,15 @@ import datetime
 
 
 class GUI:
-    CANVAS_X_SIZE = 500
-    CANVAS_Y_SIZE = 500
+    CANVAS_X_SIZE = 100
+    CANVAS_Y_SIZE = 100
 
     MAX_LIST_ITEMS = 10
 
-    UPDATE_INTERVAL = 0.25  # seconds
-    DATA_REQUEST_INTERVAL = 1  # seconds
+    UPDATE_INTERVAL = 250  # milliseconds
+    DATA_REQUEST_INTERVAL = 3  # seconds
 
-    def __init__(self, queue_handler):
+    def __init__(self):
         self.last_data_request_time = datetime.datetime.now()
 
         self.root = Tk()
@@ -29,7 +29,8 @@ class GUI:
         self.gyro_list.pack()
         self.servo_list = Listbox(self.root)
         self.servo_list.pack()
-        self.queue_handler = queue_handler
+        #self.queue_handler = queue_handler
+        #print(self.queue_handler.eventbus.queue_handler)
 
     '''
     Values should be a list containing of [ir_left,ir_right,ir_left_back,
@@ -53,18 +54,3 @@ class GUI:
     def update_map(self, values):
         pass
 
-    def _request_data(self):
-        outbound.bt_request_sensor_data()
-        outbound.bt_request_servo_data()
-        outbound.bt_request_map_data()
-
-    def _update(self):
-        self.queue_handler.eventbus.receive()
-        if (datetime.datetime.now() - self.last_data_request_time) > datetime.timedelta(
-                seconds=GUI.DATA_REQUEST_INTERVAL):
-            self._request_data()
-        self.canvas.after(GUI.UPDATE_INTERVAL, self._update)
-
-    def start(self):
-        self.canvas.after(GUI.UPDATE_INTERVAL, self._update)
-        self.root.mainloop()
