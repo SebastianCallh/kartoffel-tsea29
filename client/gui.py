@@ -40,8 +40,8 @@ class GUI:
 
         ir_values = str(values)
         self.ir_list.insert(END, ir_values)
-        self.laser_list.insert(END, str(values[4]))
-        self.gyro_list.insert(END, str(values[5]))
+        #self.laser_list.insert(END, str(values[4]))
+        #self.gyro_list.insert(END, str(values[5]))
 
     '''
     Values should be a list containing of [left_speed,right_speed].
