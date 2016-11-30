@@ -17,7 +17,7 @@ Supported commands and their arguments are defined in protocol.py.
 """
 
 from observer import Observer
-import bt_task_handler
+import client_main
 
 from protocol import BLUETOOTH_ADDR
 
@@ -38,7 +38,7 @@ class EventBus:
 
     @staticmethod
     def pop(unit_addr):
-        return bt_task_handler.pop_incoming()  # bluetooth pop()
+        return
 
     @staticmethod
     def receive():
