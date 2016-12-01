@@ -17,13 +17,11 @@ from position import Position
 from protocol import *
 from safety import Safety
 
-
-
+ir = IR()
 laser = Laser()
 gyro = Gyro()
 driver = Driver(gyro, laser)
-navigator = Navigator(driver, laser)
-ir = IR(navigator)
+navigator = Navigator(ir, driver, laser)
 position = Position(laser)
 data_handler = Data_handler(ir, laser, gyro, driver, position)
 
@@ -37,6 +35,8 @@ def setup():
     EventBus.subscribe(CMD_RETURN_SENSOR_DATA, ir.sensor_data_received)
     Laser.initialize()
     Gyro.initialize()
+    Data_handler.initialize()
+
 
 def main():
     setup()
@@ -45,7 +45,7 @@ def main():
         laser.read_data()
         gyro.read_data()
         ir.request_data()
-        
+
         EventBus.receive()
         position.update()
         navigator.navigate()

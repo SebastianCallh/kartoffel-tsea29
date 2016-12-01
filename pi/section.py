@@ -19,7 +19,7 @@ class Section:
     def add_distance_sample(self, distance):
         # TODO: Verify distance validity by checking if the delta distance is
         # reasonable.
-        if distance != -1:
+        if distance > 50:
             self.measurements.append((distance, datetime.now()))
 
     def finish(self):
@@ -58,8 +58,8 @@ class Section:
         estimated_start_distance = average_ratio * total_measure_time_seconds
         print("Estimated start distance: " + str(estimated_start_distance))
         print("Non rounded blockdistance: " + str(estimated_start_distance/BLOCK_LENGTH_MM))
-        self.block_distance = math.ceil(
-            estimated_start_distance / BLOCK_LENGTH_MM
+        self.block_distance = round(
+            (estimated_start_distance / BLOCK_LENGTH_MM) + 1
         )
 
     def for_right_turn(self):

@@ -17,6 +17,7 @@ def process_arguments(message_id, arguments):
 
 # Sensor data contains some arguments stored in 16-bit two's complement which
 # must be parsed into it's corresponding python values.
+
 def process_sensor_data(left_ir_mm_hi, left_ir_mm_lo,
                         right_ir_mm_hi, right_ir_mm_lo,
                         right_ir_back_mm_hi, right_ir_back_mm_lo,
