@@ -18,12 +18,11 @@ from protocol import *
 from safety import Safety
 
 
-
+ir = IR()
 laser = Laser()
 gyro = Gyro()
 driver = Driver(gyro, laser)
-navigator = Navigator(driver, laser)
-ir = IR(navigator)
+navigator = Navigator(ir, driver, laser)
 position = Position(laser)
 bluetooth = Bluetooth(ir, laser, gyro, driver, position)
 

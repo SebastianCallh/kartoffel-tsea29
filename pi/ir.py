@@ -2,8 +2,7 @@ from datetime import datetime, timedelta
 import outbound
 
 class IR:
-    def __init__(self, navigator):
-        self.navigator = navigator
+    def __init__(self):
         self.busy = False
         self.ir_left = 0
         self.ir_left_back = 0
@@ -28,9 +27,8 @@ class IR:
         self.ir_left = ir_left_mm
         self.ir_right = ir_right_mm
         self.ir_right_back = ir_right_back_mm
-        self.ir_left_back_mm = ir_left_back_mm
+        self.ir_left_back = ir_left_back_mm
         self.busy = False
-        self.navigator.sensor_data_received(ir_left_mm, ir_right_mm, ir_right_back_mm, ir_left_back_mm)
 
     def request_data(self):
         if not self.busy and datetime.now() - self.last_request > self.request_period:
