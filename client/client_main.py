@@ -61,14 +61,14 @@ def update():
     
 def start_gui():
     global gui
-    gui.canvas.after(gui.UPDATE_INTERVAL, update)
+    #gui.canvas.after(gui.UPDATE_INTERVAL, update)
     gui.root.mainloop()
 
 def main():
     global gui
     queue_handler = EventBus.queue_handler
     setup_subscriptions()
-    run_bt_client(queue_handler)
+    #run_bt_client(queue_handler)
     gui = GUI()
     start_gui()
 

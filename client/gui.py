@@ -4,8 +4,8 @@ import datetime
 
 
 class GUI:
-    CANVAS_X_SIZE = 100
-    CANVAS_Y_SIZE = 100
+    CANVAS_X_SIZE = 500
+    CANVAS_Y_SIZE = 500
 
     MAX_LIST_ITEMS = 10
 
@@ -16,17 +16,24 @@ class GUI:
         self.root = Tk()
         self.canvas = Canvas(self.root,
                              width=GUI.CANVAS_X_SIZE,
-                             height=GUI.CANVAS_Y_SIZE)
-        self.canvas.pack()
+                             height=GUI.CANVAS_Y_SIZE,bg="red")
+        self.canvas.grid(row=0)
+        #self.canvas.pack()
+        self.bt_forward = Button(self.root,text="Forward",command=outbound.bt_drive_forward)
+        self.bt_forward.grid(row=1,column=0)
         self.ir_list = Listbox(self.root)
+        self.ir_list.grid(row=0,column=1)
         self.ir_list_nr_items = 0
-        self.ir_list.pack()
+        #self.ir_list.pack()
         self.laser_list = Listbox(self.root)
-        self.laser_list.pack()
+        self.laser_list.grid(row=0,column=2)
+        #self.laser_list.pack()
         self.gyro_list = Listbox(self.root)
-        self.gyro_list.pack()
+        self.gyro_list.grid(row=2,column=1)
+        #self.gyro_list.pack()
         self.servo_list = Listbox(self.root)
-        self.servo_list.pack()
+        self.servo_list.grid(row=2,column=2)
+        #self.servo_list.pack()
         #self.queue_handler = queue_handler
         #print(self.queue_handler.eventbus.queue_handler)
 
@@ -36,12 +43,12 @@ class GUI:
     '''
 
     def add_sensor_data(self, values):
-        '''ir_values = str(values[2]) + "," + str(values[0]) + "," + str(values[1]) + "," + str(values[3])'''
+        ir_values = str(values[2]) + "," + str(values[0]) + "," + str(values[1]) + "," + str(values[3])
 
         ir_values = str(values)
         self.ir_list.insert(END, ir_values)
-        #self.laser_list.insert(END, str(values[4]))
-        #self.gyro_list.insert(END, str(values[5]))
+        self.laser_list.insert(END, str(values[4]))
+        self.gyro_list.insert(END, str(values[5]))
 
     '''
     Values should be a list containing of [left_speed,right_speed].

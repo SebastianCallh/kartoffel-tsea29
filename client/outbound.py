@@ -53,3 +53,6 @@ def bt_request_map_data():
             BT_REQUEST_MAP_DATA
         )
     )
+    
+def bt_drive_forward():
+    print("Kör framåt")

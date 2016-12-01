@@ -106,6 +106,7 @@ class BT_client(threading.Thread):
         if data:
             data_items = data.split(', ')
             bt_in_task = BT_task(data_items[0], data_items[1:])
+            print("Bt in task data: ", bt_in_task.data)
 
             self.queue_handler.post_in_queue(bt_in_task)
 
