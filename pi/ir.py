@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-
+import outbound
 
 class IR:
     def __init__(self, navigator):
@@ -24,7 +24,7 @@ class IR:
     def get_ir_right_back(self):
         return self.ir_right_back
 
-    def sensor_data_received(ir_left_mm, ir_right_mm, ir_right_back_mm, ir_left_back_mm):
+    def sensor_data_received(self, ir_left_mm, ir_right_mm, ir_right_back_mm, ir_left_back_mm):
         self.ir_left = ir_left_mm
         self.ir_right = ir_right_mm
         self.ir_right_back = ir_right_back_mm
