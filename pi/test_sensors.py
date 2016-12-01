@@ -51,7 +51,8 @@ def request_data():
         last_request = datetime.now()
 
         # TODO: Uncomment below line when reading from laser
-        laser_distance = Laser.read_data()
+        laser.read_data()
+        laser_distance = laser.get_data()
         print("Laser distance: " + str(laser_distance))
         request_sensor_data()
 
