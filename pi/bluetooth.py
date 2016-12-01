@@ -39,3 +39,8 @@ class Bluetooth:
 
     def send_ip(self):
         outbound.bt_return_ip(get_ip())
+
+    @staticmethod
+    def initialize():
+        handler = open("bt_commands.txt", "wb")
+        handler.close()
