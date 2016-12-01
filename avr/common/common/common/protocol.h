@@ -22,6 +22,8 @@ struct sensor_data
 {
 	int ir_left_mm;
 	int ir_right_mm;
+	int ir_left_back_mm;
+	int ir_right_back_mm;
 };
 
 struct motor_speed
