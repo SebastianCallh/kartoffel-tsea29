@@ -59,3 +59,9 @@ def bt_drive_forward():
     
 def bt_drive_back():
     print("Kör back")
+    
+def bt_turn_right():
+    print("Turn right")
+    
+def bt_turn_left():
+    print("Turn left")

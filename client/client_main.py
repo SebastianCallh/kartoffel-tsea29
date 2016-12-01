@@ -6,9 +6,11 @@ import outbound
 from protocol import *
 from eventbus import EventBus
 import datetime
+import random
 
 
 DATA_REQUEST_INTERVAL = 1  # seconds
+UPDATE_INTERVAL = 250  # milliseconds
 
 gui = None
 last_data_request_time = datetime.datetime.now()
@@ -24,19 +26,19 @@ def printIP(task):
     gui.printIP()
 
 
-def add_sensor_data(task):
+def add_sensor_data(data):
     global gui
-    gui.add_sensor_data(task.data)
+    gui.add_sensor_data(data)
 
 
-def add_servo_data(task):
+def add_servo_data(data):
     global gui
-    gui.add_servo_data(task.data)
+    gui.add_servo_data(data)
 
 
-def update_map(task):
+def update_map(data):
     global gui
-    gui.update_map(task.data)
+    gui.update_map(data)
 
 
 def setup_subscriptions():
@@ -47,21 +49,26 @@ def setup_subscriptions():
 
 def request_data():
     outbound.bt_request_sensor_data()
-    #outbound.bt_request_servo_data()
+    outbound.bt_request_servo_data()
     #outbound.bt_request_map_data()
 
 def update():
     global gui, last_data_request_time
-    EventBus.receive()
+    #EventBus.receive()
     if (datetime.datetime.now() - last_data_request_time) > datetime.timedelta(
             seconds=DATA_REQUEST_INTERVAL):
-        request_data()
+        #request_data()
+        hej = random.randint(0,2)
+        if hej == 0:
+            gui.add_sensor_data(['a','a','a','a','a','a'])
+        else:
+            gui.add_sensor_data(['b','b','b','b','b','b'])
         last_data_request_time = datetime.datetime.now()
-    gui.canvas.after(GUI.UPDATE_INTERVAL, update)
+    gui.canvas.after(UPDATE_INTERVAL, update)
     
 def start_gui():
     global gui
-    #gui.canvas.after(gui.UPDATE_INTERVAL, update)
+    gui.canvas.after(UPDATE_INTERVAL, update)
     gui.root.mainloop()
 
 def main():

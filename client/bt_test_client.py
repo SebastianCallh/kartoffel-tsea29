@@ -73,4 +73,4 @@ def run():
                 return "EXIT"
 
 
-#main()
+main()
