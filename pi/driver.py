@@ -9,7 +9,7 @@ from outbound import set_motor_speed
 # Tasks should be reversed since we pop them from the list 
 
 STANDARD_SPEED = 25
-TURN_SPEED = 45
+TURN_SPEED = 40
 TURN_TIME = 900
 TURN_DEGREES = 80
 POST_TURN_TIME = 700
@@ -17,6 +17,19 @@ PRE_TURN_TIME = 500
 WARMUP_TIME = 2000
 POST_TURN_DISTANCE = 200
 PRE_TURN_DISTANCE = 200
+
+
+"""
+Thoughts on post_turn distance:
+
+It appears that after a turn (at least on the track created yesterday) the laser will set a
+destination at around 900 in start, but then as soon as it starts running distance_task
+the laser values jumps up to 1300, and therefore it will travel too far before begining
+to auto control. Not sure if it reads the laser value too soon, as in before it has finished
+turning and instead reads a value on a wall to the side instead of the opposite wall, or if
+it's something else. But that apprears to be the problem, and only when the distance is quite
+far, >1m or so.
+"""
 
 
 class Driver:
@@ -50,22 +63,24 @@ class Driver:
 
     def outer_turn_right(self):
         print('outer turn right')
-        self.tasks = [DistanceTask(self._post_turn, POST_TURN_DISTANCE, self.laser),
-                      DegreeTask(self._turn_right, TURN_DEGREES, self.gyro),
-                      DistanceTask(self._pre_turn, PRE_TURN_DISTANCE, self.laser)]
+        self.task = Task(None, lambda: True)
+        self.tasks = [DegreeTask(self._turn_right, TURN_DEGREES, self.gyro)]
 
     def outer_turn_left(self):
         print('outer turn left')
+        self.task = Task(None, lambda: True)
         self.tasks = [DistanceTask(self._post_turn, POST_TURN_DISTANCE, self.laser),
                       DegreeTask(self._turn_left, TURN_DEGREES, self.gyro),
                       DistanceTask(self._pre_turn, PRE_TURN_DISTANCE, self.laser)]
 
     def inner_turn_left(self):
         print('inner turn left')
+        self.task = Task(None, lambda: True)
         self.tasks = [DegreeTask(self._turn_left, TURN_DEGREES, self.gyro)]
 
     def inner_turn_right(self):
         print('inner turn right')
+        self.task = Task(None, lambda: True)
         self.tasks = [DegreeTask(self._turn_right, TURN_DEGREES, self.gyro)]
 
     def warmup(self):
@@ -125,7 +140,7 @@ class TimedTask(Task):
         self.stop_time = datetime.now() + timedelta(milliseconds=self.duration)
 
     def timed_task(self):
-        print('time left driving: ' + str(self.stop_time - datetime.now()))
+        #print('time left driving: ' + str(self.stop_time - datetime.now()))
         return self.stop_time <= datetime.now()
 
 
@@ -174,17 +189,18 @@ class DistanceTask(Task):
             laser_data = self.laser.get_data()
             print("RUN RUN RUN LASER READINGS")
 
-        self.destination = laser_data - self.distance
-        self.previous_time = datetime.now()
+        #print("Distance: " + str(self.distance))
+        #print("Laser data: " + str(laser_data))
 
+        self.destination = laser_data - self.distance
+        #print("Destination: " + str(self.destination))
+        self.previous_time = datetime.now()
         Task.start(self)
 
     def distance_task(self):
-
         laser_data = -1
         while laser_data == -1:
             laser_data = self.laser.get_data()
-            #print("Distance Task Laser: " + str(laser_data - self.destination))
 
         return self.destination >= laser_data
 
