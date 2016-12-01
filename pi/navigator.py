@@ -75,7 +75,7 @@ class AutoControl(State):
                 print('NAVIGATOR: inner turn left')
                 return Turn(TURN_DIRECTION_LEFT)
 
-        return AutoControl()
+        return self
 
 
 class Warmup(State):
@@ -87,7 +87,7 @@ class Warmup(State):
             print('NAVIGATOR: changin to auto control')
             return AutoControl()
         else:
-            return Warmup()
+            return self
 
 
 class Turn(State):
@@ -105,7 +105,7 @@ class Turn(State):
             print('NAVIGATOR: changing to auto control')
             return AutoControl()
         else:
-            return Turn(self.is_right_turn)
+            return self
 
 
 ###### NAVIGATOR CLASS #######
