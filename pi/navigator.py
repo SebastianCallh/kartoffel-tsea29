@@ -63,7 +63,7 @@ class AutoControl(State):
             Navigator.right_turn_enabled = (data['new_ir_right'] != -1 and data['new_ir_right_back'] != -1)
        
         # Inner turn
-        if laser_data <= Navigator.FACING_WALL_DIST and laser_data != -1:
+        if laser_data <= Navigator.FACING_WALL_DIST and laser_data != -1 and data['new_ir_right'] != -1:
             
             if data['side'] == Navigator.LEFT_SIDE:
                 data['driver'].inner_turn_right()
