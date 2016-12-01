@@ -56,3 +56,6 @@ def bt_request_map_data():
     
 def bt_drive_forward():
     print("Kör framåt")
+    
+def bt_drive_back():
+    print("Kör back")
