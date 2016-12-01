@@ -35,7 +35,7 @@ def setup():
     EventBus.subscribe(CMD_RETURN_SENSOR_DATA, ir.sensor_data_received)
     Laser.initialize()
     Gyro.initialize()
-    Data_handler.initialize()
+    # Data_handler.initialize()
 
 
 def main():
