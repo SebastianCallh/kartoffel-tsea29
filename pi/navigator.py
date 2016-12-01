@@ -42,7 +42,7 @@ class AutoControl(State):
         if self.is_at_left_turn(data) or self.is_at_right_turn(data):
             return
 
-        right_speed, left_speed, regulation = auto_control.auto_controller.auto_control(new_ir_right, new_ir_right_back_mm, data['side'])
+        right_speed, left_speed, regulation = AutoControl.auto_controller.auto_control(new_ir_right, new_ir_right_back_mm, data['side'])
         data['driver'].drive(left_speed, right_speed)
 
     def run(self, data):
