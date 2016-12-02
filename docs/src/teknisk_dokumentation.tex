@@ -150,11 +150,17 @@ VERSION & 2016-12-DD & Första version & Grupp 3 & Patrik Sletmo \\
 \end{table}
 }
 
+\clearpage
+
 \section{Inledning}
 % Kort beskrivning av hela dokumentet, skrivs förslagsvis sist
 
 \section{Systembeskrivning}
 % Beskrivning av systemets mest framträdande egenskaper
+Systemet består av en fyrhjulig robot samt en mjukvaruklient som kommunicerar med varandra via bluetooth.
+Syftet med systemet är att roboten ska kunna kunna kartlägga sin omgivning helt autonomnt. För att göra det 
+så har den diverse IR-sensorer, en lasersensor och ett gyroskop monterat på sig för att kunna navigera och mäta avstånd.
+Bluetooth-kopplingen låter mjukvaruklienten se kartläggningen i realtid, och ger möjligheten att fjärrstyra roboten.
 
 \subsection{Delsystem}
 % Upplistning av delsystem, eventuellt någon kort kommentar om varje delsystem
@@ -233,7 +239,7 @@ Här nedan listas alla komponenter som roboten består av.
   \caption{ Tabell över ställdon. }
 \end{table}
 
-TODO:TABELL NEDAN EJ KORRIGERAD
+
 \subsubsection{IC-kretsar}
 % Shifters
 \begin{table}[H]
@@ -243,10 +249,6 @@ TODO:TABELL NEDAN EJ KORRIGERAD
     \textbf{Komponent} & \textbf{Antal} \\
     \hline
     BSS138 & 1 \\
-   \hline
-    EXO3 & 1 \\
-    \hline
-    LS241 & 1 \\
     \hline
   \end{tabular}
   \caption{ Tabell över IC-kretsar. }
@@ -256,20 +258,24 @@ TODO:TABELL NEDAN EJ KORRIGERAD
 \section{Delsystem}
 
 \subsection{Huvudenhet}
-TODO:TEXT OM HUVUDENHET
+Huvudenheten består till hårdvaran av en Raspberry PI, på vilken operativsystemet Raspbian körs.
+Huvudenheten representerar robotens beslutsfattande organ och sköter navigationsbeslut, kartläggning, 
+kommunikation med mjukvaruklienten samt agerar mästare på robotens I2C-buss. 
 
 \subsubsection{Delsystemets funktion}
-TODO:TEXT OM DELSYSTEMETS FUNKTION
+Huvudenheten är uppdelad i två undermoduler, logikenheten och kommunikationsenheten. Logikenheten analyserar data från sensorenheten för att avgöra hur roboten ska navigera och för att bestämma hur omvärlden ser ut så att den kan kartläggas. Tack vare de två IR-sensorer på vardera sida om roboten så kan vi följa en vägg på vänster/höger sida, och genom att göra det kartlägga hela den utomliggande väggen. När vi väl avgränsat området som köksön kan befinna sig i söker roboten av den begränsade ytan till köksön identifieras och följer dess väggar till även den är kartlagd. När hela kartan finns i robotens minne kan den finna den kortaste vägen tillbaka till startpositionen och navigera dit. Logikenheten ansvarar även för att hålla koll på var någonstans roboten befinner sig. Eftersom roboten navigerar i ett rutnät så kan vi med hjälp av vår lasersensor räkna hur långt vi åker i raka streckor mellan varje sväng och därmed räkna ut vår totala förflyttning. Kommunikationsenheten agerar som ett abstraktionslager för Raspberry Pi:ens Bluetoothmodul och ser till att sköta all översättning där i mellan så att vi kan arbeta med våra interna dataformat i övriga delar av roboten.
 
 \subsubsection{Kopplingsschema}
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.45]{Logo}
+\includegraphics[scale=0.45]{Huvudenhet_kopplingsschema}
 \caption{Kopplingsschema för huvudenheten.}
 \label{fig:huvudenhet_kopplingsschema}
 \end{figure}
 
-TODO:TEXT OM KOPPLINGSCHEMAT
+Huvudenheten består av en Raspberry Pi 3 och en LCD-display av modellen JM162A. Utöver kopplingen till LCD:n så kopplas två pins till I2C-bussen.
+Eftersom Raspberry Pi drivs av 3.3 V matspänning och de övriga atmega-processorerna i roboten drivs av 5 V så behövs vi nivåskifta bussen så att de kan kommunicera med varandra, vilket görs med nivåskiftaren BSS138.
+
 
 \subsubsection{Komponenter}
 
@@ -281,21 +287,21 @@ TODO:TEXT OM KOPPLINGSCHEMAT
     \hline
     Raspberry PI 3 & 1 \\
     \hline
-    BSS138 & 2 \\
+    JM162A & 1 \\
     \hline
   \end{tabular}
 \end{table}
 
 \subsubsection{Resurser}
 
-TODO:TABELLEN NEDAN EJ KORRIGERAD
+
 \begin{table}[H]
    \centering
   \begin{tabular}{ | c | c | c | }
     \hline
     \textbf{Port} & \textbf{Antal} & \textbf{Används} \\
     \hline
-    GPIO pins & 40 & 2 \\
+    GPIO pins & 40 & 12 \\
     \hline
   \end{tabular}
 \end{table}
@@ -419,7 +425,7 @@ TODO:UPPDATERA TEMPUS
 \subsubsection{Kopplingsschema}
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.45]{Logo}
+\includegraphics[scale=0.45]{Styrenhet_kopplingsschema}
 \caption{Kopplingsschema för styrenheten.}
 \label{fig:styrenhet_kopplingsschema}
 \end{figure}
