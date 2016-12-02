@@ -102,6 +102,7 @@ class Driver:
          
     def drive_forward(self):
         self.task = TimedTask(self._drive_forward, REMOTE_COMMAND_EXECUTE_TIME)
+        print("Driver drove forward!")
     
     def drive_backward(self):
         self.task = TimedTask(self._drive_backward, REMOTE_COMMAND_EXECUTE_TIME)
@@ -161,6 +162,7 @@ class TimedTask(Task):
     def start(self):
         Task.start(self)
         self.stop_time = datetime.now() + timedelta(milliseconds=self.duration)
+        print("Start timed task")
 
     def timed_task(self):
         #print('time left driving: ' + str(self.stop_time - datetime.now()))
