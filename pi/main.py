@@ -44,6 +44,7 @@ def setup():
 def main():
     setup()
     mode = input("Select mode (a/m): ")
+    print("Mode = ", mode)
     while True:
         laser.read_data()
         gyro.read_data()
