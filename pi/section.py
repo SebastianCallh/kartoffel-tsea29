@@ -1,6 +1,7 @@
 from datetime import datetime
 
 import math
+import os
 
 NORTH = 0
 EAST = 1
@@ -15,6 +16,11 @@ class Section:
         self.direction = direction
         self.measurements = []
         self.block_distance = None
+        os.remove("debug.txt")
+        self.file = open("debug.txt", "rw")
+        self.file.write("Start distance; Start-finish distance; Estimated start distance; "
+                        "Non-manipulated Block distance; Manipulated block distance \n")
+
 
     def add_distance_sample(self, distance):
         # TODO: Verify distance validity by checking if the delta distance is
@@ -59,8 +65,11 @@ class Section:
         print("Estimated start distance: " + str(estimated_start_distance))
         print("Non rounded blockdistance: " + str(estimated_start_distance/BLOCK_LENGTH_MM))
         self.block_distance = round(
-            (estimated_start_distance / BLOCK_LENGTH_MM) + 1
+            (estimated_start_distance / BLOCK_LENGTH_MM)
         )
+        self.file.write(str(first_measurement[0]) + ";" + str(first_measurement[0] - finish_distance) + ";"
+                        + str(estimated_start_distance) + ";" + str(estimated_start_distance / BLOCK_LENGTH_MM) + ";"
+                        + str(self.block_distance) + "\n")
 
     def for_right_turn(self):
         return Section((self.direction + 1) % 4)
