@@ -43,7 +43,7 @@ def setup():
 
 def main():
     setup()
-
+    mode = input("Select mode (a/m): ")
     while True:
         laser.read_data()
         gyro.read_data()
@@ -51,7 +51,8 @@ def main():
 
         EventBus.receive()
         position.update()
-        navigator.navigate()
+        if mode == 'a':
+            navigator.navigate()
 
 
 Safety.run_safely(main)
