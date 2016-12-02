@@ -21,9 +21,9 @@ def run_bt_client(queue_handler):
     bt_client.start()
 
 
-def printIP(task):
+def update_IP(data):
     global gui
-    gui.printIP()
+    gui.update_IP(data)
 
 
 def add_sensor_data(data):
@@ -42,7 +42,7 @@ def update_map(data):
 
 
 def setup_subscriptions():
-    EventBus.subscribe(RETURN_PI_IP, printIP)
+    EventBus.subscribe(RETURN_PI_IP, update_IP)
     EventBus.subscribe(BT_RETURN_SENSOR_DATA, add_sensor_data)
     EventBus.subscribe(BT_RETURN_SERVO_DATA, add_servo_data)
     EventBus.subscribe(BT_RETURN_MAP_DATA, update_map)
@@ -51,13 +51,14 @@ def request_data():
     outbound.bt_request_sensor_data()
     outbound.bt_request_servo_data()
     #outbound.bt_request_map_data()
+    outbound.request_ip()
 
 def update():
     global gui, last_data_request_time
-    #EventBus.receive()
+    EventBus.receive()
     if (datetime.datetime.now() - last_data_request_time) > datetime.timedelta(
             seconds=DATA_REQUEST_INTERVAL):
-        #request_data()
+        request_data()
         '''hej = random.randint(0,2)
         if hej == 0:
             gui.add_sensor_data(['a','a','a','a','a','a'])
@@ -75,7 +76,7 @@ def main():
     global gui
     queue_handler = EventBus.queue_handler
     setup_subscriptions()
-    #run_bt_client(queue_handler)
+    run_bt_client(queue_handler)
     gui = GUI()
     start_gui()
 

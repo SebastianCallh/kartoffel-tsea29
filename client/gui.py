@@ -21,6 +21,8 @@ class GUI:
 
     def __init__(self):
 
+        self.pi_ip = ""
+
         self.root = Tk()
         self.root.title("Kartoffel control")
         self.main_frame = Frame(self.root,width=self.WINDOW_X,height=self.WINDOW_Y,bg=self.BG_COLOR)
@@ -62,7 +64,7 @@ class GUI:
         
         # --- Buttons ---
         self.bt_frame = Frame(self.main_frame,width=self.BT_FRAME_X,height=self.BT_FRAME_Y)
-        self.bt_frame.grid(row=1,column=0)
+        self.bt_frame.grid(row=1,column=0,pady=15)
         
         self.bt_forward = Button(self.bt_frame,text="Forward",command=outbound.bt_drive_forward)
         self.bt_forward.grid(row=0,column=1)
@@ -75,6 +77,9 @@ class GUI:
         
         self.bt_left = Button(self.bt_frame,text="Left",command=outbound.bt_turn_left)
         self.bt_left.grid(row=0,column=0)
+        
+        self.ip_box = Label(self.main_frame, textvariable=self.pi_ip, width=25, bg="white")
+        self.ip_box.grid(row=1,column=1)
 
 
     '''
@@ -121,4 +126,7 @@ class GUI:
 
     def update_map(self, values):
         print("Map data: ", str(values))
+        
+    def update_IP(self, ip):
+        self.pi_ip = ip
 

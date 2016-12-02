@@ -10,3 +10,4 @@ class map_grid():
         self.map_data = []       # List of coordinates of all corners on the map,
                                  # listed in the order of discovery
         self.new_map_data = []   # The latest map data recieved
+        self.start_position = 
