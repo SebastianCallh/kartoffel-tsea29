@@ -1,6 +1,7 @@
 from tkinter import *
 import outbound
 import datetime
+from PIL import Image, ImageTk
 
 
 class GUI:
@@ -12,8 +13,8 @@ class GUI:
     LIST_FRAME_Y = int(WINDOW_Y * 0.75)
     LIST_BOX_Y = int(LIST_FRAME_Y * 0.5)
     LIST_BOX_X = int(LIST_FRAME_X * 0.5)
-    BT_FRAME_X = int(WINDOW_X)
-    BT_FRAME_Y = int(WINDOW_Y * 0.2)
+    BTN_FRAME_X = int(WINDOW_X)
+    BTN_FRAME_Y = int(WINDOW_Y * 0.2)
     BG_COLOR = "orange"
 
     MAX_LIST_ITEMS = 13
@@ -74,23 +75,32 @@ class GUI:
         self.servo_label.grid(row=2, column=1)
 
         # --- Buttons ---
-        self.bt_frame = Frame(self.main_frame, width=self.BT_FRAME_X, height=self.BT_FRAME_Y)
-        self.bt_frame.grid(row=1, column=0, pady=15)
+        self.btn_frame = Frame(self.main_frame, width=self.BTN_FRAME_X, height=self.BTN_FRAME_Y)
+        self.btn_frame.grid(row=1, column=0, pady=15)
 
-        self.bt_forward = Button(self.bt_frame, text="Forward", command=outbound.bt_drive_forward)
-        self.bt_forward.grid(row=0, column=1)
+        self.btn_forward = Button(self.btn_frame, text="Forward", command=outbound.bt_drive_forward)
+        self.btn_forward.grid(row=0, column=2)
 
-        self.bt_back = Button(self.bt_frame, text="Back", command=outbound.bt_drive_back)
-        self.bt_back.grid(row=0, column=2)
+        self.btn_back = Button(self.btn_frame, text="Back", command=outbound.bt_drive_back)
+        self.btn_back.grid(row=0, column=3)
 
-        self.bt_right = Button(self.bt_frame, text="Right", command=outbound.bt_turn_right)
-        self.bt_right.grid(row=0, column=3)
+        self.btn_right = Button(self.btn_frame, text="Right", command=outbound.bt_turn_right)
+        self.btn_right.grid(row=0, column=4)
 
-        self.bt_left = Button(self.bt_frame, text="Left", command=outbound.bt_turn_left)
-        self.bt_left.grid(row=0, column=0)
+        self.btn_left = Button(self.btn_frame, text="Left", command=outbound.bt_turn_left)
+        self.btn_left.grid(row=0, column=1)
 
         self.ip_box = Label(self.main_frame, textvariable=self.pi_ip, width=25, bg="white")
         self.ip_box.grid(row=1, column=1)
+
+        # --- Image ----
+        image = Image.open("Logo.jpg")
+        resized = image.resize((100, 100))
+        tkimage = ImageTk.PhotoImage(resized)
+        self.logo = Label(self.btn_frame, image = tkimage)
+        self.logo.grid(row = 0, column=0)
+        self.canvas.create_image(100, 100, image=tkimage)
+
 
     '''
     Values should be a list containing of [ir_left,ir_right,ir_left_back,
