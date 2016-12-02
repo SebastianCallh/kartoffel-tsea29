@@ -14,47 +14,65 @@ class GUI:
     LIST_BOX_X = int(LIST_FRAME_X * 0.5)
     BT_FRAME_X = int(WINDOW_X)
     BT_FRAME_Y = int(WINDOW_Y * 0.2)
+    BG_COLOR = "orange"
     
-    MAX_LIST_ITEMS = 14
+    MAX_LIST_ITEMS = 13
     
 
     def __init__(self):
 
         self.root = Tk()
         self.root.title("Kartoffel control")
-        self.main_frame = Frame(self.root,width=self.WINDOW_X,height=self.WINDOW_Y)
+        self.main_frame = Frame(self.root,width=self.WINDOW_X,height=self.WINDOW_Y,bg=self.BG_COLOR)
         self.main_frame.grid()
+        
+        # --- Canvas ---
         self.canvas = Canvas(self.main_frame,
                              width=GUI.CANVAS_X,
                              height=GUI.CANVAS_Y,bg="white")
-        self.canvas.grid(column=0,row=0)
+        self.canvas.grid(column=0,row=0,padx=10)
+         
+        # --- Lists ---
+        self.list_frame = Frame(self.main_frame, width=self.LIST_FRAME_X, height=self.LIST_FRAME_Y,bg=self.BG_COLOR)
+        self.list_frame.grid(row=0,column=1,padx=10)
         
-        self.list_frame = Frame(self.main_frame, width=self.LIST_FRAME_X, height=self.LIST_FRAME_Y)
-        self.list_frame.grid(row=0,column=1)
-        self.ir_list = Listbox(self.list_frame, height=14)
-        self.ir_list.grid(row=0,column=1)
+        self.ir_list = Listbox(self.list_frame, height=self.MAX_LIST_ITEMS)
+        self.ir_list.grid(row=1,column=0)
         self.ir_list_nr_items = 0
+        self.ir_label = Label(self.list_frame, text="IR data (mm) \n (left_back, left, right, right_back)",fg="black",bg=self.BG_COLOR)
+        self.ir_label.grid(row=0,column=0)
 
-        self.laser_list = Listbox(self.list_frame, height=14)
-        self.laser_list.grid(row=0,column=2)
+        self.laser_list = Listbox(self.list_frame, height=self.MAX_LIST_ITEMS)
+        self.laser_list.grid(row=1,column=1)
         self.laser_list_nr_items = 0
+        self.laser_label = Label(self.list_frame, text="Laser data",fg="black",bg=self.BG_COLOR)
+        self.laser_label.grid(row=0,column=1)
 
-        self.gyro_list = Listbox(self.list_frame, height=14)
-        self.gyro_list.grid(row=2,column=1)
+        self.gyro_list = Listbox(self.list_frame, height=self.MAX_LIST_ITEMS)
+        self.gyro_list.grid(row=3,column=0)
         self.gyro_list_nr_items = 0
+        self.gyro_label = Label(self.list_frame, text="Gyro data \n (degrees)",fg="black",bg=self.BG_COLOR)
+        self.gyro_label.grid(row=2,column=0)
  
-        self.servo_list = Listbox(self.list_frame, height=14)
-        self.servo_list.grid(row=2,column=2)
+        self.servo_list = Listbox(self.list_frame, height=self.MAX_LIST_ITEMS)
+        self.servo_list.grid(row=3,column=1)
         self.servo_list_nr_items = 0
+        self.servo_label = Label(self.list_frame, text="Servo data \n (speed)",fg="black",bg=self.BG_COLOR)
+        self.servo_label.grid(row=2,column=1)
         
+        # --- Buttons ---
         self.bt_frame = Frame(self.main_frame,width=self.BT_FRAME_X,height=self.BT_FRAME_Y)
-        self.bt_frame.grid(row=1)
+        self.bt_frame.grid(row=1,column=0)
+        
         self.bt_forward = Button(self.bt_frame,text="Forward",command=outbound.bt_drive_forward)
         self.bt_forward.grid(row=0,column=1)
+        
         self.bt_back = Button(self.bt_frame,text="Back",command=outbound.bt_drive_back)
         self.bt_back.grid(row=0,column=2)
+        
         self.bt_right = Button(self.bt_frame,text="Right",command=outbound.bt_turn_right)
         self.bt_right.grid(row=0,column=3)
+        
         self.bt_left = Button(self.bt_frame,text="Left",command=outbound.bt_turn_left)
         self.bt_left.grid(row=0,column=0)
 
