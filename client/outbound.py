@@ -56,12 +56,36 @@ def bt_request_map_data():
     
 def bt_drive_forward():
     print("Kör framåt")
-    
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        BT_task(
+            BT_DRIVE_FORWARD
+        )
+    )
+            
 def bt_drive_back():
     print("Kör back")
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        BT_task(
+            BT_DRIVE_BACK
+        )
+    )
     
 def bt_turn_right():
     print("Turn right")
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        BT_task(
+            BT_TURN_RIGHT
+        )
+    )
     
 def bt_turn_left():
     print("Turn left")
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        BT_task(
+            BT_TURN_LEFT
+        )
+    )

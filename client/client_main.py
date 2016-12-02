@@ -58,11 +58,11 @@ def update():
     if (datetime.datetime.now() - last_data_request_time) > datetime.timedelta(
             seconds=DATA_REQUEST_INTERVAL):
         #request_data()
-        hej = random.randint(0,2)
+        '''hej = random.randint(0,2)
         if hej == 0:
             gui.add_sensor_data(['a','a','a','a','a','a'])
         else:
-            gui.add_sensor_data(['b','b','b','b','b','b'])
+            gui.add_sensor_data(['b','b','b','b','b','b'])'''
         last_data_request_time = datetime.datetime.now()
     gui.canvas.after(UPDATE_INTERVAL, update)
     
