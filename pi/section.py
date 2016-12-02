@@ -17,9 +17,9 @@ class Section:
         self.measurements = []
         self.block_distance = None
 
-        open("debug.txt", "rw").close()
+        open("debug.txt", "r").close()
         os.remove("debug.txt")
-        self.file = open("debug.txt", "rw")
+        self.file = open("debug.txt", "w")
         self.file.write("Start distance; Start-finish distance; Estimated start distance; "
                         "Non-manipulated Block distance; Manipulated block distance \n")
 
