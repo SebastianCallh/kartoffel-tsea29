@@ -23,6 +23,7 @@ class Section:
         self.file = open("debug.txt", "w")
         self.file.write("Start distance; Start-finish distance; Estimated start distance; "
                         "Non-manipulated Block distance; Manipulated block distance \n")
+        self.file.flush()
 
 
     def add_distance_sample(self, distance):
@@ -73,6 +74,7 @@ class Section:
         self.file.write(str(first_measurement[0]) + ";" + str(first_measurement[0] - finish_distance) + ";"
                         + str(estimated_start_distance) + ";" + str(estimated_start_distance / BLOCK_LENGTH_MM) + ";"
                         + str(self.block_distance) + "\n")
+        self.file.flush()
 
     def for_right_turn(self):
         return Section((self.direction + 1) % 4)
