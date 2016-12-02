@@ -31,6 +31,10 @@ def setup():
     EventBus.subscribe(BT_REQUEST_SENSOR_DATA, communicator.send_sensor_data)
     EventBus.subscribe(BT_REQUEST_SERVO_DATA, communicator.send_servo_data)
     EventBus.subscribe(BT_REQUEST_MAP_DATA, communicator.send_map_data)
+    EventBus.subsribe(BT_DRIVE_FORWARD, Driver.drive_forward)
+    EventBus.subsribe(BT_DRIVE_BACK, Driver.drive_backward)
+    EventBus.subsribe(BT_TURN_RIGHT, Driver.turn_right)
+    EventBus.subsribe(BT_TURN_LEFT, Driver.turn_left)
     EventBus.subscribe(REQUEST_PI_IP, communicator.send_ip)
     EventBus.subscribe(CMD_RETURN_SENSOR_DATA, ir.sensor_data_received)
     Laser.initialize()
@@ -39,7 +43,7 @@ def setup():
 
 def main():
     setup()
-
+    mode = input("Select mode (a/m): ")
     while True:
         laser.read_data()
         gyro.read_data()
@@ -47,7 +51,8 @@ def main():
 
         EventBus.receive()
         position.update()
-        navigator.navigate()
+        if mode == 'a':
+            navigator.navigate()
 
 
 Safety.run_safely(main)

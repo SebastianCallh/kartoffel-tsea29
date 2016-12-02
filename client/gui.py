@@ -128,8 +128,11 @@ class GUI:
     def update_map(self, values):
         print("Map data: ", str(values))
 
+    '''
+    Ip comes at format [ip]
+    '''
     def update_IP(self, ip):
-        self.pi_ip = ip
+        self.pi_ip = str(ip[0])
 
     def key(self, event):
         print("Any key pressed", repr(event.char))
