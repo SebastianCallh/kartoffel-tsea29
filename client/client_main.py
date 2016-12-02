@@ -8,7 +8,6 @@ from eventbus import EventBus
 import datetime
 import random
 
-
 DATA_REQUEST_INTERVAL = 1  # seconds
 UPDATE_INTERVAL = 250  # milliseconds
 
@@ -47,11 +46,13 @@ def setup_subscriptions():
     EventBus.subscribe(BT_RETURN_SERVO_DATA, add_servo_data)
     EventBus.subscribe(BT_RETURN_MAP_DATA, update_map)
 
+
 def request_data():
     outbound.bt_request_sensor_data()
     outbound.bt_request_servo_data()
-    #outbound.bt_request_map_data()
+    # outbound.bt_request_map_data()
     outbound.request_ip()
+
 
 def update():
     global gui, last_data_request_time
@@ -66,11 +67,13 @@ def update():
             gui.add_sensor_data(['b','b','b','b','b','b'])'''
         last_data_request_time = datetime.datetime.now()
     gui.canvas.after(UPDATE_INTERVAL, update)
-    
+
+
 def start_gui():
     global gui
     gui.canvas.after(UPDATE_INTERVAL, update)
     gui.root.mainloop()
+
 
 def main():
     global gui
