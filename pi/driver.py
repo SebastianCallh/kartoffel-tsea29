@@ -60,6 +60,7 @@ class Driver:
         self.left_speed = left_speed
         self.right_speed = right_speed
         set_motor_speed(left_speed, right_speed)
+        print("Driver drive set motor speed to ", left_speed, right_speed)
 
     def outer_turn_right(self):
         print('outer turn right')
@@ -102,6 +103,7 @@ class Driver:
          
     def drive_forward(self):
         self.task = TimedTask(self._drive_forward, REMOTE_COMMAND_EXECUTE_TIME)
+        print("Driver drove forward!")
     
     def drive_backward(self):
         self.task = TimedTask(self._drive_backward, REMOTE_COMMAND_EXECUTE_TIME)
@@ -161,6 +163,7 @@ class TimedTask(Task):
     def start(self):
         Task.start(self)
         self.stop_time = datetime.now() + timedelta(milliseconds=self.duration)
+        print("Start timed task")
 
     def timed_task(self):
         #print('time left driving: ' + str(self.stop_time - datetime.now()))

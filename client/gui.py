@@ -26,9 +26,18 @@ class GUI:
         self.root.protocol("WM_DELETE_WINDOW", self.exit)
         self.root.title("Kartoffel control")
         self.main_frame = Frame(self.root, width=self.WINDOW_X, height=self.WINDOW_Y, bg=self.BG_COLOR)
-        self.main_frame.focus_set() # Set all frame as listening to keyboard events
+        self.main_frame.focus_set()  # Set all frame as listening to keyboard events
         self.main_frame.grid()
-        self.main_frame.bind("<Key>", self.key) # Run function key when any key is pressed.
+
+        # Run functios when certain key is pressed. Bind to same as buttons.
+        self.main_frame.bind('<w>', self.key_forward)
+        self.root.bind('<Up>', self.key_forward)
+        self.main_frame.bind('<s>', self.key_back)
+        self.root.bind('<Down>', self.key_back)
+        self.main_frame.bind('<a>', self.key_left)
+        self.root.bind('<Left>', self.key_left)
+        self.main_frame.bind('<d>', self.key_right)
+        self.root.bind('<Right>', self.key_right)
 
         # --- Canvas ---
         self.canvas = Canvas(self.main_frame,
@@ -135,6 +144,7 @@ class GUI:
     '''
     Ip comes at format [ip]
     '''
+
     def update_IP(self, ip):
         print("IP i gui: ", str(ip[0]))
         self.ip_box.config(text="Pi IP: " + str(ip[0]))
@@ -146,6 +156,18 @@ class GUI:
     def close_window(self):
         self.root.destroy()
 
-    def key(self, event):
-        print("Any key pressed", repr(event.char))
-        
+    '''Functions for handling key press.
+    Takes forced event, but ignores it and calls correct driver function.
+    '''
+
+    def key_forward(self, event):
+        outbound.bt_drive_forward()
+
+    def key_back(self, event):
+        outbound.bt_drive_back()
+
+    def key_left(self, event):
+        outbound.bt_turn_left()
+
+    def key_right(self, event):
+        outbound.bt_turn_right()

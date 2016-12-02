@@ -45,6 +45,7 @@ class Communicator:
         
     def drive_forward(self):
         self.driver.drive_forward()
+        print("Communicator drove forward!")
     
     def drive_backward(self):
         self.driver.drive_backward()
