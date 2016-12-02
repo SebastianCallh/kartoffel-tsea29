@@ -11,12 +11,8 @@ see outbound.py.
 # Addresses for the units on the bus. Note that the laser cannot be queried
 # using the protocol described in bus.py.
 
-SENSOR_ADDR = 0x30
-STYR_ADDR = 0x40
+
 BLUETOOTH_ADDR = 0xBEEF
-LASER_ADDR = 0x62
-GYRO_ADDR = 0x6b
-ACCEL_ADDR = 0x19
 
 # Packet addresses
 PACKET_HEADER = 0
@@ -148,51 +144,12 @@ CMD_TURN_FINISHED = 9
 
 # -------------------- Bluetooth commands ---------------------
 
+REQUEST_PI_IP = 10
+RETURN_PI_IP = 11
 
-# Ask for IP address of robot
-BT_REQUEST_PI_IP = 10
-"""
-Command sent from Bluetooth client to Bluetooth server. Issues a request
-to the to the server prompting it to send its IP address back to the client.
-
-Target: Bluetooth server
-
-Arguments: None
-"""
-
-# Return IP address from the robot
-BT_RETURN_PI_IP = 11
-"""
-Command sent from Bluetooth server to Bluetooth client after a request
-for its IP address has been made.
-
-Target: Bluetooth client
-
-Arguments: ip
-    Sent as a string.
-"""
-
-# Demand Bluetooth server to restart
 BT_SERVER_RESTART = 12
-"""
-Command sent from Bluetooth client to Bluetooth server to restart server
-and renew the Bluetooth connection.
 
-Target: Bluetooth server
-
-Arguments: None
-"""
-
-# Demand Bluetooth server to shut down
 BT_SERVER_SHUTDOWN = 13
-"""
-Command sent from Bluetooth client to Bluetooth server to shutdown server
-and close the Bluetooth connection.
-
-Target: Bluetooth server
-
-Arguments: None
-"""
 
 BT_REQUEST_SENSOR_DATA = 14
 BT_RETURN_SENSOR_DATA = 15
@@ -203,9 +160,15 @@ BT_RETURN_SERVO_DATA = 17
 BT_REQUEST_MAP_DATA = 18
 BT_RETURN_MAP_DATA = 19
 
-BT_CLIENT_COMMANDS = [BT_REQUEST_PI_IP, BT_SERVER_RESTART,
-                      BT_SERVER_SHUTDOWN, BT_REQUEST_SENSOR_DATA,
-                      BT_REQUEST_MAP_DATA, BT_REQUEST_SERVO_DATA]
+BT_DRIVE_FORWARD = 20
+BT_DRIVE_BACK = 21
 
-BT_SERVER_COMMANDS = [BT_RETURN_PI_IP, BT_RETURN_SENSOR_DATA,
+BT_TURN_RIGHT = 22
+BT_TURN_LEFT = 23
+
+BT_CLIENT_COMMANDS = [REQUEST_PI_IP, BT_SERVER_RESTART,
+                      BT_SERVER_SHUTDOWN, BT_REQUEST_SENSOR_DATA,
+                      BT_REQUEST_MAP_DATA, BT_REQUEST_SERVO_DATA,BT_DRIVE_FORWARD,BT_DRIVE_BACK,BT_TURN_RIGHT,BT_TURN_LEFT]
+
+BT_SERVER_COMMANDS = [RETURN_PI_IP, BT_RETURN_SENSOR_DATA,
                       BT_RETURN_SERVO_DATA, BT_RETURN_MAP_DATA]
