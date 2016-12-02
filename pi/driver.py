@@ -60,6 +60,7 @@ class Driver:
         self.left_speed = left_speed
         self.right_speed = right_speed
         set_motor_speed(left_speed, right_speed)
+        print("Driver drive set motor speed to ", left_speed, right_speed)
 
     def outer_turn_right(self):
         print('outer turn right')
