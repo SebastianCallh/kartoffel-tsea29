@@ -20,10 +20,11 @@ class GUI:
     MAX_LIST_ITEMS = 13
 
     def __init__(self):
-
         self.pi_ip = ""
+        self.exit_demanded = False
 
         self.root = Tk()
+        self.root.protocol("WM_DELETE_WINDOW", self.exit)
         self.root.title("Kartoffel control")
         self.main_frame = Frame(self.root, width=self.WINDOW_X, height=self.WINDOW_Y, bg=self.BG_COLOR)
         self.main_frame.focus_set()  # Set all frame as listening to keyboard events
@@ -76,7 +77,8 @@ class GUI:
 
         # --- Buttons ---
         self.btn_frame = Frame(self.main_frame, width=self.BTN_FRAME_X, height=self.BTN_FRAME_Y)
-        self.btn_frame.grid(row=1, column=0, pady=15)
+        self.btn_frame.grid(row=1, column=0, pady=15, padx = 10)
+
 
         self.btn_forward = Button(self.btn_frame, text="Forward", command=outbound.bt_drive_forward)
         self.btn_forward.grid(row=0, column=2)
@@ -87,10 +89,14 @@ class GUI:
         self.btn_right = Button(self.btn_frame, text="Right", command=outbound.bt_turn_right)
         self.btn_right.grid(row=0, column=4)
 
-        self.btn_left = Button(self.btn_frame, text="Left", command=outbound.bt_turn_left)
-        self.btn_left.grid(row=0, column=1)
 
-        self.ip_box = Label(self.main_frame, textvariable=self.pi_ip, width=25, bg="white")
+        self.btn_left = Button(self.btn_frame, text="Left", command=outbound.bt_turn_left)
+        self.btn_left.grid(row=0, column=0)
+
+        self.bt_restart = Button(self.bt_frame, text="Restart bluetooth\nconnection",command=outbound.bt_restart)
+        self.bt_restart.grid(row=0,column=5,padx=25)
+
+        self.ip_box = Label(self.main_frame, text="Pi IP: ", width=25, bg="white")
         self.ip_box.grid(row=1, column=1)
 
         # --- Image ----
@@ -152,12 +158,19 @@ class GUI:
     '''
 
     def update_IP(self, ip):
-        self.pi_ip = str(ip[0])
+        print("IP i gui: ", str(ip[0]))
+        self.ip_box.config(text="Pi IP: " + str(ip[0]))
+        
+    def exit(self):
+        self.exit_demanded = True
+        print("Exit gui")
+        
+    def close_window(self):
+        self.root.destroy()
 
-    """
-    Functions for handling key press.
+    '''Functions for handling key press.
     Takes forced event, but ignores it and calls correct driver function.
-    """
+    '''
 
     def key_forward(self, event):
         outbound.bt_drive_forward()

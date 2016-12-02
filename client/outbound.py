@@ -93,3 +93,21 @@ def bt_turn_left():
             BT_TURN_LEFT
         )
     )
+    
+def bt_shutdown():
+    print("Shutdown bluetooth connection")
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        BT_task(
+            BT_SERVER_SHUTDOWN
+        )
+    )
+    
+def bt_restart():
+    print("Restart bluetooth connection")
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        BT_task(
+            BT_SERVER_RESTART
+        )
+    )
