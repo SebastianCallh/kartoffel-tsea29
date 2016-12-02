@@ -41,6 +41,20 @@ class Communicator:
     def send_ip(self):
         outbound.bt_return_ip(get_ip())
 
+        
+    def drive_forward(self):
+        self.driver.drive_forward()
+    
+    def drive_backward(self):
+        self.driver.drive_backward()
+        
+        
+    def turn_left(self):
+        self.driver.turn_left()
+        
+    def turn_right(self):
+        self.driver.turn_right()
+        
     # If not running bt_server_runner
     @staticmethod
     def initialize():
