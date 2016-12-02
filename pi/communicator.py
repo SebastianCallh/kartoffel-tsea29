@@ -40,6 +40,7 @@ class Communicator:
 
     def send_ip(self):
         outbound.bt_return_ip(get_ip())
+        print("send_ip, done")
 
         
     def drive_forward(self):
