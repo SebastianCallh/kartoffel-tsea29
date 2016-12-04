@@ -1,7 +1,5 @@
 from datetime import datetime
 
-import math
-import os
 
 NORTH = 0
 EAST = 1
@@ -33,11 +31,11 @@ class Section:
             self.block_distance = 0
             return
 
+        # Takes the difference between max measurement and min measurement and divide by block length.
         self.block_distance = round(
             (max(self.measurements, key=lambda x: x[0])[0] -
              min(self.measurements, key=lambda x: x[0])[0]) /
             BLOCK_LENGTH_MM)
-
 
     def for_right_turn(self):
         return Section((self.direction + 1) % 4)
