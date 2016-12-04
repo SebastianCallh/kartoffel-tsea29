@@ -12,20 +12,21 @@ BLOCK_LENGTH_MM = 400
 
 
 class Section:
+    FILE_NUM = 0
+
     def __init__(self, direction):
         self.direction = direction
         self.measurements = []
         self.block_distance = None
 
-
-        open("debug.txt", "w").close()
-        os.remove("debug.txt")
-        self.file = open("debug.txt", "w")
+        open("debug" + str(Section.FILE_NUM) + ".txt", "w").close()
+        os.remove("debug" + str(Section.FILE_NUM) + ".txt")
+        self.file = open("debug" + str(Section.FILE_NUM) + ".txt", "w")
         self.file.write("Start distance; Start-finish distance; Estimated start distance; "
                         "Non-manipulated Block distance; Manipulated block distance \n")
         self.file.flush()
         self.file.close()
-
+        Section.FILE_NUM += 1
 
     def add_distance_sample(self, distance):
         # TODO: Verify distance validity by checking if the delta distance is
@@ -72,7 +73,7 @@ class Section:
         self.block_distance = round(
             (estimated_start_distance / BLOCK_LENGTH_MM)
         )
-        self.file = open("debug.txt", "w")
+        self.file = open("debug" + str(Section.FILE_NUM) + ".txt", "w")
         self.file.write(str(first_measurement[0]) + ";" + str(first_measurement[0] - finish_distance) + ";"
                         + str(estimated_start_distance) + ";" + str(estimated_start_distance / BLOCK_LENGTH_MM) + ";"
                         + str(self.block_distance) + "\n")
