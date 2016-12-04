@@ -19,7 +19,7 @@ class Section:
         self.measurements = []
         self.block_distance = None
 
-        if Section.FILE_NUM == 1:
+        if Section.FILE_NUM == 0:
             open("debug.txt", "w").close()
             os.remove("debug.txt")
             self.file = open("debug.txt", "w")
