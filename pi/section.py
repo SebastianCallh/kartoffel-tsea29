@@ -26,7 +26,6 @@ class Section:
                         "Non-manipulated Block distance; Manipulated block distance \n")
         self.file.flush()
         self.file.close()
-        Section.FILE_NUM += 1
 
     def add_distance_sample(self, distance):
         # TODO: Verify distance validity by checking if the delta distance is
@@ -79,6 +78,7 @@ class Section:
                         + str(self.block_distance) + "\n")
         self.file.flush()
         self.file.close()
+        Section.FILE_NUM += 1
 
     def for_right_turn(self):
         return Section((self.direction + 1) % 4)
