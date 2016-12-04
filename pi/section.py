@@ -82,6 +82,12 @@ class Section:
         estimated_start_distance = average_ratio * total_measure_time_seconds
         print("Estimated start distance: " + str(estimated_start_distance))
         print("Non rounded blockdistance: " + str(estimated_start_distance/BLOCK_LENGTH_MM))
+        print("Max - min distance: " + str(max(self.measurements, key=lambda x: x[0]) -
+                                           min(self.measurements, key=lambda x: x[0])))
+
+        print("Max - min distance / Block: " + str((max(self.measurements, key=lambda x: x[0]) -
+                                                    min(self.measurements, key=lambda x: x[0])) /
+                                                    BLOCK_LENGTH_MM))
         self.block_distance = round(
             (estimated_start_distance / BLOCK_LENGTH_MM)
         )
