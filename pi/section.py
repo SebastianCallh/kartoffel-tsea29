@@ -19,13 +19,16 @@ class Section:
         self.measurements = []
         self.block_distance = None
 
-        open("debug.txt", "w").close()
-        os.remove("debug.txt")
-        self.file = open("debug.txt", "w")
-        self.file.write("Start distance; Start-finish distance; Estimated start distance; "
-                        "Non-manipulated Block distance; Manipulated block distance \n")
-        self.file.flush()
-        self.file.close()
+        if Section.FILE_NUM == 1:
+            open("debug.txt", "w").close()
+            os.remove("debug.txt")
+            self.file = open("debug.txt", "w")
+            self.file.write("Start distance; Start-finish distance; Estimated start distance; "
+                            "Non-manipulated Block distance; Manipulated block distance \n")
+            self.file.flush()
+            self.file.close()
+            Section.FILE_NUM = 1
+
 
     def add_distance_sample(self, distance):
         # TODO: Verify distance validity by checking if the delta distance is
