@@ -27,6 +27,12 @@ class Section:
                             "Non-manipulated Block distance; Manipulated block distance \n")
             self.file.flush()
             self.file.close()
+
+            open("laserdebug.txt", "w").close()
+            os.remove("laserdebug.txt")
+            self.laserfile = open("laserdebug.txt", "w")
+            self.laserfile.flush()
+            self.laserfile.close()
             Section.FILE_NUM = 1
 
 
@@ -35,6 +41,10 @@ class Section:
         # reasonable.
         if distance > 50:
             self.measurements.append((distance, datetime.now()))
+            self.laserfile = open("laserdebug.txt", "a")
+            self.laserfile.write(str(distance) + "\n")
+            self.laserfile.flush()
+            self.laserfile.close()
 
     def finish(self):
         # If we're somehow detecting the next turn for a dead end corner before
