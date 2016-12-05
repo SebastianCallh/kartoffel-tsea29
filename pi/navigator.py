@@ -109,7 +109,7 @@ class Navigator:
     def navigate(self):
         self.data['driver'].update()
 
-        if self.mode == AUTONOMOUS:
+        if self.mode == Navigator.AUTONOMOUS:
             next_state = self.state.run(self.data)
 
             curr_type = type(self.state)
