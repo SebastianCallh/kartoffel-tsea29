@@ -1,7 +1,6 @@
 from tkinter import *
 import outbound
 from map_grid import MapGrid
-#from PIL import Image, ImageTk
 
 
 class GUI:
@@ -80,7 +79,7 @@ class GUI:
 
         # --- Buttons ---
         self.btn_frame = Frame(self.main_frame, width=self.BTN_FRAME_X, height=self.BTN_FRAME_Y)
-        self.btn_frame.grid(row=1, column=0, pady=15, padx = 10)
+        self.btn_frame.grid(row=1, column=0, pady=10, padx=10)
 
         self.btn_forward = Button(self.btn_frame, text="Forward", command=outbound.bt_drive_forward)
         self.btn_forward.grid(row=0, column=2)
@@ -101,13 +100,11 @@ class GUI:
         self.ip_box = Label(self.main_frame, text="Pi IP: ", width=25, bg="white")
         self.ip_box.grid(row=1, column=1)
 
-        """# --- Image ----
-        image = Image.open("Logo.jpg")
-        resized = image.resize((100, 100))
-        tkimage = ImageTk.PhotoImage(resized)
-        self.logo = Label(self.btn_frame, image = tkimage)
-        self.logo.grid(row = 0, column=0)
-        self.canvas.create_image(100, 100, image=tkimage)"""
+        # --- Image ----
+        logo = PhotoImage(file="Logo.gif")
+        self.resampled_logo = logo.subsample(4, 7)
+        self.logo_box = Label(self.btn_frame, image=self.resampled_logo)
+        self.logo_box.grid(row=0, column=0, padx=10)
 
     '''
     Values should be a list containing of [ir_left,ir_right,ir_left_back,

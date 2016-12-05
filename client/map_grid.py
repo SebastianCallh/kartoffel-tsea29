@@ -37,8 +37,20 @@ class MapGrid:
     '''
     def _calc_actual_coords(self, canvas):
         for corner in self.new_map_data:
+            # Match coordinates to grid
             x = corner[0]
+            mod_x = x % self.CELL_SIZE
+            if mod_x < (self.CELL_SIZE / 2):
+                x = (x // self.CELL_SIZE) * self.CELL_SIZE
+            else:
+                x = ((x // self.CELL_SIZE) + 1) * self.CELL_SIZE
             y = corner[1]
+            mod_y = y % self.CELL_SIZE
+            if mod_y < (self.CELL_SIZE / 2):
+                y = (y // self.CELL_SIZE) * self.CELL_SIZE
+            else:
+                y = ((y // self.CELL_SIZE) + 1) * self.CELL_SIZE
+
             actual_x = (canvas.winfo_width() * x) // (self.CELL_SIZE * self.NR_COLS)
             actual_y = (canvas.winfo_height() * y) // (self.CELL_SIZE * self.NR_ROWS)
             self.new_map_data_actual_coords.append((actual_x, actual_y))
