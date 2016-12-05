@@ -75,3 +75,6 @@ pi/bt_commands.txt
 # Python
 __pycache__/
 *.pyc
+
+# pycharm
+.metadata/

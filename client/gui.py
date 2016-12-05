@@ -1,14 +1,14 @@
 from tkinter import *
 import outbound
-import datetime
-from PIL import Image, ImageTk
+from map_grid import MapGrid
+#from PIL import Image, ImageTk
 
 
 class GUI:
     WINDOW_X = 800
     WINDOW_Y = 600
     CANVAS_X = int(WINDOW_X * 0.6)
-    CANVAS_Y = int(WINDOW_Y * 0.75)
+    CANVAS_Y = CANVAS_X
     LIST_FRAME_X = int(WINDOW_X * 0.3)
     LIST_FRAME_Y = int(WINDOW_Y * 0.75)
     LIST_BOX_Y = int(LIST_FRAME_Y * 0.5)
@@ -22,6 +22,8 @@ class GUI:
     def __init__(self):
         self.pi_ip = ""
         self.exit_demanded = False
+
+        self.map_grid = MapGrid()
 
         self.root = Tk()
         self.root.protocol("WM_DELETE_WINDOW", self.exit)
@@ -44,17 +46,18 @@ class GUI:
         self.canvas = Canvas(self.main_frame,
                              width=GUI.CANVAS_X,
                              height=GUI.CANVAS_Y, bg="white")
-        self.canvas.grid(column=0, row=0, padx=10)
+        self.canvas.grid(column=0, row=0, padx=10,pady=10)
 
         # --- Lists ---
-        self.list_frame = Frame(self.main_frame, width=self.LIST_FRAME_X, height=self.LIST_FRAME_Y, bg=self.BG_COLOR)
+        self.list_frame = Frame(self.main_frame, width=self.LIST_FRAME_X, height=self.LIST_FRAME_Y,
+                                bg=self.BG_COLOR)
         self.list_frame.grid(row=0, column=1, padx=10)
 
         self.ir_list = Listbox(self.list_frame, height=self.MAX_LIST_ITEMS)
         self.ir_list.grid(row=1, column=0)
         self.ir_list_nr_items = 0
-        self.ir_label = Label(self.list_frame, text="IR data (mm) \n (left_back, left, right, right_back)", fg="black",
-                              bg=self.BG_COLOR)
+        self.ir_label = Label(self.list_frame, text="IR data (mm) \n (left_back, left, right, right_back)",
+                              fg="black", bg=self.BG_COLOR)
         self.ir_label.grid(row=0, column=0)
 
         self.laser_list = Listbox(self.list_frame, height=self.MAX_LIST_ITEMS)
@@ -79,7 +82,6 @@ class GUI:
         self.btn_frame = Frame(self.main_frame, width=self.BTN_FRAME_X, height=self.BTN_FRAME_Y)
         self.btn_frame.grid(row=1, column=0, pady=15, padx = 10)
 
-
         self.btn_forward = Button(self.btn_frame, text="Forward", command=outbound.bt_drive_forward)
         self.btn_forward.grid(row=0, column=2)
 
@@ -89,30 +91,28 @@ class GUI:
         self.btn_right = Button(self.btn_frame, text="Right", command=outbound.bt_turn_right)
         self.btn_right.grid(row=0, column=4)
 
-
         self.btn_left = Button(self.btn_frame, text="Left", command=outbound.bt_turn_left)
         self.btn_left.grid(row=0, column=0)
 
-        self.bt_restart = Button(self.bt_frame, text="Restart bluetooth\nconnection",command=outbound.bt_restart)
+        self.bt_restart = Button(self.btn_frame, text="Restart bluetooth\nconnection",
+                                                command=outbound.bt_restart)
         self.bt_restart.grid(row=0,column=5,padx=25)
 
         self.ip_box = Label(self.main_frame, text="Pi IP: ", width=25, bg="white")
         self.ip_box.grid(row=1, column=1)
 
-        # --- Image ----
+        """# --- Image ----
         image = Image.open("Logo.jpg")
         resized = image.resize((100, 100))
         tkimage = ImageTk.PhotoImage(resized)
         self.logo = Label(self.btn_frame, image = tkimage)
         self.logo.grid(row = 0, column=0)
-        self.canvas.create_image(100, 100, image=tkimage)
-
+        self.canvas.create_image(100, 100, image=tkimage)"""
 
     '''
     Values should be a list containing of [ir_left,ir_right,ir_left_back,
     ir_right_back,laser,gyro]
     '''
-
     def add_sensor_data(self, values):
         ir_values = str(values[2]) + ", " + str(values[0]) + ", " + str(values[1]) + ", " + str(values[3])
 
@@ -139,7 +139,6 @@ class GUI:
     '''
     Values should be a list containing of [left_speed,right_speed].
     '''
-
     def add_servo_data(self, values):
         if self.servo_list_nr_items >= self.MAX_LIST_ITEMS:
             for i in range(1, self.MAX_LIST_ITEMS):
@@ -152,12 +151,12 @@ class GUI:
 
     def update_map(self, values):
         print("Map data: ", str(values))
+        self.map_grid.update_map(values, self.canvas)
 
     '''
-    Ip comes at format [ip]
+    Ip expected to be in format [ip]
     '''
-
-    def update_IP(self, ip):
+    def update_ip(self, ip):
         print("IP i gui: ", str(ip[0]))
         self.ip_box.config(text="Pi IP: " + str(ip[0]))
         
@@ -171,7 +170,6 @@ class GUI:
     '''Functions for handling key press.
     Takes forced event, but ignores it and calls correct driver function.
     '''
-
     def key_forward(self, event):
         outbound.bt_drive_forward()
 
