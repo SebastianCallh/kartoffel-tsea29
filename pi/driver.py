@@ -17,7 +17,7 @@ PRE_TURN_TIME = 500
 WARMUP_TIME = 2000
 POST_TURN_DISTANCE = 200
 PRE_TURN_DISTANCE = 200
-
+REMOTE_COMMAND_EXECUTE_TIME = 10
 
 """
 Thoughts on post_turn distance:
@@ -98,6 +98,21 @@ class Driver:
         return self.left_speed
 
 
+    # Commands intended to be called while remote controlling
+         
+    def drive_forward(self):
+        self.task = TimedTask(_drive_forward, REMOTE_COMMAND_EXECUTE_TIME)
+    
+    def drive_backward(self):
+        self.task = TimedTask(_drive_backward, REMOTE_COMMAND_EXECUTE_TIME)
+        
+    def turn_left(self):
+        self.task = TimedTask(_turn_left, REMOTE_COMMAND_EXECUTE_TIME)
+        
+    def turn_right(self):
+        self.task = TimedTask(_turn_right, REMOTE_COMMAND_EXECUTE_TIME)
+        
+
     # Not intended for public use
 
     def _turn_left(self):
@@ -107,6 +122,14 @@ class Driver:
     def _turn_right(self):
         print('turn right')
         self.drive(TURN_SPEED, -TURN_SPEED)
+
+    def _drive_forward(self):
+        print('drive forward')
+        self.drive(STANDARD_SPEED, STANDARD_SPEED)
+
+    def _drive_backward(self):
+        print('drive backward')
+        self.drive(-STANDARD_SPEED, -STANDARD_SPEED)
 
     def _post_turn(self):
         print('post turn')
