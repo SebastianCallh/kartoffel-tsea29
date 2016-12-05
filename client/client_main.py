@@ -4,6 +4,7 @@ import outbound
 from protocol import *
 from eventbus import EventBus
 import datetime
+from ast import literal_eval
 import random
 
 DATA_REQUEST_INTERVAL = 1  # seconds
@@ -43,6 +44,7 @@ def add_servo_data(data):
 
 def update_map(data):
     global gui
+    print(data)
     gui.update_map(data)
 
 
@@ -107,5 +109,11 @@ def main():
     gui = GUI()
     start_gui()
 
-
-main()
+try:
+    main()
+except:
+    print("Some error in client main")
+    outbound.bt_restart()
+    while not bt_client.restart_demanded:
+        pass
+    gui.close_window()

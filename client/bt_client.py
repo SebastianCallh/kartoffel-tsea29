@@ -5,6 +5,7 @@ import threading
 import queue
 import protocol
 from bt_task import BT_task
+from ast import literal_eval
 
 
 class BT_client(threading.Thread):
@@ -111,8 +112,8 @@ class BT_client(threading.Thread):
                 return "EXIT"
 
         if data:
-            data_items = data.split(', ')
-            bt_in_task = BT_task(data_items[0], data_items[1:])
+            data = literal_eval(data)
+            bt_in_task = BT_task(data[0], data[1])
             print("Bt in task data: ", bt_in_task.data)
 
             self.queue_handler.post_in_queue(bt_in_task)
