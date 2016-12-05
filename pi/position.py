@@ -37,7 +37,6 @@ class Position:
         print('  coordinates: ' + str(self.current_x) + ", " + str(self.current_y))
         print('-----------------------')
 
-
     def begin_next_section(self, is_right_turn):
         if is_right_turn:
             self.current_section = self.current_section.for_right_turn()
