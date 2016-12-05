@@ -150,7 +150,7 @@ CMD_TURN_FINISHED = 9
 
 
 # Ask for IP address of robot
-BT_REQUEST_PI_IP = 10
+REQUEST_PI_IP = 10
 """
 Command sent from Bluetooth client to Bluetooth server. Issues a request
 to the to the server prompting it to send its IP address back to the client.
@@ -161,7 +161,7 @@ Arguments: None
 """
 
 # Return IP address from the robot
-BT_RETURN_PI_IP = 11
+RETURN_PI_IP = 11
 """
 Command sent from Bluetooth server to Bluetooth client after a request
 for its IP address has been made.
@@ -212,9 +212,9 @@ BT_TURN_LEFT = 23
 BT_DRIVE_FORWARD_RIGHT = 24
 BT_DRIVE_FORWARD_LEFT = 25
 
-BT_CLIENT_COMMANDS = [BT_REQUEST_PI_IP, BT_SERVER_RESTART,
+BT_CLIENT_COMMANDS = [REQUEST_PI_IP, BT_SERVER_RESTART,
                       BT_SERVER_SHUTDOWN, BT_REQUEST_SENSOR_DATA,
                       BT_REQUEST_MAP_DATA, BT_REQUEST_SERVO_DATA,BT_DRIVE_FORWARD,BT_DRIVE_BACK,BT_TURN_RIGHT,BT_TURN_LEFT]
 
-BT_SERVER_COMMANDS = [BT_REQUEST_PI_IP, BT_RETURN_SENSOR_DATA,
+BT_SERVER_COMMANDS = [REQUEST_PI_IP, BT_RETURN_SENSOR_DATA,
                       BT_RETURN_SERVO_DATA, BT_RETURN_MAP_DATA]
