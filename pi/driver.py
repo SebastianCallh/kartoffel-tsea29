@@ -104,27 +104,27 @@ class Driver:
     # Commands intended to be called while remote controlling
          
     def drive_forward(self):
-        self.task = TimedTask(_drive_forward, REMOTE_COMMAND_EXECUTE_TIME)
+        self.task = TimedTask(self._drive_forward, REMOTE_COMMAND_EXECUTE_TIME)
         self.task.start()
     
     def drive_backward(self):
-        self.task = TimedTask(_drive_backward, REMOTE_COMMAND_EXECUTE_TIME)
+        self.task = TimedTask(self._drive_backward, REMOTE_COMMAND_EXECUTE_TIME)
         self.task.start()
         
     def turn_left(self):
-        self.task = TimedTask(_turn_left, REMOTE_COMMAND_EXECUTE_TIME)
+        self.task = TimedTask(self._turn_left, REMOTE_COMMAND_EXECUTE_TIME)
         self.task.start()
         
     def turn_right(self):
-        self.task = TimedTask(_turn_right, REMOTE_COMMAND_EXECUTE_TIME)
+        self.task = TimedTask(self._turn_right, REMOTE_COMMAND_EXECUTE_TIME)
         self.task.start()
         
     def drive_forward_right(self):
-        self.task = TimedTask(_drive_forward_right, REMOTE_COMMAND_EXECUTE_TIME)
+        self.task = TimedTask(self._drive_forward_right, REMOTE_COMMAND_EXECUTE_TIME)
         self.task.start()
         
     def drive_forward_left(self):
-        self.task = TimedTask(_drive_forward_left, REMOTE_COMMAND_EXECUTE_TIME)
+        self.task = TimedTask(self._drive_forward_left, REMOTE_COMMAND_EXECUTE_TIME)
         self.task.start()
 
     # Not intended for public use
