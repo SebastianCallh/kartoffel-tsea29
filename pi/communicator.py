@@ -50,8 +50,8 @@ class Communicator:
     
     def drive_backward(self):
         self.driver.drive_backward()
-        
-        
+
+
     def turn_left(self):
         self.driver.turn_left()
         

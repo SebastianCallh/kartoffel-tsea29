@@ -111,9 +111,11 @@ def main():
 
 try:
     main()
+    exit(0)
 except:
     print("Some error in client main")
     outbound.bt_restart()
     while not bt_client.restart_demanded:
         pass
     gui.close_window()
+    exit(-1)

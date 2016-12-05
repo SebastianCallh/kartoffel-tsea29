@@ -84,6 +84,14 @@ def bt_turn_right():
         )
     )
 
+def bt_forward_right():
+    print("Forward right")
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        BT_task(
+            BT_FORWARD_RIGHT
+        )
+    )
 
 def bt_turn_left():
     print("Turn left")
@@ -94,6 +102,14 @@ def bt_turn_left():
         )
     )
 
+def bt_forward_left():
+    print("Forward left")
+    EventBus.psot(
+        BLUETOOTH_ADDR,
+        BT_task(
+            BT_FORWARD_LEFT
+        )
+    )
 
 def bt_shutdown():
     print("Shutdown bluetooth connection")
