@@ -8,12 +8,20 @@ import random
 
 DATA_REQUEST_INTERVAL = 1  # seconds
 UPDATE_INTERVAL = 250  # milliseconds
+TEST_CORNERS = [(0, 0), (0,400), (400, 400), (400, 1200), (-1200, 1200), (-1200, 1600),
+                (-800, 1600), (-800, 2000), (-1600, 2000), (-1600, 2800), (2000, 2800), (2000, 3600),
+                (2800, 3600), (2800, 2000), (1600, 2000), (1600, -1600), (-800, -1600), (-800, -1200), (1200, -1200),
+                (1200, 0), (0, 0)]
+
+curr_test_corn = 0
 
 gui = None
+bt_client = None
 last_data_request_time = datetime.datetime.now()
 
 
 def run_bt_client(queue_handler):
+    global bt_client
     bt_client = BT_client(queue_handler)
     bt_client.start()
 
@@ -48,35 +56,40 @@ def setup_subscriptions():
 def request_data():
     outbound.bt_request_sensor_data()
     outbound.bt_request_servo_data()
-    # outbound.bt_request_map_data()
+    outbound.bt_request_map_data()
     outbound.request_ip()
 
 
 def update():
-    global gui, last_data_request_time
+    global gui, last_data_request_time, curr_test_corn
     if not gui.exit_demanded:
-        #EventBus.receive()
+        EventBus.receive()
         if (datetime.datetime.now() - last_data_request_time) > datetime.timedelta(
                 seconds=DATA_REQUEST_INTERVAL):
-            #request_data()
-            x1 = int(input("x: "))
+            request_data()
+            '''x1 = int(input("x: "))
             if x1 == 0:
                 print("Close gui")
                 gui.close_window()
                 return
-            y1 = int(input("y: "))
+            y1 = int(input("y: "))'''
             '''x2 = int(input("x2: "))
             y2 = int(input("y2: "))
 
             gui.update_map([(x1, y1), (x2, y2)])'''
-            gui.update_map([(x1, y1)])
+            '''gui.update_map([TEST_CORNERS[curr_test_corn]])
+            if curr_test_corn < len(TEST_CORNERS) -1:
+                curr_test_corn += 1
+            input("press something to continue")'''
             #gui.canvas.create_line(x1,y1,x2,y2,fill="black")
-            print("canvas size ", gui.canvas.winfo_height(), " ", gui.canvas.winfo_width())
+            #print("canvas size ", gui.canvas.winfo_height(), " ", gui.canvas.winfo_width())
             last_data_request_time = datetime.datetime.now()
         gui.canvas.after(UPDATE_INTERVAL, update)
     else:
         print("Exit gui in client main")
-        outbound.bt_shutdown()
+        outbound.bt_restart()
+        while not bt_client.restart_demanded:
+            pass
         gui.close_window()
 
 
@@ -90,7 +103,7 @@ def main():
     global gui
     queue_handler = EventBus.queue_handler
     setup_subscriptions()
-    #run_bt_client(queue_handler)
+    run_bt_client(queue_handler)
     gui = GUI()
     start_gui()
 

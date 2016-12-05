@@ -1,7 +1,7 @@
 
 class MapGrid:
     
-    MAX_MAP_SIZE = 6000   # relative size (mm)
+    MAX_MAP_SIZE = 6000 * 2   # relative size (mm)
     CELL_SIZE = 400       # relative size (mm)
     NR_ROWS = MAX_MAP_SIZE // CELL_SIZE
     NR_COLS = NR_ROWS
@@ -9,13 +9,14 @@ class MapGrid:
     def __init__(self):
         # List of coordinates of all corners on the map,
         # listed in the order of discovery
-        self.map_data = []
-        self.new_map_data = []              # The latest map data received
-        self.new_map_data_actual_coords = []
-        self.start_position = (0, 0)
+        self.raw_map_data = []
+        self.actual_map_data = []
+        self.new_raw_map_data = []              # The latest map data received
+        self.new_actual_map_data = []
+        self.start_position = (6000, 6000)
         # Offset calculated from given coordinates to match coordinates on map grid
-        self.x_offset = 0
-        self.y_offset = 0
+        self.x_offset = 6000
+        self.y_offset = 6000
 
     def update_map(self, data, canvas):
         self._update_map_data(data)
@@ -26,44 +27,68 @@ class MapGrid:
     Expects data to be a list containing ALL map data coordinates.
     '''
     def _update_map_data(self, data):
-        #nr_new_items = len(data) - len(self.map_data)
-        #self.new_map_data = data[:nr_new_items]
-        #self.map_data = data
-        self.new_map_data = data
+        #nr_new_items = len(data) - len(self.raw_map_data)
+        #self.new_raw_map_data = data[:nr_new_items]
+        #self.raw_map_data = data
+        self.new_raw_map_data = data
 
     '''
     Appends internal list of new corners with actual coordinates corresponding to
     size of map in pixels.
     '''
     def _calc_actual_coords(self, canvas):
-        for corner in self.new_map_data:
+        for corner in self.new_raw_map_data:
             # Match coordinates to grid
             x = corner[0]
+            # Make x positive
+            #if x < 0:
+            x += self.x_offset
+
+            # Handle measuring fault in raw map data
             mod_x = x % self.CELL_SIZE
             if mod_x < (self.CELL_SIZE / 2):
                 x = (x // self.CELL_SIZE) * self.CELL_SIZE
             else:
                 x = ((x // self.CELL_SIZE) + 1) * self.CELL_SIZE
             y = corner[1]
+            # Make y positive
+            #if y < 0:
+            y += self.y_offset
+
             mod_y = y % self.CELL_SIZE
             if mod_y < (self.CELL_SIZE / 2):
                 y = (y // self.CELL_SIZE) * self.CELL_SIZE
             else:
                 y = ((y // self.CELL_SIZE) + 1) * self.CELL_SIZE
 
+            # Convert raw coordinates to actual coordinates corresponding to canvas pixels
+            '''actual_x = (canvas.winfo_width() * x) // (self.CELL_SIZE * self.NR_COLS) + (canvas.winfo_width()
+                                                            * self.x_offset) // (self.CELL_SIZE * self.NR_COLS)
+            actual_y = (canvas.winfo_height() * y) // (self.CELL_SIZE * self.NR_ROWS) + (canvas.winfo_height()\
+                                                            * self.y_offset) // (self.CELL_SIZE * self.NR_ROWS)'''
             actual_x = (canvas.winfo_width() * x) // (self.CELL_SIZE * self.NR_COLS)
             actual_y = (canvas.winfo_height() * y) // (self.CELL_SIZE * self.NR_ROWS)
-            self.new_map_data_actual_coords.append((actual_x, actual_y))
+            self.new_actual_map_data.append((actual_x, actual_y))
+
     '''
     Draw lines between corners. Replaces map data with actual coordinates with only the last
     visited corner.
     '''
     def _draw_lines(self, canvas):
-        corners = self.new_map_data_actual_coords
+        corners = self.new_actual_map_data
         for i in range(0, len(corners)-1):
-            canvas.create_line(corners[i][0], corners[i][1], corners[i+1][0], corners[i+1][1], fill="black")
-            print("Drawing line between: ", corners[i][0], ",", corners[i][1], "and", corners[i+1][0], ",",
+            if not (corners[i] in self.actual_map_data):
+                canvas.create_line(corners[i][0], corners[i][1], corners[i+1][0], corners[i+1][1], fill="black")
+                self.actual_map_data.append(corners[i])
+                print("Drawing line between: ", corners[i][0], ",", corners[i][1], "and", corners[i+1][0], ",",
                   corners[i+1][1])
+            else:
+                self.actual_map_data.append(corners[i])
+
         # Replace the list with only the last visited corner
         print("Storing end corner: ", corners[len(corners)-1][0], ", ", corners[len(corners)-1][1])
-        self.new_map_data_actual_coords = [corners[len(corners)-1]]
+        last_corner = corners[len(corners)-1]
+        if last_corner in self.actual_map_data:
+            pass
+        self.new_actual_map_data = [last_corner]
+

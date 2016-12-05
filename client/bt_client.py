@@ -17,6 +17,8 @@ class BT_client(threading.Thread):
         self.restart_demanded = False
         self.client_sock = None
         threading.Thread.__init__(self)
+        self.daemon = True
+
 
     '''
     Creates a new client sock and attempts to connect to

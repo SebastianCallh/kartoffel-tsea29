@@ -91,7 +91,7 @@ class GUI:
         self.btn_right.grid(row=0, column=4)
 
         self.btn_left = Button(self.btn_frame, text="Left", command=outbound.bt_turn_left)
-        self.btn_left.grid(row=0, column=0)
+        self.btn_left.grid(row=0, column=1)
 
         self.bt_restart = Button(self.btn_frame, text="Restart bluetooth\nconnection",
                                                 command=outbound.bt_restart)
