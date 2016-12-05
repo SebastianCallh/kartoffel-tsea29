@@ -119,12 +119,12 @@ class Driver:
         self.task = TimedTask(_turn_right, REMOTE_COMMAND_EXECUTE_TIME)
         self.task.start()
         
-    def drive_right_forward(self):
-        self.task = TimedTask(_drive_right_forward, REMOTE_COMMAND_EXECUTE_TIME)
+    def drive_forward_right(self):
+        self.task = TimedTask(_drive_forward_right, REMOTE_COMMAND_EXECUTE_TIME)
         self.task.start()
         
-    def drive_left_forward(self):
-        self.task = TimedTask(_drive_left_forward, REMOTE_COMMAND_EXECUTE_TIME)
+    def drive_forward_left(self):
+        self.task = TimedTask(_drive_forward_left, REMOTE_COMMAND_EXECUTE_TIME)
         self.task.start()
 
     # Not intended for public use
@@ -145,12 +145,12 @@ class Driver:
         print('drive backward')
         self.drive(-STANDARD_SPEED, -STANDARD_SPEED)
 
-    def _drive_right_forward(self):
-        print('drive forward')
+    def _drive_forward_right(self):
+        print('drive forward right')
         self.drive(FAST_SPEED, STANDARD_SPEED)
 
-    def _drive_left_forward(self):
-        print('drive backward')
+    def _drive_forward_left(self):
+        print('drive backward left')
         self.drive(STANDARD_SPEED, FAST_SPEED)
         
     def _post_turn(self):

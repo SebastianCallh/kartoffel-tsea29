@@ -41,13 +41,17 @@ class Communicator:
     def send_ip(self):
         outbound.bt_return_ip(get_ip())
 
-        
     def drive_forward(self):
         self.driver.drive_forward()
     
     def drive_backward(self):
         self.driver.drive_backward()
-        
+           
+    def drive_forward_right(self):
+        self.driver.drive_forward_right()
+    
+    def drive_forward_left(self):
+        self.driver.drive_forward_left()
         
     def turn_left(self):
         self.driver.turn_left()
