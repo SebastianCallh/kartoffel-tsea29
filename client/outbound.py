@@ -104,7 +104,7 @@ def bt_turn_left():
 
 def bt_forward_left():
     print("Forward left")
-    EventBus.psot(
+    EventBus.post(
         BLUETOOTH_ADDR,
         BT_task(
             BT_FORWARD_LEFT

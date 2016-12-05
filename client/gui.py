@@ -82,29 +82,35 @@ class GUI:
         self.btn_frame.grid(row=1, column=0, pady=10, padx=10)
 
         self.btn_forward = Button(self.btn_frame, text="Forward", command=outbound.bt_drive_forward)
-        self.btn_forward.grid(row=0, column=2)
+        self.btn_forward.grid(row=1, column=2)
 
         self.btn_back = Button(self.btn_frame, text="Back", command=outbound.bt_drive_back)
-        self.btn_back.grid(row=0, column=3)
+        self.btn_back.grid(row=1, column=3)
 
         self.btn_right = Button(self.btn_frame, text="Right", command=outbound.bt_turn_right)
-        self.btn_right.grid(row=0, column=4)
+        self.btn_right.grid(row=1, column=4)
 
         self.btn_left = Button(self.btn_frame, text="Left", command=outbound.bt_turn_left)
-        self.btn_left.grid(row=0, column=1)
+        self.btn_left.grid(row=1, column=1)
+
+        self.btn_forward_right = Button(self.btn_frame, text="Forward left", command=outbound.bt_forward_left)
+        self.btn_forward_right.grid(row=0, column=2, padx=5, pady=5)
+
+        self.btn_forward_left = Button(self.btn_frame, text="Forward right", command=outbound.bt_forward_right)
+        self.btn_forward_left.grid(row=0, column=3, padx=5, pady=5)
 
         self.bt_restart = Button(self.btn_frame, text="Restart bluetooth\nconnection",
                                                 command=outbound.bt_restart)
-        self.bt_restart.grid(row=0,column=5,padx=25)
+        self.bt_restart.grid(row=1,column=5,padx=10, pady=10)
 
         self.ip_box = Label(self.main_frame, text="Pi IP: ", width=25, bg="white")
         self.ip_box.grid(row=1, column=1)
 
         # --- Image ----
         logo = PhotoImage(file="Logo.gif")
-        self.resampled_logo = logo.subsample(4, 7)
+        self.resampled_logo = logo.subsample(3, 4)
         self.logo_box = Label(self.btn_frame, image=self.resampled_logo)
-        self.logo_box.grid(row=0, column=0, padx=10)
+        self.logo_box.grid(row=1, column=0, padx=10)
 
     '''
     Values should be a list containing of [ir_left,ir_right,ir_left_back,
