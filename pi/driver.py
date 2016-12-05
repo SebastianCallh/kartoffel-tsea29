@@ -9,6 +9,7 @@ from outbound import set_motor_speed
 # Tasks should be reversed since we pop them from the list 
 
 STANDARD_SPEED = 25
+FAST_SPEED = 40
 TURN_SPEED = 40
 TURN_TIME = 900
 TURN_DEGREES = 80
@@ -42,20 +43,22 @@ class Driver:
         self.right_speed = 0
         self.left_speed = 0
 
+    #Returns true only if we have executed all provided tasks
     def idle(self):
-        if not self.task.done():
-            #print("Task not done")
-            return False
-        elif self.tasks:
-            self.task = self.tasks.pop()
-            print("Next task: " + str(self.task))
-            self.task.start()
-            return False
-        else:
-            print("STANNA")
-            self.stop()
-            return True
+        return self.task.done() and not self.tasks
 
+    #Expected to be run every main loop. Checks whether the current task is 
+    #done, and if there are more to perform, starts performing them.
+    def update(self):
+        if self.task.done():
+            if self.tasks:
+                self.task = self.tasks.pop()
+                print("Next task: " + str(self.task))
+                self.task.start()
+            else:
+                print("STANNA")
+                self.stop()
+            
     def drive(self, left_speed, right_speed):
         self.left_speed = left_speed
         self.right_speed = right_speed
@@ -102,16 +105,27 @@ class Driver:
          
     def drive_forward(self):
         self.task = TimedTask(_drive_forward, REMOTE_COMMAND_EXECUTE_TIME)
+        self.task.start()
     
     def drive_backward(self):
         self.task = TimedTask(_drive_backward, REMOTE_COMMAND_EXECUTE_TIME)
+        self.task.start()
         
     def turn_left(self):
         self.task = TimedTask(_turn_left, REMOTE_COMMAND_EXECUTE_TIME)
+        self.task.start()
         
     def turn_right(self):
         self.task = TimedTask(_turn_right, REMOTE_COMMAND_EXECUTE_TIME)
+        self.task.start()
         
+    def drive_right_forward(self):
+        self.task = TimedTask(_drive_right_forward, REMOTE_COMMAND_EXECUTE_TIME)
+        self.task.start()
+        
+    def drive_left_forward(self):
+        self.task = TimedTask(_drive_left_forward, REMOTE_COMMAND_EXECUTE_TIME)
+        self.task.start()
 
     # Not intended for public use
 
@@ -131,6 +145,14 @@ class Driver:
         print('drive backward')
         self.drive(-STANDARD_SPEED, -STANDARD_SPEED)
 
+    def _drive_right_forward(self):
+        print('drive forward')
+        self.drive(FAST_SPEED, STANDARD_SPEED)
+
+    def _drive_left_forward(self):
+        print('drive backward')
+        self.drive(STANDARD_SPEED, FAST_SPEED)
+        
     def _post_turn(self):
         print('post turn')
         self.drive(STANDARD_SPEED, STANDARD_SPEED)
