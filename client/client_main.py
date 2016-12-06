@@ -69,7 +69,7 @@ def update():
         EventBus.receive()
         if (datetime.datetime.now() - last_data_request_time) > datetime.timedelta(
                 seconds=DATA_REQUEST_INTERVAL):
-            #request_data()
+            request_data()
             '''x1 = int(input("x: "))
             if x1 == 0:
                 print("Close gui")
