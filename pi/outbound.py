@@ -73,7 +73,7 @@ def bt_return_ip(ip):
     EventBus.post(
         BLUETOOTH_ADDR,
         BT_task(
-            BT_RETURN_PI_IP, ip
+            RETURN_PI_IP, ip
         )
     )
 
