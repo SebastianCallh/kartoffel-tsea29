@@ -52,7 +52,7 @@ class Position:
 
             elif (self.ir.get_ir_left() == -1 and self.kitchen_block_displacement == 0) or \
                  (self.ir.get_ir_left_back() == -1 and self.kitchen_block_displacement == 1) and self.looking_for_kitchen:
-
+                print("end for kitchen")
                 self.kitchen_section.finish()
                 self.looking_for_kitchen = False
                 self.calculate_kitchen_coordinates()
