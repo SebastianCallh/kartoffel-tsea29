@@ -63,6 +63,7 @@ class Position:
         self.map_data.append(self.transform_map_data(self.current_section))
 
         if self.looking_for_kitchen:
+            print("Saving kitchen section")
             self.kitchen_section.finish()
             self.looking_for_kitchen = False
             self.calculate_kitchen_coordinates()
