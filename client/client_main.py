@@ -9,10 +9,10 @@ import random
 
 DATA_REQUEST_INTERVAL = 1  # seconds
 UPDATE_INTERVAL = 250  # milliseconds
-TEST_CORNERS = [(0, 0), (0,400), (400, 400), (400, 1200), (-1200, 1200), (-1200, 1600),
-                (-800, 1600), (-800, 2000), (-1600, 2000), (-1600, 2800), (2000, 2800), (2000, 3600),
-                (2800, 3600), (2800, 2000), (1600, 2000), (1600, -1600), (-800, -1600), (-800, -1200), (1200, -1200),
-                (1200, 0), (0, 0)]
+TEST_CORNERS = [[(0, 0), (0,1), (1, 1), (1, 3), (-3, 3), (-3, 4),
+                (-2, 4), (-2, 5), (-4, 5), (-4, 7), (5, 7), (5, 9),
+                (7, 9), (7, 5), (4, 5), (4, -4), (-15, -4), (-15, -3), (3, -3),
+                (3, 0), (0, 0)], [(1, 4), (3, 4), (3, 6), (1, 6), (1, 4)] ]
 
 curr_test_corn = 0
 
@@ -79,10 +79,9 @@ def update():
             y2 = int(input("y2: "))
 
             gui.update_map([(x1, y1), (x2, y2)])'''
-            '''gui.update_map([TEST_CORNERS[curr_test_corn]])
+            gui.update_map([TEST_CORNERS[curr_test_corn]])
             if curr_test_corn < len(TEST_CORNERS) -1:
                 curr_test_corn += 1
-            input("press something to continue")'''
             #gui.canvas.create_line(x1,y1,x2,y2,fill="black")
             #print("canvas size ", gui.canvas.winfo_height(), " ", gui.canvas.winfo_width())
             last_data_request_time = datetime.datetime.now()
