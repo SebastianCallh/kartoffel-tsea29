@@ -62,6 +62,11 @@ class Position:
         self.saved_sections.append(self.current_section)
         self.map_data.append(self.transform_map_data(self.current_section))
 
+        if self.looking_for_kitchen:
+            self.kitchen_section.finish()
+            self.looking_for_kitchen = False
+            self.calculate_kitchen_coordinates()
+
         print("Primary temporary kitchens: " + str(self.temporary_potential_kitchen))
 
         # Removes potential kitchens if already passed
