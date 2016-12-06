@@ -35,7 +35,7 @@ class Position:
 
             # Checks if a kitchen island may be present and start calculating sections for it.
             if self.ir.get_ir_left() > 30 and not self.looking_for_kitchen:
-
+                print("start for kitchen")
                 self.looking_for_kitchen = True
                 self.kitchen_section = Section(self.current_section.direction)
                 self.temporary_potential_kitchen = []
@@ -43,7 +43,7 @@ class Position:
                 self.kitchen_block_displacement = 0
 
             elif self.ir.get_ir_left_back() > 250 and not self.looking_for_kitchen:
-
+                print("start for kitchen long")
                 self.looking_for_kitchen = True
                 self.kitchen_section = Section(self.current_section.direction)
                 self.temporary_potential_kitchen = []
@@ -52,7 +52,6 @@ class Position:
 
             elif (self.ir.get_ir_left() == -1 and self.kitchen_block_displacement == 0) or \
                  (self.ir.get_ir_left_back() == -1 and self.kitchen_block_displacement == 1) and self.looking_for_kitchen:
-                print("end for kitchen")
                 self.kitchen_section.finish()
                 self.looking_for_kitchen = False
                 self.calculate_kitchen_coordinates()
