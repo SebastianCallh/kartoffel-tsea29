@@ -40,7 +40,11 @@ class Section:
         return Section((self.direction - 1) % 4)
 
     def get_max(self):
+        if len(self.measurements) == 0:
+            return 0
         return max(self.measurements, key=lambda x: x[0])[0]
 
     def get_min(self):
+        if len(self.measurements) == 0:
+            return 0
         return min(self.measurements, key=lambda x: x[0])[0]
