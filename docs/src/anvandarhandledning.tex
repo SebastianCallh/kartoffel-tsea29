@@ -1,0 +1,91 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english, swedish]{babel}
+
+\usepackage{cite}
+\usepackage{caption}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{textcomp}
+\usepackage[yyyymmdd]{datetime}
+\renewcommand{\dateseparator}{-}
+
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+
+%For headers & footers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\includegraphics[scale=0.2]{Logo}}
+\chead{Kartrobot}
+\rhead{\today}
+
+\lfoot{Konstruktion med mikrodatorer}
+\rfoot{Grupp 3}
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+
+\title{Användarhandledning för kartrobot}
+\author{Patrik Sletmo}
+\date{\today}
+
+\selectlanguage{swedish}
+
+\begin{document}
+
+\thispagestyle{empty}
+
+{
+\sffamily
+\centering
+\large
+
+
+{\huge 
+Användarhandledning för kartrobot
+}
+
+{\large
+Patrik Sletmo
+}
+
+{\large
+Version X
+}
+
+\vspace{3.5cm}
+
+Status
+\begin{table}[H]
+\centering
+\begin{tabular}{ | c | c | c | }
+\hline
+STATUS & Patrik Sletmo & 2016-12-DD \\
+\hline
+\end{tabular}
+\end{table}
+}
+\clearpage
+
+\section{Inledning}
+Det här dokumentet innehåller all information som behövs för att kunna  använda kartroboten och dess mjukvaruklient. 
+
+\section{Installation}
+För att nyttja fjärrstyrningsfunktionaliteten hos roboten så behöver datorn man vill fjärrstyra ifrån ha robotens mjukvaruklient tillgänglig. SKRIV OM MJUKVARUKLIENTEN BEHÖVER INSTALLERAS/CONFAS NÅGOT HÄR
+
+\section{Mjukvaruklienten}
+Alla kommandon som roboten kan utföra kan skickas ifrån den tillhörande mjukvaruklienten.
+
+\subsection{Ansluta till roboten}
+SKRIV OM HUR MAN ANSLUTER MED MJUKVARUKLIENTEN HÄR 
+
+\subsection{Kommunicera med roboten}
+SKRIV OM MJUKVARUKLIENTEN MED EN BILD PÅ HUR 
+
+\nocite{*}
+\bibliography{designspec}{}
+\bibliographystyle{plain}
+
+\end{document}

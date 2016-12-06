@@ -44,7 +44,7 @@
 
 
 {\huge 
-Designspecifikation för kartrobot
+Teknisk dokumentation för kartrobot
 }
 
 {\large
@@ -215,11 +215,11 @@ Här nedan listas alla komponenter som roboten består av.
     \hline
     Knapp & 1 \\
     \hline
-    GP2Y0A41SK IR-Sensor & 2 \\
+    GP2Y0A41SK IR-Sensor & 3 \\
     \hline
     GP2Y0A21 IR-Sensor & 1 \\
     \hline
-    Adafruit 10-DOF IMU & 2 \\
+    Adafruit 10-DOF IMU & 1 \\
     \hline
   \end{tabular}
   \caption{ Tabell över sensorer. }
@@ -258,12 +258,10 @@ Här nedan listas alla komponenter som roboten består av.
 \section{Delsystem}
 
 \subsection{Huvudenhet}
-Huvudenheten består till hårdvaran av en Raspberry PI, på vilken operativsystemet Raspbian körs.
-Huvudenheten representerar robotens beslutsfattande organ och sköter navigationsbeslut, kartläggning, 
-kommunikation med mjukvaruklienten samt agerar mästare på robotens I2C-buss. 
+Huvudenheten består till hårdvaran av en Raspberry PI, på vilken operativsystemet Raspbian körs. Den representerar robotens beslutsfattande organ och sköter navigationsbeslut, kartläggning, kommunikation med mjukvaruklienten samt agerar mästare på robotens I2C-buss. 
 
 \subsubsection{Delsystemets funktion}
-Huvudenheten är uppdelad i två undermoduler, logikenheten och kommunikationsenheten. Logikenheten analyserar data från sensorenheten för att avgöra hur roboten ska navigera och för att bestämma hur omvärlden ser ut så att den kan kartläggas. Tack vare de två IR-sensorer på vardera sida om roboten så kan vi följa en vägg på vänster/höger sida, och genom att göra det kartlägga hela den utomliggande väggen. När vi väl avgränsat området som köksön kan befinna sig i söker roboten av den begränsade ytan till köksön identifieras och följer dess väggar till även den är kartlagd. När hela kartan finns i robotens minne kan den finna den kortaste vägen tillbaka till startpositionen och navigera dit. Logikenheten ansvarar även för att hålla koll på var någonstans roboten befinner sig. Eftersom roboten navigerar i ett rutnät så kan vi med hjälp av vår lasersensor räkna hur långt vi åker i raka streckor mellan varje sväng och därmed räkna ut vår totala förflyttning. Kommunikationsenheten agerar som ett abstraktionslager för Raspberry Pi:ens Bluetoothmodul och ser till att sköta all översättning där i mellan så att vi kan arbeta med våra interna dataformat i övriga delar av roboten.
+Huvudenheten är uppdelad i två undermoduler, logikenheten och kommunikationsenheten. Logikenheten analyserar data från sensorenheten för att avgöra hur roboten ska navigera och för att bestämma hur omvärlden ser ut så att den kan kartläggas. Roboten följer väggen på höger sida och genom att göra det kartlägger den hela den utomliggande väggen. När vi väl avgränsat rummet och området som köksön kan befinna sig i så vet roboten att de väggsegment den upptäckt som inte ingår i den utomliggande väggen är en del av köksön, och kan på så sätt navigera till dem och kartlägga därifrån. När hela kartan finns i robotens minne återvänder den till dess startposition. Logikenheten ansvarar även för att hålla koll på var någonstans i rutnätet roboten befinner sig. Kommunikationsenheten agerar som ett abstraktionslager för Raspberry Pi:ens Bluetoothmodul och ser till att sköta all översättning där i mellan så att systemet kan arbeta med interna dataformat i övriga delar.
 
 \subsubsection{Kopplingsschema}
 \begin{figure}[H]
@@ -317,7 +315,7 @@ Programflödet i huvudenheten består i huvudsak av två delar: Den logiska dele
 \end{figure}
 \ \\
 
-TODO:TEXT OM NAVIGERINGEN. FRÄMST OM KÖKSÖN OCH VÄNSTERREGLERING
+Roboten navigerar enligt flödesschemat i figur~\ref{fig:navigering_flowchart} till kartläggningen av rummets väggar är klara, det vill säga till det att den har cirkulerat hela rummet. Roboten vet med säkerhet att den under den här perioden kommer upptäcka väggsegment som ingår i köksön och inte i rummets väggar på sin västersida, och navigerar då till dem och påbörjar samma procedur som i flödesschemat igen varpå kartläggningen är klar.
 
 \begin{figure}[H]
 \centering
@@ -331,24 +329,26 @@ TODO:TEXT OM BLUETOOTH. UPPDATERA SÅ DEN REFLEKTERAR VÅR IMPLEMENTATION
 
 \subsection{Sensorenhet}
 % Se kommentarer för huvudenhet
-TODO:TEXT OM SENSORENHET SOM REFLEKTERAR VÅR IMPLEMENTATION. LASER/GYRO ÄR T.EX PÅ BUSSEN DIREKT.
+Sensorenheten har i uppgift att läsa in värden från sensorerna som finns placerade på roboten och rapportera värdena till huvudenheten. Den består av fyra IR-sensorer, ett gyroskop och en lasersensor.
 
 \subsubsection{Delsystemets funktion}
-TODO:TEXT OM SENSORENHET SOM REFLEKTERAR VÅR IMPLEMENTATION. LASER/GYRO ÄR T.EX PÅ BUSSEN DIREKT.
+Sensorenhetens har sin egna beräkningsenhet, ATMega 1284, vilket låter den arbeta asynkront från våra andra enheter. Den ser på så sätt alltid till att ha data tillgänglig närhelst huvudenheten begär den. För IR-sensorerna sker det genom att processorn pollar information från varje sensor och sparar undan i minnet, medan gyroskop och laser håller koll på sina egna värden och är kopplade direkt på I2C-bussen. Huvudenheten kan sedan fråga sensorenheten efter ny IR-mätdata, eller fråga gyroskopet/lasern direkt varpå den får sensordatan levererad över I2C.
+
+Avläsningarna från IR-sensorerna är analoga, och konverteras till digitalt med hjälp av ATMegans interna AD-omvandlare. För att sedan omvandla mätdatan till en approximation i millimeter används en tabell sparad i ATMegans minne.
+
 
 \subsubsection{Kopplingsschema}
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.6]{Logo}
+\includegraphics[scale=0.6]{Sensorenhet_kopplingsschema}
 \caption{Kopplingsschema för sensorenheten.}
 \label{fig:sensorenhet_kopplingsschema}
 \end{figure}
 
-TODO:TEXT OM KOPPLINGSSCHEMA
+Som ses i figur~\ref{fig:sensorenhet_kopplingsschema} är IR-sensorerna kopplade till ATMegan via var sitt lågpassfilter för att reducera brus. Längst upp i kopplingsschemat ses den gemensamma I2C-bussen, dit gyroskop och laser är anslutna. Notera att EXO3-komponenten är delad mellan sensorenheten och styrenheten trots att den illustreras som separata komponenter i kopplingsschemat.
 
 \subsubsection{Komponenter}
 
-TODO:DISKUTERA VAD SOM FAKTISKT LIGGER I SENSORENHETEN. LASER/GYRO ÄR LITE GRÅZON
 \begin{table}[H]
   \centering
   \begin{tabular}{ | c | c | c | c |}
@@ -361,9 +361,11 @@ TODO:DISKUTERA VAD SOM FAKTISKT LIGGER I SENSORENHETEN. LASER/GYRO ÄR LITE GRÅ
     \hline
     Knapp & 1 \\
     \hline
-    GP2Y0A41SK IR-Sensor & 2 \\
+    GP2Y0A41SK IR-Sensor & 3 \\
     \hline
-    Adafruit 10-DOF IMU & 2 \\
+    GP2Y0A21 IR-Sensor & 1 \\
+    \hline
+    Adafruit 10-DOF IMU & 1 \\
     \hline
     EXO3 & 1 (delad) \\
     \hline
@@ -402,25 +404,27 @@ TODO:TABELLEN NEDAN EJ KORRIGERAD
   \caption{Tabell över tillgängliga portar på processorn.}
 \end{table}
 
-TODO:TEXT FÖR MOTIVATION OM DESIGNBESLUT OCH RESURSUPPSKATTNING
-
+Den maximala hastigheten som sensordata kan läsas in i är begränsad av sensorernas rapporteringsfrekvens som är betydligt långsammare än en ATmega 1284:s klockfrekvens, därför lönar det sig inte med en snabbare processor för sensorenhetens syfte. Det i princip enda minnet sensorenheten använder sig av är för temporärlagring av alla IR-sensorers data, vilket endast motsvarar fyra heltal. Utöver sensorinläsningen kommer enheten svara på kommandon över huvudbussen som inte heller kräver några höga hastigheter eller minneskrav.
 
 \subsubsection{Programflöde}
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.6]{Logo}
+\includegraphics[scale=0.6]{sensorenhet_flowchart}
 \caption{Ett flödesdiagram över sensorenhetens tillstånd}
 \label{fig:sensorenhet_flowchart}
 \end{figure}
-TODO:TEXT OM PROGRAMFLÖDE SOM REFLEKTERAR IMPLEMENTATION
+
+För att kunna tillhandahålla sensordata från IR-sensorerna när huvudenheten ber den om det så läser sensorenheten in data med jämna mellanrum och sparar den lokalt för att sedan skicka datan på kommando från huvudenheten. Om den fått en begerän om sensordata från huvudenheten så tar det prioritet att leverera den över att läsa in ny data. Ett flödesdiagram över dess beteende ses i ~\ref{fig:sensorenhet_flowchart}.
 
 \subsection{Styrenhet}
 % Se kommentarer för huvudenhet
-TODO:UPPDATERA TEMPUS
+Styrenhetens uppgift är att kontrollera alla robotens fysiska rörelser med hjälp av servon, baserat på kommandon ifrån huvudenheten. Det är genom styrenhetens funktionalitet som roboten förflyttar sig igenom rummet som ska kartläggas.
 
 \subsubsection{Delsystemets funktion}
-TODO:UPPDATERA TEMPUS
+Styrenheten består av en ATMega 1284 processor som har robotens alla servon kopplade till sig. Den tar emot kommandon från huvudenheten över I2C-bussen som säger åt roboten att exempelvis åka framåt eller rotera. Som svar skickar styrenheten ut korrekta signaler till relevanta servon för att kontrollera robotens rörelser enligt instruktioner.
+
+För att styra robotens hjul används PWM, där styrenheten är förprogrammerad med lämplig pulskvot.
 
 \subsubsection{Kopplingsschema}
 \begin{figure}[H]
@@ -433,7 +437,7 @@ TODO:UPPDATERA TEMPUS
 TODO:TEXT OM KOPPLINGSSCHEMA
 
 \subsubsection{Komponenter}
-TODO:TABELL NEDAN EJ KORRIGERAD
+
 \begin{table}[H]
   \centering
   \begin{tabular}{ | c | c |}
@@ -443,8 +447,6 @@ TODO:TABELL NEDAN EJ KORRIGERAD
     ATMega 1284 & 1 \\
     \hline
     Terminator (bas för fyrhjulingsrobot) & 1 \\
-    \hline
-    AX12-A Servo & 1 \\
     \hline
     EXO3 & 1 (delad) \\
     \hline
@@ -480,18 +482,18 @@ TODO:TABELL NEDAN EJ KORRIGERAD
   \caption{Tabell över tillgängliga portar på processorn.}
 \end{table}
 
-Omvandlingen av kommandon från huvudenheten och utskickning av signaler till servona samt omhändertagandet och vidarebefodrandet av styrdata från servona till huvudenheten uppskattas ej kräva mer prestanda eller minne än styrenhetens ATMega 1284 processor klarar av.
+Omvandlingen av kommandon från huvudenheten och utskickning av signaler till servona uppskattas ej kräva mer prestanda eller minne än styrenhetens ATMega 1284 processor klarar av.
 
 \subsubsection{Programflöde}
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.6]{Logo}
+\includegraphics[scale=0.6]{Styrenhet_flowchart}
 \caption{Ett flödesschema över styrenhetens tillstånd}
 \label{fig:styrenhet_flowchart}
 \end{figure}
 
-TODO:TEXT SOM REFLEKTERAR IMPLEMENTATION
+Styrenheten står hela tiden och väntar på instruktioner från huvudenheten, och så snart den får några utför den dem så snabbt den kan. ett flödesschema över styrenhetens beteende kan ses i figur ~\ref{fig:styrenhet_flowchart}.
 
 \subsection{Presentationsenhet}
 % Se kommentarer för huvudenhet

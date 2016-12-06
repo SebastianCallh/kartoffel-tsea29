@@ -68,6 +68,8 @@ Debug/
 # IDEA
 .idea/
 
+.metadata/
+
 # Bluetooth
 pi/bt_answers.txt
 pi/bt_commands.txt

@@ -82,35 +82,46 @@ class Navigator:
     LEFT_SIDE = 0
     RIGHT_SIDE = 1
 
+    MANUAL = 0
+    AUTONOMOUS = 1
+    
     DISCONTINUITY_DIST = 25.0  # mm
     FACING_WALL_DIST = 200  # mm
 
     right_turn_enabled = True
 
-    def __init__(self, ir, driver, laser):
+    def __init__(self, mode, ir, driver, laser):
         self.data = {
             'driver': driver,
             'laser': laser,
             'ir': ir,
             'side': Navigator.RIGHT_SIDE,
         }
-
-        # Stand still waiting for sensors
-        self.data['driver'].warmup()
+        
+        self.mode = mode
         self.state = Warmup()
         self.last_updated_time = datetime.now()
 
+        # Stand still waiting for sensors
+        self.data['driver'].warmup()
+        
     # Runs the state. The states run method returns the next state
     def navigate(self):
-        next_state = self.state.run(self.data)
+        self.data['driver'].update()
 
-        curr_type = type(self.state)
-        next_type = type(next_state)
+        if self.mode == Navigator.AUTONOMOUS:
+            next_state = self.state.run(self.data)
 
-        if curr_type is not Turn and next_type is Turn:
-            EventBus.notify(CMD_TURN_STARTED)
+            curr_type = type(self.state)
+            next_type = type(next_state)
 
-        if curr_type is Turn and next_type is not Turn:
-            EventBus.notify(CMD_TURN_FINISHED, self.state.is_right_turn)
+            if curr_type is not Turn and next_type is Turn:
+                EventBus.notify(CMD_TURN_STARTED)
 
-        self.state = next_state
+            if curr_type is Turn and next_type is not Turn:
+                EventBus.notify(CMD_TURN_FINISHED, self.state.is_right_turn)
+
+            self.state = next_state
+            
+    def set_mode(self, mode):
+        self.mode = mode

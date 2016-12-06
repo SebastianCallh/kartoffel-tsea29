@@ -13,9 +13,10 @@ def setup_server():
     """
     Creates and returns a fresh bt_server connected to a client.
     """
+    bt_task_handler.clean_queue_files()
     server = bt_server.BT_Server(PI_ADDR, PORT, BACKLOG)
     server.accept_connection()
-    bt_task_handler.clean_queue_files()
+
     print("Server connected.")
     return server
 

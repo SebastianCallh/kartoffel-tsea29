@@ -149,8 +149,30 @@ CMD_TURN_FINISHED = 9
 
 # -------------------- Bluetooth commands ---------------------
 
+# Ask for IP address of robot
 REQUEST_PI_IP = 10
+"""
+Command sent from Bluetooth client to Bluetooth server. Issues a request
+to the to the server prompting it to send its IP address back to the client.
+
+Target: Bluetooth server
+
+Arguments: None
+"""
+
+# Return IP address from the robot
 RETURN_PI_IP = 11
+"""
+Command sent from Bluetooth server to Bluetooth client after a request
+for its IP address has been made.
+
+Target: Bluetooth client
+
+Arguments: ip
+    Sent as a string.
+"""
+
+# Demand Bluetooth server to restart
 
 BT_SERVER_RESTART = 12
 
@@ -171,13 +193,17 @@ BT_DRIVE_BACK = 21
 BT_TURN_RIGHT = 22
 BT_TURN_LEFT = 23
 
-BT_FORWARD_RIGHT = 24
-BT_FORWARD_LEFT = 25
+BT_DRIVE_FORWARD_RIGHT = 24
+BT_DRIVE_FORWARD_LEFT = 25
+
+BT_AUTONOMOUS_MODE = 26
+BT_MANUAL_MODE = 27
 
 BT_CLIENT_COMMANDS = [REQUEST_PI_IP, BT_SERVER_RESTART,
                       BT_SERVER_SHUTDOWN, BT_REQUEST_SENSOR_DATA,
                       BT_REQUEST_MAP_DATA, BT_REQUEST_SERVO_DATA,
                       BT_DRIVE_FORWARD, BT_DRIVE_BACK,
-                      BT_TURN_RIGHT, BT_TURN_LEFT, BT_FORWARD_RIGHT, BT_FORWARD_LEFT]
+                      BT_TURN_RIGHT, BT_TURN_LEFT, BT_DRIVE_FORWARD_RIGHT, BT_DRIVE_FORWARD_LEFT]
 
-BT_SERVER_COMMANDS = [RETURN_PI_IP, BT_RETURN_SENSOR_DATA, BT_RETURN_SERVO_DATA, BT_RETURN_MAP_DATA]
+BT_SERVER_COMMANDS = [REQUEST_PI_IP, BT_RETURN_SENSOR_DATA,
+                      BT_RETURN_SERVO_DATA, BT_RETURN_MAP_DATA]
