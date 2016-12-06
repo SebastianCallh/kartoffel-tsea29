@@ -97,7 +97,6 @@ class Navigator:
             'ir': ir,
             'side': Navigator.RIGHT_SIDE,
         }
-        
         self.mode = mode
         self.state = Warmup()
         self.last_updated_time = datetime.now()
@@ -108,7 +107,6 @@ class Navigator:
     # Runs the state. The states run method returns the next state
     def navigate(self):
         self.data['driver'].update()
-
         if self.mode == Navigator.AUTONOMOUS:
             next_state = self.state.run(self.data)
 
@@ -122,6 +120,31 @@ class Navigator:
                 EventBus.notify(CMD_TURN_FINISHED, self.state.is_right_turn)
 
             self.state = next_state
+            print(str(self.state))
             
+    def drive_forward(self):
+        if self.mode == Navigator.MANUAL:
+            self.data['driver'].drive_forward()
+    
+    def drive_backward(self):
+        if self.mode == Navigator.MANUAL:
+            self.data['driver'].drive_backward()
+           
+    def drive_forward_right(self):
+        if self.mode == Navigator.MANUAL:
+            self.data['driver'].drive_forward_right()
+    
+    def drive_forward_left(self):
+        if self.mode == Navigator.MANUAL:
+            self.data['driver'].drive_forward_left()
+
+    def turn_left(self):
+        if self.mode == Navigator.MANUAL:
+            self.data['driver'].turn_left()
+        
+    def turn_right(self):
+        if self.mode == Navigator.MANUAL:
+            self.data['driver'].turn_right()
+        
     def set_mode(self, mode):
         self.mode = mode

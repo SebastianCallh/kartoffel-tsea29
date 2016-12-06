@@ -57,7 +57,7 @@ class Driver:
                 print("Next task: " + str(self.task))
                 self.task.start()
             else:
-                # print("STANNA")
+                #print("STANNA")
                 self.stop()
             
     def drive(self, left_speed, right_speed):

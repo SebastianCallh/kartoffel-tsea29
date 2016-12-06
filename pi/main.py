@@ -24,6 +24,9 @@ driver = Driver(gyro, laser)
 navigator = Navigator(Navigator.AUTONOMOUS, ir, driver, laser)
 position = Position(laser, ir)
 communicator = Communicator(ir, laser, gyro, driver, position)
+navigator = Navigator(Navigator.AUTONOMOUS, ir, driver, laser)
+position = Position(laser)
+communicator = Communicator(ir, laser, gyro, driver, navigator, position)
 
 
 def setup():
@@ -37,8 +40,8 @@ def setup():
     EventBus.subscribe(BT_TURN_LEFT, communicator.turn_left)
     EventBus.subscribe(BT_DRIVE_FORWARD_RIGHT, communicator.drive_forward_right)
     EventBus.subscribe(BT_DRIVE_FORWARD_LEFT, communicator.drive_forward_left)
-    EventBus.subscribe(BT_AUTONOMOUS_MODE, navigator.set_mode(Navigator.AUTONOMOUS))
-    EventBus.subscribe(BT_MANUAL_MODE, navigator.set_mode(Navigator.MANUAL))
+    EventBus.subscribe(BT_AUTONOMOUS_MODE, (lambda: navigator.set_mode(Navigator.AUTONOMOUS)))
+    EventBus.subscribe(BT_MANUAL_MODE, (lambda: navigator.set_mode(Navigator.MANUAL)))
     EventBus.subscribe(REQUEST_PI_IP, communicator.send_ip)
     EventBus.subscribe(CMD_RETURN_SENSOR_DATA, ir.sensor_data_received)
     Laser.initialize()
