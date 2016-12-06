@@ -193,10 +193,10 @@ class GUI:
         self.event_handler(outbound.bt_drive_back, event=event, repetition=5)
 
     def left(self, event=None):
-        self.event_handler(outbound.bt_turn_left, event=event, repetition=5)
+        self.event_handler(outbound.bt_turn_left, event=event, repetition=3)
 
     def right(self, event=None):
-        self.event_handler(outbound.bt_turn_right, event=event, repetition=5)
+        self.event_handler(outbound.bt_turn_right, event=event, repetition=3)
 
     def forward_right(self, event=None):
         self.event_handler(outbound.bt_forward_right, event=event, repetition=5)
