@@ -97,8 +97,10 @@ class Navigator:
             'ir': ir,
             'side': Navigator.RIGHT_SIDE,
         }
-        
+        print('got ' + str(mode))
         self.mode = mode
+
+        print('self.mode: ' + str(self.mode))
         self.state = Warmup()
         self.last_updated_time = datetime.now()
 
