@@ -63,7 +63,6 @@ class Position:
         self.map_data.append(self.transform_map_data(self.current_section))
 
         if self.looking_for_kitchen:
-            print("Saving kitchen section")
             self.kitchen_section.finish()
             self.looking_for_kitchen = False
             self.calculate_kitchen_coordinates()
@@ -125,6 +124,7 @@ class Position:
     def calculate_kitchen_coordinates(self):
         block_distance_from_turn = round((self.current_section.get_max() - self.kitchen_section.get_max()) /
                                          BLOCK_LENGTH_MM)
+        print("Kitchen blockdistance from turn: " + str(block_distance_from_turn))
 
         kitchen_x = 0
         kitchen_y = 0
