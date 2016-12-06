@@ -54,6 +54,6 @@ def main():
 
         EventBus.receive()
         position.update()
-        # navigator.navigate()
+        navigator.navigate()
 
 Safety.run_safely(main)
