@@ -9,7 +9,8 @@ from outbound import set_motor_speed
 # Tasks should be reversed since we pop them from the list 
 
 STANDARD_SPEED = 25
-FAST_SPEED = 40
+FAST_SPEED = 50
+SLOW_SPEED = 20
 TURN_SPEED = 40
 TURN_TIME = 900
 TURN_DEGREES = 80
@@ -18,7 +19,7 @@ PRE_TURN_TIME = 500
 WARMUP_TIME = 2000
 POST_TURN_DISTANCE = 200
 PRE_TURN_DISTANCE = 200
-REMOTE_COMMAND_EXECUTE_TIME = 400
+REMOTE_COMMAND_EXECUTE_TIME = 525
 
 """
 Thoughts on post_turn distance:
@@ -147,11 +148,11 @@ class Driver:
 
     def _drive_forward_right(self):
         print('drive forward right')
-        self.drive(FAST_SPEED, STANDARD_SPEED)
+        self.drive(FAST_SPEED, SLOW_SPEED)
 
     def _drive_forward_left(self):
         print('drive backward left')
-        self.drive(STANDARD_SPEED, FAST_SPEED)
+        self.drive(SLOW_SPEED, FAST_SPEED)
         
     def _post_turn(self):
         print('post turn')
