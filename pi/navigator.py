@@ -120,7 +120,6 @@ class Navigator:
                 EventBus.notify(CMD_TURN_FINISHED, self.state.is_right_turn)
 
             self.state = next_state
-            print(str(self.state))
             
     def drive_forward(self):
         if self.mode == Navigator.MANUAL:
