@@ -146,7 +146,7 @@ class GUI:
         else:
             self.gyro_list_nr_items += 1
 
-        print("IR values: ", str(values))
+        #print("IR values: ", str(values))
 
     '''
     Values should be a list containing of [left_speed, right_speed].
@@ -162,14 +162,14 @@ class GUI:
         print("Servo data: ", str(values))
 
     def update_map(self, values):
-        print("Map data: ", str(values))
+        #print("Map data: ", str(values))
         self.map_grid.update_map(values, self.canvas)
 
     '''
     Ip expected to be in format [ip]
     '''
     def update_ip(self, ip):
-        print("IP i gui: ", str(ip[0]))
+        #print("IP i gui: ", str(ip[0]))
         self.ip_box.config(text="Pi IP: " + str(ip[0]))
         
     def exit(self):
