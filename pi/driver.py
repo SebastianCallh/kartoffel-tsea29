@@ -57,14 +57,14 @@ class Driver:
                 print("Next task: " + str(self.task))
                 self.task.start()
             else:
-                print("STANNA")
+                # print("STANNA")
                 self.stop()
             
     def drive(self, left_speed, right_speed):
         self.left_speed = left_speed
         self.right_speed = right_speed
         set_motor_speed(left_speed, right_speed)
-        print("Driver drive set motor speed to ", left_speed, right_speed)
+        # print("Driver drive set motor speed to ", left_speed, right_speed)
 
     def outer_turn_right(self):
         print('outer turn right')
@@ -93,7 +93,7 @@ class Driver:
         self.tasks = [TimedTask(lambda: self.drive(0, 0), WARMUP_TIME)]
 
     def stop(self):
-        print('stopping')
+        #print('stopping')
         self.drive(0, 0)
 
     def get_right_speed(self):

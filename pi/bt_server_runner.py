@@ -49,7 +49,6 @@ def recieve(server):
     data from client.
     """
     has_new_incoming = server.update_incoming()
-    # TODO Change assumption that data only contains ID!!
 
     if has_new_incoming:
         if int(server.incoming_data) == protocol.BT_SERVER_RESTART:

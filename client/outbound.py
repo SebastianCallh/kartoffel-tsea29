@@ -89,7 +89,7 @@ def bt_forward_right():
     EventBus.post(
         BLUETOOTH_ADDR,
         BT_task(
-            BT_FORWARD_RIGHT
+            BT_DRIVE_FORWARD_RIGHT
         )
     )
 
@@ -107,7 +107,7 @@ def bt_forward_left():
     EventBus.post(
         BLUETOOTH_ADDR,
         BT_task(
-            BT_FORWARD_LEFT
+            BT_DRIVE_FORWARD_LEFT
         )
     )
 

@@ -23,7 +23,6 @@ def post_outgoing(task):
     """
     answer_queue = open("bt_answers.txt", "wb")
     pickle.dump(task, answer_queue)
-    print("post_outgoing, could post to pickle!")
     answer_queue.close()
 
 
@@ -41,7 +40,6 @@ def pop_incoming():
         try:
             task_i = pickle.load(command_queue)
             task_q.append(task_i)
-            print("pop_incoming, could load from pickle!")
         except EOFError:
             break
     if task_q:
@@ -63,7 +61,6 @@ def post_incoming(task):
     """
     command_queue = open("bt_commands.txt", "wb")
     pickle.dump(task, command_queue)
-    print("post_incoming, could dump to pickle!")
     command_queue.close()
 
 
@@ -82,7 +79,6 @@ def pop_outgoing():
         try:
             task_i = pickle.load(answer_queue)
             task_q.append(task_i)
-            print("pop_outgoing, could load from pickle!")
         except EOFError:
             break
     if task_q:
