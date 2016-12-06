@@ -63,6 +63,8 @@ class Position:
         self.saved_sections.append(self.current_section)
         self.map_data.append(self.transform_map_data(self.current_section))
 
+        print("Primary temporary kitchens: " + str(self.temporary_potential_kitchen))
+
         # Removes potential kitchens if already passed
         if self.potential_kitchen.count((self.current_x, self.current_y)):
             self.potential_kitchen.remove((self.current_x, self.current_y))
