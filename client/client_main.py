@@ -56,16 +56,17 @@ def setup_subscriptions():
 
 
 def request_data():
-    outbound.bt_request_sensor_data()
-    outbound.bt_request_servo_data()
-    outbound.bt_request_map_data()
-    outbound.request_ip()
+    #outbound.bt_request_sensor_data()
+    #outbound.bt_request_servo_data()
+    #outbound.bt_request_map_data()
+    #outbound.request_ip()
+    pass
 
 
 def update():
     global gui, last_data_request_time, curr_test_corn
     if not gui.exit_demanded:
-        #EventBus.receive()
+        EventBus.receive()
         if (datetime.datetime.now() - last_data_request_time) > datetime.timedelta(
                 seconds=DATA_REQUEST_INTERVAL):
             #request_data()
@@ -79,18 +80,18 @@ def update():
             y2 = int(input("y2: "))
 
             gui.update_map([(x1, y1), (x2, y2)])'''
-            gui.update_map([TEST_CORNERS[curr_test_corn]])
+            '''gui.update_map([TEST_CORNERS[curr_test_corn]])
             if curr_test_corn < len(TEST_CORNERS) -1:
                 curr_test_corn += 1
             #gui.canvas.create_line(x1,y1,x2,y2,fill="black")
-            #print("canvas size ", gui.canvas.winfo_height(), " ", gui.canvas.winfo_width())
+            #print("canvas size ", gui.canvas.winfo_height(), " ", gui.canvas.winfo_width())'''
             last_data_request_time = datetime.datetime.now()
         gui.canvas.after(UPDATE_INTERVAL, update)
     else:
         print("Exit gui in client main")
-        '''outbound.bt_restart()
+        outbound.bt_restart()
         while not bt_client.restart_demanded:
-            pass'''
+            pass
         gui.close_window()
 
 
@@ -104,7 +105,7 @@ def main():
     global gui
     queue_handler = EventBus.queue_handler
     setup_subscriptions()
-    #run_bt_client(queue_handler)
+    run_bt_client(queue_handler)
     gui = GUI()
     start_gui()
 
@@ -112,7 +113,7 @@ try:
     main()
 except:
     print("Some error in client main")
-    '''outbound.bt_restart()
+    outbound.bt_restart()
     while not bt_client.restart_demanded:
         pass
-    gui.close_window()'''
+    gui.close_window()
