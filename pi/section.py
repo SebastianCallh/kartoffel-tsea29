@@ -16,7 +16,6 @@ class Section:
         self.measurements = []
         self.block_distance = None
 
-
     def add_distance_sample(self, distance):
         # TODO: Verify distance validity by checking if the delta distance is
         # reasonable.
@@ -32,13 +31,16 @@ class Section:
             return
 
         # Takes the difference between max measurement and min measurement and divide by block length.
-        self.block_distance = round(
-            (max(self.measurements, key=lambda x: x[0])[0] -
-             min(self.measurements, key=lambda x: x[0])[0]) /
-            BLOCK_LENGTH_MM)
+        self.block_distance = round((self.get_max() - self.get_min()) / BLOCK_LENGTH_MM)
 
     def for_right_turn(self):
         return Section((self.direction + 1) % 4)
 
     def for_left_turn(self):
         return Section((self.direction - 1) % 4)
+
+    def get_max(self):
+        return max(self.measurements, key=lambda x: x[0])[0]
+
+    def get_min(self):
+        return min(self.measurements, key=lambda x: x[0])[0]

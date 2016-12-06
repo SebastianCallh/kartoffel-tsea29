@@ -1,7 +1,7 @@
 from eventbus import EventBus
 from laser import Laser
 from protocol import CMD_TURN_STARTED, CMD_TURN_FINISHED
-from section import Section, NORTH, EAST, SOUTH, WEST
+from section import Section, NORTH, EAST, SOUTH, WEST, BLOCK_LENGTH_MM
 from threading import Thread
 
 STATE_MEASURING = 0
@@ -19,10 +19,11 @@ class Position:
         self.current_x = 0
         self.current_y = 0
 
-        self.kitchen_section_close = Section(NORTH)
-        self.looking_for_kitchen_close = False
-        self.kitchen_section_far = Section(NORTH)
-        self.looking_for_kitchen_far = False
+        self.kitchen_section = Section(NORTH)
+        self.looking_for_kitchen = False
+        self.kitchen_block_displacement = 0
+        self.potential_kitchen = []
+        self.temporary_potential_kitchen = []
 
         EventBus.subscribe(CMD_TURN_STARTED, self.on_turning_started)
         EventBus.subscribe(CMD_TURN_FINISHED, self.on_turning_finished)
@@ -33,33 +34,47 @@ class Position:
             self.current_section.add_distance_sample(distance)
 
             # Checks if a kitchen island may be present and start calculating sections for it.
-            if self.ir.get_ir_left() > 30 and not self.looking_for_kitchen_close:
-                self.looking_for_kitchen_close = True
-                self.kitchen_section_close = Section(self.current_section.direction)
-                self.kitchen_section_close.add_distance_sample(distance)
+            if self.ir.get_ir_left() > 30 and not self.looking_for_kitchen:
 
-            elif self.ir.get_ir_left_back() > 100 and not self.looking_for_kitchen_far:
-                self.looking_for_kitchen_far = True
-                self.kitchen_section_far = Section(self.current_section.direction)
-                self.kitchen_section_far.add_distance_sample(distance)
+                self.looking_for_kitchen = True
+                self.kitchen_section = Section(self.current_section.direction)
+                self.temporary_potential_kitchen = []
+                self.kitchen_section.add_distance_sample(distance)
+                self.kitchen_block_displacement = 0
 
-            elif self.ir.get_ir_left() == -1 and self.looking_for_kitchen_close:
-                self.kitchen_section_close.finish()
-                self.looking_for_kitchen_close = False
+            elif self.ir.get_ir_left_back() > 250 and not self.looking_for_kitchen:
 
-            elif self.ir.get_ir_left_back() == -1 and self.looking_for_kitchen_far:
-                self.kitchen_section_far.finish()
-                self.looking_for_kitchen_far = False
+                self.looking_for_kitchen = True
+                self.kitchen_section = Section(self.current_section.direction)
+                self.temporary_potential_kitchen = []
+                self.kitchen_section.add_distance_sample(distance)
+                self.kitchen_block_displacement = 1
+
+            elif (self.ir.get_ir_left() == -1 and self.kitchen_block_displacement == 0) or \
+                 (self.ir.get_ir_left_back() == -1 and self.kitchen_block_displacement == 1) and self.looking_for_kitchen:
+
+                self.kitchen_section.finish()
+                self.looking_for_kitchen = False
+                self.calculate_kitchen_coordinates()
 
     def save_current_section(self):
         self.current_section.finish()
 
         self.saved_sections.append(self.current_section)
         self.map_data.append(self.transform_map_data(self.current_section))
+
+        # Removes potential kitchens if already passed
+        if self.potential_kitchen.count((self.current_x, self.current_y)):
+            self.potential_kitchen.remove((self.current_x, self.current_y))
+
+        # Adds all new potential kitchens.
+        self.potential_kitchen = self.potential_kitchen + self.temporary_potential_kitchen
+
         print('---- SECTION SAVED ----')
         print('  direction: ' + str(self.current_section.direction))
         print('  distance: ' + str(self.current_section.block_distance))
         print('  coordinates: ' + str(self.current_x) + ", " + str(self.current_y))
+        print('  potential kitchens: ' + str(self.potential_kitchen))
         print('-----------------------')
 
     def begin_next_section(self, is_right_turn):
@@ -72,7 +87,6 @@ class Position:
         self.state = STATE_WAITING
         thread = Thread(target=self.save_current_section())
         thread.start()
-        #self.save_current_section()
 
     def on_turning_finished(self, is_right_turn):
         self.begin_next_section(is_right_turn)
@@ -100,3 +114,52 @@ class Position:
     '''
     def get_current_position(self):
         return self.current_x, self.current_y
+
+    def calculate_kitchen_coordinates(self):
+        block_distance_from_turn = round((self.current_section.get_max() - self.kitchen_section.get_max()) /
+                                         BLOCK_LENGTH_MM)
+
+        kitchen_x = 0
+        kitchen_y = 0
+        # Transforms coordinates to match the kitchen islands position
+        if self.kitchen_section.direction == NORTH:
+            kitchen_x -= self.kitchen_block_displacement
+        elif self.kitchen_section.direction == EAST:
+            kitchen_y += self.kitchen_block_displacement
+        elif self.kitchen_section.direction == SOUTH:
+            kitchen_x += self.kitchen_block_displacement
+        elif self.kitchen_section.direction == WEST:
+            kitchen_y -= self.kitchen_block_displacement
+
+        kitchen_start_x = kitchen_x + self.current_x
+        kitchen_start_y = kitchen_y + self.current_y
+
+        if self.kitchen_section.direction == NORTH:
+            kitchen_start_y += block_distance_from_turn
+            kitchen_y += self.kitchen_section.block_distance + block_distance_from_turn
+        elif self.kitchen_section.direction == EAST:
+            kitchen_start_x += block_distance_from_turn
+            kitchen_x += self.kitchen_section.block_distance + block_distance_from_turn
+        elif self.kitchen_section.direction == SOUTH:
+            kitchen_start_y += block_distance_from_turn
+            kitchen_y -= self.kitchen_section.block_distance + block_distance_from_turn
+        elif self.kitchen_section.direction == WEST:
+            kitchen_x += block_distance_from_turn
+            kitchen_x -= self.kitchen_section.block_distance + block_distance_from_turn
+
+        # Appends all potential kitchen islands to temporary list
+        step_x = 1
+        step_y = 1
+        if kitchen_start_x > kitchen_x:
+            step_x = -1
+        elif kitchen_start_y == kitchen_y:
+            for x in range(kitchen_start_x, kitchen_x, step_x):
+                if self.map_data.count((x, kitchen_y)) > 0:
+                    self.temporary_potential_kitchen.append((x, kitchen_y))
+
+        if kitchen_start_y > kitchen_y:
+            step_y = -1
+        elif kitchen_start_x == kitchen_x:
+            for y in range(kitchen_start_y, kitchen_y, step_y):
+                if self.map_data.count((kitchen_x, y)) > 0:
+                    self.temporary_potential_kitchen.append((kitchen_x, y))
