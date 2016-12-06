@@ -56,10 +56,10 @@ def setup_subscriptions():
 
 
 def request_data():
-    #outbound.bt_request_sensor_data()
-    #outbound.bt_request_servo_data()
-    #outbound.bt_request_map_data()
-    #outbound.request_ip()
+    outbound.bt_request_sensor_data()
+    outbound.bt_request_servo_data()
+    outbound.bt_request_map_data()
+    outbound.request_ip()
     pass
 
 

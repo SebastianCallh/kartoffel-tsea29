@@ -55,7 +55,7 @@ class Communicator:
     
     def drive_forward_left(self):
         self.driver.drive_forward_left()
-        
+
     def turn_left(self):
         self.driver.turn_left()
         
