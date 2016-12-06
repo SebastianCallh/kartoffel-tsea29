@@ -97,10 +97,7 @@ class Navigator:
             'ir': ir,
             'side': Navigator.RIGHT_SIDE,
         }
-        print('got ' + str(mode))
         self.mode = mode
-
-        print('self.mode: ' + str(self.mode))
         self.state = Warmup()
         self.last_updated_time = datetime.now()
 
@@ -110,9 +107,7 @@ class Navigator:
     # Runs the state. The states run method returns the next state
     def navigate(self):
         self.data['driver'].update()
-        print(str(self.mode), str(Navigator.AUTONOMOUS), str(self.mode == Navigator.AUTONOMOUS))
         if self.mode == Navigator.AUTONOMOUS:
-            print("in autonomous mode")
             next_state = self.state.run(self.data)
 
             curr_type = type(self.state)

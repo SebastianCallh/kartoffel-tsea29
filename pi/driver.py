@@ -57,7 +57,7 @@ class Driver:
                 print("Next task: " + str(self.task))
                 self.task.start()
             else:
-                print("STANNA")
+                #print("STANNA")
                 self.stop()
             
     def drive(self, left_speed, right_speed):
@@ -106,32 +106,26 @@ class Driver:
     # Commands intended to be called while remote controlling
          
     def drive_forward(self):
-        print('remote: drive_forward')
         self.task = TimedTask(self._drive_forward, REMOTE_COMMAND_EXECUTE_TIME)
         self.task.start()
     
     def drive_backward(self):
-        print('remote: drive_backward')
         self.task = TimedTask(self._drive_backward, REMOTE_COMMAND_EXECUTE_TIME)
         self.task.start()
         
     def turn_left(self):
-        print('remote: turn_left')
         self.task = TimedTask(self._turn_left, REMOTE_COMMAND_EXECUTE_TIME)
         self.task.start()
         
     def turn_right(self):
-        print('remote: turn_right')
         self.task = TimedTask(self._turn_right, REMOTE_COMMAND_EXECUTE_TIME)
         self.task.start()
         
     def drive_forward_right(self):
-        print('remote: drive_forward_right')
         self.task = TimedTask(self._drive_forward_right, REMOTE_COMMAND_EXECUTE_TIME)
         self.task.start()
         
     def drive_forward_left(self):
-        print('remote: drive_forward_left')
         self.task = TimedTask(self._drive_forward_left, REMOTE_COMMAND_EXECUTE_TIME)
         self.task.start()
 
