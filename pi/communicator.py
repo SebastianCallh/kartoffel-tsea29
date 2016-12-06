@@ -43,15 +43,24 @@ class Communicator:
         outbound.bt_return_ip([get_ip()])
         print("send_ip, done")
 
-        
     def drive_forward(self):
         self.driver.drive_forward()
         print("Communicator drove forward!")
     
     def drive_backward(self):
         self.driver.drive_backward()
+<<<<<<< HEAD
 
 
+=======
+           
+    def drive_forward_right(self):
+        self.driver.drive_forward_right()
+    
+    def drive_forward_left(self):
+        self.driver.drive_forward_left()
+        
+>>>>>>> 1d8c8a206944440f6df790e9f4421dbe2df254a5
     def turn_left(self):
         self.driver.turn_left()
         
