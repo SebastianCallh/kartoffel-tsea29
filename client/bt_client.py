@@ -58,7 +58,7 @@ class BT_client(threading.Thread):
     def _start_bt_client(self):
         self.client_sock = self._setup_bt_client()
 
-        while (True):
+        while True:
             self._send()
             status = self._receive()
             if status != "":
@@ -67,12 +67,10 @@ class BT_client(threading.Thread):
     def _send(self):
         bt_out_task = self.queue_handler.pop_out_queue()
 
-        # TODO Possible fix! Concatenate cmd_id and data
         if bt_out_task:
             self.current_out_task = bt_out_task
             try:
                 self.client_sock.send(str(bt_out_task.cmd_id))
-                #print("sent msg")
             except bluetooth.btcommon.BluetoothError:
                 print(traceback.format_exc())
                 
@@ -92,7 +90,7 @@ class BT_client(threading.Thread):
         try:
             data = self.client_sock.recv(1024).decode('utf-8')
             self.client_sock.settimeout(None)
-            print("received " + str(data))
+            #print("received " + str(data))
         except bluetooth.btcommon.BluetoothError:
             # Recieved when server responds to shutdown
             # print("Catching bluetooth error")
@@ -114,7 +112,7 @@ class BT_client(threading.Thread):
         if data:
             data = literal_eval(data)
             bt_in_task = BT_task(data[0], data[1])
-            print("Bt in task data: ", bt_in_task.data)
+            #print("Bt in task data: ", bt_in_task.data)
 
             self.queue_handler.post_in_queue(bt_in_task)
 
