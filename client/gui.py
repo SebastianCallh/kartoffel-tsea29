@@ -32,6 +32,7 @@ class GUI:
         self.main_frame.grid()
 
         # Run functios when certain key is pressed. Bind to same as buttons.
+        # Arrow keys bind to root instead of main frame because of keyboard focus
         self.main_frame.bind('<w>', self.key_forward)
         self.root.bind('<Up>', self.key_forward)
         self.main_frame.bind('<s>', self.key_back)
