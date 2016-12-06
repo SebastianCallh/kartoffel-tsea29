@@ -23,7 +23,7 @@ gyro = Gyro()
 driver = Driver(gyro, laser)
 navigator = Navigator(Navigator.MANUAL, ir, driver, laser)
 position = Position(laser)
-communicator = Communicator(ir, laser, gyro, driver, position)
+communicator = Communicator(ir, laser, gyro, driver, navigator, position)
 
 
 def setup():

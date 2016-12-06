@@ -123,5 +123,29 @@ class Navigator:
 
             self.state = next_state
             
+    def drive_forward(self):
+        if self.mode == Navigator.MANUAL:
+            self.data['driver'].drive_forward()
+    
+    def drive_backward(self):
+        if self.mode == Navigator.MANUAL:
+            self.data['driver'].drive_backward()
+           
+    def drive_forward_right(self):
+        if self.mode == Navigator.MANUAL:
+            self.data['driver'].drive_forward_right()
+    
+    def drive_forward_left(self):
+        if self.mode == Navigator.MANUAL:
+            self.data['driver'].drive_forward_left()
+
+    def turn_left(self):
+        if self.mode == Navigator.MANUAL:
+            self.data['driver'].turn_left()
+        
+    def turn_right(self):
+        if self.mode == Navigator.MANUAL:
+            self.data['driver'].turn_right()
+        
     def set_mode(self, mode):
         self.mode = mode
