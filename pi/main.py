@@ -23,9 +23,6 @@ gyro = Gyro()
 driver = Driver(gyro, laser)
 navigator = Navigator(Navigator.AUTONOMOUS, ir, driver, laser)
 position = Position(laser, ir)
-communicator = Communicator(ir, laser, gyro, driver, position)
-navigator = Navigator(Navigator.AUTONOMOUS, ir, driver, laser)
-position = Position(laser)
 communicator = Communicator(ir, laser, gyro, driver, navigator, position)
 
 
