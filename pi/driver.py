@@ -107,26 +107,32 @@ class Driver:
          
     def drive_forward(self):
         self.task = TimedTask(self._drive_forward, REMOTE_COMMAND_EXECUTE_TIME)
+        print("MANUAL COMMAND: Forward")
         self.task.start()
     
     def drive_backward(self):
         self.task = TimedTask(self._drive_backward, REMOTE_COMMAND_EXECUTE_TIME)
+        print("MANUAL COMMAND: Backwards")
         self.task.start()
         
     def turn_left(self):
         self.task = TimedTask(self._turn_left, REMOTE_COMMAND_EXECUTE_TIME)
+        print("MANUAL COMMAND: Left")
         self.task.start()
         
     def turn_right(self):
         self.task = TimedTask(self._turn_right, REMOTE_COMMAND_EXECUTE_TIME)
+        print("MANUAL COMMAND: Right")
         self.task.start()
         
     def drive_forward_right(self):
         self.task = TimedTask(self._drive_forward_right, REMOTE_COMMAND_EXECUTE_TIME)
+        print("MANUAL COMMAND: Right forward")
         self.task.start()
         
     def drive_forward_left(self):
         self.task = TimedTask(self._drive_forward_left, REMOTE_COMMAND_EXECUTE_TIME)
+        print("MANUAL COMMAND: Left forward")
         self.task.start()
 
     # Not intended for public use
