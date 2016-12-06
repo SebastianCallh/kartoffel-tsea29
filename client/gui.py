@@ -35,7 +35,6 @@ class GUI:
 
         # Keybindings
         # Run functions when certain keys are pressed. Bind to same as buttons.
-        #TODO Varför olika?
         self.main_frame.bind('<w>', self.forward)
         self.root.bind('<Up>', self.forward)
         self.main_frame.bind('<s>', self.back)
@@ -148,7 +147,7 @@ class GUI:
         print("IR values: ", str(values))
 
     '''
-    Values should be a list containing of [left_speed,right_speed].
+    Values should be a list containing of [left_speed, right_speed].
     '''
     def add_servo_data(self, values):
         if self.servo_list_nr_items >= self.MAX_LIST_ITEMS:
@@ -205,8 +204,9 @@ class GUI:
 
     '''
     Makes sure event can not occur faster than a predefined time interval.
-    If event argument is left out, event_handler will interpret that as if
-    it was called from a button and call the command function several times.
+    If event option is left out or set to None, event_handler will interpret that as if
+    it was called from a button and call the command function number of times
+    specified in repetition option.
     '''
     def event_handler(self, command, **options):
         if self.check_key_event_time():
