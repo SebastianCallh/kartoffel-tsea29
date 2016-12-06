@@ -19,7 +19,7 @@ from bt_task import BT_task
 # NOTE: Function comments are purposely left out from this file in favor of the
 # complete definitions of every found command in proctol.py.
 
-def request_ip(queue):
+def request_ip():
     EventBus.post(
         BLUETOOTH_ADDR,
         BT_task(
@@ -53,9 +53,79 @@ def bt_request_map_data():
             BT_REQUEST_MAP_DATA
         )
     )
-    
+
+
 def bt_drive_forward():
     print("Kör framåt")
-    
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        BT_task(
+            BT_DRIVE_FORWARD
+        )
+    )
+
+
 def bt_drive_back():
     print("Kör back")
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        BT_task(
+            BT_DRIVE_BACK
+        )
+    )
+
+
+def bt_turn_right():
+    print("Turn right")
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        BT_task(
+            BT_TURN_RIGHT
+        )
+    )
+
+def bt_forward_right():
+    print("Forward right")
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        BT_task(
+            BT_DRIVE_FORWARD_RIGHT
+        )
+    )
+
+def bt_turn_left():
+    print("Turn left")
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        BT_task(
+            BT_TURN_LEFT
+        )
+    )
+
+def bt_forward_left():
+    print("Forward left")
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        BT_task(
+            BT_DRIVE_FORWARD_LEFT
+        )
+    )
+
+def bt_shutdown():
+    print("Shutdown bluetooth connection")
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        BT_task(
+            BT_SERVER_SHUTDOWN
+        )
+    )
+
+
+def bt_restart():
+    print("Restart bluetooth connection")
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        BT_task(
+            BT_SERVER_RESTART
+        )
+    )

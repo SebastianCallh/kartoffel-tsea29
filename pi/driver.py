@@ -9,7 +9,8 @@ from outbound import set_motor_speed
 # Tasks should be reversed since we pop them from the list 
 
 STANDARD_SPEED = 25
-FAST_SPEED = 40
+FAST_SPEED = 50
+SLOW_SPEED = 10
 TURN_SPEED = 40
 TURN_TIME = 900
 TURN_DEGREES = 80
@@ -18,7 +19,7 @@ PRE_TURN_TIME = 500
 WARMUP_TIME = 2000
 POST_TURN_DISTANCE = 200
 PRE_TURN_DISTANCE = 200
-REMOTE_COMMAND_EXECUTE_TIME = 100
+REMOTE_COMMAND_EXECUTE_TIME = 525
 
 """
 Thoughts on post_turn distance:
@@ -56,13 +57,14 @@ class Driver:
                 print("Next task: " + str(self.task))
                 self.task.start()
             else:
-                print("STANNA")
+                # print("STANNA")
                 self.stop()
             
     def drive(self, left_speed, right_speed):
         self.left_speed = left_speed
         self.right_speed = right_speed
         set_motor_speed(left_speed, right_speed)
+        # print("Driver drive set motor speed to ", left_speed, right_speed)
 
     def outer_turn_right(self):
         print('outer turn right')
@@ -91,7 +93,7 @@ class Driver:
         self.tasks = [TimedTask(lambda: self.drive(0, 0), WARMUP_TIME)]
 
     def stop(self):
-        print('stopping')
+        #print('stopping')
         self.drive(0, 0)
 
     def get_right_speed(self):
@@ -147,11 +149,11 @@ class Driver:
 
     def _drive_forward_right(self):
         print('drive forward right')
-        self.drive(FAST_SPEED, STANDARD_SPEED)
+        self.drive(FAST_SPEED, SLOW_SPEED)
 
     def _drive_forward_left(self):
         print('drive backward left')
-        self.drive(STANDARD_SPEED, FAST_SPEED)
+        self.drive(SLOW_SPEED, FAST_SPEED)
         
     def _post_turn(self):
         print('post turn')
@@ -183,6 +185,7 @@ class TimedTask(Task):
     def start(self):
         Task.start(self)
         self.stop_time = datetime.now() + timedelta(milliseconds=self.duration)
+        print("Start timed task")
 
     def timed_task(self):
         #print('time left driving: ' + str(self.stop_time - datetime.now()))

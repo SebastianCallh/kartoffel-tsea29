@@ -47,7 +47,6 @@ def setup():
 
 def main():
     setup()
-
     while True:
         laser.read_data()
         gyro.read_data()
@@ -56,6 +55,5 @@ def main():
         EventBus.receive()
         position.update()
         navigator.navigate()
-
 
 Safety.run_safely(main)

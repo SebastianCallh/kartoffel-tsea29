@@ -1,6 +1,6 @@
 import queue
 
-QUEUE_MAX_SIZE = 20
+QUEUE_MAX_SIZE = 40
 
 
 class Queue_handler:
@@ -15,6 +15,7 @@ class Queue_handler:
     def pop_in_queue(self):
         try:
             next_task = self.in_queue.get(False)
+            self.in_queue.task_done()
         except queue.Empty:
             next_task = None
         return next_task
@@ -28,6 +29,7 @@ class Queue_handler:
     def pop_out_queue(self):
         try:
             next_task = self.out_queue.get(False)
+            self.out_queue.task_done()
         except queue.Empty:
             next_task = None
         return next_task

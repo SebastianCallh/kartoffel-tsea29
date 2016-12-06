@@ -11,6 +11,7 @@ see outbound.py.
 # Addresses for the units on the bus. Note that the laser cannot be queried
 # using the protocol described in bus.py.
 
+
 SENSOR_ADDR = 0x30
 STYR_ADDR = 0x40
 BLUETOOTH_ADDR = 0xBEEF
@@ -148,7 +149,6 @@ CMD_TURN_FINISHED = 9
 
 # -------------------- Bluetooth commands ---------------------
 
-
 # Ask for IP address of robot
 REQUEST_PI_IP = 10
 """
@@ -173,26 +173,10 @@ Arguments: ip
 """
 
 # Demand Bluetooth server to restart
+
 BT_SERVER_RESTART = 12
-"""
-Command sent from Bluetooth client to Bluetooth server to restart server
-and renew the Bluetooth connection.
 
-Target: Bluetooth server
-
-Arguments: None
-"""
-
-# Demand Bluetooth server to shut down
 BT_SERVER_SHUTDOWN = 13
-"""
-Command sent from Bluetooth client to Bluetooth server to shutdown server
-and close the Bluetooth connection.
-
-Target: Bluetooth server
-
-Arguments: None
-"""
 
 BT_REQUEST_SENSOR_DATA = 14
 BT_RETURN_SENSOR_DATA = 15
@@ -217,7 +201,9 @@ BT_MANUAL_MODE = 27
 
 BT_CLIENT_COMMANDS = [REQUEST_PI_IP, BT_SERVER_RESTART,
                       BT_SERVER_SHUTDOWN, BT_REQUEST_SENSOR_DATA,
-                      BT_REQUEST_MAP_DATA, BT_REQUEST_SERVO_DATA,BT_DRIVE_FORWARD,BT_DRIVE_BACK,BT_TURN_RIGHT,BT_TURN_LEFT]
+                      BT_REQUEST_MAP_DATA, BT_REQUEST_SERVO_DATA,
+                      BT_DRIVE_FORWARD, BT_DRIVE_BACK,
+                      BT_TURN_RIGHT, BT_TURN_LEFT, BT_DRIVE_FORWARD_RIGHT, BT_DRIVE_FORWARD_LEFT]
 
 BT_SERVER_COMMANDS = [REQUEST_PI_IP, BT_RETURN_SENSOR_DATA,
                       BT_RETURN_SERVO_DATA, BT_RETURN_MAP_DATA]
