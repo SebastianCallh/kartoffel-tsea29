@@ -1,6 +1,7 @@
 from tkinter import *
 import outbound
 from map_grid import MapGrid
+import datetime
 
 
 class GUI:
@@ -17,6 +18,7 @@ class GUI:
     BG_COLOR = "orange"
 
     MAX_LIST_ITEMS = 13
+    MIN_TIME_KEY_EVENT = 500            # milliseconds
 
     def __init__(self):
         self.pi_ip = ""
@@ -31,16 +33,22 @@ class GUI:
         self.main_frame.focus_set()  # Set all frame as listening to keyboard events
         self.main_frame.grid()
 
-        # Run functios when certain key is pressed. Bind to same as buttons.
+
+        # Keybindings
+        # Run functions when certain keys are pressed. Bind to same as buttons.
         # Arrow keys bind to root instead of main frame because of keyboard focus
-        self.main_frame.bind('<w>', self.key_forward)
-        self.root.bind('<Up>', self.key_forward)
-        self.main_frame.bind('<s>', self.key_back)
-        self.root.bind('<Down>', self.key_back)
-        self.main_frame.bind('<a>', self.key_left)
-        self.root.bind('<Left>', self.key_left)
-        self.main_frame.bind('<d>', self.key_right)
-        self.root.bind('<Right>', self.key_right)
+        self.main_frame.bind('<w>', self.forward)
+        self.root.bind('<Up>', self.forward)
+        self.main_frame.bind('<s>', self.back)
+        self.root.bind('<Down>', self.back)
+        self.main_frame.bind('<a>', self.left)
+        self.root.bind('<Left>', self.left)
+        self.main_frame.bind('<d>', self.right)
+        self.root.bind('<Right>', self.right)
+        self.main_frame.bind('<q>', self.forward_left)
+        self.main_frame.bind('<e>', self.forward_right)
+
+        self.last_key_event_time = datetime.datetime.now()
 
         # --- Canvas ---
         self.canvas = Canvas(self.main_frame,
@@ -82,22 +90,22 @@ class GUI:
         self.btn_frame = Frame(self.main_frame, width=self.BTN_FRAME_X, height=self.BTN_FRAME_Y)
         self.btn_frame.grid(row=1, column=0, pady=10, padx=10)
 
-        self.btn_forward = Button(self.btn_frame, text="Forward", command=outbound.bt_drive_forward)
+        self.btn_forward = Button(self.btn_frame, text="Forward", command=self.forward)
         self.btn_forward.grid(row=1, column=2)
 
-        self.btn_back = Button(self.btn_frame, text="Back", command=outbound.bt_drive_back)
+        self.btn_back = Button(self.btn_frame, text="Back", command=self.back)
         self.btn_back.grid(row=1, column=3)
 
-        self.btn_right = Button(self.btn_frame, text="Right", command=outbound.bt_turn_right)
+        self.btn_right = Button(self.btn_frame, text="Right", command=self.right)
         self.btn_right.grid(row=1, column=4)
 
-        self.btn_left = Button(self.btn_frame, text="Left", command=outbound.bt_turn_left)
+        self.btn_left = Button(self.btn_frame, text="Left", command=self.left)
         self.btn_left.grid(row=1, column=1)
 
-        self.btn_forward_right = Button(self.btn_frame, text="Forward left", command=outbound.bt_forward_left)
+        self.btn_forward_right = Button(self.btn_frame, text="Forward left", command=self.forward_left)
         self.btn_forward_right.grid(row=0, column=2, padx=5, pady=5)
 
-        self.btn_forward_left = Button(self.btn_frame, text="Forward right", command=outbound.bt_forward_right)
+        self.btn_forward_left = Button(self.btn_frame, text="Forward right", command=self.forward_right)
         self.btn_forward_left.grid(row=0, column=3, padx=5, pady=5)
 
         self.bt_restart = Button(self.btn_frame, text="Restart bluetooth\nconnection",
@@ -171,17 +179,44 @@ class GUI:
     def close_window(self):
         self.root.destroy()
 
+    def check_key_event_time(self):
+        return (datetime.datetime.now() - self.last_key_event_time) > datetime.timedelta(
+                        milliseconds=self.MIN_TIME_KEY_EVENT)
+
     '''Functions for handling key press.
     Takes forced event, but ignores it and calls correct driver function.
     '''
-    def key_forward(self, event):
-        outbound.bt_drive_forward()
+    def forward(self, event=None):
+        self.event_handler(outbound.bt_drive_forward, event=event, repetition=5)
 
-    def key_back(self, event):
-        outbound.bt_drive_back()
+    def back(self, event=None):
+        self.event_handler(outbound.bt_drive_back, event=event, repetition=5)
 
-    def key_left(self, event):
-        outbound.bt_turn_left()
+    def left(self, event=None):
+        self.event_handler(outbound.bt_turn_left, event=event, repetition=5)
 
-    def key_right(self, event):
-        outbound.bt_turn_right()
+    def right(self, event=None):
+        self.event_handler(outbound.bt_turn_right, event=event, repetition=5)
+
+    def forward_right(self, event=None):
+        self.event_handler(outbound.bt_forward_right, event=event, repetition=5)
+
+    def forward_left(self, event=None):
+        self.event_handler(outbound.bt_forward_left, event=event, repetition=5)
+
+    '''
+    Makes sure event can not occur faster than a predefined time interval.
+    If event argument is left out, event_handler will interpret that as if
+    it was called from a button and call the command function several times.
+    '''
+    def event_handler(self, command, **options):
+        if self.check_key_event_time():
+            if not options["event"]:
+                for i in range(0, options["repetition"]):
+                    while not self.check_key_event_time():
+                        continue
+                    command()
+                    self.last_key_event_time = datetime.datetime.now()
+            else:
+                command()
+                self.last_key_event_time = datetime.datetime.now()
