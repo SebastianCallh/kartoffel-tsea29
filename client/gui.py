@@ -18,11 +18,12 @@ class GUI:
     BG_COLOR = "orange"
 
     MAX_LIST_ITEMS = 13
-    MIN_TIME_KEY_EVENT = 500            # milliseconds
+    MIN_TIME_KEY_EVENT = 500  # milliseconds
 
     def __init__(self):
         self.pi_ip = ""
         self.exit_demanded = False
+        self.has_drawn_grid = False
 
         self.map_grid = MapGrid()
 
@@ -32,7 +33,6 @@ class GUI:
         self.main_frame = Frame(self.root, width=self.WINDOW_X, height=self.WINDOW_Y, bg=self.BG_COLOR)
         self.main_frame.focus_set()  # Set all frame as listening to keyboard events
         self.main_frame.grid()
-
 
         # Keybindings
         # Run functions when certain keys are pressed. Bind to same as buttons.
@@ -53,8 +53,8 @@ class GUI:
         # --- Canvas ---
         self.canvas = Canvas(self.main_frame,
                              width=GUI.CANVAS_X,
-                             height=GUI.CANVAS_Y, bg="white")
-        self.canvas.grid(column=0, row=0, padx=10,pady=10)
+                             height=GUI.CANVAS_Y, bg="#CCCCCC")
+        self.canvas.grid(column=0, row=0, padx=10, pady=10)
 
         # --- Lists ---
         self.list_frame = Frame(self.main_frame, width=self.LIST_FRAME_X, height=self.LIST_FRAME_Y,
@@ -109,8 +109,8 @@ class GUI:
         self.btn_forward_left.grid(row=0, column=3, padx=5, pady=5)
 
         self.bt_restart = Button(self.btn_frame, text="Restart bluetooth\nconnection",
-                                                command=outbound.bt_restart)
-        self.bt_restart.grid(row=1,column=5,padx=10, pady=10)
+                                 command=outbound.bt_restart)
+        self.bt_restart.grid(row=1, column=5, padx=10, pady=10)
 
         self.ip_box = Label(self.main_frame, text="Pi IP: ", width=25, bg="white")
         self.ip_box.grid(row=1, column=1)
@@ -121,10 +121,13 @@ class GUI:
         self.logo_box = Label(self.btn_frame, image=self.resampled_logo)
         self.logo_box.grid(row=1, column=0, padx=10)
 
+        self.map_grid.draw_grid(self.canvas)
+
     '''
     Values should be a list containing of [ir_left,ir_right,ir_left_back,
     ir_right_back,laser,gyro]
     '''
+
     def add_sensor_data(self, values):
         ir_values = str(values[2]) + ", " + str(values[0]) + ", " + str(values[1]) + ", " + str(values[3])
 
@@ -146,11 +149,10 @@ class GUI:
         else:
             self.gyro_list_nr_items += 1
 
-        #print("IR values: ", str(values))
-
     '''
     Values should be a list containing of [left_speed, right_speed].
     '''
+
     def add_servo_data(self, values):
         if self.servo_list_nr_items >= self.MAX_LIST_ITEMS:
             for i in range(1, self.MAX_LIST_ITEMS):
@@ -159,33 +161,35 @@ class GUI:
         else:
             self.servo_list_nr_items += 1
         self.servo_list.insert(END, str(values[0]) + ', ' + str(values[1]))
-        print("Servo data: ", str(values))
 
     def update_map(self, values):
-        #print("Map data: ", str(values))
+        if not self.has_drawn_grid:
+            self.map_grid.draw_grid(self.canvas)
+            self.has_drawn_grid = True
         self.map_grid.update_map(values, self.canvas)
 
     '''
     Ip expected to be in format [ip]
     '''
+
     def update_ip(self, ip):
-        #print("IP i gui: ", str(ip[0]))
         self.ip_box.config(text="Pi IP: " + str(ip[0]))
-        
+
     def exit(self):
         self.exit_demanded = True
         print("Exit gui")
-        
+
     def close_window(self):
         self.root.destroy()
 
     def check_key_event_time(self):
         return (datetime.datetime.now() - self.last_key_event_time) > datetime.timedelta(
-                        milliseconds=self.MIN_TIME_KEY_EVENT)
+            milliseconds=self.MIN_TIME_KEY_EVENT)
 
     '''Functions for handling key press.
     Takes forced event, but ignores it and calls correct driver function.
     '''
+
     def forward(self, event=None):
         self.event_handler(outbound.bt_drive_forward, event=event, repetition=5)
 
@@ -210,6 +214,7 @@ class GUI:
     it was called from a button and call the command function number of times
     specified in repetition option.
     '''
+
     def event_handler(self, command, **options):
         if self.check_key_event_time():
             if not options["event"]:
