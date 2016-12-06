@@ -1,6 +1,6 @@
 import queue
 
-QUEUE_MAX_SIZE = 20
+QUEUE_MAX_SIZE = 40
 
 
 class Queue_handler:
