@@ -110,6 +110,7 @@ class Navigator:
         self.data['driver'].update()
 
         if self.mode == Navigator.AUTONOMOUS:
+            print("in autonomous mode")
             next_state = self.state.run(self.data)
 
             curr_type = type(self.state)
@@ -122,6 +123,7 @@ class Navigator:
                 EventBus.notify(CMD_TURN_FINISHED, self.state.is_right_turn)
 
             self.state = next_state
+            print(str(self.state))
             
     def drive_forward(self):
         if self.mode == Navigator.MANUAL:
