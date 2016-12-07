@@ -44,10 +44,10 @@ class MapGrid:
 
     def _calc_actual_coords(self, canvas):
         visited = self.new_raw_map_data
-        print("visited =", visited)
+        #print("visited =", visited)
         for block in visited:
             # Match coordinates to grid
-            print("block = ", block)
+            #print("block = ", block)
             if block:
                 x = block[0]
                 y = 0 - block[1] # Flip coordinate system on canvas
