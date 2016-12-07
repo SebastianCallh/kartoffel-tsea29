@@ -18,7 +18,7 @@ class GUI:
     BG_COLOR = "orange"
 
     MAX_LIST_ITEMS = 13
-    MIN_TIME_KEY_EVENT = 500  # milliseconds
+    MIN_TIME_KEY_EVENT = 250  # milliseconds
 
     MODES =[("Manual", 0),
             ("Automatic", 1)]

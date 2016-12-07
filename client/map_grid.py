@@ -17,7 +17,7 @@ class MapGrid:
     def update_map(self, data, canvas):
         self._update_map_data(data)
         self.new_actual_map_data = []
-        self._calc_actual_coords(canvas, data)
+        self._calc_actual_coords(canvas)
         self._draw_blocks(canvas)
 
     def draw_grid(self, canvas):
@@ -31,30 +31,33 @@ class MapGrid:
     '''
 
     def _update_map_data(self, data):
-        nr_new_items = len(data) - len(self.raw_map_data)
-        self.new_raw_map_data = data[:nr_new_items]
-        self.raw_map_data = data
-        self.new_raw_map_data = data
+        visited = data[0]
+        nr_new_items = len(visited) - len(self.raw_map_data)
+        self.new_raw_map_data = visited[:nr_new_items]
+        self.raw_map_data = visited
+        self.new_raw_map_data = visited
 
     '''
     Appends internal list of corners with actual coordinates corresponding to
     size of map in pixels.
     '''
 
-    def _calc_actual_coords(self, canvas, visited):
-        print("visited =", visited)
+    def _calc_actual_coords(self, canvas):
+        visited = self.new_raw_map_data
+        #print("visited =", visited)
         for block in visited:
             # Match coordinates to grid
-            print("block = ", block)
-            x = block[0][0]
-            y = block[0][1]
-            x += self.OFFSET
-            y += self.OFFSET
+            #print("block = ", block)
+            if block:
+                x = block[0]
+                y = 0 - block[1] # Flip coordinate system on canvas
+                x += self.OFFSET
+                y += self.OFFSET
 
-            # Convert raw coordinates to actual coordinates corresponding to canvas pixels
-            actual_x = (canvas.winfo_width() * x) / self.NR_COLS
-            actual_y = (canvas.winfo_height() * y) / self.NR_ROWS
-            self.new_actual_map_data.append((actual_x, actual_y))
+                # Convert raw coordinates to actual coordinates corresponding to canvas pixels
+                actual_x = (canvas.winfo_width() * x) / self.NR_COLS
+                actual_y = (canvas.winfo_height() * y) / self.NR_ROWS
+                self.new_actual_map_data.append((actual_x, actual_y))
 
     '''
     Draw lines between corners. Replaces map data with actual coordinates with only the last

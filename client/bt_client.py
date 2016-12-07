@@ -79,14 +79,15 @@ class BT_client(threading.Thread):
         #print("sending", bt_out_task)
         if bt_out_task:
             self.current_out_task = bt_out_task
-            print("task =", bt_out_task)
+            #print("task =", bt_out_task)
             try:
                 self.client_sock.send(str(bt_out_task.cmd_id))
             except bluetooth.btcommon.BluetoothError:
                 print(traceback.format_exc())
             except OSError:
-                print("OS error in send")
+                #print("OS error in send")
                 #print(traceback.format_exc())
+                pass
                 
             if bt_out_task.cmd_id == protocol.BT_SERVER_SHUTDOWN:
                 self.exit_demanded = True
@@ -115,7 +116,7 @@ class BT_client(threading.Thread):
         except OSError:
             #self.client_sock.settimeout(0)
             #print(traceback.format_exc())
-            print("OSError in receive")
+            #print("OSError in receive")
             pass
         self.client_sock.settimeout(0)
 
