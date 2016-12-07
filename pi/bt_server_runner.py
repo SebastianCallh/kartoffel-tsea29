@@ -62,7 +62,7 @@ def recieve(server):
             return protocol.BT_SERVER_RESTART
         elif int(server.incoming_data) == protocol.BT_SERVER_SHUTDOWN:
             return protocol.BT_SERVER_SHUTDOWN
-        elif int(server.update_incoming) == protocol.REQUEST_PI_IP:
+        elif int(server.incoming_data) == protocol.REQUEST_PI_IP:
             # Return ip immediately without passing on to task_handler
             return protocol.REQUEST_PI_IP
         else:
