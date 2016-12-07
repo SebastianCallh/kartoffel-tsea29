@@ -15,6 +15,7 @@ def setup_server():
     """
     Creates and returns a fresh bt_server connected to a client.
     """
+
     bt_task_handler.clean_queue_files()
     server = bt_server.BT_Server(PI_ADDR, PORT, BACKLOG)
     server.accept_connection()
@@ -76,13 +77,12 @@ def main():
     The main function initializes instance of the server.
     Runs the main control of data flow in the bluetooth connection.
     """
-    current_pi_ip = ""
 
     server = setup_server()
     status = NO_DATA
     while exit != protocol.BT_SERVER_SHUTDOWN:
         status = recieve(server)
-        if status == protocol.REQUEST_PI_IP and utils.get_ip() != current_pi_ip:
+        if status == protocol.REQUEST_PI_IP:
             send(server, bt_task.BT_task(protocol.RETURN_PI_IP, [utils.get_ip()]))
             current_pi_ip = utils.get_ip()
         else:
