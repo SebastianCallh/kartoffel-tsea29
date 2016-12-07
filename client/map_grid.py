@@ -42,10 +42,12 @@ class MapGrid:
     '''
 
     def _calc_actual_coords(self, canvas, visited):
+        print("visited =", visited)
         for block in visited:
             # Match coordinates to grid
-            x = block[0]
-            y = block[1]
+            print("block = ", block)
+            x = block[0][0]
+            y = block[0][1]
             x += self.OFFSET
             y += self.OFFSET
 
