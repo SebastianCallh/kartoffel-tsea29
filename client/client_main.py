@@ -68,21 +68,24 @@ def request_data():
 def update():
     global gui, last_data_request_time, curr_test_corn
     if not gui.exit_demanded:
-        EventBus.receive()
-        if (datetime.datetime.now() - last_data_request_time) > datetime.timedelta(
-                seconds=DATA_REQUEST_INTERVAL):
-            request_data()
+        if gui.finished_setup:
+            #EventBus.receive()
+            if (datetime.datetime.now() - last_data_request_time) > datetime.timedelta(
+                    seconds=DATA_REQUEST_INTERVAL):
+                #request_data()
 
-            """gui.update_map([TEST_CORNERS2[curr_test_corn]])
-            if curr_test_corn < len(TEST_CORNERS2) -1:
-                curr_test_corn += 1"""
-            last_data_request_time = datetime.datetime.now()
+                """gui.update_map([TEST_CORNERS2[curr_test_corn]])
+                if curr_test_corn < len(TEST_CORNERS2) -1:
+                    curr_test_corn += 1"""
+                last_data_request_time = datetime.datetime.now()
+        else:
+            gui.setup_after_main_loop()
         gui.canvas.after(UPDATE_INTERVAL, update)
     else:
         print("Exit gui in client main")
-        outbound.bt_restart()
+        '''outbound.bt_restart()
         while not bt_client.restart_demanded:
-            pass
+            pass'''
         gui.close_window()
 
 
@@ -96,7 +99,7 @@ def main():
     global gui
     queue_handler = EventBus.queue_handler
     setup_subscriptions()
-    run_bt_client(queue_handler)
+    #run_bt_client(queue_handler)
     gui = GUI()
     start_gui()
 
@@ -104,7 +107,7 @@ try:
     main()
 except:
     print("Some error in client main")
-    outbound.bt_restart()
+    '''outbound.bt_restart()
     while not bt_client.restart_demanded:
-        pass
+        pass'''
     gui.close_window()
