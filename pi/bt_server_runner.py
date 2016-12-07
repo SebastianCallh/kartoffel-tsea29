@@ -76,12 +76,15 @@ def main():
     The main function initializes instance of the server.
     Runs the main control of data flow in the bluetooth connection.
     """
+    current_pi_ip = ""
+
     server = setup_server()
     status = NO_DATA
     while exit != protocol.BT_SERVER_SHUTDOWN:
         status = recieve(server)
-        if status == protocol.REQUEST_PI_IP:
+        if status == protocol.REQUEST_PI_IP and utils.get_ip() != current_pi_ip:
             send(server, bt_task.BT_task(protocol.RETURN_PI_IP, [utils.get_ip()]))
+            current_pi_ip = utils.get_ip()
         else:
             send(server)
         if status == protocol.BT_SERVER_RESTART or status == protocol.BT_SERVER_SHUTDOWN:

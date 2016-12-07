@@ -8,7 +8,8 @@ from ast import literal_eval
 import random
 
 DATA_REQUEST_INTERVAL = 1  # seconds
-UPDATE_INTERVAL = 250  # milliseconds
+IP_REQUEST_INTERVAL = 10   # seconds
+UPDATE_INTERVAL = 250      # milliseconds
 TEST_CORNERS = [(0, 0), (0,1), (1, 1), (1, 3), (-3, 3), (-3, 4),
                 (-2, 4), (-2, 5), (-4, 5), (-4, 7), (5, 7), (5, 9),
                 (7, 9), (7, 5), (4, 5), (4, -4), (-15, -4), (-15, -3), (3, -3),
@@ -21,6 +22,7 @@ curr_test_corn = 0
 gui = None
 bt_client = None
 last_data_request_time = datetime.datetime.now()
+last_ip_request_time = datetime.datetime.now()
 
 
 def run_bt_client(queue_handler):
@@ -58,10 +60,14 @@ def setup_subscriptions():
 
 
 def request_data():
+    global last_ip_request_time
     outbound.bt_request_sensor_data()
     outbound.bt_request_servo_data()
     outbound.bt_request_map_data()
-    outbound.request_ip()
+    if (datetime.datetime.now() - last_ip_request_time) > datetime.timedelta(
+            seconds=IP_REQUEST_INTERVAL):
+        outbound.request_ip()
+        last_ip_request_time = datetime.datetime.now()
     pass
 
 
