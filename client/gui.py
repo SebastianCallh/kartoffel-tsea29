@@ -20,10 +20,13 @@ class GUI:
     MAX_LIST_ITEMS = 13
     MIN_TIME_KEY_EVENT = 500  # milliseconds
 
+    MODES =[("Manual", "1"),
+            ("Automatic", "2")]
+
     def __init__(self):
         self.pi_ip = ""
         self.exit_demanded = False
-        self.has_drawn_grid = False
+        self.finished_setup = False
 
         self.map_grid = MapGrid()
 
@@ -108,9 +111,16 @@ class GUI:
         self.btn_forward_left = Button(self.btn_frame, text="Forward right", command=self.forward_right)
         self.btn_forward_left.grid(row=0, column=3, padx=5, pady=5)
 
-        self.bt_restart = Button(self.btn_frame, text="Restart bluetooth\nconnection",
-                                 command=outbound.bt_restart)
-        self.bt_restart.grid(row=1, column=5, padx=10, pady=10)
+        self.mode = IntVar()
+        self.mode.set(1)
+        self.radio_frame = Frame(self.btn_frame)
+        self.radio_frame.grid(row=0, column=5)
+        self.btn_auto_mode = Radiobutton(self.radio_frame, text=self.MODES[0][0], variable=self.mode,
+                                 command=self.change_mode, indicatoron=0, value=self.MODES[0][1])
+        self.btn_auto_mode.grid(row=0, column=0, padx=0, pady=10, sticky="W")
+        self.btn_manual_mode = Radiobutton(self.radio_frame, text=self.MODES[1][0], variable=self.mode,
+                                         command=self.change_mode, indicatoron=0, value=self.MODES[1][1])
+        self.btn_manual_mode.grid(row=1, column=0, padx=0, pady=10, sticky="W")
 
         self.ip_box = Label(self.main_frame, text="Pi IP: ", width=25, bg="white")
         self.ip_box.grid(row=1, column=1)
@@ -122,6 +132,12 @@ class GUI:
         self.logo_box.grid(row=1, column=0, padx=10)
 
         self.map_grid.draw_grid(self.canvas)
+
+    def setup_after_main_loop(self):
+        self.map_grid.draw_grid(self.canvas)
+        self.btn_auto_mode.deselect()
+        self.btn_manual_mode.deselect()
+        self.finished_setup = True
 
     '''
     Values should be a list containing of [ir_left,ir_right,ir_left_back,
@@ -163,9 +179,6 @@ class GUI:
         self.servo_list.insert(END, str(values[0]) + ', ' + str(values[1]))
 
     def update_map(self, values):
-        if not self.has_drawn_grid:
-            self.map_grid.draw_grid(self.canvas)
-            self.has_drawn_grid = True
         self.map_grid.update_map(values, self.canvas)
 
     '''
@@ -226,3 +239,6 @@ class GUI:
             else:
                 command()
                 self.last_key_event_time = datetime.datetime.now()
+
+    def change_mode(self):
+        print("Nu är radiobutton: ", self.mode)

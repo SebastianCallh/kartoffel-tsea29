@@ -22,7 +22,6 @@ class MapGrid:
 
     def draw_grid(self, canvas):
         size = canvas.winfo_width() / self.NR_ROWS
-        print("size =", size)
         for row in range(0, self.NR_ROWS):
             canvas.create_line(0, row * size, canvas.winfo_width(), row * size, fill="#FFFFFF")
             canvas.create_line(row * size, 0, row * size, canvas.winfo_width(), fill="#FFFFFF")
