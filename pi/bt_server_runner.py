@@ -2,6 +2,7 @@ import bt_server
 import bt_task_handler
 import protocol
 import utils
+import bt_task
 
 PI_ADDR = "B8:27:EB:FC:55:27"
 PORT = 3
@@ -80,7 +81,7 @@ def main():
     while exit != protocol.BT_SERVER_SHUTDOWN:
         status = recieve(server)
         if status == protocol.REQUEST_PI_IP:
-            send([utils.get_ip()])
+            send(server, bt_task.BT_task(protocol.RETURN_PI_IP, [utils.get_ip()]))
         else:
             send(server)
         if status == protocol.BT_SERVER_RESTART or status == protocol.BT_SERVER_SHUTDOWN:
