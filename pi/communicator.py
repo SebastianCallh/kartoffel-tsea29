@@ -4,11 +4,12 @@ from utils import get_ip
 
 
 class Communicator:
-    def __init__(self, ir, laser, gyro, driver, position):
+    def __init__(self, ir, laser, gyro, driver, navigator, position):
         self.ir = ir
         self.laser = laser
         self.gyro = gyro
         self.driver = driver
+        self.navigator = navigator
         self.position = position
 
     '''
@@ -44,20 +45,20 @@ class Communicator:
         print("send_ip, done")
 
     def drive_forward(self):
-        self.driver.drive_forward()
+        self.navigator.drive_forward()
         print("Communicator drove forward!")
     
     def drive_backward(self):
-        self.driver.drive_backward()
+        self.navigator.drive_backward()
            
     def drive_forward_right(self):
-        self.driver.drive_forward_right()
+        self.navigator.drive_forward_right()
     
     def drive_forward_left(self):
-        self.driver.drive_forward_left()
+        self.navigator.drive_forward_left()
 
     def turn_left(self):
-        self.driver.turn_left()
+        self.navigator.turn_left()
         
     def turn_right(self):
-        self.driver.turn_right()
+        self.navigator.turn_right()
