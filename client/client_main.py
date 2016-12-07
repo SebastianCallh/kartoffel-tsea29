@@ -104,23 +104,17 @@ def start_gui():
 
 def main():
     global gui
-    print("1")
     queue_handler = EventBus.queue_handler
-    print("2")
     setup_subscriptions()
-    print("3")
     run_bt_client(queue_handler)
-    print("4")
     gui = GUI()
-    print("5")
     start_gui()
-    print("6")
 
 try:
     main()
 except:
     print("Some error in client main")
-    '''outbound.bt_restart()
+    outbound.bt_restart()
     while not bt_client.restart_demanded:
-        pass'''
+        pass
     gui.close_window()
