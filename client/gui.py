@@ -20,8 +20,8 @@ class GUI:
     MAX_LIST_ITEMS = 13
     MIN_TIME_KEY_EVENT = 500  # milliseconds
 
-    MODES =[("Manual", "1"),
-            ("Automatic", "2")]
+    MODES =[("Manual", 0),
+            ("Automatic", 1)]
 
     def __init__(self):
         self.pi_ip = ""
@@ -94,48 +94,50 @@ class GUI:
         self.btn_frame.grid(row=1, column=0, pady=10, padx=10)
 
         self.btn_forward = Button(self.btn_frame, text="Forward", command=self.forward)
-        self.btn_forward.grid(row=1, column=2)
+        self.btn_forward.grid(row=1, column=3)
 
         self.btn_back = Button(self.btn_frame, text="Back", command=self.back)
-        self.btn_back.grid(row=1, column=3)
+        self.btn_back.grid(row=1, column=4)
 
         self.btn_right = Button(self.btn_frame, text="Right", command=self.right)
-        self.btn_right.grid(row=1, column=4)
+        self.btn_right.grid(row=1, column=5)
 
         self.btn_left = Button(self.btn_frame, text="Left", command=self.left)
         self.btn_left.grid(row=1, column=1)
 
         self.btn_forward_right = Button(self.btn_frame, text="Forward left", command=self.forward_left)
-        self.btn_forward_right.grid(row=0, column=2, padx=5, pady=5)
+        self.btn_forward_right.grid(row=0, column=3, padx=5, pady=2)
 
         self.btn_forward_left = Button(self.btn_frame, text="Forward right", command=self.forward_right)
-        self.btn_forward_left.grid(row=0, column=3, padx=5, pady=5)
+        self.btn_forward_left.grid(row=0, column=4, padx=5, pady=2)
 
         self.mode = IntVar()
         self.mode.set(1)
         self.radio_frame = Frame(self.btn_frame)
-        self.radio_frame.grid(row=0, column=5)
+        self.radio_frame.grid(row=0, column=6)
         self.btn_auto_mode = Radiobutton(self.radio_frame, text=self.MODES[0][0], variable=self.mode,
                                  command=self.change_mode, indicatoron=0, value=self.MODES[0][1])
-        self.btn_auto_mode.grid(row=0, column=0, padx=0, pady=10, sticky="W")
+        self.btn_auto_mode.grid(row=0, column=0, padx=2, pady=2, sticky="W")
         self.btn_manual_mode = Radiobutton(self.radio_frame, text=self.MODES[1][0], variable=self.mode,
                                          command=self.change_mode, indicatoron=0, value=self.MODES[1][1])
-        self.btn_manual_mode.grid(row=1, column=0, padx=0, pady=10, sticky="W")
+        self.btn_manual_mode.grid(row=1, column=0, padx=2, pady=2, sticky="W")
 
         self.ip_box = Label(self.main_frame, text="Pi IP: ", width=25, bg="white")
         self.ip_box.grid(row=1, column=1)
 
         # --- Image ----
+        self.image_frame = Frame(self.btn_frame)
+        self.image_frame.grid(row=0, column=0, rowspan=2)
         logo = PhotoImage(file="Logo.gif")
-        self.resampled_logo = logo.subsample(3, 4)
-        self.logo_box = Label(self.btn_frame, image=self.resampled_logo)
-        self.logo_box.grid(row=1, column=0, padx=10)
+        self.resampled_logo = logo.subsample(3, 3)
+        self.logo_box = Label(self.image_frame, image=self.resampled_logo)
+        self.logo_box.grid(row=1, column=0, padx=10, sticky=W+E+N+S)
 
         self.map_grid.draw_grid(self.canvas)
 
     def setup_after_main_loop(self):
         self.map_grid.draw_grid(self.canvas)
-        self.btn_auto_mode.deselect()
+        self.btn_auto_mode.select()
         self.btn_manual_mode.deselect()
         self.finished_setup = True
 
@@ -241,4 +243,8 @@ class GUI:
                 self.last_key_event_time = datetime.datetime.now()
 
     def change_mode(self):
-        print("Nu är radiobutton: ", self.mode)
+        mode = self.mode.get()
+        if self.MODES[mode][0] == "Manual":
+            outbound.bt_switch_to_manual()
+        else:
+            outbound.bt_switch_to_auto()
