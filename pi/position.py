@@ -65,7 +65,6 @@ class Position:
         self.saved_sections.append(self.current_section)
         self.map_data.append(self.transform_map_data(self.current_section))
 
-
         print("Primary temporary kitchens: " + str(self.temporary_potential_kitchen))
 
         # Removes potential kitchens if already passed
@@ -85,8 +84,10 @@ class Position:
     def begin_next_section(self, is_right_turn):
         if is_right_turn:
             self.current_section = self.current_section.for_right_turn()
+            self.kitchen_section = self.kitchen_section.for_right_turn()
         else:
             self.current_section = self.current_section.for_left_turn()
+            self.kitchen_section = self.kitchen_section.for_left_turn()
 
     def on_turning_started(self):
         self.state = STATE_WAITING
