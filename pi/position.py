@@ -126,6 +126,9 @@ class Position:
     def calculate_kitchen_coordinates(self):
         block_distance_from_turn = round((self.current_section.get_max() - self.kitchen_section.get_max()) /
                                          BLOCK_LENGTH_MM)
+        print("Section max: " + str(self.current_section.get_max()) +
+              ", Kitchen max: " + str(self.kitchen_section.get_max()))
+
         print("Kitchen block distance from turn: " + str(block_distance_from_turn))
 
         kitchen_x = 0
