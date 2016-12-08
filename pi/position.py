@@ -70,8 +70,7 @@ class Position:
         print("Primary temporary kitchens: " + str(self.temporary_potential_kitchen))
 
         # Removes potential kitchens if already passed
-        if self.map_data.count((self.current_x, self.current_y)) > 0:
-            self.temporary_potential_kitchen.remove((self.current_x, self.current_y))
+        if self.potential_kitchen.count((self.current_x, self.current_y)) > 0:
             self.potential_kitchen.remove((self.current_x, self.current_y))
 
         # Adds all new potential kitchens.
