@@ -59,7 +59,7 @@ class Position:
     def save_current_section(self):
         self.current_section.finish()
 
-        if self.looking_for_kitchen:
+        if self.looking_for_kitchen and self.state == STATE_MEASURING:
             self.kitchen_section.finish()
             self.calculate_kitchen_coordinates()
             self.looking_for_kitchen = False
