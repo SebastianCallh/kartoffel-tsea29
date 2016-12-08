@@ -132,8 +132,8 @@ class Position:
 
         print("Kitchen block distance from turn: " + str(block_distance_from_turn))
 
-        kitchen_x = 0
-        kitchen_y = 0
+        kitchen_x = self.current_x
+        kitchen_y = self.current_y
 
         # Transforms coordinates to match the kitchen island displacement
         if self.kitchen_section.direction == NORTH:
@@ -146,8 +146,8 @@ class Position:
             kitchen_y -= self.kitchen_block_displacement
 
         # Sets the kitchens start position to the current + displacement
-        kitchen_start_x = kitchen_x + self.current_x
-        kitchen_start_y = kitchen_y + self.current_y
+        kitchen_start_x = kitchen_x
+        kitchen_start_y = kitchen_y
 
         # Adding in the direction the island was found
         if self.kitchen_section.direction == NORTH:
