@@ -54,11 +54,14 @@ class Position:
                 self.kitchen_section.add_distance_sample(distance)
                 self.kitchen_block_displacement = 1
 
-            elif (self.ir.get_ir_left() == -1 and self.kitchen_block_displacement == 0) or \
-                 (self.ir.get_ir_left_back() == -1 and self.kitchen_block_displacement == 1) and self.looking_for_kitchen:
+            elif ((self.ir.get_ir_left() == -1 and self.kitchen_block_displacement == 0) or
+                    (self.ir.get_ir_left_back() == -1 and self.kitchen_block_displacement == 1)) and \
+                    self.looking_for_kitchen:
+
                 self.kitchen_section.finish()
                 self.calculate_kitchen_coordinates()
                 self.looking_for_kitchen = False
+                self.kitchen_section = Section(self.current_section.direction)
 
     def save_current_section(self):
         self.current_section.finish()
@@ -71,8 +74,10 @@ class Position:
         if self.potential_kitchen.count((self.current_x, self.current_y)) > 0:
             self.potential_kitchen.remove((self.current_x, self.current_y))
 
-        # Adds all new potential kitchens.
-        self.potential_kitchen = self.potential_kitchen + self.temporary_potential_kitchen
+        # Adds all new potential kitchens that does not exist in map.
+        for section in self.temporary_potential_kitchen:
+            if self.map_data.count((section[0], section[1])) == 0:
+                self.potential_kitchen.append(section)
 
         print('---- SECTION SAVED ----')
         print('  direction: ' + str(self.current_section.direction))
@@ -164,7 +169,7 @@ class Position:
                 kitchen_start_x -= block_distance_from_turn
                 kitchen_x -= self.kitchen_section.block_distance + block_distance_from_turn
 
-            if self.map_data.count((kitchen_x, kitchen_y)) == 0 and self.potential_kitchen.count((kitchen_x, kitchen_y)) == 0:
+            if self.potential_kitchen.count((kitchen_x, kitchen_y)) == 0:
                 self.temporary_potential_kitchen.append((kitchen_x, kitchen_y))
             print("Kitchen block distance: " + str(self.kitchen_section.block_distance))
             print("Kitchen end coordinates: " + str(kitchen_x) + ", " + str(kitchen_y))
