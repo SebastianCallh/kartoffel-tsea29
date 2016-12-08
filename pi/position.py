@@ -128,7 +128,8 @@ class Position:
 
         kitchen_x = 0
         kitchen_y = 0
-        # Transforms coordinates to match the kitchen islands position
+
+        # Transforms coordinates to match the kitchen island displacement
         if self.kitchen_section.direction == NORTH:
             kitchen_x -= self.kitchen_block_displacement
         elif self.kitchen_section.direction == EAST:
@@ -138,9 +139,11 @@ class Position:
         elif self.kitchen_section.direction == WEST:
             kitchen_y -= self.kitchen_block_displacement
 
+        # Sets the kitchens start position to the current + displacement
         kitchen_start_x = kitchen_x + self.current_x
         kitchen_start_y = kitchen_y + self.current_y
 
+        # Adding in the direction the island was found
         if self.kitchen_section.direction == NORTH:
             kitchen_start_y += block_distance_from_turn
             kitchen_y += self.kitchen_section.block_distance + block_distance_from_turn
@@ -148,25 +151,26 @@ class Position:
             kitchen_start_x += block_distance_from_turn
             kitchen_x += self.kitchen_section.block_distance + block_distance_from_turn
         elif self.kitchen_section.direction == SOUTH:
-            kitchen_start_y += block_distance_from_turn
+            kitchen_start_y -= block_distance_from_turn
             kitchen_y -= self.kitchen_section.block_distance + block_distance_from_turn
         elif self.kitchen_section.direction == WEST:
-            kitchen_x += block_distance_from_turn
+            kitchen_start_x -= block_distance_from_turn
             kitchen_x -= self.kitchen_section.block_distance + block_distance_from_turn
 
         # Appends all potential kitchen islands to temporary list
         step_x = 1
         step_y = 1
-        if kitchen_start_x > kitchen_x:
-            step_x = -1
-        elif kitchen_start_y == kitchen_y:
+
+        if kitchen_start_y == kitchen_y:
+            if kitchen_start_x > kitchen_x:
+                step_x = -1
             for x in range(kitchen_start_x, kitchen_x, step_x):
                 if self.map_data.count((x, kitchen_y)) > 0:
                     self.temporary_potential_kitchen.append((x, kitchen_y))
 
-        if kitchen_start_y > kitchen_y:
-            step_y = -1
         elif kitchen_start_x == kitchen_x:
+            if kitchen_start_y > kitchen_y:
+                step_y = -1
             for y in range(kitchen_start_y, kitchen_y, step_y):
                 if self.map_data.count((kitchen_x, y)) > 0:
                     self.temporary_potential_kitchen.append((kitchen_x, y))
