@@ -58,6 +58,7 @@ def main():
         navigator.navigate()
         '''
         ir.request_data()
+        EventBus.receive()
         print("IR_left_back: " + str(ir.get_ir_left_back()))
 
 Safety.run_safely(main)
