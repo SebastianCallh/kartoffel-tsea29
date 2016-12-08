@@ -159,7 +159,7 @@ class Position:
             kitchen_start_x -= block_distance_from_turn
             kitchen_x -= self.kitchen_section.block_distance + block_distance_from_turn
 
-        if self.map_data.count((kitchen_x, kitchen_y)) == 0:
+        if self.map_data.count((kitchen_x, kitchen_y)) == 0 and self.potential_kitchen.count((kitchen_x, kitchen_y)):
             self.temporary_potential_kitchen.append((kitchen_x, kitchen_y))
 
         #Loop inside function to be completed later!
