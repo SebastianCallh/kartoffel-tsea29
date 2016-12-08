@@ -70,7 +70,8 @@ class Position:
         print("Primary temporary kitchens: " + str(self.temporary_potential_kitchen))
 
         # Removes potential kitchens if already passed
-        if self.potential_kitchen.count((self.current_x, self.current_y)):
+        if self.map_data.count((self.current_x, self.current_y)) > 0:
+            self.temporary_potential_kitchen.remove((self.current_x, self.current_y))
             self.potential_kitchen.remove((self.current_x, self.current_y))
 
         # Adds all new potential kitchens.
@@ -157,7 +158,14 @@ class Position:
             kitchen_start_x -= block_distance_from_turn
             kitchen_x -= self.kitchen_section.block_distance + block_distance_from_turn
 
-        # Appends all potential kitchen islands to temporary list
+        if self.map_data.count((kitchen_x, kitchen_y)) == 0:
+            self.temporary_potential_kitchen.append((kitchen_x, kitchen_y))
+
+        #Loop inside function to be completed later!
+        #self.add_temporary_potential_kitchen(kitchen_x, kitchen_start_x, kitchen_y, kitchen_start_y)
+
+    # Appends all potential kitchen islands to temporary list
+    def add_temporary_potential_kitchen(self, kitchen_x, kitchen_start_x, kitchen_y, kitchen_start_y):
         step_x = 1
         step_y = 1
 
