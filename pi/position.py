@@ -159,7 +159,7 @@ class Position:
             kitchen_start_x -= block_distance_from_turn
             kitchen_x -= self.kitchen_section.block_distance + block_distance_from_turn
 
-        if self.map_data.count((kitchen_x, kitchen_y)) == 0 and self.potential_kitchen.count((kitchen_x, kitchen_y)):
+        if self.map_data.count((kitchen_x, kitchen_y)) == 0 and self.potential_kitchen.count((kitchen_x, kitchen_y)) == 0:
             self.temporary_potential_kitchen.append((kitchen_x, kitchen_y))
         print("Kitchen block distance: " + str(self.kitchen_section.block_distance))
         print("Kitchen end coordinates: " + str(kitchen_x) + ", " + str(kitchen_y))
