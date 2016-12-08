@@ -33,8 +33,12 @@ class Position:
             distance = self.laser.get_data()
             self.current_section.add_distance_sample(distance)
 
+            # If im looking for a kitchen, add sample.
+            if self.looking_for_kitchen:
+                self.kitchen_section.add_distance_sample(distance)
+
             # Checks if a kitchen island may be present and start calculating sections for it.
-            if self.ir.get_ir_left() > 30 and not self.looking_for_kitchen:
+            if self.ir.get_ir_left() > 10 and not self.looking_for_kitchen:
                 print("start for kitchen")
                 self.looking_for_kitchen = True
                 self.kitchen_section = Section(self.current_section.direction)
@@ -58,12 +62,6 @@ class Position:
 
     def save_current_section(self):
         self.current_section.finish()
-
-        if self.looking_for_kitchen and self.state == STATE_MEASURING:
-            self.kitchen_section.finish()
-            self.calculate_kitchen_coordinates()
-            self.looking_for_kitchen = False
-
         self.saved_sections.append(self.current_section)
         self.map_data.append(self.transform_map_data(self.current_section))
 
@@ -92,8 +90,10 @@ class Position:
 
     def on_turning_started(self):
         self.state = STATE_WAITING
-        #thread = Thread(target=self.save_current_section())
-        #thread.start()
+        if self.looking_for_kitchen:
+            self.kitchen_section.finish()
+            self.calculate_kitchen_coordinates()
+            self.looking_for_kitchen = False
         self.save_current_section()
 
     def on_turning_finished(self, is_right_turn):
