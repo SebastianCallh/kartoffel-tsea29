@@ -125,48 +125,49 @@ class Position:
         return self.current_x, self.current_y
 
     def calculate_kitchen_coordinates(self):
-        block_distance_from_turn = round((self.current_section.get_max() - self.kitchen_section.get_max()) /
-                                         BLOCK_LENGTH_MM)
-        print("Section max: " + str(self.current_section.get_max()) +
-              ", Kitchen max: " + str(self.kitchen_section.get_max()))
+        if self.kitchen_section.block_distance > 0:
+            block_distance_from_turn = round((self.current_section.get_max() - self.kitchen_section.get_max()) /
+                                             BLOCK_LENGTH_MM)
+            print("Section max: " + str(self.current_section.get_max()) +
+                  ", Kitchen max: " + str(self.kitchen_section.get_max()))
 
-        print("Kitchen block distance from turn: " + str(block_distance_from_turn))
+            print("Kitchen block distance from turn: " + str(block_distance_from_turn))
 
-        kitchen_x = self.current_x
-        kitchen_y = self.current_y
+            kitchen_x = self.current_x
+            kitchen_y = self.current_y
 
-        # Transforms coordinates to match the kitchen island displacement
-        if self.kitchen_section.direction == NORTH:
-            kitchen_x -= self.kitchen_block_displacement
-        elif self.kitchen_section.direction == EAST:
-            kitchen_y += self.kitchen_block_displacement
-        elif self.kitchen_section.direction == SOUTH:
-            kitchen_x += self.kitchen_block_displacement
-        elif self.kitchen_section.direction == WEST:
-            kitchen_y -= self.kitchen_block_displacement
+            # Transforms coordinates to match the kitchen island displacement
+            if self.kitchen_section.direction == NORTH:
+                kitchen_x -= self.kitchen_block_displacement
+            elif self.kitchen_section.direction == EAST:
+                kitchen_y += self.kitchen_block_displacement
+            elif self.kitchen_section.direction == SOUTH:
+                kitchen_x += self.kitchen_block_displacement
+            elif self.kitchen_section.direction == WEST:
+                kitchen_y -= self.kitchen_block_displacement
 
-        # Sets the kitchens start position to the current + displacement
-        kitchen_start_x = kitchen_x
-        kitchen_start_y = kitchen_y
+            # Sets the kitchens start position to the current + displacement
+            kitchen_start_x = kitchen_x
+            kitchen_start_y = kitchen_y
 
-        # Adding in the direction the island was found
-        if self.kitchen_section.direction == NORTH:
-            kitchen_start_y += block_distance_from_turn
-            kitchen_y += self.kitchen_section.block_distance + block_distance_from_turn
-        elif self.kitchen_section.direction == EAST:
-            kitchen_start_x += block_distance_from_turn
-            kitchen_x += self.kitchen_section.block_distance + block_distance_from_turn
-        elif self.kitchen_section.direction == SOUTH:
-            kitchen_start_y -= block_distance_from_turn
-            kitchen_y -= self.kitchen_section.block_distance + block_distance_from_turn
-        elif self.kitchen_section.direction == WEST:
-            kitchen_start_x -= block_distance_from_turn
-            kitchen_x -= self.kitchen_section.block_distance + block_distance_from_turn
+            # Adding in the direction the island was found
+            if self.kitchen_section.direction == NORTH:
+                kitchen_start_y += block_distance_from_turn
+                kitchen_y += self.kitchen_section.block_distance + block_distance_from_turn
+            elif self.kitchen_section.direction == EAST:
+                kitchen_start_x += block_distance_from_turn
+                kitchen_x += self.kitchen_section.block_distance + block_distance_from_turn
+            elif self.kitchen_section.direction == SOUTH:
+                kitchen_start_y -= block_distance_from_turn
+                kitchen_y -= self.kitchen_section.block_distance + block_distance_from_turn
+            elif self.kitchen_section.direction == WEST:
+                kitchen_start_x -= block_distance_from_turn
+                kitchen_x -= self.kitchen_section.block_distance + block_distance_from_turn
 
-        if self.map_data.count((kitchen_x, kitchen_y)) == 0 and self.potential_kitchen.count((kitchen_x, kitchen_y)) == 0:
-            self.temporary_potential_kitchen.append((kitchen_x, kitchen_y))
-        print("Kitchen block distance: " + str(self.kitchen_section.block_distance))
-        print("Kitchen end coordinates: " + str(kitchen_x) + ", " + str(kitchen_y))
+            if self.map_data.count((kitchen_x, kitchen_y)) == 0 and self.potential_kitchen.count((kitchen_x, kitchen_y)) == 0:
+                self.temporary_potential_kitchen.append((kitchen_x, kitchen_y))
+            print("Kitchen block distance: " + str(self.kitchen_section.block_distance))
+            print("Kitchen end coordinates: " + str(kitchen_x) + ", " + str(kitchen_y))
 
         #Loop inside function to be completed later!
         #self.add_temporary_potential_kitchen(kitchen_x, kitchen_start_x, kitchen_y, kitchen_start_y)
