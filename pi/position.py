@@ -70,7 +70,8 @@ class Position:
 
         print("Primary temporary kitchens: " + str(self.temporary_potential_kitchen))
 
-        # Removes potential kitchens if already passed
+        # Removes potential kitchens if already passed - !!not TRUE!!
+        # TODO: Rethink about this if statement.
         if self.potential_kitchen.count((self.current_x, self.current_y)) > 0:
             self.potential_kitchen.remove((self.current_x, self.current_y))
 
