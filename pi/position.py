@@ -112,7 +112,7 @@ class Position:
         return self.current_x, self.current_y
 
     '''
-    Returns a list of tuples with coordinates of all the corners
+    Returns a list of tuples with coordinates of grids visited
     '''
     def get_map_data(self):
         return [self.map_data]
@@ -126,7 +126,7 @@ class Position:
     def calculate_kitchen_coordinates(self):
         block_distance_from_turn = round((self.current_section.get_max() - self.kitchen_section.get_max()) /
                                          BLOCK_LENGTH_MM)
-        print("Kitchen blockdistance from turn: " + str(block_distance_from_turn))
+        print("Kitchen block distance from turn: " + str(block_distance_from_turn))
 
         kitchen_x = 0
         kitchen_y = 0
