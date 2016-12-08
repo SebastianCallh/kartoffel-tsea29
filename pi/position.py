@@ -161,6 +161,7 @@ class Position:
 
         if self.map_data.count((kitchen_x, kitchen_y)) == 0 and self.potential_kitchen.count((kitchen_x, kitchen_y)):
             self.temporary_potential_kitchen.append((kitchen_x, kitchen_y))
+        print("Kitchen end coordinates: " + str(kitchen_x) + ", " + str(kitchen_y))
 
         #Loop inside function to be completed later!
         #self.add_temporary_potential_kitchen(kitchen_x, kitchen_start_x, kitchen_y, kitchen_start_y)
