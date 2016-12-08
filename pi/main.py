@@ -48,7 +48,6 @@ def setup():
 def main():
     setup()
     while True:
-        '''
         laser.read_data()
         gyro.read_data()
         ir.request_data()
@@ -56,9 +55,5 @@ def main():
         EventBus.receive()
         position.update()
         navigator.navigate()
-        '''
-        ir.request_data()
-        EventBus.receive()
-        print("IR_left_back: " + str(ir.get_ir_left_back()))
 
 Safety.run_safely(main)

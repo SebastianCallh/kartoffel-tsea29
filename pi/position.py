@@ -46,7 +46,7 @@ class Position:
                 self.kitchen_section.add_distance_sample(distance)
                 self.kitchen_block_displacement = 0
 
-            elif self.ir.get_ir_left_back() > 300 and not self.looking_for_kitchen:
+            elif self.ir.get_ir_left_back() < 650 and self.ir.get_ir_left_back() > 250 and not self.looking_for_kitchen:
                 print("start for kitchen long, distance: " + str(self.ir.get_ir_left_back()))
                 self.looking_for_kitchen = True
                 self.kitchen_section = Section(self.current_section.direction)
