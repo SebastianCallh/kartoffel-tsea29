@@ -64,7 +64,7 @@ class Position:
                 self.long_measurements_count = 0
 
             elif ((self.ir.get_ir_left() == -1 and self.kitchen_block_displacement == 0) or
-                    (self.ir.get_ir_left_back() == -1 and self.kitchen_block_displacement == 1)) and \
+                    (0 < self.ir.get_ir_left_back() < 250 and self.kitchen_block_displacement == 1)) and \
                     self.looking_for_kitchen:
 
                 self.kitchen_section.finish()
@@ -182,6 +182,7 @@ class Position:
             if self.potential_kitchen.count((kitchen_x, kitchen_y)) == 0:
                 self.temporary_potential_kitchen.append((kitchen_x, kitchen_y))
             print("Kitchen block distance: " + str(self.kitchen_section.block_distance))
+            print("Kitchen start coordinates: " + str(kitchen_start_x) + ", " + str(kitchen_start_y))
             print("Kitchen end coordinates: " + str(kitchen_x) + ", " + str(kitchen_y))
 
         #Loop inside function to be completed later!
