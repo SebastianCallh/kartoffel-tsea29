@@ -48,8 +48,8 @@ class Position:
                 self.kitchen_block_displacement = 0
 
             elif 250 < self.ir.get_ir_left_back() < 650 and not self.looking_for_kitchen:
-                # Lets the first 20 measurements pass to skip noise.
-                if self.long_measurements_count >= 20:
+                # Lets the first 10 measurements pass to skip noise.
+                if self.long_measurements_count >= 10:
                     self.long_measurements_count = 0
                     print("start for kitchen long, distance: " + str(self.ir.get_ir_left_back()))
                     self.looking_for_kitchen = True
