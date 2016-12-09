@@ -24,6 +24,7 @@ class Position:
         self.kitchen_block_displacement = 0
         self.potential_kitchen = []
         self.temporary_potential_kitchen = []
+        self.long_measurements_count = 0
 
         EventBus.subscribe(CMD_TURN_STARTED, self.on_turning_started)
         EventBus.subscribe(CMD_TURN_FINISHED, self.on_turning_finished)
@@ -46,13 +47,21 @@ class Position:
                 self.kitchen_section.add_distance_sample(distance)
                 self.kitchen_block_displacement = 0
 
-            elif self.ir.get_ir_left_back() < 650 and self.ir.get_ir_left_back() > 250 and not self.looking_for_kitchen:
-                print("start for kitchen long, distance: " + str(self.ir.get_ir_left_back()))
-                self.looking_for_kitchen = True
-                self.kitchen_section = Section(self.current_section.direction)
-                self.temporary_potential_kitchen = []
-                self.kitchen_section.add_distance_sample(distance)
-                self.kitchen_block_displacement = 1
+            elif 250 < self.ir.get_ir_left_back() < 650 and not self.looking_for_kitchen:
+                # Lets the first 100 measurements pass to skip noise.
+                if self.long_measurements_count >= 100:
+                    self.long_measurements_count = 0
+                    print("start for kitchen long, distance: " + str(self.ir.get_ir_left_back()))
+                    self.looking_for_kitchen = True
+                    self.kitchen_section = Section(self.current_section.direction)
+                    self.temporary_potential_kitchen = []
+                    self.kitchen_section.add_distance_sample(distance)
+                    self.kitchen_block_displacement = 1
+                else:
+                    self.long_measurements_count += 1
+
+            elif not self.looking_for_kitchen:
+                self.long_measurements_count = 0
 
             elif ((self.ir.get_ir_left() == -1 and self.kitchen_block_displacement == 0) or
                     (self.ir.get_ir_left_back() == -1 and self.kitchen_block_displacement == 1)) and \
