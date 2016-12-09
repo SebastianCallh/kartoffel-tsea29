@@ -26,6 +26,7 @@ class AutoControl(State):
                Navigator.right_turn_enabled
 
     def is_at_left_turn(self, data):
+        laser_data = data['laser'].get_data()
         return laser_data <= Navigator.FACING_WALL_DIST and \
                laser_data != -1 and \
                data['ir'].get_ir_right() != -1
@@ -37,8 +38,6 @@ class AutoControl(State):
             data['driver'].outer_turn_right()
             print('NAVIGATOR: outer turn right')
             return Turn(TURN_DIRECTION_RIGHT)
-
-        laser_data = data['laser'].get_data()
 
         if (not Navigator.right_turn_enabled):
             Navigator.right_turn_enabled = (data['ir'].get_ir_right() != -1 and data['ir'].get_ir_right_back() != -1)
