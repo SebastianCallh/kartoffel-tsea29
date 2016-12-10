@@ -9,19 +9,22 @@
 #include "debug.h"
 
 #include <avr/io.h>
+#include <avr/interrupt.h>
 #include <inttypes.h>
 #include <assert.h>
 #include <stdbool.h>
 
 #define BAUD_PRESCALE (((F_CPU / (USART_BAUDRATE * 16UL))) - 1)
 
-void USARTWriteChar(char data);
 int USARTPutChar(char data, FILE *stream);
 
 static FILE uart_stdout = FDEV_SETUP_STREAM(USARTPutChar, NULL, _FDEV_SETUP_WRITE);
 
 bool uart_initialized = false;
-
+char data_to_write[1024];
+unsigned char write_data_index = 0;
+unsigned char read_data_index = 0;
+unsigned int data_available = 0;
 
 void initialize_uart() {
 	// Set baud rate
@@ -39,15 +42,12 @@ void initialize_uart() {
 }
 
 void USARTWriteChar(char data)
-{
-	while(!(UCSR0A & (1<<UDRE0)))
-	{
-		// Busy wait until we can send data
-	}
-
-	UDR0=data;
+{	
+	data_to_write[write_data_index] = data;
+	++write_data_index;
+	++data_available;		
+	UCSR0B |= (1<<UDRIE0);
 }
-
 
 int USARTPutChar(char data, FILE *stream)
 {
@@ -62,4 +62,21 @@ int USARTPutChar(char data, FILE *stream)
 	
 	USARTWriteChar(data);
 	return 0;
+}
+
+ISR(USART0_UDRE_vect) {	
+	if (data_available > 0) {
+		char data = data_to_write[read_data_index];
+		++read_data_index;
+		--data_available;
+
+		UDR0=data;
+		if (data_available == 0) {
+			read_data_index = 0;
+			write_data_index = 0;
+			UCSR0B &= ~(1<<UDRIE0);
+		}
+	} else {
+		USARTWriteChar('-');
+	}
 }

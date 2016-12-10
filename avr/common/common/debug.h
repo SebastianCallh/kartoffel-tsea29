@@ -17,5 +17,6 @@
 #define DEBUG_H_
 
 void initialize_uart();
+void USARTWriteChar(char data);
 
 #endif /* DEBUG_H_ */
