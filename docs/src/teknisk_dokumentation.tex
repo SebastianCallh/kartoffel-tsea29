@@ -196,14 +196,6 @@ Navigeringslogiken implementeras som en tillståndsmaskin vars transitioner styr
 
 Efter en kort uppvärmningsperiod för att hinna läsa in alla sensorer så börjar roboten följa väggen på sin högra sida och håller ett lämplig avstånd till den med hjälp av PD-reglering (se ~\ref{sec:reglering}). Om roboten upptäcker att väggen på höger sida tar slut så innebär det att väggen har svängt av bort från roboten och att den behöver göra en yttersväng till höger för att följa efter. Skulle roboten upptäcka en vägg framför sig betyder det istället att rummet svängt av till vänster, och att roboten behöver göra in innersväng åt vänster. Ett flödesdiagram över robotens navigeringstillstånd kan ses i figur~\ref{fig:navigator_flowchart}.
 
-\subsection{Kartläggning}
-
-\subsection{Reglering}
- ~\label{sec:reglering}
- 
- \subsection{PWM}
-~\label{sec:PWM}
-
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.4]{navigator_flowchart}
@@ -211,6 +203,13 @@ Efter en kort uppvärmningsperiod för att hinna läsa in alla sensorer så bör
 \label{fig:navigator_flowchart}
 \end{figure}
 
+\subsection{Kartläggning}
+
+\subsection{Reglering}
+ ~\label{sec:reglering}
+ 
+ \subsection{PMM}
+~\label{sec:PWM}
 
 \section{Systemet}
 % Ett översiktligt blockschema och en beskrivning av hela systemet.
@@ -318,7 +317,7 @@ Avläsningarna från IR-sensorerna är analoga, och konverteras till digitalt me
 \subsubsection{Kopplingsschema}
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.6]{Sensorenhet_kopplingsschema}
+\includegraphics[scale=0.45]{Sensorenhet_kopplingsschema}
 \caption{Kopplingsschema för sensorenheten.}
 \label{fig:sensorenhet_kopplingsschema}
 \end{figure}
@@ -465,7 +464,7 @@ Omvandlingen av kommandon från huvudenheten och utskickning av signaler till se
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.6]{Styrenhet_flowchart}
+\includegraphics[scale=0.6]{styrenhet_flowchart}
 \caption{Ett flödesschema över styrenhetens tillstånd}
 \label{fig:styrenhet_flowchart}
 \end{figure}
