@@ -273,10 +273,21 @@ TODO:bild över alla pythonklasser tänker jag mig
 
 
 \subsubsection{Kommunikationsenhet}
-TODO: KORT INLEDNING.
+Kommunikationsenheten agerar nav för systemets alla moduler och sensorer. Enheten ger logikenheten åtkomst till all data den använder i beräkningarna genom att både abstrahera den till en eventbuss samt via inläsning direkt på I2C-bussen. Eventbussen beskrivs närmre i avsnitt~\ref{sec:eventbus}.
 
 \paragraph{EventBus}
-TODO: TEXT OM EVENTBUS.
+\label{sec:eventbus}
+För att underlätta programmering av logikenheten använder sig systemet av en distribuerad eventbuss kallad EventBus som tillhandahåller funktioner för att skicka data till en annan enhet på bussen och för att lyssna på mottagna meddelanden. Eventbussen är delad mellan sensorenheten, styrenheten, huvudenheten samt mjukvaruklienten men eftersom bussen saknar funktionalitet för att delegera data vidare till andra enheter kan data inte skickas direkt från t.ex. sensorenheten till styrenheten, se figur~\ref{fig:eventbus_structure}. Eventbussen saknar fysiskt representation i den mening som t.ex. I2C-bussen har utan är bara en abstraktion som med hjälp av I2C-bussen och Bluetooth-anslutningen realiserar dess distribuerade funktion.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.45]{EventBus}
+\caption{Översikt över eventbussens möjliga kommunikationsriktningar}
+\label{fig:eventbus_structure}
+\end{figure}
+\ \\
+\newline
+Tanken med eventbussen är att programmeraren ska slippa tänka på att ett funktionsanrop exekveras på en annan enhet eller varifrån data kommer, så länge det läggs åtanke på att funktionerna exekveras asynkront. All mottagen data behöver manuellt behandlas i ett återkommande funktionsanrop innan de ``lyssnande'' funktionsanropen körs. För att få en tydligare och mer deterministisk körning av huvudenhetens program läses all mottagen data in i början av varje upprepning av huvudloopen. Data ut från huvudenheten skickas till skillnad från inläsningen direkt när anropet sker för att säkerställa att data kommer fram i andra änden så tidigt som möjligt.
 
 \paragraph{Bluetooth}
 TODO:TEXT OM BLUETOOTH. UPPDATERA SÅ DEN REFLEKTERAR VÅR IMPLEMENTATION. UPPDATERA BILD
