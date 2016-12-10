@@ -7,6 +7,35 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{textcomp}
+\usepackage{listings}
+\usepackage{color}
+ 
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+ 
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
 \usepackage[yyyymmdd]{datetime}
 \renewcommand{\dateseparator}{-}
 
@@ -224,6 +253,26 @@ TODO:Text om systemet i helhet
 \caption{En bild på systemet övergripande konstruktion.}
 \label{fig:oversikt_systemet}
 \end{figure}
+
+\subsection{Felsökning av mjukvara}
+Systemet är redan från början av projektet designat för att vara lätt att felsöka. Det finns enkla gränssnitt både in och ut från robotens alla processorer som gör att data kan manipuleras och inspekteras utan att behöva pausa programmet eller spara undan data i filer.
+
+\subsubsection{Felsökning på AVR}
+Eftersom AVR:erna i sitt grundutförande inte kan ge någon avancerad utdata finns möjligheten att på roboten koppla varje AVR direkt till en dators USB-port med hjälp av en seriell anslutningskabel. Genom att öppna seriellporten i t.ex. Putty (Windows) eller screen (UNIX) kan data skickas fram och tillbaka mellan datorn och mikroprocessorn, se listing~\ref{lst:avr_debug_screen}. I den nuvarande konfigurationen stöds bara möjligheten att skicka data från roboten till datorn men gränssnittet stödjer även den motsatta datariktningen. Implementationen bygger på att ersätta stdout-strömmen så utskrift till dator kan göras med det bekanta gränssnitt som definieras i stdio.h, se listing~\ref{lst:avr_debug_example} för ett komplett exempel.
+\newline
+\begin{lstlisting}[language=sh, label={lst:avr_debug_screen}, caption={Anslutning via screen}]
+screen /dev/tty.usbserial
+\end{lstlisting}
+
+\begin{lstlisting}[language=C, label={lst:avr_debug_example}, caption=Exempel av utskrift]
+#include "common/debug.h"
+
+int measuredValue = 42;
+printf("Measured value: %d\n", measuredValue);
+\end{lstlisting}
+
+\subsubsection{Felsökning på Huvudenhet}
+Huvudenheten består av en Raspberry PI och kör kod skriven i Python, vilket gör att dess felsökningsmöjligheter är nästintill så bra som det går. Enklast är att ansluta sig till huvudenheten med en SSH-uppkoppling över Eduroam men det går även att koppla in tangentbord, mus och skärm direkt till roboten om så önskas. För att ansluta till enheten via SSH så loggar man in med användaren ``pi'' på den IP-adress som visas på robotens display och anger användarens lösenord. Notera att displayens innehåll uppdateras varje minut-omslag och det kan dröja ett par minuter innan roboten kopplar upp sig mot nätverket första gången.
 
 \section{Modulerna}
 
