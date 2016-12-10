@@ -225,6 +225,7 @@ Mjukvaruklienten är som nämnt ansluten via Bluetooth, vilket låter den render
 Den övergripande strategin för att kratlägga rummet är att alltid färdas längst väggen på höger sida och på så sätt kartlägga rummets ytterväggar. För det krävs en regleringsalgoritm för att följa väggen och logik för navigering samt kartläggning.
 
 \subsection{Navigering}
+~\label{sec:navigering}
 Navigeringslogiken implementeras som en tillståndsmaskin vars transitioner styrs av indata från robotens sensorer. Den antar att omgivningen följer banspecifikationen i bilaga~\ref{sec:banspec}.
 
 Efter en kort uppvärmningsperiod för att hinna läsa in alla sensorer så börjar roboten följa väggen på sin högra sida och håller ett lämplig avstånd till den med hjälp av PD-reglering (se ~\ref{sec:reglering}). Om roboten upptäcker att väggen på höger sida tar slut så innebär det att väggen har svängt av bort från roboten och att den behöver göra en yttersväng till höger för att följa efter. Skulle roboten upptäcka en vägg framför sig betyder det istället att rummet svängt av till vänster, och att roboten behöver göra in innersväng åt vänster. Ett flödesdiagram över robotens navigeringstillstånd kan ses i figur~\ref{fig:navigator_flowchart}.
@@ -280,7 +281,28 @@ Huvudenheten består av en Raspberry PI och kör kod skriven i Python, vilket g�
 \section{Modulerna}
 
 \subsection{Huvudenhet}
-Huvudenheten realiseras med en Raspberry PI, på vilken operativsystemet Raspbian körs. Den representerar robotens beslutsfattande organ och sköter navigationsbeslut, kartläggning, kommunikation med mjukvaruklienten samt agerar mästare på robotens I2C-buss. På grund av dess många ansvarsområden är huvudmodulen uppdelad i undermodulerna kommunikationsenheten och logikenheten.
+Huvudenheten realiseras med en Raspberry PI, på vilken operativsystemet Raspbian körs. Den representerar robotens beslutsfattande organ och sköter navigationsbeslut, kartläggning, kommunikation med mjukvaruklienten samt agerar mästare på robotens I2C-buss. Robotens logik är skriven i programmeringsspråket Python och är moduluppbyggd. En huvudloop injicerar alla beroenden i programets klasser enligt diagramet i figur~\ref{fig:mjukvarumoduler} och uppdaterar relevanta objekt varje iteration. En beskrivning av mjukvarumodulerna finns nedan.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.45]{mjukvarumoduler}
+\caption{Ett diagram över logikenhetens mjukvarumoduler.}
+\label{fig:mjukvarumoduler}
+\end{figure}
+
+\subsubsubsection{Navigator}
+Navigator-klassen sköter all logik för förflyttning. Givet viss indata från sensorerna fattar den beslut för att klarar av uppdraget. Se ~\ref{sec:navigering} för en beskrivning av navigeringsalgoritmen som används.
+
+\subsubsubsection{Communicator}
+Communicator tar emot begäran från mjukvarumodulen och innehåller all logik för att leverera korrekt svar.
+TODO:Team Bluetooth kanske vill knyta an det här till det de skriver om Bluetooth
+
+\subsubsubsection{Position}
+\subsubsubsection{Driver}
+\subsubsubsection{IR}
+\subsubsubsection{Laser}
+\subsubsubsection{Gyro}
+
 
 \subsubsection{Kopplingsschema}
 
@@ -321,11 +343,7 @@ Huvudenheten består av en Raspberry Pi 3 och en LCD-display av modellen JM162A.
   \end{tabular}
 \end{table}
 
-
-\subsubsection{Logikenhet}
-TODO:bild över alla pythonklasser tänker jag mig
-
-
+%TEXT NEDAN ÄR LITE VILSEN OCH VET INTE VAR DEN BOR :'(
 \subsubsection{Kommunikationsenhet}
 Kommunikationsenheten agerar nav för systemets alla moduler och sensorer. Enheten ger logikenheten åtkomst till all data den använder i beräkningarna genom att både abstrahera den till en eventbuss samt via inläsning direkt på I2C-bussen. Eventbussen beskrivs närmre i avsnitt~\ref{sec:eventbus}.
 
@@ -356,6 +374,7 @@ TODO:TEXT OM BLUETOOTH. UPPDATERA SÅ DEN REFLEKTERAR VÅR IMPLEMENTATION. UPPDA
 
 Bluetooth kommunikationen i huvudenheten fungerar på så vis att huvudprogrammet kommunicerar via det allmänna gränssnittet EventBus till en bluetooth-server. Servern körs i en separat process än huvudprogrammet på huvudenheten och kommer ständigt kolla om det finns ny data att ta emot respektive ny data att skicka (se figur ~\ref{fig:Kommunikation_huvudenhet_v2}), tills den får ett omstart kommando. Kommandon till huvudenheten samlas i en inkö som EventBus hämtar ifrån, på samma sätt samlas kommandon som skickas till EventBus - med destination bluetoothklienten - i en utkö där servern hämtar ifrån. Dessa in- och utköer gör det även möjligt för processen som servern ligger i och huvudprocossen där huvudprogrammet och EventBus ligger i att kommunicera. 
 
+%TEXT OVAN ÄR LITE VILSEN OCH VET INTE VAR DEN BOR :'(
 \paragraph{I2C}
 För att kunna kommunicera med olika moduler och sensorer på själva roboten används en I2C-buss som delas mellan huvudenheten, sensorenheten, styrenheten, laser-sensorn, gyroskopet samt accelerometern där huvudenheten agerar master och alla andra enheter slavar. Eftersom kraven som ställs på kommunikationen mellan modulerna förutsätter att data kan skickas i form av anrop räcker inte I2C-bussens protokoll till utan skrivningen och inläsningen till/från adresser behöver utökas med funktionalitet för att skicka faktiska datapaket. Det påliggande protokollet implementerar köer av paket för båda datariktningarna på AVR:erna som pollas och fylls på från huvudenheten. Varje paket innehåller ett antal bytes för dess data där den första byten innehåller paketets id. Eftersom I2C endast tillåter läsning eller skrivning av en enda byte innehåller varje paket on-the-wire också en inledande byte som specificerar dess längd, vilket ger en maxlängd av 255 bytes. När ett paket lästs in läggs det i en intern kö som hanteras av den modulspecifika koden, se figur~\ref{fig:flodesschema_i2c}.
 
@@ -458,12 +477,7 @@ Den maximala hastigheten som sensordata kan läsas in i är begränsad av sensor
 För att kunna tillhandahålla sensordata från IR-sensorerna när huvudenheten ber den om det så läser sensorenheten in data med jämna mellanrum och sparar den lokalt för att sedan skicka datan på kommando från huvudenheten. Om den fått en begerän om sensordata från huvudenheten så tar det prioritet att leverera den över att läsa in ny data. Ett flödesdiagram över dess beteende ses i ~\ref{fig:sensorenhet_flowchart}.
 
 \subsection{Styrenhet}
-Styrenhetens uppgift är att kontrollera robotens förflyttning genom att ge korrekta signaler till dess hjulservon. Hjulen styrs parvis, det vill säga vänster hjulpar styrs med en signal och höger hjulpar med en annan. Hjulhastigheten styrs genom PWM (se avsnitt~\ref{sec:PWM})
-
-TODO:Seba SKRIV KLART OCH STÄDA
- baserat på instruktioner ifrån huvudenheten. Den består av en ATMega 1284-processor som har robotens alla servon kopplade till sig och som tar emot instruktioner från huvudenheten över I2C-bussen. 
-
-För att styra robotens hjul används PWM, där styrenheten är förprogrammerad med lämplig pulskvot.
+Styrenhetens uppgift är att kontrollera robotens förflyttning genom att ge korrekta signaler till dess hjulservon. Hjulen styrs parvis, det vill säga vänster hjulpar styrs med en signal och höger hjulpar med en annan. Hastigheten på hjulen styrs genom PWM (se avsnitt~\ref{sec:PWM}) medan hastigheter internt är definerade som heltal. Det är styrenhetens uppgift att översätta heltalshastigheter till korrekt pulskvot.
 
 \subsubsection{Kopplingsschema}
 \begin{figure}[H]
@@ -473,7 +487,7 @@ För att styra robotens hjul används PWM, där styrenheten är förprogrammerad
 \label{fig:styrenhet_kopplingsschema}
 \end{figure}
 
-TODO:TEXT OM KOPPLINGSSCHEMA
+
 
 \subsubsection{Komponenter}
 
@@ -532,7 +546,7 @@ Omvandlingen av kommandon från huvudenheten och utskickning av signaler till se
 \label{fig:styrenhet_flowchart}
 \end{figure}
 
-Styrenheten står hela tiden och väntar på instruktioner från huvudenheten, och så snart den får några utför den dem så snabbt den kan. ett flödesschema över styrenhetens beteende kan ses i figur ~\ref{fig:styrenhet_flowchart}.
+Styrenheten står hela tiden och väntar på instruktioner från huvudenheten, och så snart den får några utför den dem så snabbt den kan. En instruktion i det här sammamhanget är att sätta nya hastigheter på de båda hjulparen. Ett flödesschema över styrenhetens beteende kan ses i figur ~\ref{fig:styrenhet_flowchart}.
 
 \clearpage
 \section{Slutsatser}
