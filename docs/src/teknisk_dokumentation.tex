@@ -189,7 +189,6 @@ VERSION & 2016-12-DD & Första version & Grupp 3 & Patrik Sletmo \\
 }
 
 \clearpage
-
 \section{Inledning}
 
 \subsection{Bakgrund}
@@ -198,6 +197,7 @@ Som en del av utbildningen till civilingenjör i datateknik på Tekniska Högsko
 \subsection{Syfte}
 Det här dokumentet skall ge en ingående beskrivning av kartrobot-systemet från ett tekniskt perspektiv. Dokumentet ska fungera som konstruktionsunderlag för någon som vill bygga en kopia av den robot som beskrivs. Det ska från instruktioner i dokumentet även vara möjligt att underhålla och felsöka både mjuk- och hårdvaran i systemet.
 
+\clearpage
 \section{Produkten}
 %En bild på produkten och en beskrivning av hur den fungerar. Beskriv vad den används till.
 
@@ -219,6 +219,7 @@ Mjukvaruklienten är som nämnt ansluten via Bluetooth, vilket låter den render
 \label{fig:klient_bild}
 \end{figure}
 
+\clearpage
 \section{Teori}
 % Beskrivning av regleralgoritmer mm.
 Den övergripande strategin för att kratlägga rummet är att alltid färdas längst väggen på höger sida och på så sätt kartlägga rummets ytterväggar. För det krävs en regleringsalgoritm för att följa väggen och logik för navigering samt kartläggning.
@@ -243,6 +244,7 @@ Efter en kort uppvärmningsperiod för att hinna läsa in alla sensorer så bör
  \subsection{PMM}
 ~\label{sec:PWM}
 
+\clearpage
 \section{Systemet}
 % Ett översiktligt blockschema och en beskrivning av hela systemet.
 TODO:Text om systemet i helhet
@@ -274,6 +276,7 @@ printf("Measured value: %d\n", measuredValue);
 \subsubsection{Felsökning på Huvudenhet}
 Huvudenheten består av en Raspberry PI och kör kod skriven i Python, vilket gör att dess felsökningsmöjligheter är nästintill så bra som det går. Enklast är att ansluta sig till huvudenheten med en SSH-uppkoppling över Eduroam men det går även att koppla in tangentbord, mus och skärm direkt till roboten om så önskas. För att ansluta till enheten via SSH så loggar man in med användaren ``pi'' på den IP-adress som visas på robotens display och anger användarens lösenord. Notera att displayens innehåll uppdateras varje minut-omslag och det kan dröja ett par minuter innan roboten kopplar upp sig mot nätverket första gången.
 
+\clearpage
 \section{Modulerna}
 
 \subsection{Huvudenhet}
@@ -531,7 +534,7 @@ Omvandlingen av kommandon från huvudenheten och utskickning av signaler till se
 
 Styrenheten står hela tiden och väntar på instruktioner från huvudenheten, och så snart den får några utför den dem så snabbt den kan. ett flödesschema över styrenhetens beteende kan ses i figur ~\ref{fig:styrenhet_flowchart}.
 
-
+\clearpage
 \section{Slutsatser}
 % Vilka förbättringar skulle kunna göras?
 
@@ -542,12 +545,14 @@ Vår navigeringsalgoritm är i nuläget begränsad till att röra sig i ett rutn
 \subsection{Kartläggning}
 Roboten kartläggningsalgoritm kartlägger sin omgivning genom att beräkna raksträckor den åkt när den följt en vägg och spara start- och slut-koordinaterna. Om roboten kunde observera sin omgivning t.ex. med en svepande laser och beräkna var väggar fanns utifrån den datan så skulle den ej behöva färdas längs med alla väggar för att kartlägga dem. Det här förbättringsförslaget går hand i hand med förbättringarna föreslagna i avsnitt ~\ref{sec:slutsatser_navigering}.
 
+\clearpage
 \section{Referenser}
 \appendix
 %Appendix
 %A. Kopplingsschema
 %B. Programlistning och eventuell VHDL kod
 %C. Övrigt (typ banspec)
+\clearpage
 \section{Banspecifikation}
 \label{sec:banspec}
 
