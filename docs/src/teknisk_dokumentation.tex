@@ -23,6 +23,15 @@
 \lfoot{Konstruktion med mikrodatorer}
 \rfoot{Grupp 3}
 
+\usepackage{titlesec}
+
+\setcounter{secnumdepth}{4}
+
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0.4pt}
 
@@ -264,6 +273,12 @@ TODO:bild över alla pythonklasser tänker jag mig
 
 
 \subsubsection{Kommunikationsenhet}
+TODO: KORT INLEDNING.
+
+\paragraph{EventBus}
+TODO: TEXT OM EVENTBUS.
+
+\paragraph{Bluetooth}
 TODO:TEXT OM BLUETOOTH. UPPDATERA SÅ DEN REFLEKTERAR VÅR IMPLEMENTATION. UPPDATERA BILD
 
 \begin{figure}[H]
@@ -276,7 +291,8 @@ TODO:TEXT OM BLUETOOTH. UPPDATERA SÅ DEN REFLEKTERAR VÅR IMPLEMENTATION. UPPDA
 
 Bluetooth kommunikationen i huvudenheten fungerar på så vis att huvudprogrammet kommunicerar via det allmänna gränssnittet EventBus till en bluetooth-server. Servern körs i en separat process än huvudprogrammet på huvudenheten och kommer ständigt kolla om det finns ny data att ta emot respektive ny data att skicka (se figur ~\ref{fig:Kommunikation_huvudenhet_v2}), tills den får ett omstart kommando. Kommandon till huvudenheten samlas i en inkö som EventBus hämtar ifrån, på samma sätt samlas kommandon som skickas till EventBus - med destination bluetoothklienten - i en utkö där servern hämtar ifrån. Dessa in- och utköer gör det även möjligt för processen som servern ligger i och huvudprocossen där huvudprogrammet och EventBus ligger i att kommunicera. 
 
-
+\paragraph{I2C}
+TODO: TEXT OM I2C.
 
 \subsection{Sensorenhet}
 Sensorenheten har i uppgift att läsa in värden från robotens sensorer och rapportera värdena till huvudenheten. Den består av fyra IR-sensorer, ett gyroskop, en lasersensor och har sin egna beräkningsenhet, en ATMega 1284, vilket låter den arbeta asynkront från andra enheter. 
