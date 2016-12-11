@@ -225,10 +225,10 @@ Mjukvaruklienten är som nämnt ansluten via Bluetooth, vilket låter den render
 Den övergripande strategin för att kratlägga rummet är att alltid färdas längst väggen på höger sida och på så sätt kartlägga rummets ytterväggar. För det krävs en regleringsalgoritm för att följa väggen och logik för navigering samt kartläggning.
 
 \subsection{Navigering}
-~\label{sec:navigering}
+\label{sec:navigering}
 Navigeringslogiken implementeras som en tillståndsmaskin vars transitioner styrs av indata från robotens sensorer. Den antar att omgivningen följer banspecifikationen i bilaga~\ref{sec:banspec}.
 
-Efter en kort uppvärmningsperiod för att hinna läsa in alla sensorer så börjar roboten följa väggen på sin högra sida och håller ett lämplig avstånd till den med hjälp av PD-reglering (se ~\ref{sec:reglering}). Om roboten upptäcker att väggen på höger sida tar slut så innebär det att väggen har svängt av bort från roboten och att den behöver göra en yttersväng till höger för att följa efter. Skulle roboten upptäcka en vägg framför sig betyder det istället att rummet svängt av till vänster, och att roboten behöver göra in innersväng åt vänster. Ett flödesdiagram över robotens navigeringstillstånd kan ses i figur~\ref{fig:navigator_flowchart}.
+Efter en kort uppvärmningsperiod för att hinna läsa in alla sensorer så börjar roboten följa väggen på sin högra sida och håller ett lämplig avstånd till den med hjälp av PD-reglering (se~\ref{sec:reglering}). Om roboten upptäcker att väggen på höger sida tar slut så innebär det att väggen har svängt av bort från roboten och att den behöver göra en yttersväng till höger för att följa efter. Skulle roboten upptäcka en vägg framför sig betyder det istället att rummet svängt av till vänster, och att roboten behöver göra in innersväng åt vänster. Ett flödesdiagram över robotens navigeringstillstånd kan ses i figur~\ref{fig:navigator_flowchart}.
 
 \begin{figure}[H]
 \centering
@@ -240,10 +240,10 @@ Efter en kort uppvärmningsperiod för att hinna läsa in alla sensorer så bör
 \subsection{Kartläggning}
 
 \subsection{Reglering}
- ~\label{sec:reglering}
+\label{sec:reglering}
  
- \subsection{PMM}
-~\label{sec:PWM}
+ \subsection{PWM}
+\label{sec:PWM}
 
 \subsection{Kommunikation}
 Systemet byggs upp av ett antal separata moduler som behöver samarbeta för att utföra robotens funktion då dess unika funktioner är alldeles för specifika. Kommunikationen som möjliggör detta samarbete sker både via Bluetooth och I2C beroende på modulernas placering i systemet. Då det kan bli förvirrande att hantera dataflödet på två olika protokoll ligger det ett abstraktionslager som kallas EventBus ovanpå dessa överföringsmedier. Detta abstraktionslager samt de underliggande implementationerna beskrivs mer ingående i följande delavsnitt. 
@@ -367,7 +367,10 @@ TODO:Team Bluetooth kanske vill knyta an det här till det de skriver om Bluetoo
 \paragraph{Driver}
 \paragraph{IR}
 \paragraph{Laser}
+Laser-modulen är endast en Python-abstraktion för anrop till lasersensorn över I2C-bussen. Den läser av mätvärden och konverterar de till Python-heltal som sedan kan tolkas av all övrig kod.
+
 \paragraph{Gyro}
+Gyro-modulen fyller samma funktion som Laser-modulen, och agerar mest som ett abstraktionslager.
 
 
 \subsubsection{Kopplingsschema}
