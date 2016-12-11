@@ -10,6 +10,8 @@
 #include <avr/io.h>
 #include "common/debug.h"
 #include <stdbool.h>
+#include <avr/interrupt.h>
+#include "common/outbound.h"
 
 void adc_init(void);
 void adc_start(uint8_t channel);
@@ -48,10 +50,15 @@ void handle_loop()
 	}
 }
 
+ISR(INT2_vect)
+{
+	toggle_mode();
+}
 
 int main(void)
 {
 	// TODO: Register handlers
+	enable_button();
 	initialize_uart();
 	initialize_i2c(0x30);
 	adc_init();
@@ -86,6 +93,14 @@ uint16_t adc_synch(uint8_t channel){
 	adc_start(channel);
 	while(!adc_ready()) {};            //Wait until the conversion is done
 	return ADCW;                    //Returns the ADC value of the chosen channel
+}
+
+void enable_button() {
+	// Set up interrupts on INT2 falling edge
+	EICRA = (1<<ISC21) | (0<<ISC20);
+	
+	// Enable interrupts on INT2
+	EIMSK = (1<<INT2);
 }
 
 int to_mm(int n) {
