@@ -66,7 +66,7 @@ class Position:
 
         elif 250 < self.ir.get_ir_left_back() < 650 and not self.looking_for_kitchen:
             # Lets the first 10 measurements pass to skip noise.
-            if self.long_measurements_count >= 10:
+            if self.long_measurements_count >= 5:
                 self.long_measurements_count = 0
                 print("start for kitchen long, distance: " + str(self.ir.get_ir_left_back()))
                 self.looking_for_kitchen = True
@@ -91,9 +91,9 @@ class Position:
 
     def save_current_section(self):
         self.current_section.finish()
+        self.current_x, self.current_y = self.transform_map_data(self.current_section, self.current_x, self.current_y)
         if self.mapping_state == MAPPING_STATE_FOLLOWING_OUTER_WALL:
             self.saved_sections.append(self.current_section)
-            self.current_x, self.current_y = self.transform_map_data(self.current_section, self.current_x, self.current_y)
             self.map_data.append((self.current_x, self.current_y))
 
             print("Primary temporary kitchens: " + str(self.temporary_potential_kitchen))
