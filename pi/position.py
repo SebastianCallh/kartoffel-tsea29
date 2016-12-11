@@ -43,7 +43,7 @@ class Position:
                 self.looking_for_kitchen_sections(distance)
             elif self.mapping_state == MAPPING_STATE_RETURNING_TO_ISLAND:
                 self.current_section.finish()
-                temporary_x, temporary_y = self.transform_map_data(self.current_section)
+                temporary_x, temporary_y = self.transform_map_data(self.current_section, self.current_x, self.current_y)
                 if self.potential_kitchen.count((temporary_x, temporary_y)) > 0:
                     self.mapping_state = MAPPING_STATE_FOLLOWING_ISLAND
                     Navigator.force_left_turn = True
@@ -93,7 +93,8 @@ class Position:
         self.current_section.finish()
         if self.mapping_state == MAPPING_STATE_FOLLOWING_OUTER_WALL:
             self.saved_sections.append(self.current_section)
-            self.map_data.append(self.transform_map_data(self.current_section))
+            self.current_x, self.current_y = self.transform_map_data(self.current_section, self.current_x, self.current_y)
+            self.map_data.append((self.current_x, self.current_y))
 
             print("Primary temporary kitchens: " + str(self.temporary_potential_kitchen))
 
@@ -147,16 +148,16 @@ class Position:
         return self.current_x == 0 and self.current_y == 0 and self.current_section.direction == NORTH and \
                len(self.map_data) > 0
 
-    def transform_map_data(self, section):
+    def transform_map_data(self, section, current_x, current_y):
         if section.direction == NORTH:
-            self.current_y += section.block_distance
+            current_y += section.block_distance
         elif section.direction == EAST:
-            self.current_x += section.block_distance
+            current_x += section.block_distance
         elif section.direction == SOUTH:
-            self.current_y -= section.block_distance
+            current_y -= section.block_distance
         elif section.direction == WEST:
-            self.current_x -= section.block_distance
-        return self.current_x, self.current_y
+            current_x -= section.block_distance
+        return current_x, current_y
 
     '''
     Returns a list of tuples with coordinates of grids visited
