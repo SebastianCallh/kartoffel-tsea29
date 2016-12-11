@@ -151,3 +151,9 @@ class Navigator:
         
     def set_mode(self, mode):
         self.mode = mode
+
+    def toggle_mode(self):
+        if self.mode == Navigator.MANUAL:
+            self.mode = Navigator.AUTONOMOUS
+        else:
+            self.mode = Navigator.MANUAL

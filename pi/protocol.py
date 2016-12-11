@@ -199,6 +199,17 @@ BT_DRIVE_FORWARD_LEFT = 25
 AUTONOMOUS_MODE = 26
 MANUAL_MODE = 27
 
+# Toggle between autonomous and manual mode
+CMD_TOGGLE_MODE = 28
+"""
+Command to toggle between the available modes (autonomous and manual) instead
+of explicitly switching to one using AUTONOMOUS_MODE or MANUAL_MODE.
+
+Target: Main unit
+
+Arguments: None
+"""
+
 BT_CLIENT_COMMANDS = [REQUEST_PI_IP, BT_SERVER_RESTART,
                       BT_SERVER_SHUTDOWN, BT_REQUEST_SENSOR_DATA,
                       BT_REQUEST_MAP_DATA, BT_REQUEST_SERVO_DATA,
