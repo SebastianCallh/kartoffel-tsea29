@@ -238,6 +238,14 @@ Efter en kort uppvärmningsperiod för att hinna läsa in alla sensorer så bör
 \end{figure}
 
 \subsection{Kartläggning}
+\subsubsection{Positionsbestämning}
+\label{sec:position}
+Under kartläggningen av rummet så räknar roboten sektioner som den har passerat och utnyttjar det för att bestämma sina koordinater när en sektion har passerats. Robotens start koordinater är alltid i origo och startriktiningen är alltid ''norrut'', alltså positivt längs Y-axeln. När roboten enligt navigeringsalgoritmen i avsnitt~\ref{sec:navigering} bestämmer sig för att ta en sväng och rotera så kommer kartläggningen att spara den nuvarande positionen. Detta genom att vid varje inläsning av laserdata har roboten sparat detta i en lista och tagit ut skillnaden mellan det högsta och lägsta avstånd som lasern har uppmätt och dividerat med storleken på en ruta i rutnätet. Då fås antalet rutor som roboten har förflyttat sig i en viss riktning och på så sätt vet roboten sin nuvarande position. Positions bestämnigen är även den baserad på en tillståndsmaskin. Den är baserad på två tillstånd, väntar och mäter, där väntar är det tillstånd som roboten befinner sig i när den gör en 90 graders rotation. Därefter går roboten in i tillståndet mäter där en ny sektion initieras och mätdata sparas varje varv i huvudloopen.\newline
+Under positionsbestämningen så kommer roboten att hålla utkik efter väggar på vänstersidan för att kunna lokalisera eventuella väggar på en köksö. Även dessa är uppbygda av sektioner då roboten säger att den här sektionen kan vara en eventuell köksö och sparar undan koordinaterna när den inte längre ser väggen på vänster sida. Om väggen som roboten såg till vänster redan ligger i den besökta vägen så kommer den inte att sparas som en del av en potentiell köksö. Om roboten passerar en koordinat som ligger i listan över koordinaterna för den potentiella köksön så kommer dessa att tas bort och således definieras dessa koordinater som del av en yttervägg.
+
+\subsubsection{Bestämning av köksö}
+När roboten har åkt ett varv längs ytterkanterna kommer den att gå in i ett läge där den letar efter köksön. Då kommer den att kolla i listan över potentiella köksöar och hitta minst en koordinat som representerar en vägg på köksön. Roboten kommer att åka längs ytterkanterna tills den kommer till den här koordinaten och svänger in till köksön för att sedan ta ett varv runt den för att bestämma vilka koordinater som köksön befinner sig på. Detta sker på samma sätt som beskrivs ovanför i  avsnitt~\ref{sec:position}. När roboten har tagit sig ett varv runt köksön fortsätter den att åka längs ytterväggarna och tillbaka till garaget för att slutföra uppdraget. 
+
 
 \subsection{Reglering}
 \label{sec:reglering}
