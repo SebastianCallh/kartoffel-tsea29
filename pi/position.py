@@ -119,14 +119,23 @@ class Position:
             print('  coordinates: ' + str(self.current_x) + ", " + str(self.current_y))
             print('  potential kitchens: ' + str(self.potential_kitchen))
             print('-----------------------')
+        elif self.mapping_state == MAPPING_STATE_FOLLOWING_ISLAND:
+            self.saved_sections.append(self.current_section)
+            self.map_data.append((self.current_x, self.current_y))
+
+            print('---- ISLAND ROUNDED ----')
+            print('  direction: ' + str(self.current_section.direction))
+            print('  distance: ' + str(self.current_section.block_distance))
+            print('  coordinates: ' + str(self.current_x) + ", " + str(self.current_y))
+            print('-----------------------')
+
+            self.kitchen_num_mapped += 1
         else:
             print('---- SECTION TRAVELLED ----')
             print('  direction: ' + str(self.current_section.direction))
             print('  distance: ' + str(self.current_section.block_distance))
             print('  coordinates: ' + str(self.current_x) + ", " + str(self.current_y))
             print('-----------------------')
-            if self.mapping_state == MAPPING_STATE_FOLLOWING_ISLAND:
-                self.kitchen_num_mapped += 1
 
     def begin_next_section(self, is_right_turn):
         if is_right_turn:
