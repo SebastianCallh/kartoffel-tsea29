@@ -61,6 +61,11 @@ class Position:
                 if temporary_x == self.kitchen_start_x and temporary_y == self.kitchen_start_y \
                         and self.kitchen_num_mapped > 3:
                     Navigator.force_left_turn = True
+
+                    # Last island section is not properly stored because of a
+                    # turn so we must store it here
+                    self.store_ongoing_section()
+
                     self.mapping_state = MAPPING_STATE_RETURNING_TO_GARAGE
 
     def looking_for_kitchen_sections(self, distance):
@@ -189,6 +194,16 @@ class Position:
         elif direction == WEST:
             current_x -= distance
         return current_x, current_y
+
+    def store_ongoing_section(self):
+        self.current_section.finish()
+
+        distance = self.current_section.block_distance
+        direction = self.current_section.direction
+
+        for i in range(1, distance + 1):
+            pos_x, pos_y = self.transform_partial_map_data(i, direction, self.current_x, self.current_y)
+            self.map_data.append((pos_x, pos_y))
 
     def process_finished_section(self, store_data=True):
         self.current_section.finish()
