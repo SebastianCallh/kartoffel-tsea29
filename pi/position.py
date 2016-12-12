@@ -24,7 +24,7 @@ class Position:
         self.mapping_state = MAPPING_STATE_FOLLOWING_OUTER_WALL
         self.current_section = Section(NORTH)
         self.saved_sections = []
-        self.map_data = []
+        self.map_data = [(0, 0)]
         self.current_x = 0
         self.current_y = 0
         self.kitchen_start_x = 0
