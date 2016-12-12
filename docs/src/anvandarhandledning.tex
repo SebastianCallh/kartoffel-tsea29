@@ -70,19 +70,50 @@ STATUS & Patrik Sletmo & 2016-12-DD \\
 \clearpage
 
 \section{Inledning}
-Det här dokumentet innehåller all information som behövs för att kunna  använda kartroboten och dess mjukvaruklient. 
+Det här dokumentet innehåller all information som behövs för att kunna använda roboten KarToffel, en kartrobot skapad grupp 3 i kursen TSEA29 under höstterminen 2016. Roboten levereras med en mjukvaruklient som används för att både ta emot data från roboten samt styra den manuellt. 
 
-\section{Installation}
-För att nyttja fjärrstyrningsfunktionaliteten hos roboten så behöver datorn man vill fjärrstyra ifrån ha robotens mjukvaruklient tillgänglig. SKRIV OM MJUKVARUKLIENTEN BEHÖVER INSTALLERAS/CONFAS NÅGOT HÄR
+\section{Roboten}
+% TODO: Infoga bild på roboten.
+I figur X och X+1 visas roboten. Roboten har två lägen, ett manuellt läge då den kan styras via mjukvaruklienten och ett autonomt läge då den själv undersöker ett rum. 
+Punkt 0 visar anslutning av batteri till roboten. Se till att alltid koppla in ett fulladdat batteri innan roboten används. Punkt 1 visar huvudströmbrytaren på roboten. Den är riktad utåt då roboten är på, och riktad inåt då roboten är av. Denna brytare måste vara på för att roboten ska starta. Punkt 2 visar brytaren för manuellt repsektive autonumt läge. Roboten är alltid i manuellt läge från uppstart. Ett tryck på knappen växlar till det andra läget oavsett vilket läge roboten står i. (Punkt 3, 4, 5 och 6 visar robotens IR-sensorer, och punkt 7 lasersensorn.)
 
 \section{Mjukvaruklienten}
-Alla kommandon som roboten kan utföra kan skickas ifrån den tillhörande mjukvaruklienten.
+%TODO: infoga bild på mjukvaruklienten.
+I figur X visas gränssnittet för mjukvaruklienten. Till höger ses presentation av IR-sensor-, laser-, servo- och gyroskopdata som roboten skickar kontinueligt oavsett vilket läge den är. Längst ner till höger syns presentation av robtens IP-adress om den är uppkopplad på ett trådlöst nätverk. 
+Till vänster syns det stora området som ritar upp rummet då roboten skickar kartdata. Längst ner till vänster finns knappar för växla mellan manuellt och autonomt läge, samt att styra roboten i det manuella läget. För att styra roboten kan även följande tangenter på tangentbordet användas:
+\begin{itemize}
+    \item Q - fram vänster
+    \item W eller pil upp - framåt
+    \item E - fram höger
+    \item A eller pil vänster - rotera vänster
+    \item S eller pil ner - bakåt
+    \item D eller pil höger - rotera höger
+\end{itemize}
 
-\subsection{Ansluta till roboten}
-SKRIV OM HUR MAN ANSLUTER MED MJUKVARUKLIENTEN HÄR 
+\section{Installation}
+För att ta emot data från roboten samt fjärrstyra den manuellt krävs det att programvaran "KarToffel Control" installeras. Programvaran har följande systemkrav:
+\begin{itemize}
+    \item Operativsystem: Linux eller Windows Vista/7/8/8.1/10(?)
+    \item Python 3 eller senare version
+    \item Pybluez, version kompatibel med installerad version av Python
+    \item Tkinter, version kompatibel med installerad version av Python
+    \item Bluetoothfuntionalitet
+\end{itemize}
 
-\subsection{Kommunicera med roboten}
-SKRIV OM MJUKVARUKLIENTEN MED EN BILD PÅ HUR 
+Klienten kräver ingen annan installation än att ladda ner Python-skripet "client_main.py".
+
+\section{Ansluta till roboten}
+Se till att roboten är påslagen med huvudbrytaren och att Bluetooth är aktiverat på datorn. Om det är första gången datorn används för att kopplas upp mot roboten måste datorn pairas med roboten via Bluetooth. Detta görs genom att använda datorns inbyggda gränssnitt för Bluetoothkonfiguration. Där väljs roboten för anslutning, och inget lösenord anges vid förfrågan. Efter lyckad pairing kan mjukvaruklienten startas genom att starta skriptet client_main.py i en terminal. 
+% TODO: Finns det någon indikation på att man har en korrekt anslutning?
+Vid lyckad anslutning till roboten kan knappar och tangenter användas för att kommunicera med roboten. 
+
+\section{Kommunicera med roboten}
+Mjukvaruklienten tar emot data från roboten kontinueligt och presenterar denna data utan att användaren behöver göra något.
+Möjliga kommandon för användaren att utföra är att växla mellan manuellt och autonomnt läge samt att styra roboten i det manuella läget. Detta görs med knapparna nere till vänster i gränssnittet.
+
+\section{Referenser}
+\begin{itemize}
+	\item Pybluez: https://github.com/karulis/pybluez
 
 \nocite{*}
 \bibliography{designspec}{}
