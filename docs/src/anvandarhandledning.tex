@@ -93,29 +93,31 @@ Till vänster syns det stora området som ritar upp rummet då roboten skickar k
 \section{Installation}
 För att ta emot data från roboten samt fjärrstyra den manuellt krävs det att programvaran "KarToffel Control" installeras. Programvaran har följande systemkrav:
 \begin{itemize}
-    \item Operativsystem: Linux eller Windows Vista/7/8/8.1/10(?)
+    \item Operativsystem: Linux eller Windows Vista/7/8/8.1
     \item Python 3 eller senare version
     \item Pybluez, version kompatibel med installerad version av Python
     \item Tkinter, version kompatibel med installerad version av Python
     \item Bluetoothfuntionalitet
 \end{itemize}
 
-Klienten kräver ingen annan installation än att ladda ner Python-skripet "client_main.py".
+Klienten kräver ingen annan installation än att ladda ner Python-skripet "client\textunderscore main.py".
 
 \section{Ansluta till roboten}
-Se till att roboten är påslagen med huvudbrytaren och att Bluetooth är aktiverat på datorn. Om det är första gången datorn används för att kopplas upp mot roboten måste datorn pairas med roboten via Bluetooth. Detta görs genom att använda datorns inbyggda gränssnitt för Bluetoothkonfiguration. Där väljs roboten för anslutning, och inget lösenord anges vid förfrågan. Efter lyckad pairing kan mjukvaruklienten startas genom att starta skriptet client_main.py i en terminal. 
-% TODO: Finns det någon indikation på att man har en korrekt anslutning?
+Se till att roboten är påslagen med huvudbrytaren och att Bluetooth är aktiverat på datorn. Om det är första gången datorn används för att kopplas upp mot roboten måste datorn pairas med roboten via Bluetooth. Detta görs genom att använda datorns inbyggda gränssnitt för Bluetoothkonfiguration. Där väljs roboten för anslutning, och inget lösenord anges vid förfrågan. Efter lyckad pairing kan mjukvaruklienten startas genom att starta skriptet "client\textunderscore main.py" i en terminal. 
+% TODO: Finns det någon indikation på att man har en korrekt anslutning? Ska vi lägga till det?
 Vid lyckad anslutning till roboten kan knappar och tangenter användas för att kommunicera med roboten. 
 
 \section{Kommunicera med roboten}
 Mjukvaruklienten tar emot data från roboten kontinueligt och presenterar denna data utan att användaren behöver göra något.
 Möjliga kommandon för användaren att utföra är att växla mellan manuellt och autonomnt läge samt att styra roboten i det manuella läget. Detta görs med knapparna nere till vänster i gränssnittet.
+För att växla mellan manuellt och autonomt läge kan även den fysiska knappen på själva roboten användas. 
+% TODO: Vilket läge som används indikeras på något sätt i gränssnittet.
 
 \section{Referenser}
 \begin{itemize}
 	\item Pybluez: https://github.com/karulis/pybluez
 	\item Tkinter: https://wiki.python.org/moin/TkInter
-	
+\end{itemize}
 
 \nocite{*}
 \bibliography{designspec}{}
