@@ -249,6 +249,15 @@ När roboten har åkt ett varv längs ytterkanterna kommer den att gå in i ett 
 
 \subsection{Reglering}
 \label{sec:reglering}
+Roboten reglerar längs en vägg på sin högra sida med hjälp av två IR-sensorer, en vid robotens främre del och en vid robotens bakre del. Ett önskat värde är bestämt som det avstånd som roboten ska hålla ifrån väggen den reglerar emot. Med hjälp av det önskade värdet tillsammans med värdena ifrån de två IR-sensorenra räknas ett distansfel ut. Distansfelet räknas ut genom att dra bort främre IR-sensorns värde ifrån det önskade avståndet. Sedan läggs ett värde proportionellt mot differensen mellan bakre och främre sensorn till för att efterlikna det verkliga avståndet från väggen (se figur~\ref{fig:reglering}). Detta då värdet ifrån IR-sensorerna ökar mer än det verkliga värdet desto mer vinklad ifrån väggen roboten står.\newline
+Med hjälp av distansfelet och differensen utförs en enklare PID-reglering som istället för I- och D-delen använder sig av differensen och returnerar ett regleringsvärde $u$. Regleringsvärdet räknas ut enligt formeln $u[n] = Kp * e[n] + Ka * d$, där $Kp$ och $Ka$ är konstanter, $e[n]$ är distansfelet vid tid $n$, och $d$ är differensen mellan värdena på den bakre och främre IR-sensorn. Regleringsvärdet adderas respektive subtraheras sedan på en standard-hastighet och skickas till de båda hjulparen för att räta upp roboten och få den att följa väggen och hålla ett önskat avstånd. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{Reglering}
+\caption{En illustration över hur roboten reglerar.}
+\label{fig:reglering}
+\end{figure}
  
  \subsection{PWM}
 \label{sec:PWM}
