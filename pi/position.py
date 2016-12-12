@@ -47,8 +47,8 @@ class Position:
             if self.mapping_state == MAPPING_STATE_FOLLOWING_OUTER_WALL:
                 self.looking_for_kitchen_sections(distance)
             elif self.mapping_state == MAPPING_STATE_RETURNING_TO_ISLAND:
-                self.current_section.finish()
-                temporary_x, temporary_y = self.transform_map_data(self.current_section, self.current_x, self.current_y)
+                temporary_x, temporary_y = self.transform_map_data(self.current_section, self.current_x, self.current_y,
+                                                                   estimate=True)
                 if self.potential_kitchen.count((temporary_x, temporary_y)) > 0:
                     self.mapping_state = MAPPING_STATE_FOLLOWING_ISLAND
                     self.kitchen_start_x = temporary_x
@@ -164,15 +164,19 @@ class Position:
         else:
             return False
 
-    def transform_map_data(self, section, current_x, current_y):
+    def transform_map_data(self, section, current_x, current_y, estimate=False):
+        if estimate:
+            distance = section.estimate_block_distance()
+        else:
+            distance = section.block_distance
         if section.direction == NORTH:
-            current_y += section.block_distance
+            current_y += distance
         elif section.direction == EAST:
-            current_x += section.block_distance
+            current_x += distance
         elif section.direction == SOUTH:
-            current_y -= section.block_distance
+            current_y -= distance
         elif section.direction == WEST:
-            current_x -= section.block_distance
+            current_x -= distance
         return current_x, current_y
 
     '''
