@@ -7,16 +7,19 @@ from threading import Thread
 
 STATE_MEASURING = 0
 STATE_WAITING = 1
+STATE_FINISHED = 2
 
 MAPPING_STATE_FOLLOWING_OUTER_WALL = 0
 MAPPING_STATE_RETURNING_TO_ISLAND = 1
 MAPPING_STATE_FOLLOWING_ISLAND = 2
+MAPPING_STATE_RETURNING_TO_GARAGE = 3
 
 
 class Position:
-    def __init__(self, laser, ir):
+    def __init__(self, laser, ir, navigator):
         self.laser = laser
         self.ir = ir
+        self.navigator = navigator
         self.state = STATE_MEASURING
         self.mapping_state = MAPPING_STATE_FOLLOWING_OUTER_WALL
         self.current_section = Section(NORTH)
@@ -24,6 +27,8 @@ class Position:
         self.map_data = []
         self.current_x = 0
         self.current_y = 0
+        self.kitchen_start_x = 0
+        self.kitchen_start_y = 0
 
         self.kitchen_section = Section(NORTH)
         self.looking_for_kitchen = False
@@ -46,7 +51,14 @@ class Position:
                 temporary_x, temporary_y = self.transform_map_data(self.current_section, self.current_x, self.current_y)
                 if self.potential_kitchen.count((temporary_x, temporary_y)) > 0:
                     self.mapping_state = MAPPING_STATE_FOLLOWING_ISLAND
+                    self.kitchen_start_x = temporary_x
+                    self.kitchen_start_y = temporary_y
                     Navigator.force_left_turn = True
+            elif self.mapping_state == MAPPING_STATE_FOLLOWING_ISLAND:
+                temporary_x, temporary_y = self.transform_map_data(self.current_section, self.current_x, self.current_y)
+                if temporary_x == self.kitchen_start_x and temporary_y == self.kitchen_start_y:
+                    Navigator.force_left_turn = True
+                    self.mapping_state = MAPPING_STATE_RETURNING_TO_GARAGE
 
 
 
@@ -130,11 +142,16 @@ class Position:
             self.kitchen_section = self.kitchen_section.for_left_turn()
 
     def on_turning_started(self):
-        self.state = STATE_WAITING
-        if self.looking_for_kitchen:
-            self.kitchen_section.finish()
-            self.calculate_kitchen_coordinates()
-            self.looking_for_kitchen = False
+        if self.mapping_state == MAPPING_STATE_RETURNING_TO_GARAGE:
+            if self.has_returned_to_start(include_direction=False):
+                self.state = STATE_FINISHED
+                self.navigator.set_mode(Navigator.MANUAL)
+        else:
+            self.state = STATE_WAITING
+            if self.looking_for_kitchen:
+                self.kitchen_section.finish()
+                self.calculate_kitchen_coordinates()
+                self.looking_for_kitchen = False
         self.save_current_section()
 
     def on_turning_finished(self, is_right_turn):
@@ -144,9 +161,12 @@ class Position:
 
         self.state = STATE_MEASURING
 
-    def has_returned_to_start(self):
-        return self.current_x == 0 and self.current_y == 0 and self.current_section.direction == NORTH and \
-               len(self.map_data) > 0
+    def has_returned_to_start(self, include_direction=True):
+
+        if self.current_x == 0 and self.current_y == 0 and len(self.map_data) > 0:
+            return not include_direction or self.current_section.direction == NORTH
+        else:
+            return False
 
     def transform_map_data(self, section, current_x, current_y):
         if section.direction == NORTH:

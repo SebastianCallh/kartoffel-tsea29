@@ -21,8 +21,8 @@ ir = IR()
 laser = Laser()
 gyro = Gyro()
 driver = Driver(gyro, laser)
-position = Position(laser, ir)
 navigator = Navigator(Navigator.AUTONOMOUS, ir, driver, laser)
+position = Position(laser, ir, navigator)
 communicator = Communicator(ir, laser, gyro, driver, navigator, position)
 
 
