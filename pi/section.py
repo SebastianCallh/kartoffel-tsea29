@@ -1,5 +1,5 @@
 from datetime import datetime
-from math import ceil
+from math import floor
 
 
 NORTH = 0
@@ -8,7 +8,7 @@ SOUTH = 2
 WEST = 3
 
 BLOCK_LENGTH_MM = 400
-OFFSET = 300
+
 
 class Section:
 
@@ -39,7 +39,7 @@ class Section:
             return 0
 
         # Takes the difference between max measurement and min measurement and divide by block length.
-        return ceil((self.get_max() - self.get_min()) / BLOCK_LENGTH_MM)
+        return floor((self.get_max() - self.get_min()) / BLOCK_LENGTH_MM)
 
     def for_right_turn(self):
         return Section((self.direction + 1) % 4)
