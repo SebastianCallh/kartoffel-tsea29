@@ -17,7 +17,6 @@
 #define CMD_SET_MOTOR_SPEED 5
 #define CMD_SET_LEFT_MOTOR_SPEED 6
 #define CMD_SET_RIGHT_MOTOR_SPEED 7
-#define CMD_TOGGLE_MODE 28
 
 struct sensor_data
 {

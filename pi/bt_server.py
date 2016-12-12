@@ -53,9 +53,10 @@ class BT_Server:
         Sends data via bluetooth to connected client.
         Sends data saved in server, unless data is passed.
         """
-        if data:
-            self.outgoing_data = str(data.cmd_id) + ", " + str(data.data)
-        self.client_sock.send(self.outgoing_data)
+        if not data:
+            self.client_sock.send(self.outgoing_data)
+        else:
+            self.client_sock.send(data)
 
     def _pop_from_outgoing(self):
         return bt_task_handler.pop_outgoing()

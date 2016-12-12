@@ -8,21 +8,17 @@ from ast import literal_eval
 import random
 
 DATA_REQUEST_INTERVAL = 1  # seconds
-IP_REQUEST_INTERVAL = 10   # seconds
-UPDATE_INTERVAL = 250      # milliseconds
-TEST_CORNERS = [(0, 0), (0,1), (1, 1), (1, 3), (-3, 3), (-3, 4),
+UPDATE_INTERVAL = 250  # milliseconds
+TEST_CORNERS = [[(0, 0), (0,1), (1, 1), (1, 3), (-3, 3), (-3, 4),
                 (-2, 4), (-2, 5), (-4, 5), (-4, 7), (5, 7), (5, 9),
                 (7, 9), (7, 5), (4, 5), (4, -4), (-15, -4), (-15, -3), (3, -3),
-                (3, 0), (0, 0), (1, 4), (3, 4), (3, 6), (1, 6), (1, 4)]
-
-TEST_CORNERS2 = [(0,0), (1,0), (1,-1),(1,-2),(1,3),(0,3),(-1,3),(-2,3),(-2,2),(-1,2),(0,2),(0,1),(0,0)]
+                (3, 0), (0, 0)], [(1, 4), (3, 4), (3, 6), (1, 6), (1, 4)] ]
 
 curr_test_corn = 0
 
 gui = None
 bt_client = None
 last_data_request_time = datetime.datetime.now()
-last_ip_request_time = datetime.datetime.now()
 
 
 def run_bt_client(queue_handler):
@@ -60,33 +56,36 @@ def setup_subscriptions():
 
 
 def request_data():
-    global last_ip_request_time
     outbound.bt_request_sensor_data()
     outbound.bt_request_servo_data()
-    outbound.bt_request_map_data()
-    if (datetime.datetime.now() - last_ip_request_time) > datetime.timedelta(
-            seconds=IP_REQUEST_INTERVAL):
-        outbound.request_ip()
-        last_ip_request_time = datetime.datetime.now()
+    #outbound.bt_request_map_data()
+    outbound.request_ip()
     pass
 
 
 def update():
-    global gui, last_data_request_time, curr_test_corn, bt_client
+    global gui, last_data_request_time, curr_test_corn
     if not gui.exit_demanded:
-        if gui.finished_setup:
-            EventBus.receive()
-            if (datetime.datetime.now() - last_data_request_time) > datetime.timedelta(
-                    seconds=DATA_REQUEST_INTERVAL):
-                if bt_client.is_connected:
-                    request_data()
+        EventBus.receive()
+        if (datetime.datetime.now() - last_data_request_time) > datetime.timedelta(
+                seconds=DATA_REQUEST_INTERVAL):
+            request_data()
+            '''x1 = int(input("x: "))
+            if x1 == 0:
+                print("Close gui")
+                gui.close_window()
+                return
+            y1 = int(input("y: "))'''
+            '''x2 = int(input("x2: "))
+            y2 = int(input("y2: "))
 
-                """gui.update_map([TEST_CORNERS2[curr_test_corn]])
-                if curr_test_corn < len(TEST_CORNERS2) -1:
-                    curr_test_corn += 1"""
-                last_data_request_time = datetime.datetime.now()
-        else:
-            gui.setup_after_main_loop()
+            gui.update_map([(x1, y1), (x2, y2)])'''
+            '''gui.update_map([TEST_CORNERS[curr_test_corn]])
+            if curr_test_corn < len(TEST_CORNERS) -1:
+                curr_test_corn += 1
+            #gui.canvas.create_line(x1,y1,x2,y2,fill="black")
+            #print("canvas size ", gui.canvas.winfo_height(), " ", gui.canvas.winfo_width())'''
+            last_data_request_time = datetime.datetime.now()
         gui.canvas.after(UPDATE_INTERVAL, update)
     else:
         print("Exit gui in client main")

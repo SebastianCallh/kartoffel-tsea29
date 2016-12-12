@@ -129,23 +129,3 @@ def bt_restart():
             BT_SERVER_RESTART
         )
     )
-
-
-def bt_switch_to_auto():
-    print("Switch to auto")
-    EventBus.post(
-        BLUETOOTH_ADDR,
-        BT_task(
-            AUTONOMOUS_MODE
-        )
-    )
-
-
-def bt_switch_to_manual():
-    print("Switch to manual")
-    EventBus.post(
-        BLUETOOTH_ADDR,
-        BT_task(
-            MANUAL_MODE
-        )
-    )

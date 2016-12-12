@@ -18,15 +18,11 @@ class GUI:
     BG_COLOR = "orange"
 
     MAX_LIST_ITEMS = 13
-    MIN_TIME_KEY_EVENT = 250  # milliseconds
-
-    MODES =[("Manual", 0),
-            ("Automatic", 1)]
+    MIN_TIME_KEY_EVENT = 500            # milliseconds
 
     def __init__(self):
         self.pi_ip = ""
         self.exit_demanded = False
-        self.finished_setup = False
 
         self.map_grid = MapGrid()
 
@@ -36,6 +32,7 @@ class GUI:
         self.main_frame = Frame(self.root, width=self.WINDOW_X, height=self.WINDOW_Y, bg=self.BG_COLOR)
         self.main_frame.focus_set()  # Set all frame as listening to keyboard events
         self.main_frame.grid()
+
 
         # Keybindings
         # Run functions when certain keys are pressed. Bind to same as buttons.
@@ -56,8 +53,8 @@ class GUI:
         # --- Canvas ---
         self.canvas = Canvas(self.main_frame,
                              width=GUI.CANVAS_X,
-                             height=GUI.CANVAS_Y, bg="#CCCCCC")
-        self.canvas.grid(column=0, row=0, padx=10, pady=10)
+                             height=GUI.CANVAS_Y, bg="white")
+        self.canvas.grid(column=0, row=0, padx=10,pady=10)
 
         # --- Lists ---
         self.list_frame = Frame(self.main_frame, width=self.LIST_FRAME_X, height=self.LIST_FRAME_Y,
@@ -94,58 +91,40 @@ class GUI:
         self.btn_frame.grid(row=1, column=0, pady=10, padx=10)
 
         self.btn_forward = Button(self.btn_frame, text="Forward", command=self.forward)
-        self.btn_forward.grid(row=1, column=3)
+        self.btn_forward.grid(row=1, column=2)
 
         self.btn_back = Button(self.btn_frame, text="Back", command=self.back)
-        self.btn_back.grid(row=1, column=4)
+        self.btn_back.grid(row=1, column=3)
 
         self.btn_right = Button(self.btn_frame, text="Right", command=self.right)
-        self.btn_right.grid(row=1, column=5)
+        self.btn_right.grid(row=1, column=4)
 
         self.btn_left = Button(self.btn_frame, text="Left", command=self.left)
         self.btn_left.grid(row=1, column=1)
 
         self.btn_forward_right = Button(self.btn_frame, text="Forward left", command=self.forward_left)
-        self.btn_forward_right.grid(row=0, column=3, padx=5, pady=2)
+        self.btn_forward_right.grid(row=0, column=2, padx=5, pady=5)
 
         self.btn_forward_left = Button(self.btn_frame, text="Forward right", command=self.forward_right)
-        self.btn_forward_left.grid(row=0, column=4, padx=5, pady=2)
+        self.btn_forward_left.grid(row=0, column=3, padx=5, pady=5)
 
-        self.mode = IntVar()
-        self.mode.set(1)
-        self.radio_frame = Frame(self.btn_frame)
-        self.radio_frame.grid(row=0, column=6)
-        self.btn_auto_mode = Radiobutton(self.radio_frame, text=self.MODES[0][0], variable=self.mode,
-                                 command=self.change_mode, indicatoron=0, value=self.MODES[0][1])
-        self.btn_auto_mode.grid(row=0, column=0, padx=2, pady=2, sticky="W")
-        self.btn_manual_mode = Radiobutton(self.radio_frame, text=self.MODES[1][0], variable=self.mode,
-                                         command=self.change_mode, indicatoron=0, value=self.MODES[1][1])
-        self.btn_manual_mode.grid(row=1, column=0, padx=2, pady=2, sticky="W")
+        self.bt_restart = Button(self.btn_frame, text="Restart bluetooth\nconnection",
+                                                command=outbound.bt_restart)
+        self.bt_restart.grid(row=1,column=5,padx=10, pady=10)
 
         self.ip_box = Label(self.main_frame, text="Pi IP: ", width=25, bg="white")
         self.ip_box.grid(row=1, column=1)
 
         # --- Image ----
-        self.image_frame = Frame(self.btn_frame)
-        self.image_frame.grid(row=0, column=0, rowspan=2)
         logo = PhotoImage(file="Logo.gif")
-        self.resampled_logo = logo.subsample(3, 3)
-        self.logo_box = Label(self.image_frame, image=self.resampled_logo)
-        self.logo_box.grid(row=1, column=0, padx=10, sticky=W+E+N+S)
-
-        self.map_grid.draw_grid(self.canvas)
-
-    def setup_after_main_loop(self):
-        self.map_grid.draw_grid(self.canvas)
-        self.btn_auto_mode.select()
-        self.btn_manual_mode.deselect()
-        self.finished_setup = True
+        self.resampled_logo = logo.subsample(3, 4)
+        self.logo_box = Label(self.btn_frame, image=self.resampled_logo)
+        self.logo_box.grid(row=1, column=0, padx=10)
 
     '''
     Values should be a list containing of [ir_left,ir_right,ir_left_back,
     ir_right_back,laser,gyro]
     '''
-
     def add_sensor_data(self, values):
         ir_values = str(values[2]) + ", " + str(values[0]) + ", " + str(values[1]) + ", " + str(values[3])
 
@@ -167,10 +146,11 @@ class GUI:
         else:
             self.gyro_list_nr_items += 1
 
+        #print("IR values: ", str(values))
+
     '''
     Values should be a list containing of [left_speed, right_speed].
     '''
-
     def add_servo_data(self, values):
         if self.servo_list_nr_items >= self.MAX_LIST_ITEMS:
             for i in range(1, self.MAX_LIST_ITEMS):
@@ -179,32 +159,33 @@ class GUI:
         else:
             self.servo_list_nr_items += 1
         self.servo_list.insert(END, str(values[0]) + ', ' + str(values[1]))
+        print("Servo data: ", str(values))
 
     def update_map(self, values):
+        #print("Map data: ", str(values))
         self.map_grid.update_map(values, self.canvas)
 
     '''
     Ip expected to be in format [ip]
     '''
-
     def update_ip(self, ip):
+        #print("IP i gui: ", str(ip[0]))
         self.ip_box.config(text="Pi IP: " + str(ip[0]))
-
+        
     def exit(self):
         self.exit_demanded = True
         print("Exit gui")
-
+        
     def close_window(self):
         self.root.destroy()
 
     def check_key_event_time(self):
         return (datetime.datetime.now() - self.last_key_event_time) > datetime.timedelta(
-            milliseconds=self.MIN_TIME_KEY_EVENT)
+                        milliseconds=self.MIN_TIME_KEY_EVENT)
 
     '''Functions for handling key press.
     Takes forced event, but ignores it and calls correct driver function.
     '''
-
     def forward(self, event=None):
         self.event_handler(outbound.bt_drive_forward, event=event, repetition=5)
 
@@ -229,7 +210,6 @@ class GUI:
     it was called from a button and call the command function number of times
     specified in repetition option.
     '''
-
     def event_handler(self, command, **options):
         if self.check_key_event_time():
             if not options["event"]:
@@ -241,10 +221,3 @@ class GUI:
             else:
                 command()
                 self.last_key_event_time = datetime.datetime.now()
-
-    def change_mode(self):
-        mode = self.mode.get()
-        if self.MODES[mode][0] == "Manual":
-            outbound.bt_switch_to_manual()
-        else:
-            outbound.bt_switch_to_auto()

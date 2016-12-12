@@ -1,8 +1,6 @@
 import bt_server
 import bt_task_handler
 import protocol
-import utils
-import bt_task
 
 PI_ADDR = "B8:27:EB:FC:55:27"
 PORT = 3
@@ -15,7 +13,6 @@ def setup_server():
     """
     Creates and returns a fresh bt_server connected to a client.
     """
-
     bt_task_handler.clean_queue_files()
     server = bt_server.BT_Server(PI_ADDR, PORT, BACKLOG)
     server.accept_connection()
@@ -32,21 +29,16 @@ def is_valid_cmd(command):
     return True if command in protocol.BT_CLIENT_COMMANDS else False
 
 
-def send(server, data=None):
+def send(server):
     """
     Sends data to client if given bt_server has new outgoing
     data from main unit.
     Returns True/False whether or not data was sent.
     """
-    if not data:
-        has_new_outgoing = server.update_outgoing()
-        if has_new_outgoing:
-            server.send_data()
-        return has_new_outgoing
-    else:
-        server.send_data(data)
-        has_new_outgoing = True
-        return has_new_outgoing
+    has_new_outgoing = server.update_outgoing()
+    if (has_new_outgoing):
+        server.send_data()
+    return has_new_outgoing
 
 
 def recieve(server):
@@ -63,9 +55,6 @@ def recieve(server):
             return protocol.BT_SERVER_RESTART
         elif int(server.incoming_data) == protocol.BT_SERVER_SHUTDOWN:
             return protocol.BT_SERVER_SHUTDOWN
-        elif int(server.incoming_data) == protocol.REQUEST_PI_IP:
-            # Return ip immediately without passing on to task_handler
-            return protocol.REQUEST_PI_IP
         else:
             server.post_to_incoming()
             return GOT_DATA
@@ -77,17 +66,12 @@ def main():
     The main function initializes instance of the server.
     Runs the main control of data flow in the bluetooth connection.
     """
-
     server = setup_server()
-    status = NO_DATA
+    exit = NO_DATA
     while exit != protocol.BT_SERVER_SHUTDOWN:
-        status = recieve(server)
-        if status == protocol.REQUEST_PI_IP:
-            send(server, bt_task.BT_task(protocol.RETURN_PI_IP, [utils.get_ip()]))
-            current_pi_ip = utils.get_ip()
-        else:
-            send(server)
-        if status == protocol.BT_SERVER_RESTART or status == protocol.BT_SERVER_SHUTDOWN:
+        exit = recieve(server)
+        send(server)
+        if exit == protocol.BT_SERVER_RESTART or exit == protocol.BT_SERVER_SHUTDOWN:
             has_sent = False
             while has_sent:
                 has_sent = send(server)
@@ -95,9 +79,9 @@ def main():
             server.shutdown_server()
             del server
 
-            if status == protocol.BT_SERVER_RESTART:
+            if exit == protocol.BT_SERVER_RESTART:
                 server = setup_server()
-                status = NO_DATA
+                exit = NO_DATA
                 # Breaks if exit == SHUTDOWN
 
 

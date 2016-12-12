@@ -13,7 +13,6 @@
 
 void request_sensor_data();
 void return_sensor_data(struct sensor_data* sd);
-void toggle_mode();
 
 
 #endif /* OUTBOUND_H_ */
