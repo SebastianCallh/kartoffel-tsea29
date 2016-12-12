@@ -46,17 +46,21 @@ class Position:
             self.current_section.add_distance_sample(distance)
             if self.mapping_state == MAPPING_STATE_FOLLOWING_OUTER_WALL:
                 self.looking_for_kitchen_sections(distance)
+
             elif self.mapping_state == MAPPING_STATE_RETURNING_TO_ISLAND:
                 self.current_section.finish()
                 temporary_x, temporary_y = self.transform_map_data(self.current_section, self.current_x, self.current_y)
+
                 if self.potential_kitchen.count((temporary_x, temporary_y)) > 0:
                     self.mapping_state = MAPPING_STATE_FOLLOWING_ISLAND
                     self.kitchen_start_x = temporary_x
                     self.kitchen_start_y = temporary_y
                     Navigator.force_left_turn = True
+
             elif self.mapping_state == MAPPING_STATE_FOLLOWING_ISLAND:
                 self.current_section.finish()
                 temporary_x, temporary_y = self.transform_map_data(self.current_section, self.current_x, self.current_y)
+
                 if temporary_x == self.kitchen_start_x and temporary_y == self.kitchen_start_y:
                     Navigator.force_left_turn = True
                     self.mapping_state = MAPPING_STATE_RETURNING_TO_GARAGE
@@ -71,10 +75,7 @@ class Position:
         # Checks if a kitchen island may be present and start calculating sections for it.
         if self.ir.get_ir_left() > 10 and not self.looking_for_kitchen:
             print("start for kitchen")
-            self.looking_for_kitchen = True
-            self.kitchen_section = Section(self.current_section.direction)
-            self.temporary_potential_kitchen = []
-            self.kitchen_section.add_distance_sample(distance)
+            self.new_kitchen_section(distance)
             self.kitchen_block_displacement = 0
 
         elif 250 < self.ir.get_ir_left_back() < 650 and not self.looking_for_kitchen:
@@ -82,10 +83,7 @@ class Position:
             if self.long_measurements_count >= 5:
                 self.long_measurements_count = 0
                 print("start for kitchen long, distance: " + str(self.ir.get_ir_left_back()))
-                self.looking_for_kitchen = True
-                self.kitchen_section = Section(self.current_section.direction)
-                self.temporary_potential_kitchen = []
-                self.kitchen_section.add_distance_sample(distance)
+                self.new_kitchen_section(distance)
                 self.kitchen_block_displacement = 1
             else:
                 self.long_measurements_count += 1
@@ -101,6 +99,12 @@ class Position:
             self.calculate_kitchen_coordinates()
             self.looking_for_kitchen = False
             self.kitchen_section = Section(self.current_section.direction)
+
+    def new_kitchen_section(self, distance):
+        self.looking_for_kitchen = True
+        self.kitchen_section = Section(self.current_section.direction)
+        self.temporary_potential_kitchen = []
+        self.kitchen_section.add_distance_sample(distance)
 
     def save_current_section(self):
         self.current_section.finish()

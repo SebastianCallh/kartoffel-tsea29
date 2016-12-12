@@ -52,7 +52,7 @@ def main():
         laser.read_data()
         gyro.read_data()
         ir.request_data()
-
+        driver.update()
         EventBus.receive()
         position.update()
         navigator.navigate()

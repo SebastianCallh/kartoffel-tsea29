@@ -45,10 +45,8 @@ class AutoControl(State):
             Navigator.right_turn_enabled = (data['ir'].get_ir_right() != -1 and data['ir'].get_ir_right_back() != -1)
 
         # Inner turn
-        if Navigator.force_left_turn or and (not Navigator.right_turn_enabled or data['ir'].get_ir_right() != -1)):
+        if Navigator.force_left_turn or (self.is_at_left_turn(data) and (not Navigator.right_turn_enabled or data['ir'].get_ir_right() != -1)):
             Navigator.force_left_turn = False
-        # Inner left turn
-        if self.is_at_left_turn(data):
             data['driver'].inner_turn_left()
             print('NAVIGATOR: inner turn left')
             return Turn(TURN_DIRECTION_LEFT)
@@ -115,7 +113,6 @@ class Navigator:
         
     # Runs the state. The states run method returns the next state
     def navigate(self):
-        self.data['driver'].update()
         if self.mode == Navigator.AUTONOMOUS:
             next_state = self.state.run(self.data)
 
