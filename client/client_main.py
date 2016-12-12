@@ -57,11 +57,16 @@ def update_map(data):
     gui.update_map(data)
 
 
+def update_selected_mode(mode):
+    gui.update_selected_mode(mode)
+
+
 def setup_subscriptions():
     EventBus.subscribe(RETURN_PI_IP, update_ip)
     EventBus.subscribe(BT_RETURN_SENSOR_DATA, add_sensor_data)
     EventBus.subscribe(BT_RETURN_SERVO_DATA, add_servo_data)
     EventBus.subscribe(BT_RETURN_MAP_DATA, update_map)
+    EventBus.subscribe(CMD_MODE_SET, update_selected_mode)
 
 
 def request_data():

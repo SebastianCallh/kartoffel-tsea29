@@ -20,8 +20,11 @@ class GUI:
     MAX_LIST_ITEMS = 13
     MIN_TIME_KEY_EVENT = 250  # milliseconds
 
-    MODES =[("Manual", 0),
-            ("Automatic", 1)]
+    ROBOT_MODE_MANUAL = 0
+    ROBOT_MODE_AUTONOMOUS = 1
+
+    MODES =[("Manual", ROBOT_MODE_MANUAL),
+            ("Automatic", ROBOT_MODE_AUTONOMOUS)]
 
     def __init__(self):
         self.pi_ip = ""
@@ -248,3 +251,13 @@ class GUI:
             outbound.bt_switch_to_manual()
         else:
             outbound.bt_switch_to_auto()
+
+    def update_selected_mode(self, mode):
+        # btn_auto_mode and btn_manual_mode are "reversed", so btn_auto_mode
+        # has the text "Manual" and btn_manual_mode the text "Automatic"
+        if mode == GUI.ROBOT_MODE_MANUAL:
+            self.btn_auto_mode.select()
+            self.btn_manual_mode.deselect()
+        elif mode == GUI.ROBOT_MODE_AUTONOMOUS:
+            self.btn_auto_mode.deselect()
+            self.btn_manual_mode.select()

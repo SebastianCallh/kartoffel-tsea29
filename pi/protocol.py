@@ -210,6 +210,21 @@ Target: Main unit
 Arguments: None
 """
 
+# Indicates that the robot has changed to a new navigator mode
+CMD_MODE_SET = 29
+"""
+Command to toggle between the available modes (autonomous and manual) instead
+of explicitly switching to one using AUTONOMOUS_MODE or MANUAL_MODE.
+
+Target: Main unit
+
+Arguments:
+new_mode (1 byte)
+    Integer representation of the new mode:
+      0 = Manual mode
+      1 = Autonomous mode
+"""
+
 BT_CLIENT_COMMANDS = [REQUEST_PI_IP, BT_SERVER_RESTART,
                       BT_SERVER_SHUTDOWN, BT_REQUEST_SENSOR_DATA,
                       BT_REQUEST_MAP_DATA, BT_REQUEST_SERVO_DATA,
@@ -218,4 +233,4 @@ BT_CLIENT_COMMANDS = [REQUEST_PI_IP, BT_SERVER_RESTART,
                       AUTONOMOUS_MODE, MANUAL_MODE]
 
 BT_SERVER_COMMANDS = [REQUEST_PI_IP, BT_RETURN_SENSOR_DATA,
-                      BT_RETURN_SERVO_DATA, BT_RETURN_MAP_DATA]
+                      BT_RETURN_SERVO_DATA, BT_RETURN_MAP_DATA, CMD_MODE_SET]
