@@ -8,9 +8,9 @@ from outbound import set_motor_speed
 ###### METHODS FOR CONTROLLING THE WHEELS #######	
 # Tasks should be reversed since we pop them from the list 
 
-STANDARD_SPEED = 25
-FAST_SPEED = 50
-SLOW_SPEED = 10
+STANDARD_SPEED = 50
+FAST_SPEED = 70
+SLOW_SPEED = 40
 TURN_SPEED = 40
 TURN_TIME = 900
 TURN_DEGREES = 80
