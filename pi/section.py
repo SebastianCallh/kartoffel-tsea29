@@ -39,7 +39,7 @@ class Section:
             return 0
 
         # Takes the difference between max measurement and min measurement and divide by block length.
-        return floor((self.get_max() - self.get_min()) / BLOCK_LENGTH_MM)
+        return floor((self.get_max() - self.get_min()) / BLOCK_LENGTH_MM + 0.25)
 
     def for_right_turn(self):
         return Section((self.direction + 1) % 4)
