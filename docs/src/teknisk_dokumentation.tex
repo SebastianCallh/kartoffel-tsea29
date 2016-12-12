@@ -521,7 +521,7 @@ Styrenhetens uppgift är att kontrollera robotens förflyttning genom att ge kor
 \label{fig:styrenhet_kopplingsschema}
 \end{figure}
 
-
+Styrenheten klockas av en extern EXO3-klocka som säkerställer en synkroniserad klockfrekvens bland robotens processorer, och är kopplad till de två hjulparen som sitter på robotens kropp. Likt sensorenheten så kommunicerar även styrenheten över I2C-bussen.
 
 \subsubsection{Komponenter}
 
@@ -536,8 +536,6 @@ Styrenhetens uppgift är att kontrollera robotens förflyttning genom att ge kor
     Terminator (bas för fyrhjulingsrobot) & 1 \\
     \hline
     EXO3 & 1 (delad) \\
-    \hline
-    LS241 & 1 \\
     \hline
   \end{tabular}
 \end{table}
