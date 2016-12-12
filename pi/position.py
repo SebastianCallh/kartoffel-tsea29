@@ -95,11 +95,8 @@ class Position:
         self.kitchen_section.add_distance_sample(distance)
 
     def save_current_section(self):
-        self.current_section.finish()
-        self.current_x, self.current_y = self.transform_map_data(self.current_section, self.current_x, self.current_y)
         if self.mapping_state == MAPPING_STATE_FOLLOWING_OUTER_WALL:
-            self.saved_sections.append(self.current_section)
-            self.map_data.append((self.current_x, self.current_y))
+            self.process_finished_section()
 
             print("Primary temporary kitchens: " + str(self.temporary_potential_kitchen))
 
@@ -120,8 +117,7 @@ class Position:
             print('  potential kitchens: ' + str(self.potential_kitchen))
             print('-----------------------')
         elif self.mapping_state == MAPPING_STATE_FOLLOWING_ISLAND:
-            self.saved_sections.append(self.current_section)
-            self.map_data.append((self.current_x, self.current_y))
+            self.process_finished_section()
 
             print('---- ISLAND ROUNDED ----')
             print('  direction: ' + str(self.current_section.direction))
@@ -131,6 +127,8 @@ class Position:
 
             self.kitchen_num_mapped += 1
         else:
+            self.process_finished_section(store_data=False)
+
             print('---- SECTION TRAVELLED ----')
             print('  direction: ' + str(self.current_section.direction))
             print('  distance: ' + str(self.current_section.block_distance))
@@ -178,15 +176,35 @@ class Position:
             distance = section.estimate_block_distance()
         else:
             distance = section.block_distance
-        if section.direction == NORTH:
+
+        return self.transform_partial_map_data(distance, section.direction, current_x, current_y)
+
+    def transform_partial_map_data(self, distance, direction, current_x, current_y):
+        if direction == NORTH:
             current_y += distance
-        elif section.direction == EAST:
+        elif direction == EAST:
             current_x += distance
-        elif section.direction == SOUTH:
+        elif direction == SOUTH:
             current_y -= distance
-        elif section.direction == WEST:
+        elif direction == WEST:
             current_x -= distance
         return current_x, current_y
+
+    def process_finished_section(self, store_data=True):
+        self.current_section.finish()
+
+        if store_data:
+            distance = self.current_section.block_distance
+            direction = self.current_section.direction
+
+            for i in range(1, distance + 1):
+                pos_x, pos_y = self.transform_partial_map_data(i, direction, self.current_x, self.current_y)
+                self.map_data.append((pos_x, pos_y))
+
+            self.saved_sections.append(self.current_section)
+
+        # Could be optimized to use last pos_x, pos_y instead
+        self.current_x, self.current_y = self.transform_map_data(self.current_section, self.current_x, self.current_y)
 
     '''
     Returns a list of tuples with coordinates of grids visited
