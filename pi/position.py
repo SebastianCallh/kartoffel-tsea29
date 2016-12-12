@@ -89,7 +89,7 @@ class Position:
                 (0 < self.ir.get_ir_left_back() < 250 and self.kitchen_block_displacement == 1)) and \
                 self.looking_for_kitchen:
 
-            self.kitchen_section.finish(offset=300)
+            self.kitchen_section.finish()
             self.calculate_kitchen_coordinates()
             self.looking_for_kitchen = False
             self.kitchen_section = Section(self.current_section.direction)
@@ -149,7 +149,7 @@ class Position:
         else:
             self.state = STATE_WAITING
             if self.looking_for_kitchen:
-                self.kitchen_section.finish(offset=300)
+                self.kitchen_section.finish()
                 self.calculate_kitchen_coordinates()
                 self.looking_for_kitchen = False
         self.save_current_section()
@@ -214,7 +214,7 @@ class Position:
             kitchen_start_y = kitchen_y
             kitchen_x, kitchen_y = self.transform_map_data(self.kitchen_section, kitchen_x, kitchen_y)
 
-            self.temporary_potential_kitchen.append((kitchen_x, kitchen_y))
+            self.temporary_potential_kitchen.append((kitchen_start_x, kitchen_start_y))
             print("Kitchen block distance: " + str(self.kitchen_section.block_distance))
             print("Kitchen start coordinates: " + str(kitchen_start_x) + ", " + str(kitchen_start_y))
             print("Kitchen end coordinates: " + str(kitchen_x) + ", " + str(kitchen_y))
