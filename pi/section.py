@@ -22,7 +22,7 @@ class Section:
         if distance > 50:
             self.measurements.append((distance, datetime.now()))
 
-    def finish(self):
+    def finish(self, offset=0):
         # If we're somehow detecting the next turn for a dead end corner before
         # any measurements have been received our normal algorithm won't work.
         # Handle this by explicitly setting the distance to zero.
@@ -31,7 +31,7 @@ class Section:
             return
 
         # Takes the difference between max measurement and min measurement and divide by block length.
-        self.block_distance = round((self.get_max() - self.get_min()) / BLOCK_LENGTH_MM)
+        self.block_distance = round((self.get_max() - (self.get_min()-offset)) / BLOCK_LENGTH_MM)
 
     def for_right_turn(self):
         return Section((self.direction + 1) % 4)
