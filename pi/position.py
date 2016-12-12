@@ -29,13 +29,13 @@ class Position:
         self.current_y = 0
         self.kitchen_start_x = 0
         self.kitchen_start_y = 0
+        self.kitchen_num_mapped = 0
 
         self.kitchen_section = Section(NORTH)
         self.looking_for_kitchen = False
         self.kitchen_block_displacement = 0
         self.potential_kitchen = []
         self.temporary_potential_kitchen = []
-        self.long_measurements_count = 0
 
         EventBus.subscribe(CMD_TURN_STARTED, self.on_turning_started)
         EventBus.subscribe(CMD_TURN_FINISHED, self.on_turning_finished)
@@ -53,11 +53,13 @@ class Position:
                     self.mapping_state = MAPPING_STATE_FOLLOWING_ISLAND
                     self.kitchen_start_x = temporary_x
                     self.kitchen_start_y = temporary_y
+                    self.kitchen_num_mapped = 0
                     Navigator.force_left_turn = True
             elif self.mapping_state == MAPPING_STATE_FOLLOWING_ISLAND:
                 self.current_section.finish()
                 temporary_x, temporary_y = self.transform_map_data(self.current_section, self.current_x, self.current_y)
-                if temporary_x == self.kitchen_start_x and temporary_y == self.kitchen_start_y:
+                if temporary_x == self.kitchen_start_x and temporary_y == self.kitchen_start_y \
+                        and self.kitchen_num_mapped > 3:
                     Navigator.force_left_turn = True
                     self.mapping_state = MAPPING_STATE_RETURNING_TO_GARAGE
 
@@ -73,17 +75,9 @@ class Position:
             self.kitchen_block_displacement = 0
 
         elif 250 < self.ir.get_ir_left_back() < 650 and not self.looking_for_kitchen:
-            # Lets the first 10 measurements pass to skip noise.
-            if self.long_measurements_count >= 5:
-                self.long_measurements_count = 0
-                print("start for kitchen long, distance: " + str(self.ir.get_ir_left_back()))
-                self.new_kitchen_section(distance)
-                self.kitchen_block_displacement = 1
-            else:
-                self.long_measurements_count += 1
-
-        elif not self.looking_for_kitchen:
-            self.long_measurements_count = 0
+            print("start for kitchen long, distance: " + str(self.ir.get_ir_left_back()))
+            self.new_kitchen_section(distance)
+            self.kitchen_block_displacement = 1
 
         elif ((self.ir.get_ir_left() == -1 and self.kitchen_block_displacement == 0) or
                 (0 < self.ir.get_ir_left_back() < 250 and self.kitchen_block_displacement == 1)) and \
@@ -131,6 +125,8 @@ class Position:
             print('  distance: ' + str(self.current_section.block_distance))
             print('  coordinates: ' + str(self.current_x) + ", " + str(self.current_y))
             print('-----------------------')
+            if self.mapping_state == MAPPING_STATE_FOLLOWING_ISLAND:
+                self.kitchen_num_mapped += 1
 
     def begin_next_section(self, is_right_turn):
         if is_right_turn:
