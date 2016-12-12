@@ -373,6 +373,8 @@ TODO:Team Bluetooth kanske vill knyta an det här till det de skriver om Bluetoo
 
 \paragraph{Position}
 \paragraph{Driver}
+Driver innehåller metoder för att utföra standardiserade förflyttningar, t.ex. en inre högersväng eller en yttre vänstersväng. Vid ett anrop till en metod så ges Driver en uppgift som består av en instruktion, en jämförelsefunktion och ett värde till funktionen som Driver använder för att veta när dess uppgift är klar. Till exempel kan en uppgift (i ord) bestå av "vänstersväng, mät i grader, 90", vilket skulle få roboten att svänga vänster, till en skillnad i 90 grader mäts upp från gyroskopet. 
+
 \paragraph{IR}
 \paragraph{Laser}
 Laser-modulen är endast en Python-abstraktion för anrop till lasersensorn över I2C-bussen. Den läser av mätvärden och konverterar de till Python-heltal som sedan kan tolkas av all övrig kod.
@@ -519,7 +521,7 @@ Styrenhetens uppgift är att kontrollera robotens förflyttning genom att ge kor
 \label{fig:styrenhet_kopplingsschema}
 \end{figure}
 
-
+Styrenheten klockas av en extern EXO3-klocka som säkerställer en synkroniserad klockfrekvens bland robotens processorer, och är kopplad till de två hjulparen som sitter på robotens kropp. Likt sensorenheten så kommunicerar även styrenheten över I2C-bussen.
 
 \subsubsection{Komponenter}
 
@@ -534,8 +536,6 @@ Styrenhetens uppgift är att kontrollera robotens förflyttning genom att ge kor
     Terminator (bas för fyrhjulingsrobot) & 1 \\
     \hline
     EXO3 & 1 (delad) \\
-    \hline
-    LS241 & 1 \\
     \hline
   \end{tabular}
 \end{table}
