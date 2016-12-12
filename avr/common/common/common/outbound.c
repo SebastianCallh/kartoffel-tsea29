@@ -35,3 +35,9 @@ void return_sensor_data(struct sensor_data* sd) {
 	write_byte(&ip, sd->ir_left_back_mm & 0xFF);		
 	send_data(ip.p);
 }
+
+void toggle_mode() {
+	struct indexed_packet ip;
+	initalize_packet(&ip, CMD_TOGGLE_MODE);
+	send_data(ip.p);
+}
