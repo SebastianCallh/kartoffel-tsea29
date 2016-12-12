@@ -11,6 +11,7 @@ from outbound import set_motor_speed
 STANDARD_SPEED = 50
 FAST_SPEED = 70
 SLOW_SPEED = 40
+
 TURN_SPEED = 40
 TURN_TIME = 900
 TURN_DEGREES = 80

@@ -13,7 +13,7 @@ class AutoController:
         global use_derivate, time_last_regulation, old_error, integral, last_diff
 
         DESIRED_DISTANCE = 120  # Desired distance to wall
-        STANDARD_SPEED = 25
+        STANDARD_SPEED = 40
         MAX_REGULATION = 30
 
         Kp = float(0.2)
