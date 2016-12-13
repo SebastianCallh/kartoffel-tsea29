@@ -23,7 +23,7 @@ class Section:
         if distance > 50:
             self.measurements.append((distance, datetime.now()))
 
-    def finish(self):
+    def finish(self, debug_limits=False):
         # If we're somehow detecting the next turn for a dead end corner before
         # any measurements have been received our normal algorithm won't work.
         # Handle this by explicitly setting the distance to zero.
@@ -32,7 +32,7 @@ class Section:
             return
 
         # Takes the difference between max measurement and min measurement and divide by block length.
-        self.block_distance = round((self.get_max() - self.get_min()) / BLOCK_LENGTH_MM)
+        self.block_distance = round((self.get_max(debug_limits) - self.get_min(debug_limits)) / BLOCK_LENGTH_MM)
 
     def estimate_block_distance(self):
         if len(self.measurements) == 0:
@@ -47,12 +47,22 @@ class Section:
     def for_left_turn(self):
         return Section((self.direction - 1) % 4)
 
-    def get_max(self):
+    def get_max(self, debug_limits=False):
         if len(self.measurements) == 0:
             return 0
-        return max(self.measurements, key=lambda x: x[0])[0]
 
-    def get_min(self):
+        value = max(self.measurements, key=lambda x: x[0])[0]
+        if debug_limits:
+            print('Max', value)
+
+        return value
+
+    def get_min(self, debug_limits=False):
         if len(self.measurements) == 0:
             return 0
-        return min(self.measurements, key=lambda x: x[0])[0]
+
+        value = min(self.measurements, key=lambda x: x[0])[0]
+        if debug_limits:
+            print('Max', value)
+
+        return value

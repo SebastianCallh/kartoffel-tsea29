@@ -206,7 +206,7 @@ class Position:
             self.map_data.append((pos_x, pos_y))
 
     def process_finished_section(self, store_data=True):
-        self.current_section.finish()
+        self.current_section.finish(debug_limits=True)
 
         if store_data:
             distance = self.current_section.block_distance
