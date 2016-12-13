@@ -1,4 +1,3 @@
-from bt_client import BT_client
 from gui import GUI
 import outbound
 from protocol import *
@@ -6,6 +5,12 @@ from eventbus import EventBus
 import datetime
 from ast import literal_eval
 import random
+
+try:
+    from bt_client import BT_client
+    bluetooth_enabled = True
+except:
+    bluetooth_enabled = False
 
 DATA_REQUEST_INTERVAL = 1  # seconds
 IP_REQUEST_INTERVAL = 10   # seconds
@@ -52,11 +57,16 @@ def update_map(data):
     gui.update_map(data)
 
 
+def update_selected_mode(mode):
+    gui.update_selected_mode(mode)
+
+
 def setup_subscriptions():
     EventBus.subscribe(RETURN_PI_IP, update_ip)
     EventBus.subscribe(BT_RETURN_SENSOR_DATA, add_sensor_data)
     EventBus.subscribe(BT_RETURN_SERVO_DATA, add_servo_data)
     EventBus.subscribe(BT_RETURN_MAP_DATA, update_map)
+    EventBus.subscribe(CMD_MODE_SET, update_selected_mode)
 
 
 def request_data():
@@ -78,7 +88,7 @@ def update():
             EventBus.receive()
             if (datetime.datetime.now() - last_data_request_time) > datetime.timedelta(
                     seconds=DATA_REQUEST_INTERVAL):
-                if bt_client.is_connected:
+                if bt_client is not None and bt_client.is_connected:
                     request_data()
 
                 """gui.update_map([TEST_CORNERS2[curr_test_corn]])
@@ -91,7 +101,7 @@ def update():
     else:
         print("Exit gui in client main")
         outbound.bt_restart()
-        while not bt_client.restart_demanded:
+        while bt_client is not None and not bt_client.restart_demanded:
             pass
         gui.close_window()
 
@@ -106,7 +116,15 @@ def main():
     global gui
     queue_handler = EventBus.queue_handler
     setup_subscriptions()
-    run_bt_client(queue_handler)
+
+    # MacOS has no support for PyBluez so by disabling the use of it we
+    # can still provide a semi-functional experience for Mac users.
+    if bluetooth_enabled:
+        run_bt_client(queue_handler)
+    else:
+        print('NOTICE: PyBluez module could not be loaded!')
+        print('Bluetooth functionality has been disabled.')
+
     gui = GUI()
     start_gui()
 
@@ -115,6 +133,6 @@ try:
 except:
     print("Some error in client main")
     outbound.bt_restart()
-    while not bt_client.restart_demanded:
+    while bt_client is not None and not bt_client.restart_demanded:
         pass
     gui.close_window()

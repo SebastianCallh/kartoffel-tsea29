@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 
 from autocontroller import AutoController
 from eventbus import EventBus
+from outbound import notify_mode_changed
 from protocol import CMD_TURN_STARTED, CMD_TURN_FINISHED
 
 TURN_DIRECTION_RIGHT = True
@@ -151,9 +152,10 @@ class Navigator:
         
     def set_mode(self, mode):
         self.mode = mode
+        notify_mode_changed(mode)
 
     def toggle_mode(self):
         if self.mode == Navigator.MANUAL:
-            self.mode = Navigator.AUTONOMOUS
+            self.set_mode(Navigator.AUTONOMOUS)
         else:
-            self.mode = Navigator.MANUAL
+            self.set_mode(Navigator.MANUAL)
