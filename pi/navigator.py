@@ -86,7 +86,7 @@ class Navigator:
     AUTONOMOUS = 1
     
     DISCONTINUITY_DIST = 25.0  # mm
-    FACING_WALL_DIST = 300  # mm
+    FACING_WALL_DIST = 250  # mm
 
     right_turn_enabled = True
     force_left_turn = False
