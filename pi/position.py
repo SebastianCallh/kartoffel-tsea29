@@ -33,6 +33,7 @@ class Position:
         self.kitchen_has_turned = False
 
         self.kitchen_mapping = {}
+        self.invalid_kitchens = []
 
         EventBus.subscribe(CMD_TURN_STARTED, self.on_turning_started)
         EventBus.subscribe(CMD_TURN_FINISHED, self.on_turning_finished)
@@ -77,7 +78,7 @@ class Position:
         cur_x, cur_y = self.transform_partial_map_data(distance, self.current_section.direction, self.current_x, self.current_y)
         key = self.get_left_block_coordinates(cur_x, cur_y, displacement)
 
-        if key not in self.kitchen_mapping:
+        if key not in self.kitchen_mapping and key not in self.invalid_kitchens:
             print('Adding new mapping (' + str(key[0]) + ', ' + str(key[1]) + ') -> (' + str(cur_x) + ', ' + str(cur_y) + ')')
             self.kitchen_mapping[key] = (cur_x, cur_y)
 
@@ -89,6 +90,10 @@ class Position:
         popped = self.kitchen_mapping.pop(key, None)
         if popped is not None:
             print('Removed kitchen mapping for block (' + str(key[0]) + ', ' + str(key[1]) + ')')
+
+        if key not in self.invalid_kitchens:
+            print('Forbidding kitchen block at ' + str(key))
+            self.invalid_kitchens.append(key)
 
     def check_if_returned_to_island(self):
         coordinates = self.transform_map_data(self.current_section,
