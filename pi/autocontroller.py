@@ -6,6 +6,7 @@ use_derivate = True
 old_error = 0
 integral = 0
 last_diff = 0
+last_valid_diff = 0
 
 
 class AutoController:
@@ -14,7 +15,7 @@ class AutoController:
     MAX_REGULATION = 30
 
     def auto_control(self, ir_right_mm, ir_right_back_mm, reg_side):
-        global use_derivate, time_last_regulation, old_error, integral, last_diff
+        global use_derivate, time_last_regulation, old_error, integral, last_diff, last_valid_diff
 
         Kp = float(0.2)
         Ka = float(0.3)
@@ -30,6 +31,8 @@ class AutoController:
         if (sensor_data_front == -1 or sensor_data_back == -1):
             dist_diff = 0
             regulation_error = 0
+        else:
+            last_valid_diff = dist_diff
 
         regulation = floor((Kp * regulation_error) + Ka * dist_diff)
 

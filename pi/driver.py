@@ -73,8 +73,16 @@ class Driver:
 
     def outer_turn_right(self):
         print('outer turn right')
+
+        current_degree = math.degrees(math.atan(autocontroller.last_valid_diff / 165))
+        degree = TURN_DEGREES - current_degree
+
+        # We won't need the value of last_valid_diff any longer, so reset it to
+        # avoid rotating too far or too little in dead ends (not needed here)
+        autocontroller.last_valid_diff = 0
+
         self.task = Task(None, lambda: True)
-        self.tasks = [DegreeTask(self._turn_right, TURN_DEGREES, self.gyro)]
+        self.tasks = [DegreeTask(self._turn_right, degree, self.gyro)]
 
     def outer_turn_left(self):
         print('outer turn left')
