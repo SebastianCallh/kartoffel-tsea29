@@ -320,8 +320,17 @@ För att roboten ska kunna presentera data används Bluetooth för kommunikation
 \end{figure}
 \ \\
 
-Figur ~\ref{fig:Kommunikation_huvudenhet_v2} visar flödet för Bluetoothkommunikationen i huvudenheten. Själva sändningen och mottagndet av data över Bluetooth hanteras av en Bluetoothserver som körs i en egen process skild från huvudprocessen. Den kontrollerar ständigt om det finns ny data att ta emot respektive ny data att skicka. Om datan den tar emot innehåller kommandot omstart kommer den att starta om sig själv. Kommandon till huvudenheten samlas i en kö för inkommande data, där EventBus tittar efter och hämtar ny data om det finns. På samma sätt samlas data som ska till mjukvaruklienten i en kö för utgående data, i detta fall postar EventBus i kön och Bluetoothservern hämtar för att skicka. Dessa in- och utköer gör det även möjligt för serverprocessen och huvudprocessen att kommunicera.
- 
+Figur~\ref{fig:Kommunikation_huvudenhet_v2} visar flödet för Bluetoothkommunikationen i huvudenheten. Själva sändningen och mottagndet av data över Bluetooth hanteras av en Bluetoothserver som körs i en egen process skild från huvudprocessen. Servern går igång automatiskt vid start av roboten, och den kontrollerar ständigt om det finns ny data att ta emot respektive ny data att skicka. Om datan den tar emot innehåller kommandot omstart kommer den att starta om sig själv. Kommandon till huvudenheten samlas i en kö för inkommande data, där EventBus tittar efter och hämtar ny data om det finns. På samma sätt samlas data som ska till mjukvaruklienten i en kö för utgående data, i detta fall postar EventBus i kön och Bluetoothservern hämtar för att skicka. Dessa in- och utköer är implementerade som textfiler, och det gör det möjligt för serverprocessen och huvudprocessen att kommunicera.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.45]{Logo}
+\caption{Flödesschema över Bluetoothkommunikationen i mjuvaruenklienten.}
+\label{fig:Kommunikation_mjukvaruklient_v2}
+\end{figure}
+
+Bluetoothklientens flöde beskrivs i figur~\ref{fig:Kommunikation_mjukvaruklient_v2} och fungerar på samma sätt som servern, med några mindre skillnader. Dels finns inte alternaivet för omstart. Inte heller har klienten flera processer, utan huvudprogrammet startar Bluetoothkommunikationen som en ny tråd. Klientens köer är inte heller implementerade som textfiler, utan som objekt i programmet.
+
 
 \subsubsection{I2C}
 För att kunna kommunicera med olika moduler och sensorer på själva roboten används en I2C-buss som delas mellan huvudenheten, sensorenheten, styrenheten, laser-sensorn samt gyroskopet där huvudenheten agerar master och alla andra enheter slavar. Eftersom kraven som ställs på kommunikationen mellan modulerna förutsätter att data kan skickas i form av anrop räcker inte I2C-bussens protokoll till utan skrivningen och inläsningen till/från adresser behöver utökas med funktionalitet för att skicka faktiska datapaket. Det påliggande protokollet implementerar köer av paket för båda datariktningarna på AVR:erna som pollas och fylls på från huvudenheten. Varje paket innehåller ett antal bytes för dess data där den första byten innehåller paketets id. Eftersom I2C endast tillåter läsning eller skrivning av en enda byte innehåller varje paket on-the-wire också en inledande byte som specificerar dess längd, vilket ger en maxlängd av 255 bytes. När ett paket lästs in läggs det i en intern kö som hanteras av den modulspecifika koden, se figur~\ref{fig:flodesschema_i2c}.
@@ -632,15 +641,23 @@ Omvandlingen av kommandon från huvudenheten och utskickning av signaler till se
 Styrenheten står hela tiden och väntar på instruktioner från huvudenheten, och så snart den får några utför den dem så snabbt den kan. En instruktion i det här sammamhanget är att sätta nya hastigheter på de båda hjulparen. Ett flödesschema över styrenhetens beteende kan ses i figur ~\ref{fig:styrenhet_flowchart}.
 
 \subsection{Mjukvaruklient}
-För att kommunicera med roboten används en mjukvaruklient. Programmet är skrivet i Python och 
+För att kommunicera med roboten används en mjukvaruklient. Programmet har två moduler, en för presentation av data från roboten, och en för fjärrstyrning. Klienten är skriven i Python, och biblioteket Tkinter för det grafiska gränssnittet samt Pybluez och EventBus för Bluetoothkommunikation. 
 
-\subsubsection{Presentationsenhet}
-TODO: Innehåll här. Programflöde.
-TODO: Eventuellt inte en rubrik. Innehåll här med
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.55]{client1}
+\caption{Mjukvaruklienten}
+\label{fig:client1}
+\end{figure}
 
-\subsubsection{Fjärrstyrningsenhet}
-TODO: Innehåll här också
-Programflöde
+\subsubsection{Presentationsmodul}
+När roboten undersöker rummet kommer den att generera flera olika typer av data. Denna data visas av presentationsmodulen. Roboten skickar ingen data självmant, utan får kontinueligt begäran av presentationsenheten över Bluetooth. Sensor-, gyro-, servo- och laserdata presenteras till höger i det grafiska gränssnittet, se figur~\ref{fig:client1}.
+
+TODO: Programflöde.
+
+\subsubsection{Fjärrstyrningsmodul}
+Roboten kan köras i två olika lägen, manuellt och autonomt. I det grafiska gränssnittet finns en knapp för att 
+TODO: Programflöde
 
 \clearpage
 \section{Slutsatser}
