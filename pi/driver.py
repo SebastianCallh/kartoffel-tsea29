@@ -88,6 +88,10 @@ class Driver:
         current_degree = math.degrees(math.atan(autocontroller.last_diff / 165))
         degree = TURN_DEGREES + current_degree
 
+        # We won't need the value of last_diff any longer, so reset it to avoid
+        # rotating too far or too little in dead ends
+        autocontroller.last_diff = 0
+
         print('Current degree:', current_degree)
         print('Turning degree:', degree)
 
