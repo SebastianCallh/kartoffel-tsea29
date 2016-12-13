@@ -81,6 +81,9 @@ class Driver:
         # avoid rotating too far or too little in dead ends (not needed here)
         autocontroller.last_valid_diff = 0
 
+        print('Current degree:', current_degree)
+        print('Turning degree:', degree)
+
         self.task = Task(None, lambda: True)
         self.tasks = [DegreeTask(self._turn_right, degree, self.gyro)]
 
