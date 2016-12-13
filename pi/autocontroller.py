@@ -34,7 +34,11 @@ class AutoController:
             dist_diff = 0
             regulation_error = 0
         else:
-            last_valid_diffs = last_valid_diffs[1:QUEUE_SIZE] + [dist_diff]
+            if len(last_valid_diffs) >= QUEUE_SIZE:
+                last_valid_diffs = last_valid_diffs[1:QUEUE_SIZE] + [dist_diff]
+            else:
+                last_valid_diffs = last_valid_diffs + [dist_diff]
+                
             last_valid_diff = last_valid_diffs[0]
 
         regulation = floor((Kp * regulation_error) + Ka * dist_diff)
