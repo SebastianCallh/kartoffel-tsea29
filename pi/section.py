@@ -53,12 +53,12 @@ class Section:
         # Takes the difference between max measurement and min measurement and divide by block length.
         self.block_distance = round((self.get_max(debug_limits) - self.get_min(debug_limits)) / BLOCK_LENGTH_MM)
 
-    def estimate_block_distance(self):
+    def estimate_block_distance(self, offset=0.25):
         if len(self.measurements) == 0:
             return 0
 
         # Takes the difference between max measurement and min measurement and divide by block length.
-        return floor((self.get_max() - self.get_min()) / BLOCK_LENGTH_MM + 0.25)
+        return floor((self.get_max() - self.get_min()) / BLOCK_LENGTH_MM + offset)
 
     def for_right_turn(self):
         return Section((self.direction + 1) % 4)

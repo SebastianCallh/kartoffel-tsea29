@@ -30,12 +30,9 @@ class Position:
         self.kitchen_start_x = 0
         self.kitchen_start_y = 0
         self.kitchen_num_mapped = 0
+        self.kitchen_has_turned = False
 
-        self.kitchen_section = Section(NORTH)
-        self.looking_for_kitchen = False
-        self.kitchen_block_displacement = 0
-        self.potential_kitchen = []
-        self.temporary_potential_kitchen = []
+        self.kitchen_mapping = {}
 
         EventBus.subscribe(CMD_TURN_STARTED, self.on_turning_started)
         EventBus.subscribe(CMD_TURN_FINISHED, self.on_turning_finished)
@@ -45,16 +42,10 @@ class Position:
             distance = self.laser.get_data()
             self.current_section.add_distance_sample(distance)
             if self.mapping_state == MAPPING_STATE_FOLLOWING_OUTER_WALL:
-                self.looking_for_kitchen_sections(distance)
+                self.looking_for_kitchen_sections()
+                self.remove_invalid_kitchen_sections()
             elif self.mapping_state == MAPPING_STATE_RETURNING_TO_ISLAND:
-                temporary_x, temporary_y = self.transform_map_data(self.current_section, self.current_x, self.current_y,
-                                                                   estimate=True)
-                if self.potential_kitchen.count((temporary_x, temporary_y)) > 0:
-                    self.mapping_state = MAPPING_STATE_FOLLOWING_ISLAND
-                    self.kitchen_start_x = temporary_x
-                    self.kitchen_start_y = temporary_y
-                    self.kitchen_num_mapped = 0
-                    Navigator.force_left_turn = True
+                self.check_if_returned_to_island()
             elif self.mapping_state == MAPPING_STATE_FOLLOWING_ISLAND:
                 self.current_section.finish()
                 temporary_x, temporary_y = self.transform_map_data(self.current_section, self.current_x, self.current_y)
@@ -68,58 +59,60 @@ class Position:
 
                     self.mapping_state = MAPPING_STATE_RETURNING_TO_GARAGE
 
-    def looking_for_kitchen_sections(self, distance):
-        # If im looking for a kitchen, add sample.
-        if self.looking_for_kitchen:
-            self.kitchen_section.add_distance_sample(distance)
+    def looking_for_kitchen_sections(self):
+        if self.has_close_kitchen_left():
+            self.add_kitchen_mapping(1, 0.25)
 
-        # Checks if a kitchen island may be present and start calculating sections for it.
-        if self.ir.get_ir_left() > 10 and not self.looking_for_kitchen:
-            print("start for kitchen")
-            self.new_kitchen_section(distance)
-            self.kitchen_block_displacement = 0
+        if self.has_far_kitchen_left():
+            self.add_kitchen_mapping(2, -0.1)
 
-        elif 250 < self.ir.get_ir_left_back() < 650 and not self.looking_for_kitchen:
-            print("start for kitchen long, distance: " + str(self.ir.get_ir_left_back()))
-            self.new_kitchen_section(distance)
-            self.kitchen_block_displacement = 1
+    def has_close_kitchen_left(self):
+        return self.ir.get_ir_left() > 10
 
-        elif ((self.ir.get_ir_left() == -1 and self.kitchen_block_displacement == 0) or
-                (0 < self.ir.get_ir_left_back() < 250 and self.kitchen_block_displacement == 1)) and \
-                self.looking_for_kitchen:
+    def has_far_kitchen_left(self):
+        return 250 < self.ir.get_ir_left_back() < 650
 
-            self.kitchen_section.finish()
-            self.calculate_kitchen_coordinates()
-            self.looking_for_kitchen = False
-            self.kitchen_section = Section(self.current_section.direction)
+    def add_kitchen_mapping(self, displacement, offset):
+        distance = self.current_section.estimate_block_distance(offset)
+        cur_x, cur_y = self.transform_partial_map_data(distance, self.current_section.direction, self.current_x, self.current_y)
+        key = self.get_left_block_coordinates(cur_x, cur_y, displacement)
 
-    def new_kitchen_section(self, distance):
-        self.looking_for_kitchen = True
-        self.kitchen_section = Section(self.current_section.direction)
-        self.temporary_potential_kitchen = []
-        self.kitchen_section.add_distance_sample(distance)
+        if key not in self.kitchen_mapping:
+            print('Adding new mapping (' + str(key[0]) + ', ' + str(key[1]) + ') -> (' + str(cur_x) + ', ' + str(cur_y) + ')')
+            self.kitchen_mapping[key] = (cur_x, cur_y)
+
+    def remove_invalid_kitchen_sections(self):
+        temporary_x, temporary_y = self.transform_map_data(self.current_section,
+                                                           self.current_x,
+                                                           self.current_y)
+        key = self.get_right_block_coordinates(temporary_x, temporary_y, 1)
+        popped = self.kitchen_mapping.pop(key, None)
+        if popped is not None:
+            print('Removed kitchen mapping for block (' + str(key[0]) + ', ' + str(key[1]) + ')')
+
+    def check_if_returned_to_island(self):
+        coordinates = self.transform_map_data(self.current_section,
+                                              self.current_x,
+                                              self.current_y,
+                                              estimate=True)
+
+        if coordinates in self.kitchen_mapping.values():
+            print('Starting to map island!')
+
+            self.mapping_state = MAPPING_STATE_FOLLOWING_ISLAND
+            self.kitchen_num_mapped = 0
+            self.kitchen_has_turned = False
+            Navigator.force_left_turn = True
 
     def save_current_section(self):
         if self.mapping_state == MAPPING_STATE_FOLLOWING_OUTER_WALL:
             self.process_finished_section()
 
-            print("Primary temporary kitchens: " + str(self.temporary_potential_kitchen))
-
-            # Removes potential kitchens if already passed - !!not TRUE!!
-            # TODO: Rethink about this if statement.
-            if self.potential_kitchen.count((self.current_x, self.current_y)) > 0:
-                self.potential_kitchen.remove((self.current_x, self.current_y))
-
-            # Adds all new potential kitchens that does not exist in map.
-            for section in self.temporary_potential_kitchen:
-                if self.map_data.count((section[0], section[1])) == 0:
-                    self.potential_kitchen.append(section)
-
             print('---- SECTION SAVED ----')
             print('  direction: ' + str(self.current_section.direction))
             print('  distance: ' + str(self.current_section.block_distance))
             print('  coordinates: ' + str(self.current_x) + ", " + str(self.current_y))
-            print('  potential kitchens: ' + str(self.potential_kitchen))
+            print('  kitchen mappings: ' + self.get_kitchen_debug_data())
             print('-----------------------')
         elif self.mapping_state == MAPPING_STATE_FOLLOWING_ISLAND:
             self.process_finished_section()
@@ -140,13 +133,18 @@ class Position:
             print('  coordinates: ' + str(self.current_x) + ", " + str(self.current_y))
             print('-----------------------')
 
+    def get_kitchen_debug_data(self):
+        data = []
+        for k, v in self.kitchen_mapping.items():
+            data.append('    ' + str(k) + ' -> ' + str(v))
+
+        return '\n'.join(data)
+
     def begin_next_section(self, is_right_turn):
         if is_right_turn:
             self.current_section = self.current_section.for_right_turn()
-            self.kitchen_section = self.kitchen_section.for_right_turn()
         else:
             self.current_section = self.current_section.for_left_turn()
-            self.kitchen_section = self.kitchen_section.for_left_turn()
 
     def on_turning_started(self):
         if self.mapping_state == MAPPING_STATE_RETURNING_TO_GARAGE:
@@ -156,16 +154,18 @@ class Position:
                 print(self.map_data)
         else:
             self.state = STATE_WAITING
-            if self.looking_for_kitchen:
-                self.kitchen_section.finish()
-                self.calculate_kitchen_coordinates()
-                self.looking_for_kitchen = False
+
         self.save_current_section()
 
     def on_turning_finished(self, is_right_turn):
         self.begin_next_section(is_right_turn)
         if self.has_returned_to_start() or self.mapping_state == MAPPING_STATE_RETURNING_TO_ISLAND:
             self.mapping_state = MAPPING_STATE_RETURNING_TO_ISLAND
+
+        if self.mapping_state == MAPPING_STATE_FOLLOWING_ISLAND and not self.kitchen_has_turned:
+            self.kitchen_start_x = self.current_x
+            self.kitchen_start_y = self.current_y
+            self.kitchen_has_turned = True
 
         self.state = STATE_MEASURING
 
@@ -233,52 +233,17 @@ class Position:
     def get_current_position(self):
         return self.current_x, self.current_y
 
-    def calculate_kitchen_coordinates(self):
-        if self.kitchen_section.block_distance > 0:
-            self.current_section.finish()
-            print("Section max: " + str(self.current_section.get_max()) +
-                  ", Kitchen max: " + str(self.kitchen_section.get_max()))
-            print("Kitchen block distance from turn: " + str(self.current_section.block_distance))
-            kitchen_x, kitchen_y = self.transform_map_data(self.current_section, self.current_x, self.current_y)
+    def get_left_block_coordinates(self, x, y, displacement):
+        if self.current_section.direction == NORTH:
+            x -= displacement
+        elif self.current_section.direction == EAST:
+            y += displacement
+        elif self.current_section.direction == SOUTH:
+            x += displacement
+        elif self.current_section.direction == WEST:
+            y -= displacement
 
-            # Transforms coordinates to match the kitchen island displacement
-            if self.kitchen_section.direction == NORTH:
-                kitchen_x -= self.kitchen_block_displacement
-            elif self.kitchen_section.direction == EAST:
-                kitchen_y += self.kitchen_block_displacement
-            elif self.kitchen_section.direction == SOUTH:
-                kitchen_x += self.kitchen_block_displacement
-            elif self.kitchen_section.direction == WEST:
-                kitchen_y -= self.kitchen_block_displacement
+        return x, y
 
-            # Sets the kitchens start position to the current + displacement
-            kitchen_start_x = kitchen_x
-            kitchen_start_y = kitchen_y
-            kitchen_x, kitchen_y = self.transform_map_data(self.kitchen_section, kitchen_x, kitchen_y)
-
-            self.temporary_potential_kitchen.append((kitchen_start_x, kitchen_start_y))
-            print("Kitchen block distance: " + str(self.kitchen_section.block_distance))
-            print("Kitchen start coordinates: " + str(kitchen_start_x) + ", " + str(kitchen_start_y))
-            print("Kitchen end coordinates: " + str(kitchen_x) + ", " + str(kitchen_y))
-
-        #Loop inside function to be completed later will add all blocks.!
-        #self.add_temporary_potential_kitchen(kitchen_x, kitchen_start_x, kitchen_y, kitchen_start_y)
-
-    # Appends all potential kitchen islands to temporary list
-    def add_temporary_potential_kitchen(self, kitchen_x, kitchen_start_x, kitchen_y, kitchen_start_y):
-        step_x = 1
-        step_y = 1
-
-        if kitchen_start_y == kitchen_y:
-            if kitchen_start_x > kitchen_x:
-                step_x = -1
-            for x in range(kitchen_start_x, kitchen_x, step_x):
-                if self.map_data.count((x, kitchen_y)) > 0:
-                    self.temporary_potential_kitchen.append((x, kitchen_y))
-
-        elif kitchen_start_x == kitchen_x:
-            if kitchen_start_y > kitchen_y:
-                step_y = -1
-            for y in range(kitchen_start_y, kitchen_y, step_y):
-                if self.map_data.count((kitchen_x, y)) > 0:
-                    self.temporary_potential_kitchen.append((kitchen_x, y))
+    def get_right_block_coordinates(self, x, y, displacement):
+        return self.get_left_block_coordinates(x, y, -displacement)
