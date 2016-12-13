@@ -2,10 +2,15 @@ from eventbus import EventBus
 from protocol import LASER_ADDR
 from time import sleep
 
+DEBUG_LASER = True
 
 class Laser:
     def __init__(self):
         self.data = 0
+        if DEBUG_LASER:
+            self.debug_file = open('laser_measurements.dat', 'w')
+        else:
+            self.debug_file = None
 
     def get_data(self):
         return self.data
@@ -22,6 +27,10 @@ class Laser:
                 self.data = data * 10
         except:
             self.data = -1
+
+        if self.debug_file is not None:
+            self.debug_file.write(str(self.data) + '\n')
+            self.debug_file.flush()
 
     @staticmethod
     def initialize():
