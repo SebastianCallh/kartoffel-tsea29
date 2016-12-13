@@ -52,7 +52,7 @@ class Position:
                 self.check_if_returned_to_island()
             elif self.mapping_state == MAPPING_STATE_FOLLOWING_ISLAND:
                 self.current_section.finish()
-                temporary_x, temporary_y = self.transform_map_data(self.current_section, self.current_x, self.current_y)
+                temporary_x, temporary_y = self.transform_map_data(self.current_section, self.current_x, self.current_y, estimate=True)
                 if temporary_x == self.kitchen_start_x and temporary_y == self.kitchen_start_y \
                         and self.kitchen_num_mapped > 3:
                     Navigator.force_left_turn = True
