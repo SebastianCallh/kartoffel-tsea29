@@ -67,6 +67,6 @@ class Section:
 
         value = min(self.measurements, key=lambda x: x[0])[0]
         if debug_limits:
-            print('Max', value)
+            print('Min', value)
 
         return value
