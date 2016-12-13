@@ -22,7 +22,7 @@ class Section:
         self.pending_unreasonable_value = None
 
     def add_distance_sample(self, distance):
-        if distance > 50:
+        if 50 < distance < 6000:
             if len(self.measurements) > 0:
                 last_measurement = self.measurements[-1][0]
                 if abs(last_measurement - distance) > self.UNREASONABLE_DIFF:
