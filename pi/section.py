@@ -24,7 +24,7 @@ class Section:
         if distance > 50:
             self.measured_distances += 1
 
-            if self.measured_distances >= 15:
+            if self.measured_distances >= 7:
                 self.measurements.append((distance, datetime.now()))
 
     def finish(self, debug_limits=False):
