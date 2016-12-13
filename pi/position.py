@@ -35,6 +35,9 @@ class Position:
         self.kitchen_mapping = {}
         self.invalid_kitchens = []
 
+        self.num_ok_close = 0
+        self.num_ok_far = 0
+
         EventBus.subscribe(CMD_TURN_STARTED, self.on_turning_started)
         EventBus.subscribe(CMD_TURN_FINISHED, self.on_turning_finished)
 
@@ -68,10 +71,30 @@ class Position:
             self.add_kitchen_mapping(2, -0.1)
 
     def has_close_kitchen_left(self):
-        return self.ir.get_ir_left() > 10
+        match = self.ir.get_ir_left() > 10
+        if match:
+            self.num_ok_close += 1
+        else:
+            self.num_ok_close = 0
+
+        if self.num_ok_close > 7:
+            self.num_ok_close = 0
+            return True
+        else:
+            return False
 
     def has_far_kitchen_left(self):
-        return 250 < self.ir.get_ir_left_back() < 650
+        match = 250 < self.ir.get_ir_left_back() < 650
+        if match:
+            self.num_ok_far += 1
+        else:
+            self.num_ok_far = 0
+
+        if self.num_ok_far > 7:
+            self.num_ok_far = 0
+            return True
+        else:
+            return False
 
     def add_kitchen_mapping(self, displacement, offset):
         distance = self.current_section.estimate_block_distance(offset)
