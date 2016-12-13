@@ -9,6 +9,7 @@ last_diff = 0
 last_valid_diffs = []
 last_valid_diff = 0
 
+QUEUE_SIZE = 15
 
 class AutoController:
     DESIRED_DISTANCE = 120  # Desired distance to wall
@@ -33,7 +34,7 @@ class AutoController:
             dist_diff = 0
             regulation_error = 0
         else:
-            last_valid_diffs = last_valid_diffs[1:5] + [dist_diff]
+            last_valid_diffs = last_valid_diffs[1:QUEUE_SIZE] + [dist_diff]
             last_valid_diff = last_valid_diffs[0]
 
         regulation = floor((Kp * regulation_error) + Ka * dist_diff)
