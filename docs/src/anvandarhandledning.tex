@@ -164,16 +164,62 @@ VERSION & 2016-12-DD & Första version & Grupp 3 & Patrik Sletmo \\
 \section{Inledning}
 Det här dokumentet innehåller all information som behövs för att kunna använda roboten KarToffel, en kartrobot skapad grupp 3 i kursen TSEA29 under höstterminen 2016. Roboten levereras med en mjukvaruklient som används för att både ta emot data från roboten samt styra den manuellt. 
 
+
 \clearpage
 \section{Roboten}
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.1]{robot_irl}
-\caption{Roboten}
-\label{fig:robot}
+\includegraphics[scale=0.1]{robot_right_side}
+\caption{Roboten sedd från höger sida.}
+\label{fig:robot_right_side}
 \end{figure}
-I figur~\ref{fig:robot} och X+1 visas roboten. Roboten har två lägen, ett manuellt läge då den kan styras via mjukvaruklienten och ett autonomt läge då den själv undersöker ett rum. 
-Punkt 0 visar anslutning av batteri till roboten. Se till att alltid koppla in ett fulladdat batteri innan roboten används. Punkt 1 visar huvudströmbrytaren på roboten. Den är riktad utåt då roboten är på, och riktad inåt då roboten är av. Denna brytare måste vara på för att roboten ska starta. Punkt 2 visar brytaren för manuellt repsektive autonumt läge. Roboten är alltid i manuellt läge från uppstart. Ett tryck på knappen växlar till det andra läget oavsett vilket läge roboten står i. (Punkt 3, 4, 5 och 6 visar robotens IR-sensorer, och punkt 7 lasersensorn.)
+
+\clearpage
+\section{Roboten}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.1]{robot_left_side}
+\caption{Roboten sedd från vänster sida.}
+\label{fig:robot_left_side}
+\end{figure}
+
+\clearpage
+\section{Roboten}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.1]{robot_back}
+\caption{Roboten sedd bakifrån.}
+\label{fig:robot_back}
+\end{figure}
+
+
+\begin{table}[H]
+\centering
+\caption{En tabell över viktiga detaljer på roboten.}
+\begin{tabular}{ | c | c | }
+\hline
+1 & Strömbrytare \\
+\hline
+2 & Batterianslutning \\
+\hline
+3 & Lasersensor \\
+\hline
+4 & Högra främre IR-sensor \\
+\hline
+5 & Vänstra främre IR-sensor \\
+\hline
+6 & Högra bakre IR-sensor \\
+\hline
+7 & Vänstra bakre IR-sensor \\
+\hline
+8 & Knapp för lägesändring \\
+\hline
+\end{tabular}
+\label{table:components}
+\end{table}
+
+
+I figurerna~\ref{fig:robot_right_side},~\ref{fig:robot_left_side} och~\ref{fig:robot_back} syns roboten från olika synvinklar med viktiga detaljer noterade och numrerade enligt tabell~\ref{table:components}.Roboten har två lägen: Ett manuellt läge då den kan styras via mjukvaruklienten, och ett autonomt läge då den själv undersöker ett rum. Trycker man på lägesändringsknappen så byter roboten till det andra läget som den inte är i just då. Roboten startar i manuellt läge. \newline\newline
 
 \clearpage
 \section{Mjukvaruklienten}
