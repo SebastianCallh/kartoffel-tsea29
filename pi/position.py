@@ -219,8 +219,11 @@ class Position:
             direction = self.current_section.direction
 
             for i in range(1, distance + 1):
-                pos_x, pos_y = self.transform_partial_map_data(i, direction, self.current_x, self.current_y)
-                self.map_data.append((pos_x, pos_y))
+                coordinates = self.transform_partial_map_data(i, direction, self.current_x, self.current_y)
+                self.map_data.append(coordinates)
+                self.kitchen_mapping.pop(coordinates, None)
+                if coordinates not in self.invalid_kitchens:
+                    self.invalid_kitchens.append(coordinates)
 
             self.saved_sections.append(self.current_section)
 
