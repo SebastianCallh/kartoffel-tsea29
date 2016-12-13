@@ -3,6 +3,10 @@ Methods for controlling the wheels
 """
 
 from datetime import datetime, timedelta
+
+import math
+
+import autocontroller
 from outbound import set_motor_speed
 
 ###### METHODS FOR CONTROLLING THE WHEELS #######	
@@ -81,8 +85,14 @@ class Driver:
 
     def inner_turn_left(self):
         print('inner turn left')
+        current_degree = math.atan(autocontroller.last_diff / 165)
+        degree = TURN_DEGREES - current_degree
+
+        print('Current degree:', current_degree)
+        print('Turning degree:', degree)
+
         self.task = Task(None, lambda: True)
-        self.tasks = [DegreeTask(self._turn_left, TURN_DEGREES, self.gyro)]
+        self.tasks = [DegreeTask(self._turn_left, degree, self.gyro)]
 
     def inner_turn_right(self):
         print('inner turn right')
