@@ -86,7 +86,7 @@ class Driver:
     def inner_turn_left(self):
         print('inner turn left')
         current_degree = math.degrees(math.atan(autocontroller.last_diff / 165))
-        degree = TURN_DEGREES - current_degree
+        degree = TURN_DEGREES + current_degree
 
         print('Current degree:', current_degree)
         print('Turning degree:', degree)
