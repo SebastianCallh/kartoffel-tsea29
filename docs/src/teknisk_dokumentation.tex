@@ -290,9 +290,6 @@ Med hjälp av distansfelet och differensen utförs en enklare PID-reglering som 
 \caption{En illustration över hur roboten reglerar.}
 \label{fig:reglering}
 \end{figure}
- 
- \subsection{PWM}
-\label{sec:PWM}
 
 \subsection{Kommunikation}
 Systemet byggs upp av ett antal separata moduler som behöver samarbeta för att utföra robotens funktion då dess unika funktioner är alldeles för specifika. Kommunikationen som möjliggör detta samarbete sker både via Bluetooth och I2C beroende på modulernas placering i systemet. Då det kan bli förvirrande att hantera dataflödet på två olika protokoll ligger det ett abstraktionslager som kallas EventBus ovanpå dessa överföringsmedier. Detta abstraktionslager samt de underliggande implementationerna beskrivs mer ingående i följande delavsnitt. 
@@ -560,7 +557,7 @@ Den maximala hastigheten som sensordata kan läsas in i är begränsad av sensor
 För att kunna tillhandahålla sensordata från IR-sensorerna när huvudenheten ber den om det så läser sensorenheten in data med jämna mellanrum och sparar den lokalt för att sedan skicka datan på kommando från huvudenheten. Om den fått en begerän om sensordata från huvudenheten så tar det prioritet att leverera den över att läsa in ny data. Ett flödesdiagram över dess beteende ses i ~\ref{fig:sensorenhet_flowchart}.
 
 \subsection{Styrenhet}
-Styrenhetens uppgift är att kontrollera robotens förflyttning genom att ge korrekta signaler till dess hjulservon. Hjulen styrs parvis, det vill säga vänster hjulpar styrs med en signal och höger hjulpar med en annan. Hastigheten på hjulen styrs genom PWM (se avsnitt~\ref{sec:PWM}) medan hastigheter internt är definerade som heltal. Det är styrenhetens uppgift att översätta heltalshastigheter till korrekt pulskvot.
+Styrenhetens uppgift är att kontrollera robotens förflyttning genom att ge korrekta signaler till dess hjulservon. Hjulen styrs parvis, det vill säga vänster hjulpar styrs med en signal och höger hjulpar med en annan. Hastigheten på hjulen styrs genom PWM (\textbf{TODO: FÖRKLARA PWM KORTFATTAT}) medan hastigheter internt är definerade som heltal. Det är styrenhetens uppgift att översätta heltalshastigheter till korrekt pulskvot.
 
 \subsubsection{Kopplingsschema}
 \begin{figure}[H]
