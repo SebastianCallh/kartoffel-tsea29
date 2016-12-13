@@ -117,7 +117,7 @@ class Position:
             print('  direction: ' + str(self.current_section.direction))
             print('  distance: ' + str(self.current_section.block_distance))
             print('  coordinates: ' + str(self.current_x) + ", " + str(self.current_y))
-            print('  kitchen mappings: ' + self.get_kitchen_debug_data())
+            print('  kitchen mappings: \n' + self.get_kitchen_debug_data())
             print('-----------------------')
         elif self.mapping_state == MAPPING_STATE_FOLLOWING_ISLAND:
             self.process_finished_section()
