@@ -180,6 +180,7 @@ class Position:
         if estimate:
             distance = section.estimate_block_distance()
         else:
+            section.finish()
             distance = section.block_distance
 
         return self.transform_partial_map_data(distance, section.direction, current_x, current_y)
