@@ -79,6 +79,7 @@ class Driver:
 
         # We won't need the value of last_valid_diff any longer, so reset it to
         # avoid rotating too far or too little in dead ends (not needed here)
+        print('Last valid diff:', autocontroller.last_valid_diff)
         autocontroller.last_valid_diff = 0
 
         print('Current degree:', current_degree)
