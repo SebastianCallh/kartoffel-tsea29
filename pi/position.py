@@ -65,10 +65,10 @@ class Position:
 
     def looking_for_kitchen_sections(self):
         if self.has_close_kitchen_left():
-            self.add_kitchen_mapping(1, 0.25)
+            self.add_kitchen_mapping(1, 0.5)
 
         if self.has_far_kitchen_left():
-            self.add_kitchen_mapping(2, -0.1)
+            self.add_kitchen_mapping(2, 0.25)
 
     def has_close_kitchen_left(self):
         match = self.ir.get_ir_left() > 10
