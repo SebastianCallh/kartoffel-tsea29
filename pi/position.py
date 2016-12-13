@@ -30,7 +30,7 @@ class Position:
         self.kitchen_start_x = 0
         self.kitchen_start_y = 0
         self.kitchen_num_mapped = 0
-        self.kitchen_has_turned = False
+        self.num_kitchen_turns = 0
 
         self.kitchen_mapping = {}
         self.invalid_kitchens = []
@@ -129,7 +129,7 @@ class Position:
 
             self.mapping_state = MAPPING_STATE_FOLLOWING_ISLAND
             self.kitchen_num_mapped = 0
-            self.kitchen_has_turned = False
+            self.num_kitchen_turns = 0
             Navigator.force_left_turn = True
 
     def save_current_section(self):
@@ -152,6 +152,7 @@ class Position:
             print('-----------------------')
 
             self.kitchen_num_mapped += 1
+            self.num_kitchen_turns += 1
         else:
             self.process_finished_section(store_data=False)
 
@@ -190,10 +191,9 @@ class Position:
         if self.has_returned_to_start() or self.mapping_state == MAPPING_STATE_RETURNING_TO_ISLAND:
             self.mapping_state = MAPPING_STATE_RETURNING_TO_ISLAND
 
-        if self.mapping_state == MAPPING_STATE_FOLLOWING_ISLAND and not self.kitchen_has_turned:
+        if self.mapping_state == MAPPING_STATE_FOLLOWING_ISLAND and self.num_kitchen_turns == 2:
             self.kitchen_start_x = self.current_x
             self.kitchen_start_y = self.current_y
-            self.kitchen_has_turned = True
 
         self.state = STATE_MEASURING
 
