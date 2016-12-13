@@ -98,6 +98,11 @@ class Driver:
     def inner_turn_left(self):
         print('inner turn left')
         current_degree = math.degrees(math.atan(autocontroller.last_diff / 165))
+
+        # Over turn for dead ends
+        if autocontroller.last_diff == 0:
+            current_degree = 2
+
         degree = TURN_DEGREES + current_degree
 
         # We won't need the value of last_diff any longer, so reset it to avoid
