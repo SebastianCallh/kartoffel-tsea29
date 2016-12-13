@@ -222,7 +222,7 @@ Mjukvaruklienten är som nämnt ansluten via Bluetooth, vilket låter den render
 \clearpage
 \section{Teori}
 % Beskrivning av regleralgoritmer mm.
-Den övergripande strategin för att kratlägga rummet är att alltid färdas längst väggen på höger sida och på så sätt kartlägga rummets ytterväggar. För det krävs en regleringsalgoritm för att följa väggen och logik för navigering samt kartläggning.
+Den övergripande strategin för att kartlägga rummet är att alltid färdas längst väggen på höger sida och på så sätt kartlägga rummets ytterväggar. För det krävs en regleringsalgoritm för att följa väggen och logik för navigering samt kartläggning.
 
 \subsection{Navigering}
 \label{sec:navigering}
@@ -308,7 +308,9 @@ För att underlätta programmering av logikenheten använder sig systemet av en 
 Tanken med eventbussen är att programmeraren ska slippa tänka på att ett funktionsanrop exekveras på en annan enhet eller varifrån data kommer, så länge det läggs åtanke på att funktionerna exekveras asynkront. All mottagen data behöver manuellt behandlas i ett periodiskt funktionsanrop innan de ``lyssnande'' funktionsanropen körs. För att få en tydligare och mer deterministisk körning av huvudenhetens program läses all mottagen data in i början av varje upprepning av huvudloopen. Data ut från huvudenheten skickas till skillnad från inläsningen direkt när anropet sker för att säkerställa att data kommer fram i andra änden så tidigt som möjligt.
 
 \subsubsection{Bluetooth}
-TODO:TEXT OM BLUETOOTH. UPPDATERA SÅ DEN REFLEKTERAR VÅR IMPLEMENTATION. UPPDATERA BILD
+TODO: UPPDATERA BILD
+
+För att roboten ska kunna presentera data används Bluetooth för kommunikation med mjukvaruklienten. Kommunikationen är implementerad i Python och biblioteket Pybluez på både server- och klientsidan. Kommunikationen använder sig även av det allmänna gränssnittet EventBus. 
 
 \begin{figure}[H]
 \centering
@@ -318,7 +320,7 @@ TODO:TEXT OM BLUETOOTH. UPPDATERA SÅ DEN REFLEKTERAR VÅR IMPLEMENTATION. UPPDA
 \end{figure}
 \ \\
 
-Figur ~\ref{fig:Kommunikation_huvudenhet_v2} visar flödet för Bluetoothkommunikationen i huvudenheten. Kommunikationen via Bluetooth mellan huvudenheten och mjukvaruklienten sker med hjälp av det allmänna gränssnittet EventBus. Själva sändningen och mottagndet av data över Bluetooth hanteras av en Bluetoothserver som körs i en egen process skild från huvudprocessen. Den kontrollerar ständigt om det finns ny data att ta emot respektive ny data att skicka. Om datan den tar emot innehåller kommandot omstart kommer den att starta om sig själv. Kommandon till huvudenheten samlas i en kö för inkommande data, där EventBus tittar efter och hämtar ny data om det finns. På samma sätt samlas data som ska till mjukvaruklienten i en kö för utgående data, i detta fall postar EventBus i kön och Bluetoothservern hämtar för att skicka. Dessa in- och utköer gör det även möjligt för serverprocessen och huvudprocessen att kommunicera.
+Figur ~\ref{fig:Kommunikation_huvudenhet_v2} visar flödet för Bluetoothkommunikationen i huvudenheten. Själva sändningen och mottagndet av data över Bluetooth hanteras av en Bluetoothserver som körs i en egen process skild från huvudprocessen. Den kontrollerar ständigt om det finns ny data att ta emot respektive ny data att skicka. Om datan den tar emot innehåller kommandot omstart kommer den att starta om sig själv. Kommandon till huvudenheten samlas i en kö för inkommande data, där EventBus tittar efter och hämtar ny data om det finns. På samma sätt samlas data som ska till mjukvaruklienten i en kö för utgående data, i detta fall postar EventBus i kön och Bluetoothservern hämtar för att skicka. Dessa in- och utköer gör det även möjligt för serverprocessen och huvudprocessen att kommunicera.
  
 
 \subsubsection{I2C}
@@ -629,17 +631,16 @@ Omvandlingen av kommandon från huvudenheten och utskickning av signaler till se
 
 Styrenheten står hela tiden och väntar på instruktioner från huvudenheten, och så snart den får några utför den dem så snabbt den kan. En instruktion i det här sammamhanget är att sätta nya hastigheter på de båda hjulparen. Ett flödesschema över styrenhetens beteende kan ses i figur ~\ref{fig:styrenhet_flowchart}.
 
-\subsection{Presentationsenhet}
-TODO: Innehåll här
+\subsection{Mjukvaruklient}
+För att kommunicera med roboten används en mjukvaruklient. Programmet är skrivet i Python och 
 
-\subsubsection{Programflöde}
-TODO: Innehåll här med
+\subsubsection{Presentationsenhet}
+TODO: Innehåll här. Programflöde.
+TODO: Eventuellt inte en rubrik. Innehåll här med
 
-\subsection{Fjärrstyrningsenhet}
+\subsubsection{Fjärrstyrningsenhet}
 TODO: Innehåll här också
-
-\subsubsection{Programflöde}
-TODO: Innehåll här med också
+Programflöde
 
 \clearpage
 \section{Slutsatser}
