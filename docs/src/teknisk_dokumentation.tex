@@ -313,12 +313,13 @@ TODO:TEXT OM BLUETOOTH. UPPDATERA SÅ DEN REFLEKTERAR VÅR IMPLEMENTATION. UPPDA
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.45]{Logo}
-\caption{Flödesschema över Bluetooth-kommunikationen i huvudenheten.}
+\caption{Flödesschema över Bluetoothkommunikationen i huvudenheten.}
 \label{fig:Kommunikation_huvudenhet_v2}
 \end{figure}
 \ \\
 
-Bluetooth kommunikationen i huvudenheten fungerar på så vis att huvudprogrammet kommunicerar via det allmänna gränssnittet EventBus till en bluetooth-server. Servern körs i en separat process än huvudprogrammet på huvudenheten och kommer ständigt kolla om det finns ny data att ta emot respektive ny data att skicka (se figur ~\ref{fig:Kommunikation_huvudenhet_v2}), tills den får ett omstart kommando. Kommandon till huvudenheten samlas i en inkö som EventBus hämtar ifrån, på samma sätt samlas kommandon som skickas till EventBus - med destination bluetoothklienten - i en utkö där servern hämtar ifrån. Dessa in- och utköer gör det även möjligt för processen som servern ligger i och huvudprocossen där huvudprogrammet och EventBus ligger i att kommunicera. 
+Figur ~\ref{fig:Kommunikation_huvudenhet_v2} visar flödet för Bluetoothkommunikationen i huvudenheten. Kommunikationen via Bluetooth mellan huvudenheten och mjukvaruklienten sker med hjälp av det allmänna gränssnittet EventBus. Själva sändningen och mottagndet av data över Bluetooth hanteras av en Bluetoothserver som körs i en egen process skild från huvudprocessen. Den kontrollerar ständigt om det finns ny data att ta emot respektive ny data att skicka. Om datan den tar emot innehåller kommandot omstart kommer den att starta om sig själv. Kommandon till huvudenheten samlas i en kö för inkommande data, där EventBus tittar efter och hämtar ny data om det finns. På samma sätt samlas data som ska till mjukvaruklienten i en kö för utgående data, i detta fall postar EventBus i kön och Bluetoothservern hämtar för att skicka. Dessa in- och utköer gör det även möjligt för serverprocessen och huvudprocessen att kommunicera.
+ 
 
 \subsubsection{I2C}
 För att kunna kommunicera med olika moduler och sensorer på själva roboten används en I2C-buss som delas mellan huvudenheten, sensorenheten, styrenheten, laser-sensorn samt gyroskopet där huvudenheten agerar master och alla andra enheter slavar. Eftersom kraven som ställs på kommunikationen mellan modulerna förutsätter att data kan skickas i form av anrop räcker inte I2C-bussens protokoll till utan skrivningen och inläsningen till/från adresser behöver utökas med funktionalitet för att skicka faktiska datapaket. Det påliggande protokollet implementerar köer av paket för båda datariktningarna på AVR:erna som pollas och fylls på från huvudenheten. Varje paket innehåller ett antal bytes för dess data där den första byten innehåller paketets id. Eftersom I2C endast tillåter läsning eller skrivning av en enda byte innehåller varje paket on-the-wire också en inledande byte som specificerar dess längd, vilket ger en maxlängd av 255 bytes. När ett paket lästs in läggs det i en intern kö som hanteras av den modulspecifika koden, se figur~\ref{fig:flodesschema_i2c}.
