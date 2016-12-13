@@ -16,12 +16,16 @@ class Section:
         self.direction = direction
         self.measurements = []
         self.block_distance = None
+        self.measured_distances = 0
 
     def add_distance_sample(self, distance):
         # TODO: Verify distance validity by checking if the delta distance is
         # reasonable.
         if distance > 50:
-            self.measurements.append((distance, datetime.now()))
+            self.measured_distances += 1
+
+            if self.measured_distances >= 15:
+                self.measurements.append((distance, datetime.now()))
 
     def finish(self, debug_limits=False):
         # If we're somehow detecting the next turn for a dead end corner before
