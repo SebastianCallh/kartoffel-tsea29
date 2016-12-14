@@ -130,7 +130,12 @@ class Position:
             self.mapping_state = MAPPING_STATE_FOLLOWING_ISLAND
             self.kitchen_num_mapped = 0
             self.num_kitchen_turns = 0
-            Navigator.force_left_turn = True
+            key1 = self.transform_partial_map_data(1, self.current_section.direction, coordinates[0], coordinates[1])
+            key2 = self.transform_partial_map_data(2, self.current_section.direction, coordinates[0], coordinates[1])
+            if key1 not in self.kitchen_mapping and key2 not in self.kitchen_mapping:
+                Navigator.force_left_turn = True
+            else:
+                Navigator.right_turn_enabled = False
 
     def save_current_section(self):
         if self.mapping_state == MAPPING_STATE_FOLLOWING_OUTER_WALL:
