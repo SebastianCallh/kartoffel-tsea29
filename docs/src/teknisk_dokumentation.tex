@@ -10,6 +10,8 @@
 \usepackage{listings}
 \usepackage{color}
  
+\usepackage[top=1.5in,bottom=1in,right=1.5in,left=1.5in,headheight=65pt]{geometry}
+
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
@@ -45,7 +47,7 @@
 %For headers & footers
 \usepackage{fancyhdr}
 \usepackage{pdfpages}
-\setlength{\headheight}{110pt} 
+%\setlength{\headheight}{110pt} 
 \pagestyle{fancy}
 \lhead{\includegraphics[scale=0.2]{Logo}}
 \chead{Kartrobot}
@@ -705,6 +707,6 @@ Roboten kartläggningsalgoritm kartlägger sin omgivning genom att beräkna raks
 \clearpage
 \section{Banspecifikation}
 \label{sec:banspec}
-\includepdf[pages=-,scale=0.6]{banspec}
+\includepdf[pages=-]{banspec}
 
 \end{document}
