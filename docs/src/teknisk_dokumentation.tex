@@ -337,7 +337,6 @@ För att roboten ska kunna presentera data används Bluetooth för kommunikation
 \label{fig:bt-flow-main-unit}
 \end{figure}
 \ \\
-
 Figur~\ref{fig:bt-flow-main-unit} visar flödet för Bluetoothkommunikationen i huvudenheten. Själva sändningen och mottagndet av data över Bluetooth hanteras av en Bluetoothserver som körs i en egen process skild från huvudprocessen. Servern går igång automatiskt vid start av roboten, och den kontrollerar ständigt om det finns ny data att ta emot respektive ny data att skicka. Om datan den tar emot innehåller kommandot omstart kommer den att starta om sig själv. Kommandon till huvudenheten samlas i en kö för inkommande data, där EventBus tittar efter och hämtar ny data om det finns. På samma sätt samlas data som ska till mjukvaruklienten i en kö för utgående data, i detta fall postar EventBus i kön och Bluetoothservern hämtar för att skicka. Dessa in- och utköer är implementerade som textfiler, och det gör det möjligt för serverprocessen och huvudprocessen att kommunicera.
 
 \begin{figure}[H]
@@ -480,7 +479,7 @@ Gyro-modulen fyller samma funktion som Laser-modulen. Den läser in värden frå
 \caption{Kopplingsschema för huvudenheten.}
 \label{fig:huvudenhet_kopplingsschema}
 \end{figure}
-
+\ \\
 Huvudenheten består av en Raspberry Pi 3 och en LCD-display av modellen JM162A. Utöver kopplingen till LCD:n så kopplas två pins till I2C-bussen. Eftersom Raspberry Pi drivs av 3.3 V matspänning och de övriga atmega-processorerna i roboten drivs av 5 V så behöver bussen nivåskiftas så att de kan kommunicera med varandra, vilket görs med nivåskiftaren BSS138.
 
 \subsubsection{Komponenter}
@@ -526,7 +525,7 @@ Avläsningarna från IR-sensorerna är analoga, och konverteras till digitalt me
 \caption{Kopplingsschema för sensorenheten.}
 \label{fig:sensorenhet_kopplingsschema}
 \end{figure}
-
+\ \\
 Som figur~\ref{fig:sensorenhet_kopplingsschema} visar är IR-sensorerna kopplade till ATmegan via lågpassfilter för att reducera brus. Längst upp i kopplingsschemat ses den gemensamma I2C-bussen, dit gyroskop och laser är anslutna. Notera att EXO3-komponenten är delad mellan sensorenheten och styrenheten trots att den illustreras som separata komponenter i kopplingsschemat.
 
 \subsubsection{Komponenter}
@@ -592,7 +591,7 @@ Den maximala hastigheten som sensordata kan läsas in i är begränsad av sensor
 \caption{Ett flödesdiagram över sensorenhetens tillstånd}
 \label{fig:sensorenhet_flowchart}
 \end{figure}
-
+\ \\
 För att kunna tillhandahålla sensordata från IR-sensorerna när huvudenheten ber den om det så läser sensorenheten in data med jämna mellanrum och sparar den lokalt för att sedan skicka datan på kommando från huvudenheten. Om den fått en begäran om sensordata från huvudenheten så tar det prioritet att leverera den över att läsa in ny data. Ett flödesdiagram över dess beteende ses i figur~\ref{fig:sensorenhet_flowchart}.
 
 \subsection{Styrenhet}
@@ -605,7 +604,7 @@ Styrenhetens uppgift är att kontrollera robotens förflyttning genom att ge kor
 \caption{Kopplingsschema för styrenheten.}
 \label{fig:styrenhet_kopplingsschema}
 \end{figure}
-
+\ \\
 Styrenheten klockas av en extern EXO3-klocka som säkerställer en synkroniserad klockfrekvens bland robotens processorer, och är kopplad till de två hjulparen som sitter på robotens kropp. Likt sensorenheten så kommunicerar även styrenheten över I2C-bussen.
 
 \subsubsection{Komponenter}
@@ -657,7 +656,7 @@ Styrenheten klockas av en extern EXO3-klocka som säkerställer en synkroniserad
 \caption{Ett flödesschema över styrenhetens tillstånd}
 \label{fig:styrenhet_flowchart}
 \end{figure}
-
+\ \\
 Styrenheten står hela tiden och väntar på instruktioner från huvudenheten, och så snart den får några utför den dem så snabbt den kan. En instruktion i det här sammamhanget är att sätta nya hastigheter på de båda hjulparen. Ett flödesschema över styrenhetens beteende kan ses i figur~\ref{fig:styrenhet_flowchart}.
 
 \subsection{Mjukvaruklient}
