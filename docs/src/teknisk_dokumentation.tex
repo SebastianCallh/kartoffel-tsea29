@@ -310,7 +310,7 @@ Systemet byggs upp av ett antal separata moduler som behöver samarbeta för att
 
 \subsubsection{EventBus}
 \label{sec:eventbus}
-För att underlätta programmering av logikenheten använder sig systemet av en distribuerad eventbuss kallad EventBus som tillhandahåller funktioner för att skicka data till en annan enhet på bussen och för att lyssna på mottagna meddelanden. Eventbussen är delad mellan sensorenheten, styrenheten, huvudenheten samt mjukvaruklienten men eftersom bussen saknar funktionalitet för att delegera data vidare till andra enheter kan data inte skickas direkt från t.ex. sensorenheten till styrenheten, se figur~\ref{fig:eventbus_structure}. Eventbussen saknar fysiskt representation i den mening som t.ex. I2C-bussen har utan är bara en abstraktion som med hjälp av I2C-bussen och Bluetooth-anslutningen realiserar dess distribuerade funktion.
+För att underlätta programmering av logikenheten använder sig systemet av en distribuerad eventbuss kallad EventBus som tillhandahåller funktioner för att skicka data till en annan enhet på bussen och för att lyssna på mottagna meddelanden.
 
 \begin{figure}[H]
 \centering
@@ -319,7 +319,8 @@ För att underlätta programmering av logikenheten använder sig systemet av en 
 \label{fig:eventbus_structure}
 \end{figure}
 \ \\
-\newline
+Eventbussen är delad mellan sensorenheten, styrenheten, huvudenheten samt mjukvaruklienten men eftersom bussen saknar funktionalitet för att delegera data vidare till andra enheter kan data inte skickas direkt från t.ex. sensorenheten till styrenheten, se figur~\ref{fig:eventbus_structure}. Eventbussen saknar fysiskt representation i den mening som t.ex. I2C-bussen har utan är bara en abstraktion som med hjälp av de underliggande kommunikationsmedierna realiserar dess distribuerade funktion.
+\newline\newline
 Tanken med eventbussen är att programmeraren ska slippa tänka på att ett funktionsanrop exekveras på en annan enhet eller varifrån data kommer, så länge det läggs åtanke på att funktionerna exekveras asynkront. All mottagen data behöver manuellt behandlas i ett periodiskt funktionsanrop innan de ``lyssnande'' funktionsanropen körs. För att få en tydligare och mer deterministisk körning av huvudenhetens program läses all mottagen data in i början av varje upprepning av huvudloopen. Data ut från huvudenheten skickas till skillnad från inläsningen direkt när anropet sker för att säkerställa att data kommer fram i andra änden så tidigt som möjligt.
 
 \subsubsection{Bluetooth}
