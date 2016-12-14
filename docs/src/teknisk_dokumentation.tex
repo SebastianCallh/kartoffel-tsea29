@@ -579,8 +579,6 @@ Som figur~\ref{fig:sensorenhet_kopplingsschema} visar är IR-sensorerna kopplade
   \caption{Tabell över tillgängliga portar på processorn.}
 \end{table}
 
-Den maximala hastigheten som sensordata kan läsas in i är begränsad av sensorernas rapporteringsfrekvens som är betydligt långsammare än en ATmega 1284:s klockfrekvens, därför lönar det sig inte med en snabbare processor för sensorenhetens syfte. Det i princip enda minnet sensorenheten använder sig av är för temporärlagring av alla IR-sensorers data, vilket endast motsvarar fyra heltal. Utöver sensorinläsningen kommer enheten svara på kommandon över huvudbussen som inte heller kräver några höga hastigheter eller minneskrav.
-
 \subsubsection{Programflöde}
 
 \begin{figure}[H]
