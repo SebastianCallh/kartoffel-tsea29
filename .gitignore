@@ -52,6 +52,14 @@ docs/src/designspec.pdf
 docs/src/designspec.toc
 docs/src/designspec.bbl
 docs/src/designspec.blg
+docs/src/teknisk_dokumentation.aux
+docs/src/teknisk_dokumentation.log
+docs/src/teknisk_dokumentation.pdf
+docs/src/teknisk_dokumentation.toc
+docs/src/anvandarhandledning.aux
+docs/src/anvandarhandledning.log
+docs/src/anvandarhandledning.pdf
+docs/src/anvandarhandledning.toc
 
 # Emacs backup files
 *~

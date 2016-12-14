@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 
 from autocontroller import AutoController
 from eventbus import EventBus
+from outbound import notify_mode_changed
 from protocol import CMD_TURN_STARTED, CMD_TURN_FINISHED
 
 TURN_DIRECTION_RIGHT = True
@@ -86,7 +87,7 @@ class Navigator:
     AUTONOMOUS = 1
     
     DISCONTINUITY_DIST = 25.0  # mm
-    FACING_WALL_DIST = 250  # mm
+    FACING_WALL_DIST = 200  # mm
 
     right_turn_enabled = True
     force_left_turn = False
@@ -148,3 +149,10 @@ class Navigator:
         
     def set_mode(self, mode):
         self.mode = mode
+        notify_mode_changed(mode)
+
+    def toggle_mode(self):
+        if self.mode == Navigator.MANUAL:
+            self.set_mode(Navigator.AUTONOMOUS)
+        else:
+            self.set_mode(Navigator.MANUAL)

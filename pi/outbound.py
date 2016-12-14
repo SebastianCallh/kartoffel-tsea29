@@ -103,3 +103,12 @@ def bt_return_map_data(data):
             BT_RETURN_MAP_DATA, data
         )
     )
+
+
+def notify_mode_changed(new_mode):
+    EventBus.post(
+        BLUETOOTH_ADDR,
+        BT_task(
+            CMD_MODE_SET, new_mode
+        )
+    )
