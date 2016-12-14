@@ -30,7 +30,7 @@ class AutoController:
         regulation_error = self.DESIRED_DISTANCE - sensor_data_front + abs(dist_diff / 10)
 
 
-        if (sensor_data_front == -1 or sensor_data_back == -1):
+        if (sensor_data_front == -1 or sensor_data_back == -1 or abs(dist_diff) > 70):
             dist_diff = 0
             regulation_error = 0
         else:
