@@ -442,24 +442,24 @@ Huvudenheten realiseras med en Raspberry PI, på vilken operativsystemet Raspbia
 \ \\
  Robotens logik är skriven i programmeringsspråket Python och är moduluppbyggd. Vid start injiceras alla beroenden i programets klasser enligt diagramet i figur~\ref{fig:mjukvarumoduler} och en huvudloop starts som uppdaterar relevanta objekt varje iteration. En beskrivning av mjukvarumodulerna finns nedan.
 
-\paragraph{Navigator}
+\subsubsection{Navigator}
 Navigator-klassen sköter all logik för förflyttning. Givet viss indata från sensorerna fattar den beslut för att klara av uppdraget. Se avsnitt~\ref{sec:navigering} för en beskrivning av navigeringsalgoritmen som används.
 
-\paragraph{Communicator}
+\subsubsection{Communicator}
 Communicator tar emot begäran från mjukvarumodulen och innehåller all logik för att leverera korrekt svar. Den skickar både vidare styrkommandon till styrenheten samt returnerar begärd data till mjukvaruklienten. 
 
-\paragraph{Position}
-Position hanterar all logik för hur roboten gör för att bestämma sin position på kartan beroende på vilket tillstånd i kartläggningen roboten befinner sig. Se~\ref{sec:position} för en utförligare beskrivning av hur positionsbestämningen fungerar. 
+\subsubsection{Position}
+Position hanterar all logik för hur roboten gör för att bestämma sin position på kartan beroende på vilket tillstånd i kartläggningen roboten befinner sig. Se avsnitt~\ref{sec:position} för en utförligare beskrivning av hur positionsbestämningen fungerar. 
 
-\paragraph{Driver}
+\subsubsection{Driver}
 Driver innehåller metoder för att utföra standardiserade förflyttningar, t.ex. en inre högersväng eller en yttre vänstersväng. Vid ett anrop till en metod så ges Driver en uppgift som består av en instruktion, en jämförelsefunktion och ett värde till funktionen som Driver använder för att veta när dess uppgift är klar. Till exempel kan en uppgift (i ord) bestå av "vänstersväng, mät i grader, 90", vilket skulle få roboten att svänga vänster, till det att en skillnad i 90 grader uppmäts från gyroskopet. 
 
-\paragraph{IR}
+\subsubsection{IR}
 IR-modulen har en funktion som anropas när sensorenheten har skickat sensordata via I2C-bussen till huvudheten genom att utnyttja designmönstret Observer. De värden som kommer på bussen sparas ner i modulen och kan då användas i andra moduler.
-\paragraph{Laser}
+\subsubsection{Laser}
 Laser-modulen läser in mätvärden från lasersensorn och översätter dem till Python-heltal som sedan sparas undan en gång per huvudloop. På så sätt kan övriga moduler läsa det sparade värdet, vilket säkerställer att samtliga av robotens moduler agerar på samma lasersensorvärde.
 
-\paragraph{Gyro}
+\subsubsection{Gyro}
 Gyro-modulen fyller samma funktion som Laser-modulen. Den läser in värden från gyroskopet och sparar värdena som övriga moduler kan läsa ifrån.
 
 
