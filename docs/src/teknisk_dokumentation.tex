@@ -585,7 +585,7 @@ Den maximala hastigheten som sensordata kan läsas in i är begränsad av sensor
 För att kunna tillhandahålla sensordata från IR-sensorerna när huvudenheten ber den om det så läser sensorenheten in data med jämna mellanrum och sparar den lokalt för att sedan skicka datan på kommando från huvudenheten. Om den fått en begäran om sensordata från huvudenheten så tar det prioritet att leverera den över att läsa in ny data. Ett flödesdiagram över dess beteende ses i figur~\ref{fig:sensorenhet_flowchart}.
 
 \subsection{Styrenhet}
-Styrenhetens uppgift är att kontrollera robotens förflyttning genom att ge korrekta signaler till dess hjulservon. Hjulen styrs parvis, det vill säga vänster hjulpar styrs med en signal och höger hjulpar med en annan. Hastigheten på hjulen styrs genom PWM (\textbf{TODO: FÖRKLARA PWM KORTFATTAT}) medan hastigheter internt är definerade som heltal. Det är styrenhetens uppgift att översätta heltalshastigheter till korrekt pulskvot.
+Styrenhetens uppgift är att kontrollera robotens förflyttning genom att ge korrekta signaler till dess hjulservon. Hjulen styrs parvis, det vill säga vänster hjulpar styrs med en signal och höger hjulpar med en annan. Hastigheten på hjulen styrs genom pulsbreddsmodulering (PWM, pulse-width modulation) medan hastigheter internt är definerade som heltal. Att hjulen styrs genom PWM innebär att deras hastighet är beroende av vilken pulskvot utsignalen har. Utsignalen växlar mellan hög och låg med vissa intervall, och ju högre kvot av signalen som är hög ju snabbare kommer hjulen att åka. Det är styrenhetens uppgift att översätta heltalshastigheter till korrekt pulskvot.
 
 \subsubsection{Kopplingsschema}
 \begin{figure}[H]
