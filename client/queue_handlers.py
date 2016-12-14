@@ -24,7 +24,7 @@ class Queue_handler:
         try:
             self.in_queue.put(task, timeout=0.75)
         except queue.Full:
-            print("in_queue is full")
+            print("In_queue is full, ignoring new messages.")
 
     def pop_out_queue(self):
         try:
@@ -38,4 +38,4 @@ class Queue_handler:
         try:
             self.out_queue.put(task, timeout=0.75)
         except queue.Full:
-            print("out_queue is full")
+            print("Out_queue is full, ignoring new messages.")

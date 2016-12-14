@@ -224,7 +224,7 @@ För att utföra kartläggandet så är roboten utrustad med diverse IR-sensorer
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.55]{client1}
+\includegraphics[scale=0.55]{client_interface}
 \caption{En bild på mjukvaruklienten.}
 \label{fig:klient_bild}
 \end{figure}
@@ -328,28 +328,25 @@ Eventbussen är delad mellan sensorenheten, styrenheten, huvudenheten samt mjukv
 Tanken med eventbussen är att programmeraren ska slippa tänka på att ett funktionsanrop exekveras på en annan enhet eller varifrån data kommer, så länge det läggs åtanke på att funktionerna exekveras asynkront. All mottagen data behöver manuellt behandlas i ett periodiskt funktionsanrop innan de ``lyssnande'' funktionsanropen körs. För att få en tydligare och mer deterministisk körning av huvudenhetens program läses all mottagen data in i början av varje upprepning av huvudloopen. Data ut från huvudenheten skickas till skillnad från inläsningen direkt när anropet sker för att säkerställa att data kommer fram i andra änden så tidigt som möjligt.
 
 \subsubsection{Bluetooth}
-TODO: UPPDATERA BILD
-
 För att roboten ska kunna presentera data används Bluetooth för kommunikation med mjukvaruklienten. Kommunikationen är implementerad i Python och biblioteket Pybluez på både server- och klientsidan. Kommunikationen använder sig även av det allmänna gränssnittet EventBus. 
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.45]{Logo}
+\includegraphics[scale=0.45]{bt-flow-main-unit}
 \caption{Flödesschema över Bluetoothkommunikationen i huvudenheten.}
-\label{fig:Kommunikation_huvudenhet_v2}
+\label{fig:bt-flow-main-unit}
 \end{figure}
 \ \\
-
-Figur~\ref{fig:Kommunikation_huvudenhet_v2} visar flödet för Bluetoothkommunikationen i huvudenheten. Själva sändningen och mottagndet av data över Bluetooth hanteras av en Bluetoothserver som körs i en egen process skild från huvudprocessen. Servern går igång automatiskt vid start av roboten, och den kontrollerar ständigt om det finns ny data att ta emot respektive ny data att skicka. Om datan den tar emot innehåller kommandot omstart kommer den att starta om sig själv. Kommandon till huvudenheten samlas i en kö för inkommande data, där EventBus tittar efter och hämtar ny data om det finns. På samma sätt samlas data som ska till mjukvaruklienten i en kö för utgående data, i detta fall postar EventBus i kön och Bluetoothservern hämtar för att skicka. Dessa in- och utköer är implementerade som textfiler, och det gör det möjligt för serverprocessen och huvudprocessen att kommunicera.
+Figur~\ref{fig:bt-flow-main-unit} visar flödet för Bluetoothkommunikationen i huvudenheten. Själva sändningen och mottagndet av data över Bluetooth hanteras av en Bluetoothserver som körs i en egen process skild från huvudprocessen. Servern går igång automatiskt vid start av roboten, och den kontrollerar ständigt om det finns ny data att ta emot respektive ny data att skicka. Om datan den tar emot innehåller kommandot omstart kommer den att starta om sig själv. Kommandon till huvudenheten samlas i en kö för inkommande data, där EventBus tittar efter och hämtar ny data om det finns. På samma sätt samlas data som ska till mjukvaruklienten i en kö för utgående data, i detta fall postar EventBus i kön och Bluetoothservern hämtar för att skicka. Dessa in- och utköer är implementerade som textfiler, och det gör det möjligt för serverprocessen och huvudprocessen att kommunicera.
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.45]{Logo}
+\includegraphics[scale=0.45]{bt-flow-software-client}
 \caption{Flödesschema över Bluetoothkommunikationen i mjuvaruenklienten.}
-\label{fig:Kommunikation_mjukvaruklient_v2}
+\label{fig:bt-flow-software-client}
 \end{figure}
-
-Bluetoothklientens flöde beskrivs i figur~\ref{fig:Kommunikation_mjukvaruklient_v2} och fungerar på samma sätt som servern, med några mindre skillnader. Dels finns inte alternaivet för omstart. Inte heller har klienten flera processer, utan huvudprogrammet startar Bluetoothkommunikationen som en ny tråd. Klientens köer är inte heller implementerade som textfiler, utan som objekt i programmet.
+\ \\
+Bluetoothklientens flöde beskrivs i figur~\ref{fig:bt-flow-software-client} och fungerar på samma sätt som servern, med några mindre skillnader. Dels finns inte alternaivet för omstart. Inte heller har klienten flera processer, utan huvudprogrammet startar Bluetoothkommunikationen som en ny tråd. Klientens köer är inte heller implementerade som textfiler, utan som objekt i programmet.
 
 
 \subsubsection{I2C}
@@ -370,7 +367,7 @@ Alla inkopplade enheter på I2C-bussen använder sig inte av det protokoll som b
 \clearpage
 \section{Systemet}
 % Ett översiktligt blockschema och en beskrivning av hela systemet.
-Roboten och den tillhörande mjukvaruklienten utgör hela systemet som redan från början designats ur ett modulbaserat perspektiv. Tanken med denna separation är att varje modul inte ska vara ansvarig för fler områden än den behöver och på så sätt öka underhållbarheten i systemet. Eftersom varje modul är kopplad inkluderad i systemet med hjälp av det gemensamma gränssnitt EventBus (se avsnitt~\ref{sec:eventbus}) kan en modul återimplementeras utan att kräva omskrivningar i resten av systemet.
+Roboten och den tillhörande mjukvaruklienten utgör hela systemet som från början av projektet designats ur ett modulbaserat perspektiv. Tanken med denna separation är att varje modul inte ska vara ansvarig för fler områden än den behöver och på så sätt öka underhållbarheten i systemet. Eftersom varje modul är inkluderad i systemet med hjälp av det gemensamma gränssnitt EventBus (se avsnitt~\ref{sec:eventbus}) kan en modul återimplementeras utan att kräva omskrivningar i resten av systemet.
 
 \begin{figure}[H]
 \centering
@@ -379,13 +376,13 @@ Roboten och den tillhörande mjukvaruklienten utgör hela systemet som redan fr�
 \label{fig:oversikt_systemet}
 \end{figure}
 \ \\
-I figur~\ref{fig:oversikt_systemet} syns systemet i sin helhet med alla enheter och dess respektive anslutningar till huvudenheten. Hierarkin i systemet gör det tydligt vilken enhet som ansvarar för vilka externa komponenter men det bör tas hänsyn till att både lasersensorn och gyroskopet kommuniceras med från huvudenheten. Anledningen till denna uppdelning är förklarad i avsnitt~\ref{sec:i2c}.
+I figur~\ref{fig:oversikt_systemet} syns systemet i sin helhet med alla enheter och dess respektive anslutningar till huvudenheten. Hierarkin i systemet gör det tydligt vilken enhet som ansvarar för vilka externa komponenter med undantag för lasersensorn och gyroskopet som kommunicerar direkt mot huvudenheten. Anledningen till denna uppdelning är förklarad i avsnitt~\ref{sec:i2c}.
 
 \subsection{Felsökning av mjukvara}
-Systemet är redan från början av projektet designat för att vara lätt att felsöka. Det finns enkla gränssnitt både in och ut från robotens alla processorer som gör att data kan manipuleras och inspekteras utan att behöva pausa programmet eller spara undan data i filer.
+Redan från tidigt stadie i projektet har det legat högt fokus på testbarhet och felsökning. Det finns enkla gränssnitt både in och ut från robotens alla processorer som gör att data kan manipuleras och inspekteras utan att behöva pausa programmet eller spara undan data i filer.
 
 \subsubsection{Felsökning på AVR}
-Eftersom AVR:erna i sitt grundutförande inte kan ge någon avancerad utdata finns möjligheten att på roboten koppla varje AVR direkt till en dators USB-port med hjälp av en seriell anslutningskabel. Genom att öppna seriellporten i t.ex. Putty (Windows) eller screen (UNIX) kan data skickas fram och tillbaka mellan datorn och mikroprocessorn, se listning~\ref{lst:avr_debug_screen}. I den nuvarande konfigurationen stöds bara möjligheten att skicka data från roboten till datorn men gränssnittet stödjer även den motsatta datariktningen. Implementationen bygger på att ersätta stdout-strömmen så utskrift till dator kan göras med det bekanta gränssnitt som definieras i stdio.h, se listning~\ref{lst:avr_debug_example} för ett komplett exempel.
+Eftersom AVR:erna i sitt grundutförande inte kan ge någon avancerad utdata finns möjligheten att på roboten koppla varje AVR direkt till en dators USB-port med hjälp av en seriell anslutningskabel. Genom att öppna seriellporten i t.ex. PuTTY (Windows) eller screen (UNIX) kan data skickas fram och tillbaka mellan datorn och mikroprocessorn, se listning~\ref{lst:avr_debug_screen}. I den nuvarande konfigurationen stöds bara möjligheten att skicka data från roboten till datorn men gränssnittet stödjer även den motsatta datariktningen. Implementationen bygger på att ersätta stdout-strömmen vilket möjliggör utskrift till dator med det bekanta gränssnitt definierat i stdio.h, se listning~\ref{lst:avr_debug_example} för ett komplett exempel.
 \newline
 \begin{lstlisting}[language=sh, label={lst:avr_debug_screen}, caption={Anslutning via screen}]
 $ screen /dev/tty.usbserial
@@ -404,13 +401,13 @@ printf("Measured value: %d\n", measuredValue);
 \end{lstlisting}
 
 \subsubsection{Felsökning på Huvudenhet}
-Huvudenheten består av en Raspberry PI och kör kod skriven i Python, vilket gör att dess felsökningsmöjligheter är nästintill så bra som det går. Enklast är att ansluta sig till huvudenheten med en SSH-uppkoppling över Eduroam men det går även att koppla in tangentbord, mus och skärm direkt till roboten om så önskas. För att ansluta till enheten via SSH så loggar man in med användaren ``pi'' på den IP-adress som visas på robotens display och anger användarens lösenord. Notera att displayens innehåll uppdateras varje minut-omslag och det kan dröja ett par minuter innan roboten kopplar upp sig mot nätverket första gången.
+Huvudenheten består av en Raspberry PI och kör kod skriven i Python, vilket tillsammans ger den utmärkta felsökningsmöjligheter. Enklast är att ansluta sig till huvudenheten med en SSH-uppkoppling över Eduroam men det går även att koppla in tangentbord, mus och skärm direkt till roboten om så önskas. Ifall det trådlösa nätverket är för instabilt går det också att koppla in en ethernet-sladd mellan datorn och roboten. För att ansluta till enheten via SSH så loggar man in med användaren ``pi'' på den IP-adress som visas på robotens display och anger användarens lösenord. Notera att displayens innehåll uppdateras varje minut-omslag och det kan dröja ett par minuter innan roboten kopplar upp sig mot nätverket första gången.
 
 \subsection{Felsökning av hårdvara}
 På grund av varierande spänningsnivåer så inträffar det ibland fel i hårdvaran där mjukvaran har svårigheter att korrigera för felet på egen hand. De vanligaste felen och dess lösningar beskrivs i detta avsnitt.
 
 \subsubsection{Låg batterispänning}
-I stort sätt alla fel som uppkommer i hårdvaran beror på en för låg batterispänning. Det finns inget sätt att kontrollera robotens batterispänning från mjukvaruklienten eller huvudenhetens terminal utan batteriet måste avmonteras från roboten för att därefter testas med en multimeter. Lättast sättet att upptäcka att batteriet har för låg spänning är genom att observera robotens beteende. Vanliga symptom är:
+I stort sätt alla fel som uppkommer i hårdvaran beror på en för låg batterispänning. Det finns inget sätt att kontrollera robotens batterispänning från mjukvaruklienten eller huvudenhetens terminal utan batteriet måste avmonteras från roboten för att därefter testas med en multimeter. Lättast sättet att undersöka ifall batteriet har för låg spänning är genom att observera robotens beteende. Vanliga symptom är:
 
 \begin{itemize}
     \item Trötta servon
@@ -420,7 +417,7 @@ I stort sätt alla fel som uppkommer i hårdvaran beror på en för låg batteri
     \item Bruten anslutning över WiFi
 \end{itemize}
 \ \\
-Ifall något av dessa symptom observeras bör batteriet omedelbart bytas mot ett nyladdat för att undvika skador på robot, omgivning eller människor.
+Ifall något av dessa symptom observeras bör batteriet omedelbart bytas mot ett nyladdat för att undvika skador på roboten.
 
 \subsubsection{Felsökning av I2C}
 Ibland händer det att I2C-bussen tappar bort någon enhet eller helt enkelt slutar fungera, särskilt vid låga batterinivåer. Det går att verifiera att I2C-bussen fungerar som den ska genom att köra ett kommando från huvudenhetens terminal, se listning~\ref{lst:i2c_debug} för kommando och förväntad utdata för en hälsosam buss. Om bussen är trasig så kommer huvudenhetens program att sluta fungera och skriva ut ett felmeddelande i loggen. I de flesta fall går det att lösa problemet genom att bryta och sedan slå på spänningsmatningen till roboten men om batterinivån är låg kan batteriet behöva laddas.
@@ -482,7 +479,7 @@ Gyro-modulen fyller samma funktion som Laser-modulen. Den läser in värden frå
 \caption{Kopplingsschema för huvudenheten.}
 \label{fig:huvudenhet_kopplingsschema}
 \end{figure}
-
+\ \\
 Huvudenheten består av en Raspberry Pi 3 och en LCD-display av modellen JM162A. Utöver kopplingen till LCD:n så kopplas två pins till I2C-bussen. Eftersom Raspberry Pi drivs av 3.3 V matspänning och de övriga atmega-processorerna i roboten drivs av 5 V så behöver bussen nivåskiftas så att de kan kommunicera med varandra, vilket görs med nivåskiftaren BSS138.
 
 \subsubsection{Komponenter}
@@ -528,7 +525,7 @@ Avläsningarna från IR-sensorerna är analoga, och konverteras till digitalt me
 \caption{Kopplingsschema för sensorenheten.}
 \label{fig:sensorenhet_kopplingsschema}
 \end{figure}
-
+\ \\
 Som figur~\ref{fig:sensorenhet_kopplingsschema} visar är IR-sensorerna kopplade till ATmegan via lågpassfilter för att reducera brus. Längst upp i kopplingsschemat ses den gemensamma I2C-bussen, dit gyroskop och laser är anslutna. Notera att EXO3-komponenten är delad mellan sensorenheten och styrenheten trots att den illustreras som separata komponenter i kopplingsschemat.
 
 \subsubsection{Komponenter}
@@ -594,7 +591,7 @@ Den maximala hastigheten som sensordata kan läsas in i är begränsad av sensor
 \caption{Ett flödesdiagram över sensorenhetens tillstånd}
 \label{fig:sensorenhet_flowchart}
 \end{figure}
-
+\ \\
 För att kunna tillhandahålla sensordata från IR-sensorerna när huvudenheten ber den om det så läser sensorenheten in data med jämna mellanrum och sparar den lokalt för att sedan skicka datan på kommando från huvudenheten. Om den fått en begäran om sensordata från huvudenheten så tar det prioritet att leverera den över att läsa in ny data. Ett flödesdiagram över dess beteende ses i figur~\ref{fig:sensorenhet_flowchart}.
 
 \subsection{Styrenhet}
@@ -607,7 +604,7 @@ Styrenhetens uppgift är att kontrollera robotens förflyttning genom att ge kor
 \caption{Kopplingsschema för styrenheten.}
 \label{fig:styrenhet_kopplingsschema}
 \end{figure}
-
+\ \\
 Styrenheten klockas av en extern EXO3-klocka som säkerställer en synkroniserad klockfrekvens bland robotens processorer, och är kopplad till de två hjulparen som sitter på robotens kropp. Likt sensorenheten så kommunicerar även styrenheten över I2C-bussen.
 
 \subsubsection{Komponenter}
@@ -659,7 +656,7 @@ Styrenheten klockas av en extern EXO3-klocka som säkerställer en synkroniserad
 \caption{Ett flödesschema över styrenhetens tillstånd}
 \label{fig:styrenhet_flowchart}
 \end{figure}
-
+\ \\
 Styrenheten står hela tiden och väntar på instruktioner från huvudenheten, och så snart den får några utför den dem så snabbt den kan. En instruktion i det här sammamhanget är att sätta nya hastigheter på de båda hjulparen. Ett flödesschema över styrenhetens beteende kan ses i figur~\ref{fig:styrenhet_flowchart}.
 
 \subsection{Mjukvaruklient}
@@ -667,19 +664,36 @@ För att kommunicera med roboten används en mjukvaruklient. Programmet har två
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.55]{client1}
-\caption{Mjukvaruklienten}
-\label{fig:client1}
+\includegraphics[scale=0.55]{client_interface}
+\caption{Mjukvaruklientens grafiska gränssnitt}
+\label{fig:client_interface}
 \end{figure}
-
+\ \\
 \subsubsection{Presentationsmodul}
-När roboten undersöker rummet kommer den att generera flera olika typer av data. Denna data visas av presentationsmodulen. Roboten skickar ingen data självmant, utan får kontinueligt begäran av presentationsenheten över Bluetooth. Sensor-, gyro-, servo- och laserdata presenteras till höger i det grafiska gränssnittet, se figur~\ref{fig:client1}.
-
-TODO: Programflöde.
+När roboten undersöker rummet kommer den att generera flera olika typer av data. Denna data visas av presentationsmodulen. Roboten skickar ingen data självmant, utan får kontinueligt begäran av presentationsmodulen över Bluetooth. Sensor-, gyro-, servo- och laserdata presenteras till höger i det grafiska gränssnittet, se figur~\ref{fig:client_interface}. I gränssnittet presenteras också robotens IP-adress om den är uppkopplad på ett trådlöst nätverk.
 
 \subsubsection{Fjärrstyrningsmodul}
-Roboten kan köras i två olika lägen, manuellt och autonomt. I det grafiska gränssnittet finns en knapp för att 
-TODO: Programflöde
+I det grafiska gränssnittet finns en panel med knappar för att skicka styrkommandon till roboten, se figur~\ref{fig:client_interface}. Dels finns det två knappar för att växla mellan manuellt och autonomnt styrläge, samt knappar med riktningar för att styra i det manuella läget. För styrning kan även följande tangenter på tangentbordet användas:
+\begin{itemize}
+    \item Q - fram vänster
+    \item W eller pil upp - framåt
+    \item E - fram höger
+    \item A eller pil vänster - rotera vänster
+    \item S eller pil ner - bakåt
+    \item D eller pil höger - rotera höger
+\end{itemize}
+
+\subsubsection{Programflöde}
+Presentations- och fjärrstyrningsmodulen har ingen tydlig distinktion i klientens programflöde, utan sker gemensamt i klientens flöde.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.55]{software_client_flowchart}
+\caption{Flödesschema för mjukvaruklienten}
+\label{fig:software_client_flowchart}
+\end{figure}
+\ \\
+Figur~\ref{fig:software_client_flowchart} visar flödesschemat för mjukvaruklienten. Hanteringen för Bluetooth sker i en separat tråd för att det grafiska gränssnittet ska kunna fungera obeorende av väntan på sändning och mottagande av data. Flödet för Bluetoothkommunikationen kan ses i figur~\ref{fig:bt-flow-software-client}. Om användarinput registreras (1) hanteras detta av callbackfunktioner i GUI:t.Om denna input är styrkommandon som ska skickas till roboten skickas detta vidare till outboundfunktionerna (2). Vid uppdatering av EventBus (3), anropas subscriptionfunktioner som hanterar inkommande data. Vid begäran av data (4) anropas outboundfunktioner som skickar kommandon till roboten via EventBus. Rendering av gränssnittet och uppritning av ny data (5) sker i GUI:t.
 
 \clearpage
 \section{Slutsatser}
