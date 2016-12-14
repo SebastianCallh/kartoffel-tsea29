@@ -136,6 +136,7 @@ class Position:
                 Navigator.force_left_turn = True
             else:
                 Navigator.right_turn_enabled = False
+                self.num_kitchen_turns = 1
 
     def save_current_section(self):
         if self.mapping_state == MAPPING_STATE_FOLLOWING_OUTER_WALL:
