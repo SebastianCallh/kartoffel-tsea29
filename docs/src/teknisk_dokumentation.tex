@@ -484,29 +484,31 @@ Huvudenheten består av en Raspberry Pi 3 och en LCD-display av modellen JM162A.
 \subsubsection{Komponenter}
 
 \begin{table}[H]
-   \centering
-  \begin{tabular}{ | c | c | }
-    \hline
-    \textbf{Komponent} & \textbf{Antal} \\
-    \hline
-    Raspberry PI 3 & 1 \\
-    \hline
-    JM162A & 1 \\
-    \hline
-  \end{tabular}
+\centering
+\caption{En tabell över huvudenhetens komponenter.}
+\begin{tabular}{ | c | c | }
+\hline
+\textbf{Komponent} & \textbf{Antal} \\
+\hline
+Raspberry PI 3 & 1 \\
+\hline
+JM162A & 1 \\
+\hline
+\end{tabular}
 \end{table}
 
 \subsubsection{Resurser}
 
 \begin{table}[H]
-   \centering
-  \begin{tabular}{ | c | c | c | }
-    \hline
-    \textbf{Port} & \textbf{Antal} & \textbf{Används} \\
-    \hline
-    GPIO pins & 40 & 12 \\
-    \hline
-  \end{tabular}
+\centering
+\caption{En tabell över tillgänglinga portar på huvudenheten.}
+\begin{tabular}{ | c | c | c | }
+\hline
+\textbf{Port} & \textbf{Antal} & \textbf{Används} \\
+\hline
+GPIO pins & 40 & 12 \\
+\hline
+\end{tabular}
 \end{table}
 
 \subsection{Sensorenhet}
@@ -528,54 +530,54 @@ Som figur~\ref{fig:sensorenhet_kopplingsschema} visar är IR-sensorerna kopplade
 \subsubsection{Komponenter}
 
 \begin{table}[H]
-  \centering
-  \begin{tabular}{ | c | c | c | c |}
-    \hline
-    \textbf{Komponent} & \textbf{Antal} \\
-    \hline
-    ATmega 1284 & 1 \\
-    \hline
-    LIDAR-Lite v2 & 1 \\
-    \hline
-    Knapp & 1 \\
-    \hline
-    GP2Y0A41SK IR-Sensor & 3 \\
-    \hline
-    GP2Y0A21 IR-Sensor & 1 \\
-    \hline
-    Adafruit 10-DOF IMU & 1 \\
-    \hline
-    EXO3 & 1 (delad) \\
-    \hline
-  \end{tabular}
-  \caption{ Tabell över de komponenter som sensorenheten består av. }
+\centering
+\caption{ Tabell över de komponenter som sensorenheten består av. }
+\begin{tabular}{ | c | c | c | c |}
+\hline
+\textbf{Komponent} & \textbf{Antal} \\
+\hline
+ATmega 1284 & 1 \\
+\hline
+LIDAR-Lite v2 & 1 \\
+\hline
+Knapp & 1 \\
+\hline
+GP2Y0A41SK IR-Sensor & 3 \\
+\hline
+GP2Y0A21 IR-Sensor & 1 \\
+\hline
+Adafruit 10-DOF IMU & 1 \\
+\hline
+EXO3 & 1 (delad) \\
+\hline
+\end{tabular}
 \end{table}
 
 \subsubsection{Resurser}
 % Rada upp tillgängliga portar på mikroprocessorn samt hur många som krävs
 % Motivera val av mikroprocessor med uppskattning av de resurser som krävs (prestanda, minne, IO)
 \begin{table}[H]
-  \centering
-  \begin{tabular}{ | c | c | c | c |}
-    \hline
-    \textbf{Port} & \textbf{Antal} & \textbf{Krävs} \\
-    \hline
-    SDA & 1 & 1 \\
-    \hline
-    SCL & 1 & 1 \\
-    \hline
-    PCINT & 24 & 1 \\
-    \hline
-    A/D & 8 & 4 \\
-    \hline
-    USART & 2 & 1 \\
-    \hline
-    JTAG & 1 & 1 \\
-    \hline
-    CLK & 1 & 1 \\
-    \hline
-  \end{tabular}
-  \caption{Tabell över tillgängliga portar på processorn.}
+\centering
+\caption{Tabell över tillgängliga portar på processorn.}
+\begin{tabular}{ | c | c | c | c |}
+\hline
+\textbf{Port} & \textbf{Antal} & \textbf{Krävs} \\
+\hline
+SDA & 1 & 1 \\
+\hline
+SCL & 1 & 1 \\
+\hline
+PCINT & 24 & 1 \\
+\hline
+A/D & 8 & 4 \\
+\hline
+USART & 2 & 1 \\
+\hline
+JTAG & 1 & 1 \\
+\hline
+CLK & 1 & 1 \\
+\hline
+\end{tabular}
 \end{table}
 
 \subsubsection{Programflöde}
@@ -606,6 +608,7 @@ Styrenheten klockas av en extern EXO3-klocka som säkerställer en synkroniserad
 
 \begin{table}[H]
   \centering
+  \caption{Tabell över styrenhetens komponenter.}
   \begin{tabular}{ | c | c |}
     \hline
     \textbf{Komponent} & \textbf{Antal} \\
@@ -622,25 +625,25 @@ Styrenheten klockas av en extern EXO3-klocka som säkerställer en synkroniserad
 
 \subsubsection{Resurser}
 \begin{table}[H]
-  \centering
-  \begin{tabular}{ | c | c | c | c |}
-    \hline
-    \textbf{Port} & \textbf{Antal} & \textbf{Krävs} \\
-    \hline
-    SDA & 1 & 1 \\
-    \hline
-    SCL & 1 & 1 \\
-    \hline
-    PWM & 6 & 2 \\
-    \hline
-    USART & 2 & 1 \\
-    \hline
-    JTAG & 1 & 1 \\
-    \hline
-    CLK & 1 & 1 \\
-    \hline
-  \end{tabular}
-  \caption{Tabell över tillgängliga portar på processorn.}
+\centering
+\caption{Tabell över tillgängliga portar på processorn.}
+\begin{tabular}{ | c | c | c | c |}
+\hline
+\textbf{Port} & \textbf{Antal} & \textbf{Krävs} \\
+\hline
+SDA & 1 & 1 \\
+\hline
+SCL & 1 & 1 \\
+\hline
+PWM & 6 & 2 \\
+\hline
+USART & 2 & 1 \\
+\hline
+JTAG & 1 & 1 \\
+\hline
+CLK & 1 & 1 \\
+\hline
+\end{tabular}
 \end{table}
 
 \subsubsection{Programflöde}
