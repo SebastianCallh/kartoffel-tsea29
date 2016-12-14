@@ -337,17 +337,16 @@ För att roboten ska kunna presentera data används Bluetooth för kommunikation
 \label{fig:bt-flow-main-unit}
 \end{figure}
 \ \\
-Figur~\ref{fig:bt-flow-main-unit} visar flödet för Bluetoothkommunikationen i huvudenheten. Själva sändningen och mottagndet av data över Bluetooth hanteras av en Bluetoothserver som körs i en egen process skild från huvudprocessen. Servern går igång automatiskt vid start av roboten, och den kontrollerar ständigt om det finns ny data att ta emot respektive ny data att skicka. Om datan den tar emot innehåller kommandot omstart kommer den att starta om sig själv. Kommandon till huvudenheten samlas i en kö för inkommande data, där EventBus tittar efter och hämtar ny data om det finns. På samma sätt samlas data som ska till mjukvaruklienten i en kö för utgående data, i detta fall postar EventBus i kön och Bluetoothservern hämtar för att skicka. Dessa in- och utköer är implementerade som textfiler, och det gör det möjligt för serverprocessen och huvudprocessen att kommunicera.
+Figur~\ref{fig:bt-flow-main-unit} visar flödet för Bluetoothkommunikationen i huvudenheten. Själva sändningen och mottagningen av data över Bluetooth hanteras av en Bluetoothserver som körs i en egen process skild från huvudprocessen. Servern går igång automatiskt vid start av roboten, och den kontrollerar ständigt om det finns ny data att ta emot respektive ny data att skicka. All hantering av kommandon sker i huvudprocessen, förutom om den tar emot kommandot omstart som hanteras direkt i serverprocessen. Kommandon till huvudenheten samlas i en kö för inkommande data, där EventBus tittar efter och hämtar ny data om det finns. På samma sätt samlas data som ska till mjukvaruklienten i en kö för utgående data, i detta fall postar EventBus i kön och Bluetoothservern hämtar för att skicka. Dessa in- och utköer är implementerade som textfiler, och det gör det möjligt för serverprocessen och huvudprocessen att kommunicera.
 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.45]{bt-flow-software-client}
-\caption{Flödesschema över Bluetoothkommunikationen i mjuvaruenklienten.}
+\caption{Flödesschema över Bluetoothkommunikationen i mjuvaruklienten.}
 \label{fig:bt-flow-software-client}
 \end{figure}
 \ \\
-Bluetoothklientens flöde beskrivs i figur~\ref{fig:bt-flow-software-client} och fungerar på samma sätt som servern, med några mindre skillnader. Dels finns inte alternaivet för omstart. Inte heller har klienten flera processer, utan huvudprogrammet startar Bluetoothkommunikationen som en ny tråd. Klientens köer är inte heller implementerade som textfiler, utan som objekt i programmet.
-
+Bluetoothklientens flöde beskrivs i figur~\ref{fig:bt-flow-software-client} och fungerar på samma sätt som servern, med några mindre skillnader. Klienten körs i samma process men olika trådar, och därför behöver inte heller köerna vara implementerade som textfiler.
 
 \subsubsection{I2C}
 \label{sec:i2c}
