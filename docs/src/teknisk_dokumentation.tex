@@ -368,7 +368,7 @@ Alla inkopplade enheter på I2C-bussen använder sig inte av det protokoll som b
 \clearpage
 \section{Systemet}
 % Ett översiktligt blockschema och en beskrivning av hela systemet.
-Roboten och den tillhörande mjukvaruklienten utgör hela systemet som redan från början designats ur ett modulbaserat perspektiv. Tanken med denna separation är att varje modul inte ska vara ansvarig för fler områden än den behöver och på så sätt öka underhållbarheten i systemet. Eftersom varje modul är kopplad inkluderad i systemet med hjälp av det gemensamma gränssnitt EventBus (se avsnitt~\ref{sec:eventbus}) kan en modul återimplementeras utan att kräva omskrivningar i resten av systemet.
+Roboten och den tillhörande mjukvaruklienten utgör hela systemet som från början av projektet designats ur ett modulbaserat perspektiv. Tanken med denna separation är att varje modul inte ska vara ansvarig för fler områden än den behöver och på så sätt öka underhållbarheten i systemet. Eftersom varje modul är inkluderad i systemet med hjälp av det gemensamma gränssnitt EventBus (se avsnitt~\ref{sec:eventbus}) kan en modul återimplementeras utan att kräva omskrivningar i resten av systemet.
 
 \begin{figure}[H]
 \centering
@@ -377,7 +377,7 @@ Roboten och den tillhörande mjukvaruklienten utgör hela systemet som redan fr�
 \label{fig:oversikt_systemet}
 \end{figure}
 \ \\
-I figur~\ref{fig:oversikt_systemet} syns systemet i sin helhet med alla enheter och dess respektive anslutningar till huvudenheten. Hierarkin i systemet gör det tydligt vilken enhet som ansvarar för vilka externa komponenter men det bör tas hänsyn till att både lasersensorn och gyroskopet kommuniceras med från huvudenheten. Anledningen till denna uppdelning är förklarad i avsnitt~\ref{sec:i2c}.
+I figur~\ref{fig:oversikt_systemet} syns systemet i sin helhet med alla enheter och dess respektive anslutningar till huvudenheten. Hierarkin i systemet gör det tydligt vilken enhet som ansvarar för vilka externa komponenter med undantag för lasersensorn och gyroskopet som kommunicerar direkt mot huvudenheten. Anledningen till denna uppdelning är förklarad i avsnitt~\ref{sec:i2c}.
 
 \subsection{Felsökning av mjukvara}
 Systemet är redan från början av projektet designat för att vara lätt att felsöka. Det finns enkla gränssnitt både in och ut från robotens alla processorer som gör att data kan manipuleras och inspekteras utan att behöva pausa programmet eller spara undan data i filer.
