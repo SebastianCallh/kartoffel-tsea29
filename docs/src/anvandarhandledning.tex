@@ -162,11 +162,21 @@ VERSION & 2016-12-DD & Första version & Grupp 3 & Patrik Sletmo \\
 
 \clearpage
 \section{Inledning}
-Det här dokumentet innehåller all information som behövs för att kunna använda roboten KarToffel, en kartrobot skapad grupp 3 i kursen TSEA29 under höstterminen 2016. Roboten levereras med en mjukvaruklient som används för att både ta emot data från roboten samt styra den manuellt. 
+Det här dokumentet innehåller all information som behövs för att kunna använda roboten KarToffel, en kartrobot skapad av grupp 3 i kursen TSEA29 under höstterminen 2016. Roboten levereras med en mjukvaruklient som används för att både ta emot data från roboten samt styra den manuellt. 
 
 
 \clearpage
 \section{Roboten}
+Roboten består av en sedan tidigare byggd robotplattform kallad Terminator med ett antal virkort och komponenter monterade ovanpå. Eftersom roboten inte är byggd med konstruktionssäkerhet i åtanke bör försiktighet vidtagas när den ska förflyttas för att inte råka bryta någon av kopplingarna.
+
+\clearpage
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.1]{robot_back}
+\caption{Roboten sedd bakifrån.}
+\label{fig:robot_back}
+\end{figure}
+
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.1]{robot_right_side}
@@ -175,21 +185,11 @@ Det här dokumentet innehåller all information som behövs för att kunna anvä
 \end{figure}
 
 \clearpage
-\section{Roboten}
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.1]{robot_left_side}
 \caption{Roboten sedd från vänster sida.}
 \label{fig:robot_left_side}
-\end{figure}
-
-\clearpage
-\section{Roboten}
-\begin{figure}[H]
-\centering
-\includegraphics[scale=0.1]{robot_back}
-\caption{Roboten sedd bakifrån.}
-\label{fig:robot_back}
 \end{figure}
 
 
@@ -217,20 +217,21 @@ Det här dokumentet innehåller all information som behövs för att kunna anvä
 \end{tabular}
 \label{table:components}
 \end{table}
-
-
-I figurerna~\ref{fig:robot_right_side},~\ref{fig:robot_left_side} och~\ref{fig:robot_back} syns roboten från olika synvinklar med viktiga detaljer noterade och numrerade enligt tabell~\ref{table:components}.Roboten har två lägen: Ett manuellt läge då den kan styras via mjukvaruklienten, och ett autonomt läge då den själv undersöker ett rum. Trycker man på lägesändringsknappen så byter roboten till det andra läget som den inte är i just då. Roboten startar i manuellt läge. \newline\newline
+\ \\
+I figurerna~\ref{fig:robot_back},~\ref{fig:robot_right_side} och~\ref{fig:robot_left_side} syns roboten från olika synvinklar med viktiga detaljer noterade och numrerade enligt tabell~\ref{table:components}. Roboten har två lägen: Ett manuellt läge då den kan styras via mjukvaruklienten, och ett autonomt läge då den själv undersöker ett rum. Trycker man på lägesändringsknappen så byter roboten till det andra läget som den inte är i just då. Roboten startar i manuellt läge. \newline\newline
 
 \clearpage
 \section{Mjukvaruklienten}
-\textbf{TODO:} infoga bild på mjukvaruklienten.
+Till roboten hör en mjukvaruklient skriven i Python som tillhandahåller ett användarvänligt gränssnitt för att skicka indata och ta emot utdata från roboten.
+
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.55]{client1}
 \caption{Mjukvaruklienten}
 \label{fig:client1}
 \end{figure}
-I figur~\ref{fig:client1} visas gränssnittet för mjukvaruklienten. Till höger ses presentation av IR-sensor-, laser-, servo- och gyroskopdata som roboten skickar kontinueligt oavsett vilket läge den är. Längst ner till höger syns presentation av robtens IP-adress om den är uppkopplad på ett trådlöst nätverk. 
+\ \\
+I figur~\ref{fig:client1} visas gränssnittet för mjukvaruklienten. Till höger ses presentation av IR-sensor-, laser-, servo- och gyroskopdata som roboten skickar kontinuerligt oavsett vilket läge den är i. Längst ner till höger syns presentation av robotens IP-adress om den är uppkopplad på ett trådlöst nätverk. 
 Till vänster syns det stora området som ritar upp rummet då roboten skickar kartdata. Längst ner till vänster finns knappar för växla mellan manuellt och autonomt läge, samt att styra roboten i det manuella läget. För att styra roboten kan även följande tangenter på tangentbordet användas:
 \begin{itemize}
     \item Q - fram vänster
@@ -243,29 +244,27 @@ Till vänster syns det stora området som ritar upp rummet då roboten skickar k
 
 \clearpage
 \section{Installation}
-För att ta emot data från roboten samt fjärrstyra den manuellt krävs det att programvaran "KarToffel Control" installeras. Programvaran har följande systemkrav:
+För att ta emot data från roboten samt fjärrstyra den manuellt krävs det att programvaran ``KarToffel Control'' installeras. Programvaran har följande systemkrav:
 \begin{itemize}
     \item Operativsystem: Linux eller Windows Vista/7/8/8.1
     \item Python 3 eller senare version
     \item Pybluez, version kompatibel med installerad version av Python
     \item Tkinter, version kompatibel med installerad version av Python
-    \item Bluetoothfuntionalitet
+    \item Bluetoothfunktionalitet
 \end{itemize}
-
-Klienten kräver ingen annan installation än att ladda ner Python-skripet "client\textunderscore main.py".
+\ \\
+Klienten kräver ingen annan installation än att ladda ner hela katalogen ``client''.
 
 \clearpage
 \section{Ansluta till roboten}
-Se till att roboten är påslagen med huvudbrytaren och att Bluetooth är aktiverat på datorn. Om det är första gången datorn används för att kopplas upp mot roboten måste datorn pairas med roboten via Bluetooth. Detta görs genom att använda datorns inbyggda gränssnitt för Bluetoothkonfiguration. Där väljs roboten för anslutning, och inget lösenord anges vid förfrågan. Efter lyckad pairing kan mjukvaruklienten startas genom att starta skriptet "client\textunderscore main.py" i en terminal. 
-\textbf{TODO:} Finns det någon indikation på att man har en korrekt anslutning? Ska vi lägga till det?
-Vid lyckad anslutning till roboten kan knappar och tangenter användas för att kommunicera med roboten. 
+Se till att roboten är påslagen med huvudbrytaren och att Bluetooth är aktiverat på datorn. Om det är första gången datorn används för att kopplas upp mot roboten måste datorn paras med roboten via Bluetooth. Detta görs genom att använda datorns inbyggda gränssnitt för Bluetoothkonfiguration. Där väljs roboten med namn ``raspberrypi'' för anslutning, och inget lösenord anges vid förfrågan. Efter lyckad parning kan mjukvaruklienten startas genom att starta skriptet ``client\textunderscore main.py'' i en terminal. Vid lyckad anslutning till roboten kan knappar och tangenter användas för att kommunicera med roboten. För att avsluta programmet används krysset uppe i högra hörnet för att stänga ner fönstret. 
 
 \clearpage
 \section{Kommunicera med roboten}
 Mjukvaruklienten tar emot data från roboten kontinueligt och presenterar denna data utan att användaren behöver göra något.
 Möjliga kommandon för användaren att utföra är att växla mellan manuellt och autonomnt läge samt att styra roboten i det manuella läget. Detta görs med knapparna nere till vänster i gränssnittet.
 För att växla mellan manuellt och autonomt läge kan även den fysiska knappen på själva roboten användas. 
-\textbf{TODO:} Vilket läge som används indikeras på något sätt i gränssnittet.
+
 
 \clearpage
 \section{Referenser}
