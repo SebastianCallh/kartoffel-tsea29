@@ -202,7 +202,7 @@ VERSION & 2016-12-DD & Första version & Grupp 3 & Patrik Sletmo \\
 \section{Inledning}
 Systemet beskrivet i det här dokumentet är en kartläggningsrobot som dels kan fjärrstyras och dels släppas in i ett rum och autonomt söka av det för att sedan återvända till ingången.
 \subsection{Bakgrund}
-Som en del av utbildningen till civilingenjör i datateknik på Tekniska högskolan vid Linköpings universitet har vår projektgrupp i kursen Konstruktion med mikrodatorer (TSEA29) arbetat mot beställaren Mattias Krysander för att tillverka en robot vars syfte är att kartlägga en sluten bana. Den färdiga produkten tävlar mot andra gruppers robotar och redovisas i samband med kursens avslutande.
+Som en del av utbildningen till civilingenjör i datateknik på Tekniska högskolan vid Linköpings universitet har denna projektgrupp i kursen Konstruktion med mikrodatorer (TSEA29) arbetat mot beställaren Mattias Krysander för att tillverka en robot vars syfte är att kartlägga en sluten bana. Den färdiga produkten tävlar mot andra gruppers robotar och redovisas i samband med kursens avslutande.
 
 \subsection{Syfte}
 Det här dokumentet skall ge en ingående beskrivning av kartrobot-systemet från ett tekniskt perspektiv. Dokumentet ska fungera som konstruktionsunderlag för någon som vill bygga en kopia av den robot som beskrivs. Det ska från instruktioner i dokumentet även vara möjligt att underhålla och felsöka både mjuk- och hårdvaran i systemet.
@@ -211,7 +211,7 @@ Det här dokumentet skall ge en ingående beskrivning av kartrobot-systemet frå
 \section{Produkten}
 %En bild på produkten och en beskrivning av hur den fungerar. Beskriv vad den används till.
 
-Systemet består av en fyrhjulig robot samt en mjukvaruklient som kommunicerar med varandra via Bluetooth. Systemets syfte är att roboten ska kunna kartlägga sin omgivning helt autonomnt och förmedla kartläggningen till mjukvaruklienten. 
+Systemet består av en fyrhjulig robot samt en mjukvaruklient som kommunicerar med varandra via Bluetooth. Systemets syfte är att roboten ska kunna kartlägga sin omgivning helt autonomt och förmedla kartläggningen till mjukvaruklienten. 
 
 \begin{figure}[H]
 \centering
@@ -229,7 +229,7 @@ För att utföra kartläggandet så är roboten utrustad med diverse IR-sensorer
 \label{fig:klient_bild}
 \end{figure}
 \ \\
-Mjukvaruklienten renderar tack vare dess Bluetooth-anslutning kartläggningen i realtid och har ett gränssnitt för att kunna fjärrstyra roboten. Se figur~\ref{fig:klient_bild} för en bild på mjukvaruklientens gränssnitt.
+Mjukvaruklienten renderar med hjälp av data från dess Bluetooth-anslutning kartläggningen i realtid och har ett gränssnitt för att kunna fjärrstyra roboten. Se figur~\ref{fig:klient_bild} för en bild på mjukvaruklientens gränssnitt.
 
 \clearpage
 \section{Teori}
@@ -688,7 +688,7 @@ Presentations- och fjärrstyrningsmodulen har ingen tydlig distinktion i kliente
 \label{fig:software_client_flowchart}
 \end{figure}
 \ \\
-Figur~\ref{fig:software_client_flowchart} visar flödesschemat för mjukvaruklienten. Hanteringen för Bluetooth sker i en separat tråd för att det grafiska gränssnittet ska kunna fungera obeorende av väntan på sändning och mottagande av data. Flödet för Bluetoothkommunikationen kan ses i figur~\ref{fig:bt-flow-software-client}. Om användarinput registreras (1) hanteras detta av callbackfunktioner i GUI:t.Om denna input är styrkommandon som ska skickas till roboten skickas detta vidare till outboundfunktionerna (2). Vid uppdatering av EventBus (3), anropas subscriptionfunktioner som hanterar inkommande data. Vid begäran av data (4) anropas outboundfunktioner som skickar kommandon till roboten via EventBus. Rendering av gränssnittet och uppritning av ny data (5) sker i GUI:t.
+Figur~\ref{fig:software_client_flowchart} visar flödesschemat för mjukvaruklienten. Hanteringen för Bluetooth sker i en separat tråd för att det grafiska gränssnittet ska kunna fungera obeorende av väntan på sändning och mottagande av data. Flödet för Bluetoothkommunikationen kan ses i figur~\ref{fig:bt-flow-software-client}. Om användarinput registreras (se siffra 1 i bilden) hanteras detta av callbackfunktioner i GUI:t. Om denna input är styrkommandon som ska skickas till roboten skickas detta vidare till outboundfunktionerna (se siffra 2 i bilden). Vid uppdatering av EventBus (se siffra 3 i bilden), anropas subscriptionfunktioner som hanterar inkommande data. Vid begäran av data (se siffra 4 i bilden) anropas outbound-funktioner som skickar kommandon till roboten via EventBus. Rendering av gränssnittet och uppritning av ny data (se siffra 5 i bilden) sker i GUI:t.
 
 \clearpage
 \section{Slutsatser}
