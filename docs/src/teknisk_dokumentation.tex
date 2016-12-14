@@ -388,6 +388,11 @@ $ screen /dev/tty.usbserial
 \begin{lstlisting}[language=C, label={lst:avr_debug_example}, caption=Exempel av utskrift]
 #include "common/debug.h"
 
+// Initialization, performed during program startup
+initialize_uart();
+sei();
+
+// Debugging, performed at any point during execution
 int measuredValue = 42;
 printf("Measured value: %d\n", measuredValue);
 \end{lstlisting}
