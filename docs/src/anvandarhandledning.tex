@@ -101,7 +101,7 @@ Status
 \centering
 \begin{tabular}{ | c | c | c | }
 \hline
-STATUS & Patrik Sletmo & 2016-12-DD \\
+Godkänd & Patrik Sletmo & 2016-12-14 \\
 \hline
 \end{tabular}
 \end{table}
@@ -182,7 +182,7 @@ Dokumenthistorik \\
 \hline
 \textbf{Version} & \textbf{Datum} & \textbf{Utförda ändringar} & \textbf{Utförd av } & \textbf{Granskad} \\
 \hline
-VERSION & 2016-12-DD & Första version & Grupp 3 & Patrik Sletmo \\
+1.0 & 2016-12-14 & Första version & Grupp 3 & Patrik Sletmo \\
 \hline
 
 \end{tabular}
@@ -298,6 +298,17 @@ Mjukvaruklienten tar emot data från roboten kontinueligt och presenterar denna 
 Möjliga kommandon för användaren att utföra är att växla mellan manuellt och autonomnt läge samt att styra roboten i det manuella läget. Detta görs med knapparna nere till vänster i gränssnittet.
 För att växla mellan manuellt och autonomt läge kan även den fysiska knappen på själva roboten användas. 
 
+\clearpage
+\section{Körning i bana}
+För att garantera korrekt funktion under bankörning ställs det vissa krav på banans utformande och robotens placering i den. Eftersom roboten är byggd att följa banor som utgår från specifikationen i dokumentet \textit{Ban- och tävlingsspecifikation för kartrobotar 2016} behöver också banor den körs i följa dess begränsningar.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.2]{example_map}
+\caption{Exempelbana skapad från specifikationen}
+\label{fig:example_map}
+\end{figure}
+\ \\
+Roboten behöver även placeras på en speciell punkt i banan för att kunna avsluta kartläggningen korrekt. Innan kartläggningen startar måste roboten placeras i banans så kallade ``garage'' (se figur~\ref{fig:example_map}) och stå med lasern ut från återvändsgränden. När roboten är färdig med kartläggningen återvänder den till detta garage och följer inte garaget specifikationen stannar aldrig roboten.
 
 \clearpage
 \section{Referenser}
