@@ -56,7 +56,6 @@ def bt_request_map_data():
 
 
 def bt_drive_forward():
-    print("Kör framåt")
     EventBus.post(
         BLUETOOTH_ADDR,
         BT_task(
@@ -66,7 +65,6 @@ def bt_drive_forward():
 
 
 def bt_drive_back():
-    print("Kör back")
     EventBus.post(
         BLUETOOTH_ADDR,
         BT_task(
@@ -76,7 +74,6 @@ def bt_drive_back():
 
 
 def bt_turn_right():
-    print("Turn right")
     EventBus.post(
         BLUETOOTH_ADDR,
         BT_task(
@@ -85,7 +82,6 @@ def bt_turn_right():
     )
 
 def bt_forward_right():
-    print("Forward right")
     EventBus.post(
         BLUETOOTH_ADDR,
         BT_task(
@@ -94,7 +90,6 @@ def bt_forward_right():
     )
 
 def bt_turn_left():
-    print("Turn left")
     EventBus.post(
         BLUETOOTH_ADDR,
         BT_task(
@@ -103,7 +98,6 @@ def bt_turn_left():
     )
 
 def bt_forward_left():
-    print("Forward left")
     EventBus.post(
         BLUETOOTH_ADDR,
         BT_task(
@@ -112,7 +106,6 @@ def bt_forward_left():
     )
 
 def bt_shutdown():
-    print("Shutdown bluetooth connection")
     EventBus.post(
         BLUETOOTH_ADDR,
         BT_task(
@@ -122,7 +115,6 @@ def bt_shutdown():
 
 
 def bt_restart():
-    print("Restart bluetooth connection")
     EventBus.post(
         BLUETOOTH_ADDR,
         BT_task(
@@ -132,7 +124,6 @@ def bt_restart():
 
 
 def bt_switch_to_auto():
-    print("Switch to auto")
     EventBus.post(
         BLUETOOTH_ADDR,
         BT_task(
@@ -142,7 +133,6 @@ def bt_switch_to_auto():
 
 
 def bt_switch_to_manual():
-    print("Switch to manual")
     EventBus.post(
         BLUETOOTH_ADDR,
         BT_task(
