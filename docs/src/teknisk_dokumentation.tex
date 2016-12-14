@@ -350,7 +350,7 @@ Bluetoothklientens flöde beskrivs i figur~\ref{fig:Kommunikation_mjukvaruklient
 
 \subsubsection{I2C}
 \label{sec:i2c}
-För att kunna kommunicera med olika moduler och sensorer på själva roboten används en I2C-buss som delas mellan huvudenheten, sensorenheten, styrenheten, laser-sensorn samt gyroskopet där huvudenheten agerar master och alla andra enheter slavar. Eftersom kraven som ställs på kommunikationen mellan modulerna förutsätter att data kan skickas i form av anrop räcker inte I2C-bussens protokoll till utan skrivningen och inläsningen till/från adresser behöver utökas med funktionalitet för att skicka faktiska datapaket. Det påliggande protokollet implementerar köer av paket för båda datariktningarna på AVR:erna som pollas och fylls på från huvudenheten. Varje paket innehåller ett antal bytes för dess data där den första byten innehåller paketets id. Eftersom I2C endast tillåter läsning eller skrivning av en enda byte innehåller varje paket on-the-wire också en inledande byte som specificerar dess längd, vilket ger en maxlängd av 255 bytes. När ett paket lästs in läggs det i en intern kö som hanteras av den modulspecifika koden, se figur~\ref{fig:flodesschema_i2c}.
+För att kunna kommunicera med olika moduler och sensorer på själva roboten används en I2C-buss som delas mellan huvudenheten, sensorenheten, styrenheten, laser-sensorn samt gyroskopet där huvudenheten agerar master och alla andra enheter slavar. Eftersom kraven som ställs på kommunikationen mellan modulerna förutsätter att data kan skickas i form av anrop räcker inte I2C-bussens protokoll till utan skrivningen och inläsningen till/från adresser behöver utökas med funktionalitet som gör det möjligt att skicka faktiska datapaket.
 
 \begin{figure}[H]
 \centering
@@ -359,8 +359,9 @@ För att kunna kommunicera med olika moduler och sensorer på själva roboten an
 \label{fig:flodesschema_i2c}
 \end{figure}
 \ \\
-\newline
-Alla inkopplade enheter på I2C-bussen använder sig inte av det protokoll som beskrivs ovan utan fungerar på det vanliga sättet genom läsning och skrivning till adresser. Dessa enheter är laser-sensorn samt  gyroskopet och adresseras direkt från huvudenheten istället för att passera via sensorenheten som alla andra sensorer till följd av begränsningar som följer från single-master implementationen. Läsning från dessa sensorer sker periodvist i huvudenhetens programloop och sparas undan så att olika delar av programmet kan komma åt det senaste datat utan att behöva läsa multipla gånger.
+Det påliggande protokollet implementerar köer av paket för båda datariktningarna på AVR:erna som pollas och fylls på från huvudenheten. Varje paket innehåller ett antal bytes för dess data där den första byten innehåller paketets id. Eftersom I2C endast tillåter läsning eller skrivning av en enda byte innehåller varje paket on-the-wire också en inledande byte som specificerar dess längd, vilket ger en maxlängd av 255 bytes. När ett paket lästs in läggs det i en intern kö som hanteras av den modulspecifika koden, se figur~\ref{fig:flodesschema_i2c}.
+\newline\newline
+Alla inkopplade enheter på I2C-bussen använder sig inte av det protokoll som beskrivs ovan utan kommunikation med vissa enheter fungerar på det vanliga sättet genom läsning och skrivning till adresser. Dessa enheter är laser-sensorn samt gyroskopet, som adresseras direkt från huvudenheten istället för att passera via sensorenheten till följd av begränsningar som följer från single-master implementationen. Läsning från dessa sensorer sker periodvist i huvudenhetens programloop och sparas undan så att olika delar av programmet kan komma åt det senaste datat utan att behöva läsa multipla gånger.
 
 \clearpage
 \section{Systemet}
