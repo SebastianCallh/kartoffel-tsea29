@@ -44,6 +44,8 @@
 
 %For headers & footers
 \usepackage{fancyhdr}
+\usepackage{pdfpages}
+\setlength{\headheight}{110pt} 
 \pagestyle{fancy}
 \lhead{\includegraphics[scale=0.2]{Logo}}
 \chead{Kartrobot}
@@ -703,6 +705,6 @@ Roboten kartläggningsalgoritm kartlägger sin omgivning genom att beräkna raks
 \clearpage
 \section{Banspecifikation}
 \label{sec:banspec}
-\includegraphics[scale=0.6]{banspec}
+\includepdf[pages=-,scale=0.6]{banspec}
 
 \end{document}
