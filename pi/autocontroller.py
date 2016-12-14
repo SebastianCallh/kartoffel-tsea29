@@ -67,6 +67,6 @@ class AutoController:
 
     def get_speed(self, ir_right_mm, ir_right_back_mm):
         if ir_right_mm == -1 and ir_right_back_mm != -1:
-            return self.STANDARD_SPEED / 2
+            return self.STANDARD_SPEED * 3 / 4
         else:
             return self.STANDARD_SPEED
