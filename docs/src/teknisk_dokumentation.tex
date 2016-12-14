@@ -496,7 +496,10 @@ Raspberry PI 3 & 1 \\
 JM162A & 1 \\
 \hline
 \end{tabular}
+\label{table:huvud_komp}
 \end{table}
+
+Tabell~\ref{table:huvud_komp} visar huvudenhetens komponenter.
 
 \subsubsection{Resurser}
 
@@ -510,7 +513,10 @@ JM162A & 1 \\
 GPIO pins & 40 & 12 \\
 \hline
 \end{tabular}
+\label{table:huvud_resurser}
 \end{table}
+
+Tabell~\ref{table:huvud_resurser} visar huvudenhetens tillgängliga portar.
 
 \subsection{Sensorenhet}
 Sensorenheten har i uppgift att läsa in värden från robotens sensorer och rapportera värden till huvudenheten. Den består av fyra IR-sensorer, ett gyroskop, en lasersensor och har sin egna beräkningsenhet, en ATmega 1284, vilket låter den arbeta asynkront från andra enheter. Den ser på så sätt alltid till att ha data tillgänglig närhelst huvudenheten begär den. För IR-sensorerna sker det genom att processorn låter AD-omvandlaren köras för en sensor i taget och sparar sedan undan avståndet i minnet, medan gyroskop och laser håller koll på sina egna värden och är kopplade direkt på I2C-bussen. Huvudenheten kan sedan fråga sensorenheten efter ny IR-mätdata, eller fråga gyroskopet/lasern direkt varpå den får sensordatan levererad över I2C.
@@ -621,7 +627,10 @@ Styrenheten klockas av en extern EXO3-klocka som säkerställer en synkroniserad
     EXO3 & 1 (delad) \\
     \hline
   \end{tabular}
+  \label{table:styr_komponenter}
 \end{table}
+
+Tabell~\ref{table:styr_komponenter} visar styrenhetens komponenter.
 
 
 \subsubsection{Resurser}
@@ -645,7 +654,10 @@ JTAG & 1 & 1 \\
 CLK & 1 & 1 \\
 \hline
 \end{tabular}
+\label{table:styr_portar}
 \end{table}
+
+Tabell~\ref{table:styr_portar} visar styrenhetens komponenter.
 
 \subsubsection{Programflöde}
 
