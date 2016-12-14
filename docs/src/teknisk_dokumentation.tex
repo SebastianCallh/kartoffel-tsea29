@@ -222,7 +222,7 @@ Mjukvaruklienten är som nämnt ansluten via Bluetooth, vilket låter den render
 \clearpage
 \section{Teori}
 % Beskrivning av regleralgoritmer mm.
-Den övergripande strategin för att kartlägga rummet är att alltid färdas längst väggen på höger sida och på så sätt kartlägga rummets ytterväggar. För det krävs en regleringsalgoritm för att följa väggen och logik för navigering samt kartläggning.
+För att lyckas kartlägga en bana använder sig systemet av en rad olika algoritmer och tekniker som behandlar problemet att läsa in data från omgivningen, applicera det datat på kartläggningsproblemet, samt att uttrycka resultatet tillbaka till den fysiska verkligheten.
 
 \subsection{Navigering}
 \label{sec:navigering}
@@ -295,6 +295,7 @@ Med hjälp av distansfelet och differensen utförs en enklare PID-reglering som 
 Systemet byggs upp av ett antal separata moduler som behöver samarbeta för att utföra robotens funktion då dess unika funktioner är alldeles för specifika. Kommunikationen som möjliggör detta samarbete sker både via Bluetooth och I2C beroende på modulernas placering i systemet. Då det kan bli förvirrande att hantera dataflödet på två olika protokoll ligger det ett abstraktionslager som kallas EventBus ovanpå dessa överföringsmedier. Detta abstraktionslager samt de underliggande implementationerna beskrivs mer ingående i följande delavsnitt. 
 
 \subsubsection{EventBus}
+\label{sec:eventbus}
 För att underlätta programmering av logikenheten använder sig systemet av en distribuerad eventbuss kallad EventBus som tillhandahåller funktioner för att skicka data till en annan enhet på bussen och för att lyssna på mottagna meddelanden. Eventbussen är delad mellan sensorenheten, styrenheten, huvudenheten samt mjukvaruklienten men eftersom bussen saknar funktionalitet för att delegera data vidare till andra enheter kan data inte skickas direkt från t.ex. sensorenheten till styrenheten, se figur~\ref{fig:eventbus_structure}. Eventbussen saknar fysiskt representation i den mening som t.ex. I2C-bussen har utan är bara en abstraktion som med hjälp av I2C-bussen och Bluetooth-anslutningen realiserar dess distribuerade funktion.
 
 \begin{figure}[H]
@@ -333,6 +334,7 @@ Bluetoothklientens flöde beskrivs i figur~\ref{fig:Kommunikation_mjukvaruklient
 
 
 \subsubsection{I2C}
+\label{sec:i2c}
 För att kunna kommunicera med olika moduler och sensorer på själva roboten används en I2C-buss som delas mellan huvudenheten, sensorenheten, styrenheten, laser-sensorn samt gyroskopet där huvudenheten agerar master och alla andra enheter slavar. Eftersom kraven som ställs på kommunikationen mellan modulerna förutsätter att data kan skickas i form av anrop räcker inte I2C-bussens protokoll till utan skrivningen och inläsningen till/från adresser behöver utökas med funktionalitet för att skicka faktiska datapaket. Det påliggande protokollet implementerar köer av paket för båda datariktningarna på AVR:erna som pollas och fylls på från huvudenheten. Varje paket innehåller ett antal bytes för dess data där den första byten innehåller paketets id. Eftersom I2C endast tillåter läsning eller skrivning av en enda byte innehåller varje paket on-the-wire också en inledande byte som specificerar dess längd, vilket ger en maxlängd av 255 bytes. När ett paket lästs in läggs det i en intern kö som hanteras av den modulspecifika koden, se figur~\ref{fig:flodesschema_i2c}.
 
 \begin{figure}[H]
@@ -348,7 +350,7 @@ Alla inkopplade enheter på I2C-bussen använder sig inte av det protokoll som b
 \clearpage
 \section{Systemet}
 % Ett översiktligt blockschema och en beskrivning av hela systemet.
-TODO:Text om systemet i helhet
+Roboten och den tillhörande mjukvaruklienten utgör hela systemet som redan från början designats ur ett modulbaserat perspektiv. Tanken med denna separation är att varje modul inte ska vara ansvarig för fler områden än den behöver och på så sätt öka underhållbarheten i systemet. Eftersom varje modul är kopplad inkluderad i systemet med hjälp av det gemensamma gränssnitt EventBus (se avsnitt~\ref{sec:eventbus}) kan en modul återimplementeras utan att kräva omskrivningar i resten av systemet.
 
 \begin{figure}[H]
 \centering
@@ -356,6 +358,8 @@ TODO:Text om systemet i helhet
 \caption{En bild på systemet övergripande konstruktion.}
 \label{fig:oversikt_systemet}
 \end{figure}
+\ \\
+I figur~\ref{fig:oversikt_systemet} syns systemet i sin helhet med alla enheter och dess respektive anslutningar till huvudenheten. Hierarkin i systemet gör det tydligt vilken enhet som ansvarar för vilka externa komponenter men det bör tas hänsyn till att både lasersensorn och gyroskopet kommuniceras med från huvudenheten. Anledningen till denna uppdelning är förklarad i avsnitt~\ref{sec:i2c}.
 
 \subsection{Felsökning av mjukvara}
 Systemet är redan från början av projektet designat för att vara lätt att felsöka. Det finns enkla gränssnitt både in och ut från robotens alla processorer som gör att data kan manipuleras och inspekteras utan att behöva pausa programmet eller spara undan data i filer.
@@ -529,8 +533,6 @@ Som ses i figur~\ref{fig:sensorenhet_kopplingsschema} är IR-sensorerna kopplade
 \subsubsection{Resurser}
 % Rada upp tillgängliga portar på mikroprocessorn samt hur många som krävs
 % Motivera val av mikroprocessor med uppskattning av de resurser som krävs (prestanda, minne, IO)
-
-TODO:TABELLEN NEDAN EJ KORRIGERAD
 \begin{table}[H]
   \centering
   \begin{tabular}{ | c | c | c | c |}
@@ -543,11 +545,9 @@ TODO:TABELLEN NEDAN EJ KORRIGERAD
     \hline
     PCINT & 24 & 1 \\
     \hline
-    A/D & 8 & 2 \\
+    A/D & 8 & 4 \\
     \hline
-    RESET & 1 & 1 \\
-    \hline
-    USART & 4 & 2 \\
+    USART & 2 & 1 \\
     \hline
     JTAG & 1 & 1 \\
     \hline
@@ -602,7 +602,6 @@ Styrenheten klockas av en extern EXO3-klocka som säkerställer en synkroniserad
 
 
 \subsubsection{Resurser}
-TODO:TABELL NEDAN EJ KORRIGERAD
 \begin{table}[H]
   \centering
   \begin{tabular}{ | c | c | c | c |}
@@ -613,11 +612,9 @@ TODO:TABELL NEDAN EJ KORRIGERAD
     \hline
     SCL & 1 & 1 \\
     \hline
-    RESET & 1 & 1 \\
+    PWM & 6 & 2 \\
     \hline
-    IO & 30 & 5 \\
-    \hline
-    USART & 4 & 4 \\
+    USART & 2 & 1 \\
     \hline
     JTAG & 1 & 1 \\
     \hline
@@ -626,8 +623,6 @@ TODO:TABELL NEDAN EJ KORRIGERAD
   \end{tabular}
   \caption{Tabell över tillgängliga portar på processorn.}
 \end{table}
-
-Omvandlingen av kommandon från huvudenheten och utskickning av signaler till servona uppskattas ej kräva mer prestanda eller minne än styrenhetens ATMega 1284 processor klarar av.
 
 \subsubsection{Programflöde}
 
