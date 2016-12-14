@@ -195,7 +195,6 @@ class GUI:
 
     def exit(self):
         self.exit_demanded = True
-        print("Exit gui")
 
     def close_window(self):
         self.root.destroy()

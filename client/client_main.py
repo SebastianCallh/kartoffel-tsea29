@@ -15,14 +15,6 @@ except:
 DATA_REQUEST_INTERVAL = 1  # seconds
 IP_REQUEST_INTERVAL = 10   # seconds
 UPDATE_INTERVAL = 250      # milliseconds
-TEST_CORNERS = [(0, 0), (0,1), (1, 1), (1, 3), (-3, 3), (-3, 4),
-                (-2, 4), (-2, 5), (-4, 5), (-4, 7), (5, 7), (5, 9),
-                (7, 9), (7, 5), (4, 5), (4, -4), (-15, -4), (-15, -3), (3, -3),
-                (3, 0), (0, 0), (1, 4), (3, 4), (3, 6), (1, 6), (1, 4)]
-
-TEST_CORNERS2 = [(0,0), (1,0), (1,-1),(1,-2),(1,3),(0,3),(-1,3),(-2,3),(-2,2),(-1,2),(0,2),(0,1),(0,0)]
-
-curr_test_corn = 0
 
 gui = None
 bt_client = None
@@ -91,9 +83,6 @@ def update():
                 if bt_client is not None and bt_client.is_connected:
                     request_data()
 
-                """gui.update_map([TEST_CORNERS2[curr_test_corn]])
-                if curr_test_corn < len(TEST_CORNERS2) -1:
-                    curr_test_corn += 1"""
                 last_data_request_time = datetime.datetime.now()
         else:
             gui.setup_after_main_loop()
