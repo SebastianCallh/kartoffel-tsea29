@@ -169,6 +169,14 @@ Det här dokumentet innehåller all information som behövs för att kunna anvä
 \section{Roboten}
 Roboten består av en sedan tidigare byggd robotplattform kallad Terminator med ett antal virkort och komponenter monterade ovanpå. Eftersom roboten inte är byggd med konstruktionssäkerhet i åtanke bör försiktighet vidtagas när den ska förflyttas för att inte råka bryta någon av kopplingarna.
 
+\clearpage
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.1]{robot_back}
+\caption{Roboten sedd bakifrån.}
+\label{fig:robot_back}
+\end{figure}
+
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.1]{robot_right_side}
@@ -182,14 +190,6 @@ Roboten består av en sedan tidigare byggd robotplattform kallad Terminator med 
 \includegraphics[scale=0.1]{robot_left_side}
 \caption{Roboten sedd från vänster sida.}
 \label{fig:robot_left_side}
-\end{figure}
-
-\clearpage
-\begin{figure}[H]
-\centering
-\includegraphics[scale=0.1]{robot_back}
-\caption{Roboten sedd bakifrån.}
-\label{fig:robot_back}
 \end{figure}
 
 
@@ -218,7 +218,7 @@ Roboten består av en sedan tidigare byggd robotplattform kallad Terminator med 
 \label{table:components}
 \end{table}
 \ \\
-I figurerna~\ref{fig:robot_right_side},~\ref{fig:robot_left_side} och~\ref{fig:robot_back} syns roboten från olika synvinklar med viktiga detaljer noterade och numrerade enligt tabell~\ref{table:components}. Roboten har två lägen: Ett manuellt läge då den kan styras via mjukvaruklienten, och ett autonomt läge då den själv undersöker ett rum. Trycker man på lägesändringsknappen så byter roboten till det andra läget som den inte är i just då. Roboten startar i manuellt läge. \newline\newline
+I figurerna~\ref{fig:robot_back},~\ref{fig:robot_right_side} och~\ref{fig:robot_left_side} syns roboten från olika synvinklar med viktiga detaljer noterade och numrerade enligt tabell~\ref{table:components}. Roboten har två lägen: Ett manuellt läge då den kan styras via mjukvaruklienten, och ett autonomt läge då den själv undersöker ett rum. Trycker man på lägesändringsknappen så byter roboten till det andra läget som den inte är i just då. Roboten startar i manuellt läge. \newline\newline
 
 \clearpage
 \section{Mjukvaruklienten}
@@ -257,13 +257,14 @@ Klienten kräver ingen annan installation än att ladda ner hela katalogen ``cli
 
 \clearpage
 \section{Ansluta till roboten}
-Se till att roboten är påslagen med huvudbrytaren och att Bluetooth är aktiverat på datorn. Om det är första gången datorn används för att kopplas upp mot roboten måste datorn paras med roboten via Bluetooth. Detta görs genom att använda datorns inbyggda gränssnitt för Bluetoothkonfiguration. Där väljs roboten med namn ``raspberrypi'' för anslutning, och inget lösenord anges vid förfrågan. Efter lyckad parning kan mjukvaruklienten startas genom att starta skriptet ``client\textunderscore main.py'' i en terminal. Vid lyckad anslutning till roboten kan knappar och tangenter användas för att kommunicera med roboten. 
+Se till att roboten är påslagen med huvudbrytaren och att Bluetooth är aktiverat på datorn. Om det är första gången datorn används för att kopplas upp mot roboten måste datorn paras med roboten via Bluetooth. Detta görs genom att använda datorns inbyggda gränssnitt för Bluetoothkonfiguration. Där väljs roboten med namn ``raspberrypi'' för anslutning, och inget lösenord anges vid förfrågan. Efter lyckad parning kan mjukvaruklienten startas genom att starta skriptet ``client\textunderscore main.py'' i en terminal. Vid lyckad anslutning till roboten kan knappar och tangenter användas för att kommunicera med roboten. För att avsluta programmet används krysset uppe i högra hörnet för att stänga ner fönstret. 
 
 \clearpage
 \section{Kommunicera med roboten}
 Mjukvaruklienten tar emot data från roboten kontinueligt och presenterar denna data utan att användaren behöver göra något.
 Möjliga kommandon för användaren att utföra är att växla mellan manuellt och autonomnt läge samt att styra roboten i det manuella läget. Detta görs med knapparna nere till vänster i gränssnittet.
-För att växla mellan manuellt och autonomt läge kan även den fysiska knappen på själva roboten användas.
+För att växla mellan manuellt och autonomt läge kan även den fysiska knappen på själva roboten användas. 
+
 
 \clearpage
 \section{Referenser}
