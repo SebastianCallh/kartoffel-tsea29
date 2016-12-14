@@ -247,7 +247,7 @@ Navigeringslogiken implementeras som en tillståndsmaskin vars transitioner styr
 \label{fig:navigator_flowchart}
 \end{figure}
 \ \\
-Efter en kort uppvärmningsperiod för att hinna läsa in alla sensorer så börjar roboten följa väggen på sin högra sida och håller ett lämplig avstånd till den med hjälp av en modifierad PID-reglering (se avsnitt~\ref{sec:reglering}). Om roboten upptäcker att väggen på höger sida tar slut så innebär det att väggen har svängt av bort från roboten och att den behöver göra en yttersväng till höger för att följa efter. Skulle roboten upptäcka en vägg framför sig betyder det istället att rummet svängt av till vänster, och att roboten behöver göra en innersväng åt vänster. En återvändsgränd består ur robotens perspektiv som två stycken innersvängar till vänster. Ett flödesdiagram över robotens navigeringstillstånd kan ses i figur~\ref{fig:navigator_flowchart}, vilket är all logik som behövs för att den ska kunna följa en vägg. Logiken hanterar yttersväng åt höger, innersväng åt vänster och även återvändsgränder.
+Efter en kort uppvärmningsperiod för att hinna läsa in alla sensorer så börjar roboten följa väggen på sin högra sida och håller ett lämplig avstånd till den med hjälp av en modifierad PID-reglering (se avsnitt~\ref{sec:reglering}). Om roboten upptäcker att väggen på höger sida tar slut så innebär det att väggen har svängt av bort från roboten och att den behöver göra en yttersväng till höger för att följa efter. Skulle roboten upptäcka en vägg framför sig betyder det istället att rummet svängt av till vänster, och att roboten behöver göra en innersväng åt vänster. En återvändsgränd består ur robotens perspektiv av två stycken innersvängar till vänster. Ett flödesdiagram över robotens navigeringstillstånd kan ses i figur~\ref{fig:navigator_flowchart}, vilket är all logik som behövs för att den ska kunna följa en vägg. Logiken hanterar yttersväng åt höger, innersväng åt vänster och även återvändsgränder.
 
 \begin{figure}[H]
 \centering
@@ -268,7 +268,7 @@ Det första momentet som roboten behöver kunna genomföra är en yttersväng ti
 \ \\
 \newline
 För att utföra en innersväng använder sig roboten av lasersensorn monterad framtill och mäter avståndet till väggen. När avståndet underskrider ett visst tröskelvärde så utför roboten en rotation 90 grader till vänster. Sekvensen illustreras i figur~\ref{fig:navigation_inner_turn}. Värt att notera är att yttersväng till höger tar prioritetet över att göra en innersväng åt vänster. Det vill säga att även om lasersensorns mätvärde underskrider tröskelvärdet så kommer det att ignoreras ifall robotens främre högra IR-sensor meddelar att den är på väg mot en högersväng.
-\newpage
+
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.6]{navigation_dead_end}
@@ -447,7 +447,7 @@ Huvudenheten realiseras med en Raspberry PI, på vilken operativsystemet Raspbia
 \label{fig:mjukvarumoduler}
 \end{figure}
 \ \\
- Robotens logik är skriven i programmeringsspråket Python och är moduluppbyggd. Vid start injiceras alla beroenden i programets klasser enligt diagramet i figur~\ref{fig:mjukvarumoduler} och en huvudloop starts som uppdaterar relevanta objekt varje iteration. En beskrivning av mjukvarumodulerna finns nedan.
+ Robotens logik är skriven i programmeringsspråket Python och är moduluppbyggd. Vid start injiceras alla beroenden i programets klasser enligt diagramet i figur~\ref{fig:mjukvarumoduler} och en huvudloop startar som uppdaterar relevanta objekt varje iteration. En beskrivning av mjukvarumodulerna finns nedan.
 
 \subsubsection{Navigator}
 Navigator-klassen sköter all logik för förflyttning. Givet viss indata från sensorerna fattar den beslut för att klara av uppdraget. Se avsnitt~\ref{sec:navigering} för en beskrivning av navigeringsalgoritmen som används.
@@ -479,7 +479,7 @@ Gyro-modulen fyller samma funktion som Laser-modulen. Den läser in värden frå
 \label{fig:huvudenhet_kopplingsschema}
 \end{figure}
 \ \\
-Huvudenheten består av en Raspberry Pi 3 och en LCD-display av modellen JM162A. Utöver kopplingen till LCD:n så kopplas två pins till I2C-bussen. Eftersom Raspberry Pi drivs av 3.3 V matspänning och de övriga atmega-processorerna i roboten drivs av 5 V så behöver bussen nivåskiftas så att de kan kommunicera med varandra, vilket görs med nivåskiftaren BSS138.
+Huvudenheten består av en Raspberry Pi 3 och en LCD-display av modellen JM162A. Utöver kopplingen till LCD:n så kopplas två pins till I2C-bussen. Eftersom Raspberry Pi drivs av 3.3 V matspänning och de övriga ATmega-processorerna i roboten drivs av 5 V så behöver bussen nivåskiftas så att de kan kommunicera med varandra, vilket görs med nivåskiftaren BSS138.
 
 \subsubsection{Komponenter}
 
