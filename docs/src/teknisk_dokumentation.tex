@@ -337,17 +337,16 @@ För att roboten ska kunna presentera data används Bluetooth för kommunikation
 \label{fig:bt-flow-main-unit}
 \end{figure}
 \ \\
-Figur~\ref{fig:bt-flow-main-unit} visar flödet för Bluetoothkommunikationen i huvudenheten. Själva sändningen och mottagndet av data över Bluetooth hanteras av en Bluetoothserver som körs i en egen process skild från huvudprocessen. Servern går igång automatiskt vid start av roboten, och den kontrollerar ständigt om det finns ny data att ta emot respektive ny data att skicka. Om datan den tar emot innehåller kommandot omstart kommer den att starta om sig själv. Kommandon till huvudenheten samlas i en kö för inkommande data, där EventBus tittar efter och hämtar ny data om det finns. På samma sätt samlas data som ska till mjukvaruklienten i en kö för utgående data, i detta fall postar EventBus i kön och Bluetoothservern hämtar för att skicka. Dessa in- och utköer är implementerade som textfiler, och det gör det möjligt för serverprocessen och huvudprocessen att kommunicera.
+Figur~\ref{fig:bt-flow-main-unit} visar flödet för Bluetoothkommunikationen i huvudenheten. Själva sändningen och mottagningen av data över Bluetooth hanteras av en Bluetoothserver som körs i en egen process skild från huvudprocessen. Servern går igång automatiskt vid start av roboten, och den kontrollerar ständigt om det finns ny data att ta emot respektive ny data att skicka. All hantering av kommandon sker i huvudprocessen, förutom om den tar emot kommandot omstart som hanteras direkt i serverprocessen. Kommandon till huvudenheten samlas i en kö för inkommande data, där EventBus tittar efter och hämtar ny data om det finns. På samma sätt samlas data som ska till mjukvaruklienten i en kö för utgående data, i detta fall postar EventBus i kön och Bluetoothservern hämtar för att skicka. Dessa in- och utköer är implementerade som textfiler, och det gör det möjligt för serverprocessen och huvudprocessen att kommunicera.
 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.45]{bt-flow-software-client}
-\caption{Flödesschema över Bluetoothkommunikationen i mjuvaruenklienten.}
+\caption{Flödesschema över Bluetoothkommunikationen i mjuvaruklienten.}
 \label{fig:bt-flow-software-client}
 \end{figure}
 \ \\
-Bluetoothklientens flöde beskrivs i figur~\ref{fig:bt-flow-software-client} och fungerar på samma sätt som servern, med några mindre skillnader. Dels finns inte alternaivet för omstart. Inte heller har klienten flera processer, utan huvudprogrammet startar Bluetoothkommunikationen som en ny tråd. Klientens köer är inte heller implementerade som textfiler, utan som objekt i programmet.
-
+Bluetoothklientens flöde beskrivs i figur~\ref{fig:bt-flow-software-client} och fungerar på samma sätt som servern, med några mindre skillnader. Klienten körs i samma process men olika trådar, och därför behöver inte heller köerna vara implementerade som textfiler.
 
 \subsubsection{I2C}
 \label{sec:i2c}
@@ -511,11 +510,9 @@ Huvudenheten består av en Raspberry Pi 3 och en LCD-display av modellen JM162A.
 \end{table}
 
 \subsection{Sensorenhet}
-Sensorenheten har i uppgift att läsa in värden från robotens sensorer och rapportera värdena till huvudenheten. Den består av fyra IR-sensorer, ett gyroskop, en lasersensor och har sin egna beräkningsenhet, en ATMega 1284, vilket låter den arbeta asynkront från andra enheter. 
+Sensorenheten har i uppgift att läsa in värden från robotens sensorer och rapportera värdena till huvudenheten. Den består av fyra IR-sensorer, ett gyroskop, en lasersensor och har sin egna beräkningsenhet, en ATmega 1284, vilket låter den arbeta asynkront från andra enheter. Den ser på så sätt alltid till att ha data tillgänglig närhelst huvudenheten begär den. För IR-sensorerna sker det genom att processorn låter AD-omvandlaren köras för en sensor i taget och sparar sedan undan avståndet i minnet, medan gyroskop och laser håller koll på sina egna värden och är kopplade direkt på I2C-bussen. Huvudenheten kan sedan fråga sensorenheten efter ny IR-mätdata, eller fråga gyroskopet/lasern direkt varpå den får sensordatan levererad över I2C.
 \newline\newline
-Den ser på så sätt alltid till att ha data tillgänglig närhelst huvudenheten begär den. För IR-sensorerna sker det genom att processorn låter AD-omvandlaren köras för en sensor i taget och sparar sedan undan avståndet i minnet, medan gyroskop och laser håller koll på sina egna värden och är kopplade direkt på I2C-bussen. Huvudenheten kan sedan fråga sensorenheten efter ny IR-mätdata, eller fråga gyroskopet/lasern direkt varpå den får sensordatan levererad över I2C.
-\newline\newline
-Avläsningarna från IR-sensorerna är analoga, och konverteras till digitalt med hjälp av ATMegans interna AD-omvandlare. För att sedan omvandla mätdatan till en approximation i millimeter används en tabell sparad i ATMegans minne.
+Avläsningarna från IR-sensorerna är analoga, och konverteras till digitalt med hjälp av ATmegans interna AD-omvandlare. För att sedan omvandla mätdatan till en approximation i millimeter används en tabell sparad i ATmegans minne.
 
 
 \subsubsection{Kopplingsschema}
@@ -536,7 +533,7 @@ Som figur~\ref{fig:sensorenhet_kopplingsschema} visar är IR-sensorerna kopplade
     \hline
     \textbf{Komponent} & \textbf{Antal} \\
     \hline
-    ATMega 1284 & 1 \\
+    ATmega 1284 & 1 \\
     \hline
     LIDAR-Lite v2 & 1 \\
     \hline
@@ -581,8 +578,6 @@ Som figur~\ref{fig:sensorenhet_kopplingsschema} visar är IR-sensorerna kopplade
   \caption{Tabell över tillgängliga portar på processorn.}
 \end{table}
 
-Den maximala hastigheten som sensordata kan läsas in i är begränsad av sensorernas rapporteringsfrekvens som är betydligt långsammare än en ATmega 1284:s klockfrekvens, därför lönar det sig inte med en snabbare processor för sensorenhetens syfte. Det i princip enda minnet sensorenheten använder sig av är för temporärlagring av alla IR-sensorers data, vilket endast motsvarar fyra heltal. Utöver sensorinläsningen kommer enheten svara på kommandon över huvudbussen som inte heller kräver några höga hastigheter eller minneskrav.
-
 \subsubsection{Programflöde}
 
 \begin{figure}[H]
@@ -615,7 +610,7 @@ Styrenheten klockas av en extern EXO3-klocka som säkerställer en synkroniserad
     \hline
     \textbf{Komponent} & \textbf{Antal} \\
     \hline
-    ATMega 1284 & 1 \\
+    ATmega 1284 & 1 \\
     \hline
     Terminator (bas för fyrhjulingsrobot) & 1 \\
     \hline
@@ -670,7 +665,7 @@ För att kommunicera med roboten används en mjukvaruklient. Programmet har två
 \end{figure}
 \ \\
 \subsubsection{Presentationsmodul}
-När roboten undersöker rummet kommer den att generera flera olika typer av data. Denna data visas av presentationsmodulen. Roboten skickar ingen data självmant, utan får kontinueligt begäran av presentationsmodulen över Bluetooth. Sensor-, gyro-, servo- och laserdata presenteras till höger i det grafiska gränssnittet, se figur~\ref{fig:client_interface}. I gränssnittet presenteras också robotens IP-adress om den är uppkopplad på ett trådlöst nätverk.
+När roboten undersöker rummet kommer den att generera flera olika typer av data. Denna data visas av presentationsmodulen. Roboten skickar ingen data självmant, utan får kontinuerligt begäran av presentationsmodulen över Bluetooth. Sensor-, gyro-, servo- och laserdata presenteras till höger i det grafiska gränssnittet, se figur~\ref{fig:client_interface}. I gränssnittet presenteras också robotens IP-adress om den är uppkopplad på ett trådlöst nätverk.
 
 \subsubsection{Fjärrstyrningsmodul}
 I det grafiska gränssnittet finns en panel med knappar för att skicka styrkommandon till roboten, se figur~\ref{fig:client_interface}. Dels finns det två knappar för att växla mellan manuellt och autonomnt styrläge, samt knappar med riktningar för att styra i det manuella läget. För styrning kan även följande tangenter på tangentbordet användas:
