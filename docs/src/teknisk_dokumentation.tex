@@ -346,7 +346,7 @@ Figur~\ref{fig:bt-flow-main-unit} visar flödet för Bluetoothkommunikationen i 
 \caption{Flödesschema över Bluetoothkommunikationen i mjuvaruenklienten.}
 \label{fig:bt-flow-software-client}
 \end{figure}
-
+\ \\
 Bluetoothklientens flöde beskrivs i figur~\ref{fig:bt-flow-software-client} och fungerar på samma sätt som servern, med några mindre skillnader. Dels finns inte alternaivet för omstart. Inte heller har klienten flera processer, utan huvudprogrammet startar Bluetoothkommunikationen som en ny tråd. Klientens köer är inte heller implementerade som textfiler, utan som objekt i programmet.
 
 
@@ -669,7 +669,7 @@ För att kommunicera med roboten används en mjukvaruklient. Programmet har två
 \caption{Mjukvaruklientens grafiska gränssnitt}
 \label{fig:client_interface}
 \end{figure}
-
+\ \\
 \subsubsection{Presentationsmodul}
 När roboten undersöker rummet kommer den att generera flera olika typer av data. Denna data visas av presentationsmodulen. Roboten skickar ingen data självmant, utan får kontinueligt begäran av presentationsmodulen över Bluetooth. Sensor-, gyro-, servo- och laserdata presenteras till höger i det grafiska gränssnittet, se figur~\ref{fig:client_interface}. I gränssnittet presenteras också robotens IP-adress om den är uppkopplad på ett trådlöst nätverk.
 
@@ -693,7 +693,7 @@ Presentations- och fjärrstyrningsmodulen har ingen tydlig distinktion i kliente
 \caption{Flödesschema för mjukvaruklienten}
 \label{fig:software_client_flowchart}
 \end{figure}
-
+\ \\
 Figur~\ref{fig:software_client_flowchart} visar flödesschemat för mjukvaruklienten. Hanteringen för Bluetooth sker i en separat tråd för att det grafiska gränssnittet ska kunna fungera obeorende av väntan på sändning och mottagande av data. Flödet för Bluetoothkommunikationen kan ses i figur~\ref{fig:bt-flow-software-client}. Om användarinput registreras (1) hanteras detta av callbackfunktioner i GUI:t.Om denna input är styrkommandon som ska skickas till roboten skickas detta vidare till outboundfunktionerna (2). Vid uppdatering av EventBus (3), anropas subscriptionfunktioner som hanterar inkommande data. Vid begäran av data (4) anropas outboundfunktioner som skickar kommandon till roboten via EventBus. Rendering av gränssnittet och uppritning av ny data (5) sker i GUI:t.
 
 \clearpage
