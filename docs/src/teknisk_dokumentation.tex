@@ -539,6 +539,7 @@ Som figur~\ref{fig:sensorenhet_kopplingsschema} visar är IR-sensorerna kopplade
 \begin{table}[H]
 \centering
 \caption{ Tabell över de komponenter som sensorenheten består av. }
+\label{table:sensor-components}
 \begin{tabular}{ | c | c | c | c |}
 \hline
 \textbf{Komponent} & \textbf{Antal} \\
@@ -560,12 +561,14 @@ EXO3 & 1 (delad) \\
 \end{tabular}
 \end{table}
 
+I tabell~\ref{table:sensor-components} listas komponenterna i sensorenheten.
 \subsubsection{Resurser}
 % Rada upp tillgängliga portar på mikroprocessorn samt hur många som krävs
 % Motivera val av mikroprocessor med uppskattning av de resurser som krävs (prestanda, minne, IO)
 \begin{table}[H]
 \centering
 \caption{Tabell över tillgängliga portar på processorn.}
+\label{table:sensor-resurser}
 \begin{tabular}{ | c | c | c | c |}
 \hline
 \textbf{Port} & \textbf{Antal} & \textbf{Krävs} \\
@@ -586,7 +589,7 @@ CLK & 1 & 1 \\
 \hline
 \end{tabular}
 \end{table}
-
+I tabell~\ref{table:sensor-resurser} listas antalet portar som behövs på ATmegan.
 \subsubsection{Programflöde}
 
 \begin{figure}[H]
