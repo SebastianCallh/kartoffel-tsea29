@@ -9,7 +9,6 @@
 \usepackage{textcomp}
 \usepackage{listings}
 \usepackage{color}
-\usepackage{pdfpages}
  
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -105,7 +104,13 @@ STATUS & Patrik Sletmo & 2016-12-DD \\
 \hline
 \end{tabular}
 \end{table}
+
+
+\begin{center}
+\includegraphics[scale=0.065]{robot_cover_photo}
+\end{center}
 }
+
 \clearpage
 
 \vspace*{\fill}
@@ -193,7 +198,7 @@ VERSION & 2016-12-DD & Första version & Grupp 3 & Patrik Sletmo \\
 \section{Inledning}
 
 \subsection{Bakgrund}
-Som en del av utbildningen till civilingenjör i datateknik på Tekniska Högskolan vid Linköpings Universitet har vår projektgrupp i kursen Konstruktion med mikrodatorer (TSEA29) arbetat mot beställaren Mattias Krysander för att tillverka en robot vars syfte är att kartlägga en sluten bana. Den färdiga produkten tävlar mot andra gruppers robotar och redovisas i samband med kursens avslutande.
+Som en del av utbildningen till civilingenjör i datateknik på Tekniska högskolan vid Linköpings universitet har vår projektgrupp i kursen Konstruktion med mikrodatorer (TSEA29) arbetat mot beställaren Mattias Krysander för att tillverka en robot vars syfte är att kartlägga en sluten bana. Den färdiga produkten tävlar mot andra gruppers robotar och redovisas i samband med kursens avslutande.
 
 \subsection{Syfte}
 Det här dokumentet skall ge en ingående beskrivning av kartrobot-systemet från ett tekniskt perspektiv. Dokumentet ska fungera som konstruktionsunderlag för någon som vill bygga en kopia av den robot som beskrivs. Det ska från instruktioner i dokumentet även vara möjligt att underhålla och felsöka både mjuk- och hårdvaran i systemet.
@@ -202,7 +207,7 @@ Det här dokumentet skall ge en ingående beskrivning av kartrobot-systemet frå
 \section{Produkten}
 %En bild på produkten och en beskrivning av hur den fungerar. Beskriv vad den används till.
 
-Systemet består av en fyrhjulig robot samt en mjukvaruklient som kommunicerar med varandra via Bluetooth. Systemets syfte är att roboten ska kunna kartlägga sin omgivning helt autonomnt och förmedla kartläggningen till mjukvaruklienten. För att göra det så är den utrustad med diverse IR-sensorer, en lasersensor och ett gyroskop för att kunna navigera och mäta avstånd. Se figur~\ref{fig:robot_bild} för en bild på konstruktionen.
+Systemet består av en fyrhjulig robot samt en mjukvaruklient som kommunicerar med varandra via Bluetooth. Systemets syfte är att roboten ska kunna kartlägga sin omgivning helt autonomnt och förmedla kartläggningen till mjukvaruklienten. 
 
 \begin{figure}[H]
 \centering
@@ -211,7 +216,7 @@ Systemet består av en fyrhjulig robot samt en mjukvaruklient som kommunicerar m
 \label{fig:robot_bild}
 \end{figure}
 \ \\
-Mjukvaruklienten är som nämnt ansluten via Bluetooth, vilket låter den rendera kartläggningen i realtid. Den har även ett gränssnitt för att kunna fjärrstyra roboten. Se figur~\ref{fig:klient_bild} för en bild på mjukvaruklientens gränssnitt.
+För att utföra kartläggandet så är roboten utrustad med diverse IR-sensorer, en lasersensor och ett gyroskop för att kunna navigera och mäta avstånd. Se figur~\ref{fig:robot_bild} för en bild på konstruktionen.
 
 \begin{figure}[H]
 \centering
@@ -219,6 +224,8 @@ Mjukvaruklienten är som nämnt ansluten via Bluetooth, vilket låter den render
 \caption{En bild på mjukvaruklienten.}
 \label{fig:klient_bild}
 \end{figure}
+\ \\
+Mjukvaruklienten renderar tack vare dess Bluetooth-anslutning kartläggningen i realtid och har ett gränssnitt för att kunna fjärrstyra roboten. Se figur~\ref{fig:klient_bild} för en bild på mjukvaruklientens gränssnitt.
 
 \clearpage
 \section{Teori}
@@ -580,7 +587,7 @@ Den maximala hastigheten som sensordata kan läsas in i är begränsad av sensor
 För att kunna tillhandahålla sensordata från IR-sensorerna när huvudenheten ber den om det så läser sensorenheten in data med jämna mellanrum och sparar den lokalt för att sedan skicka datan på kommando från huvudenheten. Om den fått en begäran om sensordata från huvudenheten så tar det prioritet att leverera den över att läsa in ny data. Ett flödesdiagram över dess beteende ses i figur~\ref{fig:sensorenhet_flowchart}.
 
 \subsection{Styrenhet}
-Styrenhetens uppgift är att kontrollera robotens förflyttning genom att ge korrekta signaler till dess hjulservon. Hjulen styrs parvis, det vill säga vänster hjulpar styrs med en signal och höger hjulpar med en annan. Hastigheten på hjulen styrs genom PWM (\textbf{TODO: FÖRKLARA PWM KORTFATTAT}) medan hastigheter internt är definerade som heltal. Det är styrenhetens uppgift att översätta heltalshastigheter till korrekt pulskvot.
+Styrenhetens uppgift är att kontrollera robotens förflyttning genom att ge korrekta signaler till dess hjulservon. Hjulen styrs parvis, det vill säga vänster hjulpar styrs med en signal och höger hjulpar med en annan. Hastigheten på hjulen styrs genom pulsbreddsmodulering (PWM, pulse-width modulation) medan hastigheter internt är definerade som heltal. Att hjulen styrs genom PWM innebär att deras hastighet är beroende av vilken pulskvot utsignalen har. Utsignalen växlar mellan hög och låg med vissa intervall, och ju högre kvot av signalen som är hög ju snabbare kommer hjulen att åka. Det är styrenhetens uppgift att översätta heltalshastigheter till korrekt pulskvot.
 
 \subsubsection{Kopplingsschema}
 \begin{figure}[H]
@@ -689,6 +696,7 @@ Roboten kartläggningsalgoritm kartlägger sin omgivning genom att beräkna raks
 \clearpage
 \section{Banspecifikation}
 \label{sec:banspec}
+\includegraphics[scale=0.6]{banspec}
 
 \clearpage
 \section{Programkod}
