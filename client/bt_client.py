@@ -41,21 +41,19 @@ class BT_client(threading.Thread):
             except bluetooth.btcommon.BluetoothError:
                 time.sleep(1)
                 timeout -= 1
-                print("waiting for connection...")
-                print(traceback.format_exc())
+                print("Waiting for connection...")
                 continue
             except OSError:
                 time.sleep(1)
                 timeout -= 1
                 print("OSError in _setup_bt_client (waiting connection)")
-                #print(traceback.format_exc())
                 continue
 
         if timeout == 0:
             print("Connection timeout. Could not connect to server!")
             return None
         else:
-            print("connected to ", self.PI_ADDR)
+            print("Connected to ", self.PI_ADDR)
             self.is_connected = True
             return self.client_sock
 
@@ -72,21 +70,17 @@ class BT_client(threading.Thread):
                 if status != "":
                     return status
         else:
-            print("Could not connect to server (no socket created)")
+            print("Could not connect to server, no socket created")
 
     def _send(self):
         bt_out_task = self.queue_handler.pop_out_queue()
-        #print("sending", bt_out_task)
         if bt_out_task:
             self.current_out_task = bt_out_task
-            #print("task =", bt_out_task)
             try:
                 self.client_sock.send(str(bt_out_task.cmd_id))
             except bluetooth.btcommon.BluetoothError:
-                print(traceback.format_exc())
+                pass
             except OSError:
-                #print("OS error in send")
-                #print(traceback.format_exc())
                 pass
                 
             if bt_out_task.cmd_id == protocol.BT_SERVER_SHUTDOWN:
@@ -95,40 +89,29 @@ class BT_client(threading.Thread):
                 self.restart_demanded = True
         else:
             self.current_out_task = BT_task(0, 0)
-        #print("sended")
         
 
     def _receive(self):
-        #print("receiving")
         # Wait for incoming messages for 0.1 seconds
         recv_timeout = 0.1  # Receive timeout 0.1 seconds
         data = ""
         self.client_sock.settimeout(recv_timeout)
         try:
             data = self.client_sock.recv(1024).decode('utf-8')
-            print("received " + str(data))
         except bluetooth.btcommon.BluetoothError:
-            #self.client_sock.settimeout(None)
             # Recieved when server responds to shutdown
-            # print("Catching bluetooth error")
-            # print(traceback.format_exc())
             pass
         except OSError:
-            #self.client_sock.settimeout(0)
-            #print(traceback.format_exc())
-            #print("OSError in receive")
             pass
         self.client_sock.settimeout(0)
 
         if self.restart_demanded:
-            print("Bt client restart")
             # Restart requested
             self.client_sock.close()
             del self.client_sock
             return "RESTART"
         elif self.exit_demanded:
             # Shutdown requested
-            print("Bt client exit")
             self.client_sock.close()
             del self.client_sock
             return "EXIT"
@@ -136,11 +119,9 @@ class BT_client(threading.Thread):
         if data:
             data = literal_eval(data)
             bt_in_task = BT_task(data[0], data[1])
-            #print("Bt in task data: ", bt_in_task.data)
 
             self.queue_handler.post_in_queue(bt_in_task)
 
-        #print("received")
         return ""
 
     '''
@@ -157,6 +138,6 @@ class BT_client(threading.Thread):
             status = self._start_bt_client()
             if status == "ERROR":
                 # TODO Add a task to out_queue
-                print("A bluetooth error occured!")
+                print("A Bluetooth error occurred!")
             # Sleep so server has time to restart
             time.sleep(2)
