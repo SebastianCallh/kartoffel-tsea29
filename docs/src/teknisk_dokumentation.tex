@@ -10,6 +10,8 @@
 \usepackage{listings}
 \usepackage{color}
  
+\usepackage[top=1.5in,bottom=1in,right=1.5in,left=1.5in,headheight=65pt]{geometry}
+
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
@@ -44,6 +46,8 @@
 
 %For headers & footers
 \usepackage{fancyhdr}
+\usepackage{pdfpages}
+%\setlength{\headheight}{110pt} 
 \pagestyle{fancy}
 \lhead{\includegraphics[scale=0.2]{Logo}}
 \chead{Kartrobot}
@@ -104,7 +108,13 @@ STATUS & Patrik Sletmo & 2016-12-DD \\
 \hline
 \end{tabular}
 \end{table}
+
+
+\begin{center}
+\includegraphics[scale=0.065]{robot_cover_photo}
+\end{center}
 }
+
 \clearpage
 
 \vspace*{\fill}
@@ -192,7 +202,7 @@ VERSION & 2016-12-DD & Första version & Grupp 3 & Patrik Sletmo \\
 \section{Inledning}
 
 \subsection{Bakgrund}
-Som en del av utbildningen till civilingenjör i datateknik på Tekniska Högskolan vid Linköpings Universitet har vår projektgrupp i kursen Konstruktion med mikrodatorer (TSEA29) arbetat mot beställaren Mattias Krysander för att tillverka en robot vars syfte är att kartlägga en sluten bana. Den färdiga produkten tävlar mot andra gruppers robotar och redovisas i samband med kursens avslutande.
+Som en del av utbildningen till civilingenjör i datateknik på Tekniska högskolan vid Linköpings universitet har vår projektgrupp i kursen Konstruktion med mikrodatorer (TSEA29) arbetat mot beställaren Mattias Krysander för att tillverka en robot vars syfte är att kartlägga en sluten bana. Den färdiga produkten tävlar mot andra gruppers robotar och redovisas i samband med kursens avslutande.
 
 \subsection{Syfte}
 Det här dokumentet skall ge en ingående beskrivning av kartrobot-systemet från ett tekniskt perspektiv. Dokumentet ska fungera som konstruktionsunderlag för någon som vill bygga en kopia av den robot som beskrivs. Det ska från instruktioner i dokumentet även vara möjligt att underhålla och felsöka både mjuk- och hårdvaran i systemet.
@@ -201,7 +211,7 @@ Det här dokumentet skall ge en ingående beskrivning av kartrobot-systemet frå
 \section{Produkten}
 %En bild på produkten och en beskrivning av hur den fungerar. Beskriv vad den används till.
 
-Systemet består av en fyrhjulig robot samt en mjukvaruklient som kommunicerar med varandra via Bluetooth. Systemets syfte är att roboten ska kunna kartlägga sin omgivning helt autonomnt och förmedla kartläggningen till mjukvaruklienten. För att göra det så är den utrustad med diverse IR-sensorer, en lasersensor och ett gyroskop för att kunna navigera och mäta avstånd. Se figur~\ref{fig:robot_bild} för en bild på konstruktionen.
+Systemet består av en fyrhjulig robot samt en mjukvaruklient som kommunicerar med varandra via Bluetooth. Systemets syfte är att roboten ska kunna kartlägga sin omgivning helt autonomnt och förmedla kartläggningen till mjukvaruklienten. 
 
 \begin{figure}[H]
 \centering
@@ -210,7 +220,7 @@ Systemet består av en fyrhjulig robot samt en mjukvaruklient som kommunicerar m
 \label{fig:robot_bild}
 \end{figure}
 \ \\
-Mjukvaruklienten är som nämnt ansluten via Bluetooth, vilket låter den rendera kartläggningen i realtid. Den har även ett gränssnitt för att kunna fjärrstyra roboten. Se figur~\ref{fig:klient_bild} för en bild på mjukvaruklientens gränssnitt.
+För att utföra kartläggandet så är roboten utrustad med diverse IR-sensorer, en lasersensor och ett gyroskop för att kunna navigera och mäta avstånd. Se figur~\ref{fig:robot_bild} för en bild på konstruktionen.
 
 \begin{figure}[H]
 \centering
@@ -218,6 +228,8 @@ Mjukvaruklienten är som nämnt ansluten via Bluetooth, vilket låter den render
 \caption{En bild på mjukvaruklienten.}
 \label{fig:klient_bild}
 \end{figure}
+\ \\
+Mjukvaruklienten renderar tack vare dess Bluetooth-anslutning kartläggningen i realtid och har ett gränssnitt för att kunna fjärrstyra roboten. Se figur~\ref{fig:klient_bild} för en bild på mjukvaruklientens gränssnitt.
 
 \clearpage
 \section{Teori}
@@ -226,8 +238,7 @@ För att lyckas kartlägga en bana använder sig systemet av en rad olika algori
 
 \subsection{Navigering}
 \label{sec:navigering}
-Navigeringslogiken implementeras som en tillståndsmaskin vars transitioner styrs av indata från robotens sensorer. Den antar att omgivningen följer banspecifikationen i bilaga~\ref{sec:banspec}.\newline \newline
-Efter en kort uppvärmningsperiod för att hinna läsa in alla sensorer så börjar roboten följa väggen på sin högra sida och håller ett lämplig avstånd till den med hjälp av en modifierad PID-reglering (se avsnitt~\ref{sec:reglering}). Om roboten upptäcker att väggen på höger sida tar slut så innebär det att väggen har svängt av bort från roboten och att den behöver göra en yttersväng till höger för att följa efter. Skulle roboten upptäcka en vägg framför sig betyder det istället att rummet svängt av till vänster, och att roboten behöver göra in innersväng åt vänster. En återvändsgränd består ur robotens perspektiv som två stycken innersvängar till vänster. Ett flödesdiagram över robotens navigeringstillstånd kan ses i figur~\ref{fig:navigator_flowchart}.
+Navigeringslogiken implementeras som en tillståndsmaskin vars transitioner styrs av indata från robotens sensorer. Den antar att omgivningen följer banspecifikationen i bilaga~\ref{sec:banspec}.
 
 \begin{figure}[H]
 \centering
@@ -236,8 +247,7 @@ Efter en kort uppvärmningsperiod för att hinna läsa in alla sensorer så bör
 \label{fig:navigator_flowchart}
 \end{figure}
 \ \\
-\newline
-Flödesdiagramet i~\ref{fig:navigator_flowchart} är all logik som behövs för att roboten ska kunna följa en vägg. De olika momenten som dyker upp under kartläggningen illustreras och förklaras i figurerna~\ref{fig:navigation_outer_turn},~\ref{fig:navigation_inner_turn},~\ref{fig:navigation_dead_end}.
+Efter en kort uppvärmningsperiod för att hinna läsa in alla sensorer så börjar roboten följa väggen på sin högra sida och håller ett lämplig avstånd till den med hjälp av en modifierad PID-reglering (se avsnitt~\ref{sec:reglering}). Om roboten upptäcker att väggen på höger sida tar slut så innebär det att väggen har svängt av bort från roboten och att den behöver göra en yttersväng till höger för att följa efter. Skulle roboten upptäcka en vägg framför sig betyder det istället att rummet svängt av till vänster, och att roboten behöver göra en innersväng åt vänster. En återvändsgränd består ur robotens perspektiv som två stycken innersvängar till vänster. Ett flödesdiagram över robotens navigeringstillstånd kan ses i figur~\ref{fig:navigator_flowchart}, vilket är all logik som behövs för att den ska kunna följa en vägg. Logiken hanterar yttersväng åt höger, innersväng åt vänster och även återvändsgränder.
 
 \begin{figure}[H]
 \centering
@@ -247,7 +257,7 @@ Flödesdiagramet i~\ref{fig:navigator_flowchart} är all logik som behövs för 
 \end{figure}
 \ \\
 \newline
-Det första momentet som roboten behöver kunna genomföra är en yttersväng till höger, vilket illustreras i ~\ref{fig:navigation_outer_turn}. För att detektera en sväng så använder den sina två IR-sensorer monterade fram respektive bak på höger sida. När den första IR-sensorn inte längre detekterar en vägg vet roboten att den snart ska rotera, och när den bakre gör samma sak utförst en rotation 90 grader åt höger.
+Det första momentet som roboten behöver kunna genomföra är en yttersväng till höger, vilket illustreras i figur~\ref{fig:navigation_outer_turn}. För att detektera en sväng så använder den sina två IR-sensorer monterade fram respektive bak på höger sida. När den första IR-sensorn inte längre detekterar en vägg går den in i ett läge som förbjuder vänstersvängar, och när den bakre gör samma sak utförst en rotation 90 grader åt höger.
 
 \begin{figure}[H]
 \centering
@@ -257,7 +267,7 @@ Det första momentet som roboten behöver kunna genomföra är en yttersväng ti
 \end{figure}
 \ \\
 \newline
-För att utföra en innersväng använder sig roboten av lasersensorn monterad framtill och mäter avståndet till väggen. När avstånder underskrider ett visst tröskelvärde så vet roboten att den ska rotera 90 grader till vänster. Sekvensen illustreras i figur~\ref{fig:navigation_inner_turn}. Värt att notera är att yttersväng till höger tar prioritetet över att göra en innersväng åt vänster. Det vill säga att även om lasersensorns mätvärde underskrider tröskelvärdet så kommer det att ignoreras ifall robotens främre högra IR-sensor meddelar att den är på väg mot en högersväng.
+För att utföra en innersväng använder sig roboten av lasersensorn monterad framtill och mäter avståndet till väggen. När avståndet underskrider ett visst tröskelvärde så utför roboten en rotation 90 grader till vänster. Sekvensen illustreras i figur~\ref{fig:navigation_inner_turn}. Värt att notera är att yttersväng till höger tar prioritetet över att göra en innersväng åt vänster. Det vill säga att även om lasersensorns mätvärde underskrider tröskelvärdet så kommer det att ignoreras ifall robotens främre högra IR-sensor meddelar att den är på väg mot en högersväng.
 \newpage
 \begin{figure}[H]
 \centering
@@ -267,22 +277,21 @@ För att utföra en innersväng använder sig roboten av lasersensorn monterad f
 \end{figure}
 \ \\
 \newline
-När roboten tar sig förbi en återvändsgränd faller den i själva verket in i samma rutin som när den utför an innersväng åt vänster upprepat två gånger. Roboten roterar när den närmar sig slutet på återvändsgränden, och direkt efter rotationen upptäcks en vägg framför den och den roterar ytterligare 90 grader för att sedan fortsätta ut ur återvändsgränden. En illustration ses i figur~\ref{fig:navigation_dead_end}.
+När roboten tar sig förbi en återvändsgränd faller den i själva verket in i samma rutin som när den utför en innersväng åt vänster upprepat två gånger. Roboten roterar när den närmar sig slutet på återvändsgränden, och direkt efter rotationen upptäcks en vägg framför den och den roterar ytterligare 90 grader för att sedan fortsätta ut ur återvändsgränden. En illustration ses i figur~\ref{fig:navigation_dead_end}.
 
 \subsection{Kartläggning}
 \subsubsection{Positionsbestämning}
 \label{sec:position}
-Under kartläggningen av rummet så räknar roboten sektioner som den har passerat och utnyttjar det för att bestämma sina koordinater när en sektion har passerats. Robotens start koordinater är alltid i origo och startriktiningen är alltid ''norrut'', alltså positivt längs Y-axeln. När roboten enligt navigeringsalgoritmen i avsnitt~\ref{sec:navigering} bestämmer sig för att ta en sväng och rotera så kommer kartläggningen att spara den nuvarande positionen. Detta genom att vid varje inläsning av laserdata har roboten sparat detta i en lista och tagit ut skillnaden mellan det högsta och lägsta avstånd som lasern har uppmätt och dividerat med storleken på en ruta i rutnätet. Då fås antalet rutor som roboten har förflyttat sig i en viss riktning och på så sätt vet roboten sin nuvarande position. Positions bestämnigen är även den baserad på en tillståndsmaskin. Den är baserad på två tillstånd, väntar och mäter, där väntar är det tillstånd som roboten befinner sig i när den gör en 90 graders rotation. Därefter går roboten in i tillståndet mäter där en ny sektion initieras och mätdata sparas varje varv i huvudloopen.\newline \newline
-Under positionsbestämningen så kommer roboten att hålla utkik efter väggar på vänstersidan för att kunna lokalisera eventuella väggar på en köksö. Även dessa är uppbygda av sektioner då roboten säger att den här sektionen kan vara en eventuell köksö och sparar undan koordinaterna när den inte längre ser väggen på vänster sida. Om väggen som roboten såg till vänster redan ligger i den besökta vägen så kommer den inte att sparas som en del av en potentiell köksö. Om roboten passerar en koordinat som ligger i listan över koordinaterna för den potentiella köksön så kommer dessa att tas bort och således definieras dessa koordinater som del av en yttervägg.
+Under kartläggningen av rummet så räknar roboten sektioner som den har passerat och utnyttjar det för att bestämma sina koordinater när en sektion har passerats. Robotens startkoordinater är alltid i origo och startriktiningen är alltid ``norrut'', alltså positivt längs Y-axeln. När roboten enligt navigeringsalgoritmen i avsnitt~\ref{sec:navigering} bestämmer sig för att ta en sväng och rotera så kommer kartläggningen att spara den nuvarande positionen. Genom att ta skillnaden mellan högsta och lägsta mätvärdet dividerat med storleken på en ruta fås antalet rutor som roboten förflyttat sig. Positionsbestämnigen är även den baserad på en tillståndsmaskin. Den är baserad på två tillstånd, väntar och mäter; där väntar är det tillstånd som roboten befinner sig i när den gör en 90 graders rotation. Därefter går roboten in i tillståndet mäter där en ny sektion initieras och mätdata sparas varje varv i huvudloopen.\newline \newline
+Under positionsbestämningen så kommer roboten att hålla utkik efter väggar på vänstersidan för att kunna lokalisera eventuella väggar på en köksö. Så fort roboten ser något på vänstersidan så kommer den att säga att just denna koordinat kan vara en köksö så länge den inte redan har passerats. Om roboten under första varvet åker förbi en koordinat som kan vara en köksö kommer den att tas bort som eventuell köksö.
 
 \subsubsection{Bestämning av köksö}
-När roboten har åkt ett varv längs ytterkanterna kommer den att gå in i ett läge där den letar efter köksön. Då kommer den att kolla i listan över potentiella köksöar och hitta minst en koordinat som representerar en vägg på köksön. Roboten kommer att åka längs ytterkanterna tills den kommer till den här koordinaten och svänger in till köksön för att sedan ta ett varv runt den för att bestämma vilka koordinater som köksön befinner sig på. Detta sker på samma sätt som beskrivs ovanför i  avsnitt~\ref{sec:position}. När roboten har tagit sig ett varv runt köksön fortsätter den att åka längs ytterväggarna och tillbaka till garaget för att slutföra uppdraget. 
+När roboten har åkt ett varv längs ytterkanterna kommer den att gå in i ett läge där den letar efter köksön. Då kommer den att kolla i listan över potentiella köksöar och hitta minst en koordinat som representerar en köksö. När roboten har transporterat sig till en koordinat i den här listan kommer den att ta en vänstersväng och förflytta sig runt ön. Detta sker på samma sätt som beskrivs ovanför i avsnitt~\ref{sec:position}. När ett varv har passerats återvänder roboten till garaget genom att slutföra varvet. 
 
 
 \subsection{Reglering}
 \label{sec:reglering}
-Roboten reglerar längs en vägg på sin högra sida med hjälp av två IR-sensorer, en vid robotens främre del och en vid robotens bakre del. Ett önskat värde är bestämt som det avstånd som roboten ska hålla ifrån väggen den reglerar emot. Med hjälp av det önskade värdet tillsammans med värdena ifrån de två IR-sensorenra räknas ett distansfel ut. Distansfelet räknas ut genom att dra bort främre IR-sensorns värde ifrån det önskade avståndet. Sedan läggs ett värde proportionellt mot differensen mellan bakre och främre sensorn till för att efterlikna det verkliga avståndet från väggen (se figur~\ref{fig:reglering}). Detta då värdet ifrån IR-sensorerna ökar mer än det verkliga värdet desto mer vinklad ifrån väggen roboten står.\newline
-Med hjälp av distansfelet och differensen utförs en enklare PID-reglering som istället för I- och D-delen använder sig av differensen och returnerar ett regleringsvärde $u$. Regleringsvärdet räknas ut enligt formeln $u[n] = Kp * e[n] + Ka * d$, där $Kp$ och $Ka$ är konstanter, $e[n]$ är distansfelet vid tid $n$, och $d$ är differensen mellan värdena på den bakre och främre IR-sensorn. Regleringsvärdet adderas respektive subtraheras sedan på en standard-hastighet och skickas till de båda hjulparen för att räta upp roboten och få den att följa väggen och hålla ett önskat avstånd. 
+Roboten reglerar längs en vägg på sin högra sida med hjälp av två IR-sensorer, en vid robotens främre del och en vid robotens bakre del. Ett önskat värde är bestämt som det avstånd som roboten ska hålla ifrån väggen den reglerar emot. Med hjälp av det önskade värdet tillsammans med värdena ifrån de två IR-sensorerna räknas ett distansfel ut. 
 
 \begin{figure}[H]
 \centering
@@ -290,13 +299,22 @@ Med hjälp av distansfelet och differensen utförs en enklare PID-reglering som 
 \caption{En illustration över hur roboten reglerar.}
 \label{fig:reglering}
 \end{figure}
+\ \\
+\newline
+Distansfelet räknas ut genom att dra bort främre IR-sensorns värde ifrån det önskade avståndet. Sedan läggs ett värde proportionellt mot differensen mellan bakre och främre sensorn till för att efterlikna det verkliga avståndet från väggen (se figur~\ref{fig:reglering}). Detta då värdet ifrån IR-sensorerna ökar mer än det verkliga värdet desto mer vinklad ifrån väggen roboten står.\newline\newline
+Med hjälp av distansfelet och differensen utförs en enklare PID-reglering som istället för I- och D-delen använder sig av differensen och returnerar ett regleringsvärde $u$.
+\begin{equation}
+u[n] = Kp * e[n] + Ka * d
+\label{eq:reglering}
+\end{equation}  
+Regleringsvärdet räknas ut enligt formel~\ref{eq:reglering} där $Kp$ och $Ka$ är konstanter, $e[n]$ är distansfelet vid tid $n$, och $d$ är differensen mellan värdena på den bakre och främre IR-sensorn. Regleringsvärdet (som ges av formel~\ref{eq:reglering}) adderas respektive subtraheras sedan på en standard-hastighet och skickas till de båda hjulparen för att räta upp roboten och få den att följa väggen och hålla ett önskat avstånd. 
 
 \subsection{Kommunikation}
 Systemet byggs upp av ett antal separata moduler som behöver samarbeta för att utföra robotens funktion då dess unika funktioner är alldeles för specifika. Kommunikationen som möjliggör detta samarbete sker både via Bluetooth och I2C beroende på modulernas placering i systemet. Då det kan bli förvirrande att hantera dataflödet på två olika protokoll ligger det ett abstraktionslager som kallas EventBus ovanpå dessa överföringsmedier. Detta abstraktionslager samt de underliggande implementationerna beskrivs mer ingående i följande delavsnitt. 
 
 \subsubsection{EventBus}
 \label{sec:eventbus}
-För att underlätta programmering av logikenheten använder sig systemet av en distribuerad eventbuss kallad EventBus som tillhandahåller funktioner för att skicka data till en annan enhet på bussen och för att lyssna på mottagna meddelanden. Eventbussen är delad mellan sensorenheten, styrenheten, huvudenheten samt mjukvaruklienten men eftersom bussen saknar funktionalitet för att delegera data vidare till andra enheter kan data inte skickas direkt från t.ex. sensorenheten till styrenheten, se figur~\ref{fig:eventbus_structure}. Eventbussen saknar fysiskt representation i den mening som t.ex. I2C-bussen har utan är bara en abstraktion som med hjälp av I2C-bussen och Bluetooth-anslutningen realiserar dess distribuerade funktion.
+För att underlätta programmering av logikenheten använder sig systemet av en distribuerad eventbuss kallad EventBus som tillhandahåller funktioner för att skicka data till en annan enhet på bussen och för att lyssna på mottagna meddelanden.
 
 \begin{figure}[H]
 \centering
@@ -305,7 +323,8 @@ För att underlätta programmering av logikenheten använder sig systemet av en 
 \label{fig:eventbus_structure}
 \end{figure}
 \ \\
-\newline
+Eventbussen är delad mellan sensorenheten, styrenheten, huvudenheten samt mjukvaruklienten men eftersom bussen saknar funktionalitet för att delegera data vidare till andra enheter kan data inte skickas direkt från t.ex. sensorenheten till styrenheten, se figur~\ref{fig:eventbus_structure}. Eventbussen saknar fysiskt representation i den mening som t.ex. I2C-bussen har utan är bara en abstraktion som med hjälp av de underliggande kommunikationsmedierna realiserar dess distribuerade funktion.
+\newline\newline
 Tanken med eventbussen är att programmeraren ska slippa tänka på att ett funktionsanrop exekveras på en annan enhet eller varifrån data kommer, så länge det läggs åtanke på att funktionerna exekveras asynkront. All mottagen data behöver manuellt behandlas i ett periodiskt funktionsanrop innan de ``lyssnande'' funktionsanropen körs. För att få en tydligare och mer deterministisk körning av huvudenhetens program läses all mottagen data in i början av varje upprepning av huvudloopen. Data ut från huvudenheten skickas till skillnad från inläsningen direkt när anropet sker för att säkerställa att data kommer fram i andra änden så tidigt som möjligt.
 
 \subsubsection{Bluetooth}
@@ -333,7 +352,7 @@ Bluetoothklientens flöde beskrivs i figur~\ref{fig:bt-flow-software-client} och
 
 \subsubsection{I2C}
 \label{sec:i2c}
-För att kunna kommunicera med olika moduler och sensorer på själva roboten används en I2C-buss som delas mellan huvudenheten, sensorenheten, styrenheten, laser-sensorn samt gyroskopet där huvudenheten agerar master och alla andra enheter slavar. Eftersom kraven som ställs på kommunikationen mellan modulerna förutsätter att data kan skickas i form av anrop räcker inte I2C-bussens protokoll till utan skrivningen och inläsningen till/från adresser behöver utökas med funktionalitet för att skicka faktiska datapaket. Det påliggande protokollet implementerar köer av paket för båda datariktningarna på AVR:erna som pollas och fylls på från huvudenheten. Varje paket innehåller ett antal bytes för dess data där den första byten innehåller paketets id. Eftersom I2C endast tillåter läsning eller skrivning av en enda byte innehåller varje paket on-the-wire också en inledande byte som specificerar dess längd, vilket ger en maxlängd av 255 bytes. När ett paket lästs in läggs det i en intern kö som hanteras av den modulspecifika koden, se figur~\ref{fig:flodesschema_i2c}.
+För att kunna kommunicera med olika moduler och sensorer på själva roboten används en I2C-buss som delas mellan huvudenheten, sensorenheten, styrenheten, laser-sensorn samt gyroskopet där huvudenheten agerar master och alla andra enheter slavar. Eftersom kraven som ställs på kommunikationen mellan modulerna förutsätter att data kan skickas i form av anrop räcker inte I2C-bussens protokoll till utan skrivningen och inläsningen till/från adresser behöver utökas med funktionalitet som gör det möjligt att skicka faktiska datapaket.
 
 \begin{figure}[H]
 \centering
@@ -342,8 +361,9 @@ För att kunna kommunicera med olika moduler och sensorer på själva roboten an
 \label{fig:flodesschema_i2c}
 \end{figure}
 \ \\
-\newline
-Alla inkopplade enheter på I2C-bussen använder sig inte av det protokoll som beskrivs ovan utan fungerar på det vanliga sättet genom läsning och skrivning till adresser. Dessa enheter är laser-sensorn samt  gyroskopet och adresseras direkt från huvudenheten istället för att passera via sensorenheten som alla andra sensorer till följd av begränsningar som följer från single-master implementationen. Läsning från dessa sensorer sker periodvist i huvudenhetens programloop och sparas undan så att olika delar av programmet kan komma åt det senaste datat utan att behöva läsa multipla gånger.
+Det påliggande protokollet implementerar köer av paket för båda datariktningarna på AVR:erna som pollas och fylls på från huvudenheten. Varje paket innehåller ett antal bytes för dess data där den första byten innehåller paketets id. Eftersom I2C endast tillåter läsning eller skrivning av en enda byte innehåller varje paket on-the-wire också en inledande byte som specificerar dess längd, vilket ger en maxlängd av 255 bytes. När ett paket lästs in läggs det i en intern kö som hanteras av den modulspecifika koden, se figur~\ref{fig:flodesschema_i2c}.
+\newline\newline
+Alla inkopplade enheter på I2C-bussen använder sig inte av det protokoll som beskrivs ovan utan kommunikation med vissa enheter fungerar på det vanliga sättet genom läsning och skrivning till adresser. Dessa enheter är laser-sensorn samt gyroskopet, som adresseras direkt från huvudenheten istället för att passera via sensorenheten till följd av begränsningar som följer från single-master implementationen. Läsning från dessa sensorer sker periodvist i huvudenhetens programloop och sparas undan så att olika delar av programmet kan komma åt det senaste datat utan att behöva läsa multipla gånger.
 
 \clearpage
 \section{Systemet}
@@ -363,7 +383,7 @@ I figur~\ref{fig:oversikt_systemet} syns systemet i sin helhet med alla enheter 
 Systemet är redan från början av projektet designat för att vara lätt att felsöka. Det finns enkla gränssnitt både in och ut från robotens alla processorer som gör att data kan manipuleras och inspekteras utan att behöva pausa programmet eller spara undan data i filer.
 
 \subsubsection{Felsökning på AVR}
-Eftersom AVR:erna i sitt grundutförande inte kan ge någon avancerad utdata finns möjligheten att på roboten koppla varje AVR direkt till en dators USB-port med hjälp av en seriell anslutningskabel. Genom att öppna seriellporten i t.ex. Putty (Windows) eller screen (UNIX) kan data skickas fram och tillbaka mellan datorn och mikroprocessorn, se listing~\ref{lst:avr_debug_screen}. I den nuvarande konfigurationen stöds bara möjligheten att skicka data från roboten till datorn men gränssnittet stödjer även den motsatta datariktningen. Implementationen bygger på att ersätta stdout-strömmen så utskrift till dator kan göras med det bekanta gränssnitt som definieras i stdio.h, se listing~\ref{lst:avr_debug_example} för ett komplett exempel.
+Eftersom AVR:erna i sitt grundutförande inte kan ge någon avancerad utdata finns möjligheten att på roboten koppla varje AVR direkt till en dators USB-port med hjälp av en seriell anslutningskabel. Genom att öppna seriellporten i t.ex. Putty (Windows) eller screen (UNIX) kan data skickas fram och tillbaka mellan datorn och mikroprocessorn, se listning~\ref{lst:avr_debug_screen}. I den nuvarande konfigurationen stöds bara möjligheten att skicka data från roboten till datorn men gränssnittet stödjer även den motsatta datariktningen. Implementationen bygger på att ersätta stdout-strömmen så utskrift till dator kan göras med det bekanta gränssnitt som definieras i stdio.h, se listning~\ref{lst:avr_debug_example} för ett komplett exempel.
 \newline
 \begin{lstlisting}[language=sh, label={lst:avr_debug_screen}, caption={Anslutning via screen}]
 $ screen /dev/tty.usbserial
@@ -372,6 +392,11 @@ $ screen /dev/tty.usbserial
 \begin{lstlisting}[language=C, label={lst:avr_debug_example}, caption=Exempel av utskrift]
 #include "common/debug.h"
 
+// Initialization, performed during program startup
+initialize_uart();
+sei();
+
+// Debugging, performed at any point during execution
 int measuredValue = 42;
 printf("Measured value: %d\n", measuredValue);
 \end{lstlisting}
@@ -396,7 +421,7 @@ I stort sätt alla fel som uppkommer i hårdvaran beror på en för låg batteri
 Ifall något av dessa symptom observeras bör batteriet omedelbart bytas mot ett nyladdat för att undvika skador på robot, omgivning eller människor.
 
 \subsubsection{Felsökning av I2C}
-Ibland händer det att I2C-bussen tappar bort någon enhet eller helt enkelt slutar fungera, särskilt vid låga batterinivåer. Det går att verifiera att I2C-bussen fungerar som den ska genom att köra ett kommando från huvudenhetens terminal, se listing~\ref{lst:i2c_debug} för kommando och förväntad utdata för en hälsosam buss. Om bussen är trasig så kommer huvudenhetens program att sluta fungera och skriva ut ett felmeddelande i loggen. I de flesta fall går det att lösa problemet genom att bryta och sedan slå på spänningsmatningen till roboten men om batterinivån är låg kan batteriet behöva laddas.
+Ibland händer det att I2C-bussen tappar bort någon enhet eller helt enkelt slutar fungera, särskilt vid låga batterinivåer. Det går att verifiera att I2C-bussen fungerar som den ska genom att köra ett kommando från huvudenhetens terminal, se listning~\ref{lst:i2c_debug} för kommando och förväntad utdata för en hälsosam buss. Om bussen är trasig så kommer huvudenhetens program att sluta fungera och skriva ut ett felmeddelande i loggen. I de flesta fall går det att lösa problemet genom att bryta och sedan slå på spänningsmatningen till roboten men om batterinivån är låg kan batteriet behöva laddas.
 \newline
 \begin{lstlisting}[language=sh, label={lst:i2c_debug}, caption={Kommando och förväntad utdata för en fungerande I2C-buss}]
 $ i2cdetect -y 1
@@ -415,7 +440,7 @@ $ i2cdetect -y 1
 \section{Modulerna}
 
 \subsection{Huvudenhet}
-Huvudenheten realiseras med en Raspberry PI, på vilken operativsystemet Raspbian körs. Den representerar robotens beslutsfattande organ och sköter navigationsbeslut, kartläggning, kommunikation med mjukvaruklienten samt agerar mästare på robotens I2C-buss. Robotens logik är skriven i programmeringsspråket Python och är moduluppbyggd. En huvudloop injicerar alla beroenden i programets klasser enligt diagramet i figur~\ref{fig:mjukvarumoduler} och uppdaterar relevanta objekt varje iteration. En beskrivning av mjukvarumodulerna finns nedan.
+Huvudenheten realiseras med en Raspberry PI, på vilken operativsystemet Raspbian körs. Den representerar robotens beslutsfattande organ och sköter navigationsbeslut, kartläggning, kommunikation med mjukvaruklienten samt agerar master på robotens I2C-buss.
 
 \begin{figure}[H]
 \centering
@@ -423,26 +448,28 @@ Huvudenheten realiseras med en Raspberry PI, på vilken operativsystemet Raspbia
 \caption{Ett diagram över logikenhetens mjukvarumoduler.}
 \label{fig:mjukvarumoduler}
 \end{figure}
+\ \\
+ Robotens logik är skriven i programmeringsspråket Python och är moduluppbyggd. Vid start injiceras alla beroenden i programets klasser enligt diagramet i figur~\ref{fig:mjukvarumoduler} och en huvudloop starts som uppdaterar relevanta objekt varje iteration. En beskrivning av mjukvarumodulerna finns nedan.
 
-\paragraph{Navigator}
-Navigator-klassen sköter all logik för förflyttning. Givet viss indata från sensorerna fattar den beslut för att klarar av uppdraget. Se~\ref{sec:navigering} för en beskrivning av navigeringsalgoritmen som används.
+\subsubsection{Navigator}
+Navigator-klassen sköter all logik för förflyttning. Givet viss indata från sensorerna fattar den beslut för att klara av uppdraget. Se avsnitt~\ref{sec:navigering} för en beskrivning av navigeringsalgoritmen som används.
 
-\paragraph{Communicator}
+\subsubsection{Communicator}
 Communicator tar emot begäran från mjukvarumodulen och innehåller all logik för att leverera korrekt svar. Den skickar både vidare styrkommandon till styrenheten samt returnerar begärd data till mjukvaruklienten. 
 
-\paragraph{Position}
-Position hanterar all information om hur roboten gör för att bestämma sin position på kartan. Beroende på vilket tillstånd i kartläggningen roboten befinner sig. Se~\ref{sec:position} för en utförligare beskrivning av hur positionsbestämningen fungerar. 
+\subsubsection{Position}
+Position hanterar all logik för hur roboten gör för att bestämma sin position på kartan beroende på vilket tillstånd i kartläggningen roboten befinner sig. Se avsnitt~\ref{sec:position} för en utförligare beskrivning av hur positionsbestämningen fungerar. 
 
-\paragraph{Driver}
-Driver innehåller metoder för att utföra standardiserade förflyttningar, t.ex. en inre högersväng eller en yttre vänstersväng. Vid ett anrop till en metod så ges Driver en uppgift som består av en instruktion, en jämförelsefunktion och ett värde till funktionen som Driver använder för att veta när dess uppgift är klar. Till exempel kan en uppgift (i ord) bestå av "vänstersväng, mät i grader, 90", vilket skulle få roboten att svänga vänster, till en skillnad i 90 grader mäts upp från gyroskopet. 
+\subsubsection{Driver}
+Driver innehåller metoder för att utföra standardiserade förflyttningar, t.ex. en inre högersväng eller en yttre vänstersväng. Vid ett anrop till en metod så ges Driver en uppgift som består av en instruktion, en jämförelsefunktion och ett värde till funktionen som Driver använder för att veta när dess uppgift är klar. Till exempel kan en uppgift (i ord) bestå av "vänstersväng, mät i grader, 90", vilket skulle få roboten att svänga vänster, till det att en skillnad i 90 grader uppmäts från gyroskopet. 
 
-\paragraph{IR}
+\subsubsection{IR}
 IR-modulen har en funktion som anropas när sensorenheten har skickat sensordata via I2C-bussen till huvudheten genom att utnyttja designmönstret Observer. De värden som kommer på bussen sparas ner i modulen och kan då användas i andra moduler.
-\paragraph{Laser}
-Laser-modulen är endast en Python-abstraktion för anrop till lasersensorn över I2C-bussen. Den läser av mätvärden och konverterar de till Python-heltal som sedan kan tolkas av all övrig kod.
+\subsubsection{Laser}
+Laser-modulen läser in mätvärden från lasersensorn och översätter dem till Python-heltal som sedan sparas undan en gång per huvudloop. På så sätt kan övriga moduler läsa det sparade värdet, vilket säkerställer att samtliga av robotens moduler agerar på samma lasersensorvärde.
 
-\paragraph{Gyro}
-Gyro-modulen fyller samma funktion som Laser-modulen, och agerar mest som ett abstraktionslager.
+\subsubsection{Gyro}
+Gyro-modulen fyller samma funktion som Laser-modulen. Den läser in värden från gyroskopet och sparar värdena som övriga moduler kan läsa ifrån.
 
 
 \subsubsection{Kopplingsschema}
@@ -454,7 +481,7 @@ Gyro-modulen fyller samma funktion som Laser-modulen, och agerar mest som ett ab
 \label{fig:huvudenhet_kopplingsschema}
 \end{figure}
 
-Huvudenheten består av en Raspberry Pi 3 och en LCD-display av modellen JM162A. Utöver kopplingen till LCD:n så kopplas två pins till I2C-bussen. Eftersom Raspberry Pi drivs av 3.3 V matspänning och de övriga atmega-processorerna i roboten drivs av 5 V så behövs vi nivåskifta bussen så att de kan kommunicera med varandra, vilket görs med nivåskiftaren BSS138.
+Huvudenheten består av en Raspberry Pi 3 och en LCD-display av modellen JM162A. Utöver kopplingen till LCD:n så kopplas två pins till I2C-bussen. Eftersom Raspberry Pi drivs av 3.3 V matspänning och de övriga atmega-processorerna i roboten drivs av 5 V så behöver bussen nivåskiftas så att de kan kommunicera med varandra, vilket görs med nivåskiftaren BSS138.
 
 \subsubsection{Komponenter}
 
@@ -500,7 +527,7 @@ Avläsningarna från IR-sensorerna är analoga, och konverteras till digitalt me
 \label{fig:sensorenhet_kopplingsschema}
 \end{figure}
 
-Som ses i figur~\ref{fig:sensorenhet_kopplingsschema} är IR-sensorerna kopplade till ATMegan via var sitt lågpassfilter för att reducera brus. Längst upp i kopplingsschemat ses den gemensamma I2C-bussen, dit gyroskop och laser är anslutna. Notera att EXO3-komponenten är delad mellan sensorenheten och styrenheten trots att den illustreras som separata komponenter i kopplingsschemat.
+Som figur~\ref{fig:sensorenhet_kopplingsschema} visar är IR-sensorerna kopplade till ATmegan via lågpassfilter för att reducera brus. Längst upp i kopplingsschemat ses den gemensamma I2C-bussen, dit gyroskop och laser är anslutna. Notera att EXO3-komponenten är delad mellan sensorenheten och styrenheten trots att den illustreras som separata komponenter i kopplingsschemat.
 
 \subsubsection{Komponenter}
 
@@ -566,10 +593,10 @@ Den maximala hastigheten som sensordata kan läsas in i är begränsad av sensor
 \label{fig:sensorenhet_flowchart}
 \end{figure}
 
-För att kunna tillhandahålla sensordata från IR-sensorerna när huvudenheten ber den om det så läser sensorenheten in data med jämna mellanrum och sparar den lokalt för att sedan skicka datan på kommando från huvudenheten. Om den fått en begerän om sensordata från huvudenheten så tar det prioritet att leverera den över att läsa in ny data. Ett flödesdiagram över dess beteende ses i ~\ref{fig:sensorenhet_flowchart}.
+För att kunna tillhandahålla sensordata från IR-sensorerna när huvudenheten ber den om det så läser sensorenheten in data med jämna mellanrum och sparar den lokalt för att sedan skicka datan på kommando från huvudenheten. Om den fått en begäran om sensordata från huvudenheten så tar det prioritet att leverera den över att läsa in ny data. Ett flödesdiagram över dess beteende ses i figur~\ref{fig:sensorenhet_flowchart}.
 
 \subsection{Styrenhet}
-Styrenhetens uppgift är att kontrollera robotens förflyttning genom att ge korrekta signaler till dess hjulservon. Hjulen styrs parvis, det vill säga vänster hjulpar styrs med en signal och höger hjulpar med en annan. Hastigheten på hjulen styrs genom PWM (\textbf{TODO: FÖRKLARA PWM KORTFATTAT}) medan hastigheter internt är definerade som heltal. Det är styrenhetens uppgift att översätta heltalshastigheter till korrekt pulskvot.
+Styrenhetens uppgift är att kontrollera robotens förflyttning genom att ge korrekta signaler till dess hjulservon. Hjulen styrs parvis, det vill säga vänster hjulpar styrs med en signal och höger hjulpar med en annan. Hastigheten på hjulen styrs genom pulsbreddsmodulering (PWM, pulse-width modulation) medan hastigheter internt är definerade som heltal. Att hjulen styrs genom PWM innebär att deras hastighet är beroende av vilken pulskvot utsignalen har. Utsignalen växlar mellan hög och låg med vissa intervall, och ju högre kvot av signalen som är hög ju snabbare kommer hjulen att åka. Det är styrenhetens uppgift att översätta heltalshastigheter till korrekt pulskvot.
 
 \subsubsection{Kopplingsschema}
 \begin{figure}[H]
@@ -631,7 +658,7 @@ Styrenheten klockas av en extern EXO3-klocka som säkerställer en synkroniserad
 \label{fig:styrenhet_flowchart}
 \end{figure}
 
-Styrenheten står hela tiden och väntar på instruktioner från huvudenheten, och så snart den får några utför den dem så snabbt den kan. En instruktion i det här sammamhanget är att sätta nya hastigheter på de båda hjulparen. Ett flödesschema över styrenhetens beteende kan ses i figur ~\ref{fig:styrenhet_flowchart}.
+Styrenheten står hela tiden och väntar på instruktioner från huvudenheten, och så snart den får några utför den dem så snabbt den kan. En instruktion i det här sammamhanget är att sätta nya hastigheter på de båda hjulparen. Ett flödesschema över styrenhetens beteende kan ses i figur~\ref{fig:styrenhet_flowchart}.
 
 \subsection{Mjukvaruklient}
 För att kommunicera med roboten används en mjukvaruklient. Programmet har två moduler, en för presentation av data från roboten, och en för fjärrstyrning. Klienten är skriven i Python, och biblioteket Tkinter för det grafiska gränssnittet samt Pybluez och EventBus för Bluetoothkommunikation. 
@@ -675,10 +702,10 @@ Figur~\ref{fig:software_client_flowchart} visar flödesschemat för mjukvaruklie
 
 \subsection{Navigeringsalgoritm}
 \label{sec:slutsatser_navigering}
-Vår navigeringsalgoritm är i nuläget begränsad till att röra sig i ett rutnät och får således bara röra sig i vinklar som är multiplar av 90 grader. Begränsningen beror på att roboten inte har någon bra logik för att bestämma sin position utan att följa en vägg. Om roboten skulle kunna bestämma sin position när den navigerade i godtycklig riktning och på öppna ytor hade den totala sträckan som roboten behövt färdas minimeras.
+Navigeringsalgoritmen är i nuläget begränsad till att röra sig i ett rutnät och får således bara röra sig i vinklar som är multiplar av 90 grader. Begränsningen beror på att roboten inte har någon bra logik för att bestämma sin position utan att följa en vägg. Om roboten skulle kunna bestämma sin position när den navigerade i godtycklig riktning och på öppna ytor hade den totala sträckan som roboten behövt färdas minskat.
 
 \subsection{Kartläggning}
-Roboten kartläggningsalgoritm kartlägger sin omgivning genom att beräkna raksträckor den åkt när den följt en vägg och spara start- och slut-koordinaterna. Om roboten kunde observera sin omgivning t.ex. med en svepande laser och beräkna var väggar fanns utifrån den datan så skulle den ej behöva färdas längs med alla väggar för att kartlägga dem. Det här förbättringsförslaget går hand i hand med förbättringarna föreslagna i avsnitt ~\ref{sec:slutsatser_navigering}.
+Roboten kartläggningsalgoritm kartlägger sin omgivning genom att beräkna raksträckor den åkt när den följt en vägg och spara start- och slut-koordinaterna. Om roboten kunde observera sin omgivning t.ex. med en svepande laser och beräkna var väggar fanns utifrån den datan så skulle den ej behöva färdas längs med alla väggar för att kartlägga dem. Det här förbättringsförslaget går hand i hand med förbättringarna föreslagna i avsnitt~\ref{sec:slutsatser_navigering}.
 
 \clearpage
 \section{Referenser}
@@ -695,8 +722,6 @@ Roboten kartläggningsalgoritm kartlägger sin omgivning genom att beräkna raks
 \clearpage
 \section{Banspecifikation}
 \label{sec:banspec}
-
-\clearpage
-\section{Programkod}
+\includepdf[pages=-]{banspec}
 
 \end{document}
