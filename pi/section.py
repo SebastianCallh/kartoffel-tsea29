@@ -15,14 +15,10 @@ class Section:
         self.direction = direction
         self.measurements = []
         self.block_distance = None
-        self.measured_distances = 0
 
     def add_distance_sample(self, distance):
         if 50 < distance < 6000:
-            self.measured_distances += 1
-
-            if self.measured_distances >= 7:
-                self.measurements.append((distance, datetime.now()))
+            self.measurements.append((distance, datetime.now()))
 
     def finish(self, debug_limits=False):
         # If we're somehow detecting the next turn for a dead end corner before
