@@ -59,6 +59,9 @@ class Position:
                     self.map_island_data()
                     self.map_remaining_data()
 
+                    print(self.map_data)
+                    print(self.island_data)
+
                     Navigator.force_left_turn = True
 
                     # Last island section is not properly stored because of a
