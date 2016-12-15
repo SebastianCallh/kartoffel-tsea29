@@ -232,7 +232,7 @@ class Position:
         self.begin_next_section(is_right_turn)
         if self.has_returned_to_start() or self.mapping_state == MAPPING_STATE_RETURNING_TO_ISLAND:
             self.mapping_state = MAPPING_STATE_RETURNING_TO_ISLAND
-            self.island_data = list(self.kitchen_mapping.values())
+            self.island_data = list(self.kitchen_mapping.keys())
 
         if self.mapping_state == MAPPING_STATE_FOLLOWING_ISLAND and self.num_kitchen_turns == 2:
             self.kitchen_start_x = self.current_x
