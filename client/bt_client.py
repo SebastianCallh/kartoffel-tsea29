@@ -121,6 +121,7 @@ class BT_client(threading.Thread):
             bt_in_task = BT_task(data[0], data[1])
 
             self.queue_handler.post_in_queue(bt_in_task)
+            print("Bt client received: ", str(data[1]))
 
         return ""
 

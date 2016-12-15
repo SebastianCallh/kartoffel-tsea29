@@ -175,13 +175,11 @@ class GUI:
     '''
 
     def add_servo_data(self, values):
+        self.servo_list.insert(0, str(values[0]) + ', ' + str(values[1]))
         if self.servo_list_nr_items >= self.MAX_LIST_ITEMS:
-            for i in range(1, self.MAX_LIST_ITEMS):
-                item = self.servo_list.get(i)
-                self.servo_list.insert(i - 1, item)
+            self.servo_list.delete(self.MAX_LIST_ITEMS)
         else:
             self.servo_list_nr_items += 1
-        self.servo_list.insert(END, str(values[0]) + ', ' + str(values[1]))
 
     def update_map(self, values):
         self.map_grid.update_map(values, self.canvas)
