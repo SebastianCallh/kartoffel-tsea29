@@ -94,7 +94,7 @@ class Stabilize(State):
             if abs(diff) < self.angle_threshold:
                 return AutoControl()
                 
-            turn_speed = diff*self.speed_scaling
+            turn_speed = round(diff*self.speed_scaling)
             data['driver'].drive(turn_speed, -turn_speed)
 
 ###### NAVIGATOR CLASS #######
