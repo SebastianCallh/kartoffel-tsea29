@@ -5,22 +5,30 @@ from time import sleep
 DEBUG_LASER = True
 
 class Laser:
+    DELTA_LIMIT = 100
     def __init__(self):
         self.data = 0
+        self.last_data = 0
+        
         if DEBUG_LASER:
             self.debug_file = open('laser_measurements.dat', 'w')
         else:
             self.debug_file = None
 
     def get_data(self):
-        return self.data
-
+        if abs(self.data - self.last_data) < Laser.DELTA_LIMIT:
+            return self.data
+        else:
+            return -1
+            
     def read_data(self):
         try:
             hi = EventBus.bus.bus.read_byte_data(LASER_ADDR, 0x0f)
             lo = EventBus.bus.bus.read_byte_data(LASER_ADDR, 0x10)
             data = (hi << 8) | lo
-
+       
+            self.last_data = self.data
+            
             if hi & 0x80 == 128 or (lo == 1 and hi == 0):
                 self.data = -1
             else:
