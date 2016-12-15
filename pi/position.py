@@ -1,3 +1,5 @@
+import traceback
+
 from eventbus import EventBus
 from laser import Laser
 from navigator import Navigator
@@ -35,6 +37,7 @@ class Position:
         self.kitchen_mapping = {}
         self.invalid_kitchens = []
         self.island_data = []
+        self.edges_data = []
 
         self.num_ok_close = 0
         self.num_ok_far = 0
@@ -151,26 +154,33 @@ class Position:
             return
 
         initial_island_data = list(self.island_data)
+        self.island_data = []
         for pos in initial_island_data:
             self.go_deeper(pos[0], pos[1], self.island_data, self.map_data)
 
     def map_remaining_data(self):
-        initial_map_data = list(self.map_data)
+        avoid_data = list(self.edges_data) + list(self.island_data)
+        initial_map_data = list(self.island_data)
+        self.map_data = []
         for pos in initial_map_data:
-            self.go_deeper(pos[0], pos[1], self.map_data, self.island_data)
+            self.go_deeper(pos[0], pos[1], self.map_data, avoid_data, skip_avoid_test=True)
 
-    def go_deeper(self, x, y, lst, avoid_lst):
+        self.map_data += self.edges_data
+
+    def go_deeper(self, x, y, lst, avoid_lst, skip_avoid_test=False):
         pos = (x, y)
-        if pos not in avoid_lst:
+        if pos not in avoid_lst or skip_avoid_test:
             if pos not in lst:
-                lst.append(pos)
+                if not skip_avoid_test:
+                    lst.append(pos)
 
                 try:
-                    self.go_deeper(x + 1, y, lst)
-                    self.go_deeper(x - 1, y, lst)
-                    self.go_deeper(x, y + 1, lst)
-                    self.go_deeper(x, y - 1, lst)
+                    self.go_deeper(x + 1, y, lst, avoid_lst)
+                    self.go_deeper(x - 1, y, lst, avoid_lst)
+                    self.go_deeper(x, y + 1, lst, avoid_lst)
+                    self.go_deeper(x, y - 1, lst, avoid_lst)
                 except:
+                    traceback.print_exc()
                     print('Your island or map is too big')
 
     def save_current_section(self):
@@ -233,6 +243,7 @@ class Position:
         if self.has_returned_to_start() or self.mapping_state == MAPPING_STATE_RETURNING_TO_ISLAND:
             self.mapping_state = MAPPING_STATE_RETURNING_TO_ISLAND
             self.island_data = list(self.kitchen_mapping.keys())
+            self.edges_data = list(self.map_data)
 
         if self.mapping_state == MAPPING_STATE_FOLLOWING_ISLAND and self.num_kitchen_turns == 2:
             self.kitchen_start_x = self.current_x
