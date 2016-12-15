@@ -96,6 +96,7 @@ class Stabilize(State):
                 
             turn_speed = round(diff*self.speed_scaling)
             data['driver'].drive(turn_speed, -turn_speed)
+            return self
 
 ###### NAVIGATOR CLASS #######
 class Navigator:
