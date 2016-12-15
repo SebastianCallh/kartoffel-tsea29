@@ -34,6 +34,7 @@ class Position:
 
         self.kitchen_mapping = {}
         self.invalid_kitchens = []
+        self.island_data = []
 
         self.num_ok_close = 0
         self.num_ok_far = 0
@@ -55,6 +56,9 @@ class Position:
                 temporary_x, temporary_y = self.transform_map_data(self.current_section, self.current_x, self.current_y, estimate=True, offset=0.1)
                 if temporary_x == self.kitchen_start_x and temporary_y == self.kitchen_start_y \
                         and self.kitchen_num_mapped > 3:
+                    self.map_island_data()
+                    self.map_remaining_data()
+
                     Navigator.force_left_turn = True
 
                     # Last island section is not properly stored because of a
@@ -138,6 +142,34 @@ class Position:
                 Navigator.right_turn_enabled = False
                 self.num_kitchen_turns = 1
 
+    def map_island_data(self):
+        if len(self.island_data) == 0:
+            print('ERROR: No island to map!')
+            return
+
+        initial_island_data = list(self.island_data)
+        for pos in initial_island_data:
+            self.go_deeper(pos[0], pos[1], self.island_data, self.map_data)
+
+    def map_remaining_data(self):
+        initial_map_data = list(self.map_data)
+        for pos in initial_map_data:
+            self.go_deeper(pos[0], pos[1], self.map_data, self.island_data)
+
+    def go_deeper(self, x, y, lst, avoid_lst):
+        pos = (x, y)
+        if pos not in avoid_lst:
+            if pos not in lst:
+                lst.append(pos)
+
+                try:
+                    self.go_deeper(x + 1, y, lst)
+                    self.go_deeper(x - 1, y, lst)
+                    self.go_deeper(x, y + 1, lst)
+                    self.go_deeper(x, y - 1, lst)
+                except:
+                    print('Your island or map is too big')
+
     def save_current_section(self):
         if self.mapping_state == MAPPING_STATE_FOLLOWING_OUTER_WALL:
             self.process_finished_section()
@@ -187,6 +219,7 @@ class Position:
                 self.state = STATE_FINISHED
                 self.navigator.set_mode(Navigator.MANUAL)
                 print(self.map_data)
+                print(self.island_data)
         else:
             self.state = STATE_WAITING
 
@@ -196,6 +229,7 @@ class Position:
         self.begin_next_section(is_right_turn)
         if self.has_returned_to_start() or self.mapping_state == MAPPING_STATE_RETURNING_TO_ISLAND:
             self.mapping_state = MAPPING_STATE_RETURNING_TO_ISLAND
+            self.island_data = list(self.kitchen_mapping.values())
 
         if self.mapping_state == MAPPING_STATE_FOLLOWING_ISLAND and self.num_kitchen_turns == 2:
             self.kitchen_start_x = self.current_x
