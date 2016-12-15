@@ -73,10 +73,29 @@ class Turn(State):
 
         if data['driver'].idle():
             print('NAVIGATOR: changing to auto control')
-            return AutoControl()
+            return Stabilize(self.is_right_turn)
         else:
             return self
 
+class Stabilize(State):
+    def __init__(self, is_right_turn):
+        self.is_right_turn = is_right_turn
+        self.angle_threshold = 10
+        self.speed_scaling = 2.5
+        
+    def run(self, data):
+        if self.is_right_turn or Navigator.force_left_turn:
+            return AutoControl()
+        else:
+            ir_front = data['ir'].get_ir_right()
+            ir_back = data['ir'].get_ir_right_back()
+            diff = ir_front - ir_back
+            
+            if abs(diff) < self.angle_threshold:
+                return AutoControl()
+                
+            turn_speed = diff*self.speed_scaling
+            data['driver'].drive(turn_speed, -turn_speed)
 
 ###### NAVIGATOR CLASS #######
 class Navigator:
