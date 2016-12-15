@@ -11,32 +11,14 @@ BLOCK_LENGTH_MM = 400
 
 
 class Section:
-    UNREASONABLE_DIFF = 1000
-    VERY_REASONABLE_DIFF = 100
-
     def __init__(self, direction):
         self.direction = direction
         self.measurements = []
         self.block_distance = None
         self.measured_distances = 0
-        self.pending_unreasonable_value = None
 
     def add_distance_sample(self, distance):
         if 50 < distance < 6000:
-            if len(self.measurements) > 0:
-                last_measurement = self.measurements[-1][0]
-                if abs(last_measurement - distance) > self.UNREASONABLE_DIFF:
-                    if self.pending_unreasonable_value is not None:
-                        if abs(self.pending_unreasonable_value - distance) < self.VERY_REASONABLE_DIFF:
-                            self.measurements.append((self.pending_unreasonable_value, datetime.now()))
-                            self.measurements.append((distance, datetime.now()))
-                            self.pending_unreasonable_value = None
-                            return
-
-                    self.pending_unreasonable_value = distance
-                    return
-
-            self.pending_unreasonable_value = None
             self.measured_distances += 1
 
             if self.measured_distances >= 7:
