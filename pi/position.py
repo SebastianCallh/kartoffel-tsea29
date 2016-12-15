@@ -215,7 +215,7 @@ class Position:
             if offset is None:
                 distance = section.estimate_block_distance()
             else:
-                distsance = section.estimate_block_distance(offset)
+                distance = section.estimate_block_distance(offset)
         else:
             section.finish()
             distance = section.block_distance
