@@ -81,7 +81,7 @@ class Stabilize(State):
     def __init__(self, is_right_turn):
         self.is_right_turn = is_right_turn
         self.angle_threshold = 2
-        self.speed_scaling = 6
+        self.speed_scaling = 10
         
     def run(self, data):
         if self.is_right_turn or Navigator.force_left_turn:
@@ -94,7 +94,7 @@ class Stabilize(State):
             if abs(diff) < self.angle_threshold:
                 return AutoControl()
                 
-            turn_speed = round(diff*self.speed_scaling)
+            turn_speed = abs(diff)/diff*self.speed_scaling
             data['driver'].drive(turn_speed, -turn_speed)
             return self
 
