@@ -52,7 +52,7 @@ class Position:
                 self.check_if_returned_to_island()
             elif self.mapping_state == MAPPING_STATE_FOLLOWING_ISLAND:
                 self.current_section.finish()
-                temporary_x, temporary_y = self.transform_map_data(self.current_section, self.current_x, self.current_y, estimate=True)
+                temporary_x, temporary_y = self.transform_map_data(self.current_section, self.current_x, self.current_y, estimate=True, offset=0.4)
                 if temporary_x == self.kitchen_start_x and temporary_y == self.kitchen_start_y \
                         and self.kitchen_num_mapped > 3:
                     Navigator.force_left_turn = True
@@ -210,9 +210,12 @@ class Position:
         else:
             return False
 
-    def transform_map_data(self, section, current_x, current_y, estimate=False):
+    def transform_map_data(self, section, current_x, current_y, estimate=False, offset=None):
         if estimate:
-            distance = section.estimate_block_distance()
+            if offset is None:
+                distance = section.estimate_block_distance()
+            else:
+                distsance = section.estimate_block_distance(offset)
         else:
             section.finish()
             distance = section.block_distance
