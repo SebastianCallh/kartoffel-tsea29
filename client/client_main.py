@@ -12,12 +12,13 @@ try:
 except:
     bluetooth_enabled = False
 
-DATA_REQUEST_INTERVAL = 1  # seconds
-IP_REQUEST_INTERVAL = 10   # seconds
-UPDATE_INTERVAL = 250      # milliseconds
+DATA_REQUEST_INTERVAL = 500  # milliseconds
+IP_REQUEST_INTERVAL = 10     # seconds
+UPDATE_INTERVAL = 250        # milliseconds
 
 gui = None
 bt_client = None
+request_type = 0
 last_data_request_time = datetime.datetime.now()
 last_ip_request_time = datetime.datetime.now()
 
@@ -62,15 +63,20 @@ def setup_subscriptions():
 
 
 def request_data():
-    global last_ip_request_time
-    outbound.bt_request_sensor_data()
-    outbound.bt_request_servo_data()
+    global last_ip_request_time, request_type
+    if request_type == 0:
+        outbound.bt_request_sensor_data()
+        request_type = 1
+    else:
+        outbound.bt_request_servo_data()
+        request_type = 0
     outbound.bt_request_map_data()
     if (datetime.datetime.now() - last_ip_request_time) > datetime.timedelta(
             seconds=IP_REQUEST_INTERVAL):
         outbound.request_ip()
         last_ip_request_time = datetime.datetime.now()
     pass
+    
 
 
 def update():
@@ -79,7 +85,7 @@ def update():
         if gui.finished_setup:
             EventBus.receive()
             if (datetime.datetime.now() - last_data_request_time) > datetime.timedelta(
-                    seconds=DATA_REQUEST_INTERVAL):
+                    milliseconds=DATA_REQUEST_INTERVAL):
                 if bt_client is not None and bt_client.is_connected:
                     request_data()
 
