@@ -9,6 +9,7 @@ class Laser:
     def __init__(self):
         self.data = 0
         self.last_data = 0
+        self.last_last_data = 0
         
         if DEBUG_LASER:
             self.debug_file = open('laser_measurements.dat', 'w')
@@ -16,7 +17,10 @@ class Laser:
             self.debug_file = None
 
     def get_data(self):
-        if abs(self.data - self.last_data) < Laser.DELTA_LIMIT and self.data != self.last_data:
+        if abs(self.data - self.last_data) < Laser.DELTA_LIMIT and \
+                abs(self.data - self.last_last_data) < Laser.DELTA_LIMIT and \
+                self.data != self.last_data and \
+                self.last_data != self.last_last_data:
             return self.data
         else:
             return -1
@@ -26,7 +30,8 @@ class Laser:
             hi = EventBus.bus.bus.read_byte_data(LASER_ADDR, 0x0f)
             lo = EventBus.bus.bus.read_byte_data(LASER_ADDR, 0x10)
             data = (hi << 8) | lo
-       
+
+            self.last_last_data = self.last_data
             self.last_data = self.data
             
             if hi & 0x80 == 128 or (lo == 1 and hi == 0):
