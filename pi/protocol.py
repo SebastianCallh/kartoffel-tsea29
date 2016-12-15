@@ -199,6 +199,15 @@ BT_DRIVE_FORWARD_LEFT = 25
 BT_AUTONOMOUS_MODE = 26
 BT_MANUAL_MODE = 27
 
+# Toggle between autonomous and manual mode
+CMD_TOGGLE_MODE = 28
+"""
+Command to toggle between the available modes (autonomous and manual) instead
+of explicitly switching to one using AUTONOMOUS_MODE or MANUAL_MODE.
+Target: Main unit
+Arguments: None
+"""
+
 # Indicates that the robot has changed to a new navigator mode
 CMD_MODE_SET = 29
 """

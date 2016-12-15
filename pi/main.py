@@ -39,6 +39,7 @@ def setup():
     EventBus.subscribe(BT_DRIVE_FORWARD_LEFT, communicator.drive_forward_left)
     EventBus.subscribe(BT_AUTONOMOUS_MODE, (lambda: navigator.set_mode(Navigator.AUTONOMOUS)))
     EventBus.subscribe(BT_MANUAL_MODE, (lambda: navigator.set_mode(Navigator.MANUAL)))
+    EventBus.subscribe(CMD_TOGGLE_MODE, navigator.toggle_mode)
     EventBus.subscribe(REQUEST_PI_IP, communicator.send_ip)
     EventBus.subscribe(CMD_RETURN_SENSOR_DATA, ir.sensor_data_received)
     Laser.initialize()
