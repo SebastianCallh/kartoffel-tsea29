@@ -37,7 +37,7 @@ class Laser:
             self.data = -1
 
         if self.debug_file is not None:
-            self.debug_file.write(str(self.data) + '\n')
+            self.debug_file.write(str(self.get_data()) + '\n')
             self.debug_file.flush()
 
     @staticmethod
