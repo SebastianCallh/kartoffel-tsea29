@@ -16,7 +16,7 @@ class Laser:
             self.debug_file = None
 
     def get_data(self):
-        if abs(self.data - self.last_data) < Laser.DELTA_LIMIT or self.data != self.last_data:
+        if abs(self.data - self.last_data) < Laser.DELTA_LIMIT and self.data != self.last_data:
             return self.data
         else:
             return -1
