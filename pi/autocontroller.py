@@ -12,7 +12,7 @@ last_valid_diff = 0
 QUEUE_SIZE = 5
 
 class AutoController:
-    DESIRED_DISTANCE = 120  # Desired distance to wall
+    DESIRED_DISTANCE = 110  # Desired distance to wall
     STANDARD_SPEED = 40
     MAX_REGULATION = 30
 
