@@ -81,7 +81,7 @@ class Stabilize(State):
     def __init__(self, is_right_turn):
         self.is_right_turn = is_right_turn
         self.angle_threshold = 2
-        self.speed_scaling = 15
+        self.speed_scaling = 20
         
     def run(self, data):
         if self.is_right_turn or Navigator.force_left_turn:
