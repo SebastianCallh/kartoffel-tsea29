@@ -169,8 +169,8 @@ BT_TURN_LEFT = 23
 BT_DRIVE_FORWARD_RIGHT = 24
 BT_DRIVE_FORWARD_LEFT = 25
 
-BT_AUTONOMOUS_MODE = 26
-BT_MANUAL_MODE = 27
+AUTONOMOUS_MODE = 26
+MANUAL_MODE = 27
 
 # Indicates that the robot has changed to a new navigator mode
 CMD_MODE_SET = 29

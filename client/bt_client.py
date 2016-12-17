@@ -19,6 +19,7 @@ class BT_client(threading.Thread):
         self.client_sock = None
         threading.Thread.__init__(self)
         self.daemon = True
+        self.is_connected = False
 
 
     '''
