@@ -138,7 +138,7 @@ class Navigator:
             if curr_type is not Turn and next_type is Turn:
                 EventBus.notify(CMD_TURN_STARTED)
 
-            if curr_type is Turn and next_type is not Turn:
+            if curr_type is Stabilize and next_type is not Stabilize:
                 EventBus.notify(CMD_TURN_FINISHED, self.state.is_right_turn)
 
             self.state = next_state
