@@ -174,14 +174,14 @@ class Position:
                 if not skip_avoid_test:
                    lst.append(pos)
 
-        try:
-            self.go_deeper(x + 1, y, lst, avoid_lst)
-            self.go_deeper(x - 1, y, lst, avoid_lst)
-            self.go_deeper(x, y + 1, lst, avoid_lst)
-            self.go_deeper(x, y - 1, lst, avoid_lst)
-        except:
-            traceback.print_exc()
-            print('Your island or map is too big')
+                try:
+                    self.go_deeper(x + 1, y, lst, avoid_lst)
+                    self.go_deeper(x - 1, y, lst, avoid_lst)
+                    self.go_deeper(x, y + 1, lst, avoid_lst)
+                    self.go_deeper(x, y - 1, lst, avoid_lst)
+                except:
+                    traceback.print_exc()
+                    print('Your island or map is too big')
 
     def save_current_section(self):
         if self.mapping_state == MAPPING_STATE_FOLLOWING_OUTER_WALL:

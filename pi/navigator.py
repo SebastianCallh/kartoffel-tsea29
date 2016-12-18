@@ -26,8 +26,7 @@ class AutoControl(State):
                data['ir'].get_ir_right_back() == -1 and \
                Navigator.right_turn_enabled
 
-    def run(self, data):m
-
+    def run(self, data):
         if self.is_at_right_turn(data):
             data['driver'].outer_turn_right()
             print('NAVIGATOR: outer turn right')
