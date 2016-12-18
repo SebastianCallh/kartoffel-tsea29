@@ -168,21 +168,20 @@ class Position:
         self.map_data += self.edges_data
 
     def go_deeper(self, x, y, lst, avoid_lst, skip_avoid_test=False):
-        pos = (x, y)
-        if pos not in avoid_lst or skip_avoid_test:
-            if pos not in lst:
-                if not skip_avoid_test:
-                    lst.append(pos)
-
-                try:
-                    self.go_deeper(x + 1, y, lst, avoid_lst)
-                    self.go_deeper(x - 1, y, lst, avoid_lst)
-                    self.go_deeper(x, y + 1, lst, avoid_lst)
-                    self.go_deeper(x, y - 1, lst, avoid_lst)
-                except:
-                    traceback.print_exc()
-                    print('Your island or map is too big')
-
+        positions = [(x, y)]
+        while positions:
+            pos = positions.pop()
+            
+            if pos not in avoid_lst or skip_avoid_test:
+                if pos not in lst:
+                    if not skip_avoid_test:
+                        lst.append(pos)
+            
+            positions += [(pos[0]+1,pos[1]),
+                          (pos[0]-1,pos[1]),
+                          (pos[0],pos[1]+1),
+                          (pos[0],pos[1]-1)]
+            
     def save_current_section(self):
         if self.mapping_state == MAPPING_STATE_FOLLOWING_OUTER_WALL:
             self.process_finished_section()
