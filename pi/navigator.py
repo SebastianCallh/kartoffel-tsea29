@@ -26,7 +26,7 @@ class AutoControl(State):
                data['ir'].get_ir_right_back() == -1 and \
                Navigator.right_turn_enabled
 
-    def run(self, data):
+    def run(self, data):m
 
         if self.is_at_right_turn(data):
             data['driver'].outer_turn_right()
@@ -175,6 +175,7 @@ class Navigator:
 
     def toggle_mode(self):
         if self.mode == Navigator.MANUAL:
+            self.data['laser'].reset()
             self.set_mode(Navigator.AUTONOMOUS)
         else:
             self.set_mode(Navigator.MANUAL)

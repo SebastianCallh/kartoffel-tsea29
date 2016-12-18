@@ -35,8 +35,9 @@ class Laser:
             if hi & 0x80 == 128 or (lo == 1 and hi == 0):
                 self.data = -1
             else:
-                if data < self.data or self.data == 0:
-                    new_data = data * 10
+                new_data = data * 10
+                if new_data < self.data or self.data == 0:
+                    print(self.last_last_data, self.last_data, self.data, new_data)
                     self.last_last_data = self.last_date
                     self.last_data = self.data
                     self.data = new_data
