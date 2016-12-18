@@ -17,10 +17,8 @@ class Laser:
             self.debug_file = None
 
     def get_data(self):
-        if abs(self.data - self.last_data) < Laser.DELTA_LIMIT and \
-                abs(self.data - self.last_last_data) < Laser.DELTA_LIMIT and \
-                self.data != self.last_data and \
-                self.last_data != self.last_last_data:
+        if  abs(self.data - self.last_data) < Laser.DELTA_LIMIT and \
+            abs(self.data - self.last_last_data) < Laser.DELTA_LIMIT:
             return self.data
         else:
             return -1
@@ -37,7 +35,11 @@ class Laser:
             if hi & 0x80 == 128 or (lo == 1 and hi == 0):
                 self.data = -1
             else:
-                self.data = data * 10
+                if data < self.data or self.data == 0:
+                    new_data = data * 10
+                    self.last_last_data = self.last_date
+                    self.last_data = self.data
+                    self.data = new_data
         except:
             self.data = -1
 
@@ -45,6 +47,11 @@ class Laser:
             self.debug_file.write(str(self.get_data()) + '\n')
             self.debug_file.flush()
 
+    def reset(self):
+        self.data = 0
+        self.last_data = 0
+        self.last_last_data = 0
+        
     @staticmethod
     def initialize():
         # Was bus.write_byte_data, but that method was renamed/removed

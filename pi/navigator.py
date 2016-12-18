@@ -85,6 +85,7 @@ class Stabilize(State):
         
     def run(self, data):
         if self.is_right_turn or Navigator.force_left_turn:
+            data['laser'].reset()
             return AutoControl()
         else:
             ir_front = data['ir'].get_ir_right()
@@ -92,6 +93,7 @@ class Stabilize(State):
             diff = ir_front - ir_back
             print("Stabilize diff:", diff)
             if abs(diff) < self.angle_threshold:
+                data['laser'].reset()
                 return AutoControl()
                 
             turn_speed = int(abs(diff)/diff*self.speed_scaling)
