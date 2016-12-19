@@ -5,7 +5,7 @@ from time import sleep
 DEBUG_LASER = True
 
 class Laser:
-    DELTA_LIMIT = 30
+    DELTA_LIMIT = 100
     def __init__(self):
         self.data = 0
         self.last_data = 0
