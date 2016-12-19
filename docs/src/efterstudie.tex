@@ -195,11 +195,11 @@ Text
 
 
 \subsection{Arbetsfördelning}
-
+Under projektets tidiga skede då vi byggde upp hårdvaran delades arbetet in i de olika delsystemen (huvudenhet, sensorenhet, styrenhet) vilka arbetades på i par om två. När projektet fortskred övergick arbetet främst till att skriva Python-kod på huvudenheten och arbetet delades då in i olika mjukvarumoduler. Vem som gjort vad har styrts av intresse och kompetens.
 
 
 \subsection{Tidsåtgång jämfört med planerad tid}
-
+Arbetet med designspecen innan BP3 gick betydligt snabbare än planerat vilket gav oss mer tid inför BP5. Tidsåtgången för själva konstruktionen underskattades dock.
 
 \begin{table}[H]
 \centering
@@ -208,11 +208,11 @@ Text
 \hline
 Fas & Planerad tid i timmar & Använd tid i timmar \\
 \hline
-Före \\
+Före & 83 & 52 \\
 \hline
-Under \\
+Under & 851 & 922 \\
 \hline
-Efter \\
+Efter & 26 & ?? \\
 \hline
 \end{tabular}
 \label{table:tidsatgang}
@@ -221,11 +221,12 @@ Efter \\
 
 
 \clearpage
-\section{Anays av arbete och problem}
-Text
+\section{Analys av arbete och problem}
+Under konstruktionens inledande fas arbetade gruppen i väldigt separerade grupper med olika implementationer. Arbetet gick under den här perioden bra, men när olika funktionalitet skulle integreras uppstod problem och tiden spenderad på felsökning ökade markant. 
 
 \subsection{Vad hände under de olika faserna (bra/dåligt/orsak)?}
-Text
+I före-fasen flöt arbetet på bra, men interna deadlines innan de faktiska. Sjukdom påverkade arbetet negativt, men gruppen levererade ändå enligt plan. När under-fasen väl startade tilltog gruppens entusiasm då fokus flyttades från att skriva dokumentation till att vira och koda. Den här entusiasmen höll i sig fram till det att uppstod problem med integration av olika undergruppers moduler, då stämningen försämdares avsevärt. Främst på grund av dålig kommunikation vilket gjorde integrationen svårare än den hade behövt vara. 
+---------EFTERFASEN HÄNDER FAKTISKT OCKSÅ---------
 
 \subsection{Hur vi arbetade tillsammans (ansvar, beslut, kommunikation etc.)?}
 Text
@@ -234,10 +235,18 @@ Text
 Text
 
 \subsection{Hur fungerade relationen med beställaren?}
-Text
+Gruppen upplever inte att den haft någon nära relation med beställaren, men att han varit lätt att få tag på och att kommunikationen har fungerat väl. Kritiken som gavs på den tekniska dokumentationen uppskattades. 
+
 \subsection{Hur fungerade relationen med handledaren?}
-Text
+Handledaren fanns oftast till hands när vi behövde ställa frågor, vilket var en användbar resurs då gruppen konstruerade hårdvaran. Gruppen upplevde inte ett så stort behov att att ställa frågor, men är mycket nöjd med den hjälp som givits.
+
 \subsection{Tekniska framgångar/Problem}
+
+Kandidater:
+Bluetooth
+Mätvärden från laser
+I2C
+
 Beskriv de 3 besvärligaste problemen som ni har haft under projektet. 
 Rangordna problemen där 1 är mest besvärlig i betydelsen tog längst tid att fixa.
 Beskriv för varje problem:
@@ -257,14 +266,21 @@ e. ungefärlig skattning av hur mycket tid som ni ägnade åt felsökningen (dvs
 
 
 \subsection{Hur har studiesituationen påverkat projektet?}
+Då nästan hela gruppen har haft olika scheman, deltidsarbetat och varit aktiva i tidskrävande studentföreningar ---INTE KLART---
+
 
 \clearpage
 \section{Sammanfattning}
 
 \subsection{De tre viktigaste erfarenheterna}
 
-\subsection{Goda råd till de som ska utföra ett liknande projekt}
+Kandidater:
+Kommunicera. #Log i slack
+Tänk igenom hur robust funktionaliteten behöver vara. Over-engineera inte.
 
+\subsection{Goda råd till de som ska utföra ett liknande projekt}
+Kommunicera mera! Använd versionshantering. Överskatta tidsåtgång.
+Sätt rimliga krav, (typiskt inte klara x/x körningar)
 
 \nocite{*}
 \bibliography{efterstudie}{}
