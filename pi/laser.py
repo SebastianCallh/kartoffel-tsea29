@@ -35,28 +35,23 @@ class Laser:
         except:
             print('eeverything is exception')
             self.data = -1
-
-        print(data, self.data)
         
         if hi & 0x80 == 128 or (lo == 1 and hi == 0):
             print('everything is terrible')
             self.data = -1
         else:
             new_data = data * 10
-            #if new_data < self.data or self.data == 0:
-            self.last_last_data = self.last_data
-            self.last_data = self.data
-            self.data = new_data
+            if new_data != self.data:
+                self.last_last_data = self.last_data
+                self.last_data = self.data
+                self.data = new_data
 
         if self.debug_file is not None:
             self.debug_file.write(str(self.get_data()) + '\n')
             self.debug_file.flush()
 
     def reset(self):
-        print('resetting laser')
-        self.data = 0
-        self.last_data = 0
-        self.last_last_data = 0
+        print('resetting laser (but actually not)')
         
     @staticmethod
     def initialize():
