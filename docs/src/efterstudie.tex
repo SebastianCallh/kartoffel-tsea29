@@ -1,0 +1,264 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english, swedish]{babel}
+
+\usepackage{cite}
+\usepackage{caption}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{textcomp}
+
+\usepackage{listings}
+\usepackage{color}
+ 
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+ 
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\usepackage[yyyymmdd]{datetime}
+\renewcommand{\dateseparator}{-}
+
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+
+%For headers & footers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\includegraphics[scale=0.2]{Logo}}
+\chead{Kartrobot}
+\rhead{\today}
+
+\lfoot{Konstruktion med mikrodatorer}
+\rfoot{Grupp 3}
+
+\usepackage{titlesec}
+
+\setcounter{secnumdepth}{4}
+
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+
+\title{Efterstudie}
+\author{Patrik Sletmo}
+\date{\today}
+
+\selectlanguage{swedish}
+
+\begin{document}
+
+\thispagestyle{empty}
+
+{
+\sffamily
+\centering
+\large
+
+
+{\huge 
+Efterstudie
+}
+
+{\large
+Patrik Sletmo
+}
+
+{\large
+Version 1.0
+}
+
+\vspace{3.5cm}
+
+Status
+\begin{table}[H]
+\centering
+\begin{tabular}{ | c | c | c | }
+\hline
+-- & Patrik Sletmo & 2016-12-XX \\
+\hline
+\end{tabular}
+\end{table}
+}
+\clearpage
+
+\vspace*{\fill}
+{
+\sffamily
+\centering
+\large
+
+
+{\huge
+Projektidentitet
+}
+
+{\large
+Grupp 3, 16/HT, KarToffel \\ Linköpings tekniska högskola, ISY
+}
+
+\vspace{0.5cm}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ | c | c | c | c |}
+\hline
+Namn & Ansvar & Telefon & E-post \\
+\hline
+Patrik Sletmo & Projektledare & 070 783 57 61 & patsl736@student.liu.se \\
+\hline
+Rebecca Lindblom & Utvecklare & 073 436 40 79 & rebli156@student.liu.se \\
+\hline
+Matildha Sjöstedt & Utvecklare & 070 515 84 11 & matsj696@student.liu.se \\
+\hline
+Sebastian Callh & Utvecklare & 073 820 46 64 & sebca553@student.liu.se \\
+\hline
+Anton Dalgren & Utvecklare & 076 836 51 56 & antda685@student.liu.se \\
+\hline
+Matilda Dahlström & Utvecklare & 070 636 33 52 & matda715@student.liu.se \\
+\hline
+\end{tabular}
+\end{table}
+}
+
+\begin{center}
+\textbf{Hemsida}: https://github.com/SebastianCallh/kartoffel-tsea29
+\end{center}
+
+\begin{center}
+\textbf{Kund}: Mattias Krysander, 013 - 28 2198 , matkr@isy.liu.se
+\end{center}
+
+\begin{center}
+\textbf{Kursansvarig}: Tomas Svensson, 3B 528, +46 (0)13 28 1368, tomas.svensson@liu.se \\
+\textbf{Handledare}: Anders Nilsson, 3B 512, +46 (0)13 28 2635, anders.p.nilsson@liu.se
+\end{center}
+\vspace*{\fill}
+\clearpage
+
+\renewcommand*\contentsname{Innehållsförteckning}
+\tableofcontents
+\clearpage
+
+
+{
+\sffamily
+\centering
+\large
+
+
+{\huge 
+Dokumenthistorik \\
+}
+\begin{table}[H]
+\centering
+\begin{tabular}{ | c | c | c | c | c |} 
+\hline
+\textbf{Version} & \textbf{Datum} & \textbf{Utförda ändringar} & \textbf{Utförd av } & \textbf{Granskad} \\
+\hline
+1.0 & 2016-12-XX & Första version & Grupp 3 & Patrik Sletmo \\
+\hline
+
+\end{tabular}
+\end{table}
+}
+
+\clearpage
+\section{TIdsåtgång}
+Text
+
+
+\subsection{Arbetsfördelning}
+Roboten består av en sedan tidigare byggd robotplattform kallad Terminator med ett antal virkort och komponenter monterade ovanpå. Eftersom roboten inte är byggd med konstruktionssäkerhet i åtanke bör försiktighet vidtagas när den ska förflyttas för att inte råka bryta någon av kopplingarna.
+
+
+\subsection{Tidsåtgång jämfört med planerad tid}
+
+
+\begin{table}[H]
+\centering
+\caption{En tabell över viktiga detaljer på roboten.}
+\begin{tabular}{ | c | c | }
+\hline
+1 & Strömbrytare \\
+\hline
+2 & Batterianslutning \\
+\hline
+3 & Lasersensor \\
+\hline
+4 & Högra främre IR-sensor \\
+\hline
+5 & Vänstra främre IR-sensor \\
+\hline
+6 & Högra bakre IR-sensor \\
+\hline
+7 & Vänstra bakre IR-sensor \\
+\hline
+8 & Knapp för lägesändring \\
+\hline
+\end{tabular}
+\label{table:components}
+\end{table}
+\ \\
+
+
+\clearpage
+\section{Anays av arbete och problem}
+Text
+
+\subsection{Vad hände under de olika faserna (bra/dåligt/orsak)?}
+Text
+
+\subsection{2.2 Hur vi arbetade tillsammans (ansvar, beslut, kommunikation etc.)?}
+Text
+
+\subsection{2.3 Hur använde vi projektmodellen?}
+Text
+
+\subsection{2.4 Hur fungerade relationen med beställaren?}
+Text
+\subsection{2.5 Hur fungerade relationen med handledaren?}
+Text
+\subsection{Tekniska framgångar /Prbolem}
+Text
+
+
+\clearpage
+\section{Måluppfyllelese}
+
+\subsection{4.1 De tre viktigaste erfarenheterna}
+
+\subsection{4.2 Goda råd till de som ska utföra ett liknande projekt}
+
+
+\nocite{*}
+\bibliography{designspec}{}
+\bibliographystyle{plain}
+
+\end{document}
