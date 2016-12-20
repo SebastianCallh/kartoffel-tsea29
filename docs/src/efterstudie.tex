@@ -164,30 +164,6 @@ Matilda Dahlström & Utvecklare & 070 636 33 52 & matda715@student.liu.se \\
 
 \renewcommand*\contentsname{Innehållsförteckning}
 \tableofcontents
-\clearpage
-
-
-{
-\sffamily
-\centering
-\large
-
-
-{\huge 
-Dokumenthistorik \\
-}
-\begin{table}[H]
-\centering
-\begin{tabular}{ | c | c | c | c | c |} 
-\hline
-\textbf{Version} & \textbf{Datum} & \textbf{Utförda ändringar} & \textbf{Utförd av } & \textbf{Granskad} \\
-\hline
-1.0 & 2016-12-XX & Första version & Grupp 3 & Patrik Sletmo \\
-\hline
-
-\end{tabular}
-\end{table}
-}
 
 \clearpage
 \section{Tidsåtgång}
@@ -195,7 +171,7 @@ Text
 
 
 \subsection{Arbetsfördelning}
-Under projektets tidiga skede då vi byggde upp hårdvaran delades arbetet in i de olika delsystemen (huvudenhet, sensorenhet, styrenhet) vilka arbetades på i par om två. När projektet fortskred övergick arbetet främst till att skriva Python-kod på huvudenheten och arbetet delades då in i olika mjukvarumoduler. Vem som gjort vad har styrts av intresse och kompetens.
+Under projektets tidiga skede då vi byggde upp hårdvaran delades arbetet in i de olika delsystemen (huvudenhet, sensorenhet, styrenhet) vilka arbetades på i par om två. Allt eftersom projektet fortskred övergick arbetet främst till att skriva Python-kod på huvudenheten och arbetet delades då in i olika mjukvarumoduler. Vem som gjort vad har genom hela projektet styrts av intresse och kompetens.
 
 
 \subsection{Tidsåtgång jämfört med planerad tid}
@@ -222,11 +198,10 @@ Efter & 26 & ?? \\
 
 \clearpage
 \section{Analys av arbete och problem}
-Under konstruktionens inledande fas arbetade gruppen i väldigt separerade grupper med olika implementationer. Arbetet gick under den här perioden bra, men när olika funktionalitet skulle integreras uppstod problem och tiden spenderad på felsökning ökade markant. 
+Under konstruktionens inledande fas arbetade gruppen i väldigt separerade grupper med olika implementationer. Arbetet gick under den här perioden bra, men när olika funktionalitet skulle integreras uppstod problem och tiden spenderad på felsökning ökade markant. Efter att gruppen lyckats integrera all funktionalitet spenderades även en signifikant del av den återstående tiden med att testa olika värden på hur vi filtrerade sensorvärden och på att finslipa regleringen. Det var ibland svårt att få perspektiv på hur ändringarna som gjordes skulle påverka robotens prestation, men efter en tid så löste även det problemet sig.
 
 \subsection{Vad hände under de olika faserna (bra/dåligt/orsak)?}
-I före-fasen flöt arbetet på bra, men interna deadlines innan de faktiska. Sjukdom påverkade arbetet negativt, men gruppen levererade ändå enligt plan. När under-fasen väl startade tilltog gruppens entusiasm då fokus flyttades från att skriva dokumentation till att vira och koda. Den här entusiasmen höll i sig fram till det att uppstod problem med integration av olika undergruppers moduler, då stämningen försämdares avsevärt. Främst på grund av dålig kommunikation vilket gjorde integrationen svårare än den hade behövt vara. 
----------EFTERFASEN HÄNDER FAKTISKT OCKSÅ---------
+I före-fasen flöt arbetet på bra, men interna deadlines innan de faktiska. Sjukdom påverkade arbetet negativt, men gruppen levererade ändå enligt plan. När under-fasen väl startade tilltog gruppens entusiasm då fokus flyttades från att skriva dokumentation till att vira och koda. Den här entusiasmen höll i sig fram till det att uppstod problem med integration av olika undergruppers moduler, då stämningen försämdares avsevärt. Främst på grund av dålig kommunikation vilket gjorde integrationen svårare än den hade behövt vara. Efter en lyckad leverans lades endast tid på att sammanställa detta dokument.
 
 \subsection{Hur vi arbetade tillsammans (ansvar, beslut, kommunikation etc.)?}
 Text
@@ -242,9 +217,28 @@ Handledaren fanns oftast till hands när vi behövde ställa frågor, vilket var
 
 \subsection{Tekniska framgångar/Problem}
 
+\subsubsection{1. Svårat problem}
+\subsubsection{2. Nästa svårast}
+\subsubsection{3. Tredje svårast}
+
+\subsubsection{Mätvärden från laser}
+Vid första leveransen upplevdes inte positionsbestämningen fungerar konsekvent, vilket visade sig bero på två olika saker. 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{wrongly_positioned_laser}
+\caption{En bild på hur fel positionering påverkar lasern.}
+\label{fig:wrongly_positioned_laser}
+\end{figure}
+\ \\
+För det första kunde robotens lasersensor ge orimliga värden helt spontant och för det andra så positionerades den inte korrekt efter svängar, vilket ledde till att den på längre avstånd kunde får markanta felläsningar. Se figur~\ref{fig:wrongly_positioned_laser} för en illustration på detta.
+\\
+Att lasersensorn kunde ge konstiga värden berodde förmodligen på något fel på låg nivå, antingen på robotens I2C-buss eller till och med hårdvara. Detta felsöktes dock inte eftersom det uppskattades ta för lång tid, och fokus lades på att filtrera laservärden på ett sätt som skulle eliminera dessa felaktiga mätningar. Detta gjordes främst genom att ignorera laservärden som skiljde sig för mycket från tidgare värden. Om felet ej hade uppstått hade flertalet dagar kunnat sparas in under projektets sista veckor.
+\\
+Att roboten kunde ställa sig snett berodde på dess navigeringslogik, vilken fick förbättras. Navigationslogiken är programmerad som en tillståndsmaskin, och för att lösa problemet lades ett nytt tillstånd till som roboten går in i efter varje sväng, där den korrigerar sin riktning. På så sätt kunde det säkerställas att roboten alltid stod parallelt med väggen på höger sida efter en sväng och att lasern träffade där den skulle. När problemet väl upptäcks åtgärdades det på bara några timmar, men det hade länge legat och spökat under testkörningar. Det är svårt att urskilja vilket problem som påverkade när, men även det här felet kan ha kostat gruppen flera dagar av felsökning.
+
+
 Kandidater:
 Bluetooth
-Mätvärden från laser
 I2C
 
 Beskriv de 3 besvärligaste problemen som ni har haft under projektet. 
@@ -259,28 +253,31 @@ e. ungefärlig skattning av hur mycket tid som ni ägnade åt felsökningen (dvs
 
 \clearpage
 \section{Måluppfyllelese}
+text
 
 \subsection{Vad har uppnåtts?}
+text
 
 \subsection{Hur fungerade leveransen?}
-
+Kvällen innan BP5-mötet hade roboten konsekvent klarat en bana, men den var helt klart inte konsekvent nog då den vid leverans inte klarade banan en enda gång. En omleverans bokades in tre dagar senare, och på den tiden lyckades gruppen identifiera och lösa felen som lett till robotens inkonsekventa beteende. Vid det andra BP5-mötet klarade roboten fyra av fyra körningar, varav två kördes på en helt okänd bana. Gruppen är mycket nöjd med robotens kvalitet vid leverans.
 
 \subsection{Hur har studiesituationen påverkat projektet?}
-Då nästan hela gruppen har haft olika scheman, deltidsarbetat och varit aktiva i tidskrävande studentföreningar ---INTE KLART---
-
+Då nästan hela gruppen har haft olika scheman, deltidsarbetat och varit aktiva i tidskrävande studentföreningar har schemaläggning varit en utmaning, och många timmar har lagts på kvällstid och helger. 
 
 \clearpage
 \section{Sammanfattning}
+text
 
 \subsection{De tre viktigaste erfarenheterna}
 
 Kandidater:
-Kommunicera. #Log i slack
-Tänk igenom hur robust funktionaliteten behöver vara. Over-engineera inte.
+Kommunicera. Log i slack. Alla.
+Tänk igenom hur robust funktionaliteten behöver vara. Over-engineera inte. Team-Bluetooth.
+
 
 \subsection{Goda råd till de som ska utföra ett liknande projekt}
 Kommunicera mera! Använd versionshantering. Överskatta tidsåtgång.
-Sätt rimliga krav, (typiskt inte klara x/x körningar)
+Att ha kvar på formen 'roboten ska klara 3/3 körningar' är sjukt våghalsigt
 
 \nocite{*}
 \bibliography{efterstudie}{}
