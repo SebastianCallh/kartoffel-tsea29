@@ -204,10 +204,12 @@ Under konstruktionens inledande fas arbetade gruppen i väldigt separerade grupp
 I före-fasen flöt arbetet på bra, men interna deadlines innan de faktiska. Sjukdom påverkade arbetet negativt, men gruppen levererade ändå enligt plan. När under-fasen väl startade tilltog gruppens entusiasm då fokus flyttades från att skriva dokumentation till att vira och koda. Den här entusiasmen höll i sig fram till det att uppstod problem med integration av olika undergruppers moduler, då stämningen försämdares avsevärt. Främst på grund av dålig kommunikation vilket gjorde integrationen svårare än den hade behövt vara. Efter en lyckad leverans lades endast tid på att sammanställa detta dokument.
 
 \subsection{Hur vi arbetade tillsammans (ansvar, beslut, kommunikation etc.)?}
-Text
+I början av projektet hade vi en rätt så ojämn och krånglig ansvarsfördelning. Vi delade inte ut några specifika ansvarsområden förutom till projektledaren som hade det mesta ansvaret och även ansvarade för all dokumentation. När man påbörjade en aktivitet blev man direkt ansvarig för vad som gjordes där och vilka beslut som fattades kring den, på gott och ont. Vi strävade efter att alla skulle få fatta beslut kring vad de arbetade på för tillfället men det visade sig bara bli rörigt och inkonsekvent. I efterhand skulle det vara bättre att dela upp de olika modulerna över projektets medlemmar och låta beslutsfattningen göras av den/de ansvariga.
+\newline\newline
+På grund av den här ansvarsfördelen behövdes beslut aldrig riktigt kommuniceras utan det gick att implementera sin funktionalitet och sedan direkt påbörja nästa aktivitet. Det här ledde till stor förvirring när resten av gruppen sedan skulle försöka förstå sig på funktionen i senare aktiviteter och det togs även beslut som gjorde att onödig funktionalitet implementerades, vilket tog mycket tid från projektet. När vi till slut fick möjlighet att åtgärda det här kommunikationsproblemet var vi för långt in i projektet för att applicera den tidigare nämnda lösningen med olika ansvarsområden utan vi behövde ett annat angreppssätt. Lösningen blev att introducera en ny kommunikationskanal där vi efter varje avslutat pass eller arbetsdag skrev en text som beskrev vad vi gjort för något. Förutom att ge en bättre förståelse för projektets olika delar gav det också alla en insikt i vad som hände i projektet och vilka framsteg som gjordes. Hela gruppen upplevde att kommunikationen fungerade bättre efter detta beslut tagits.
 
 \subsection{Hur använde vi projektmodellen?}
-Text
+Projektmodellen LIPS användes flitigt i den förberedande fasen för projektet. Vi skrev all dokumentation enligt modellens mallar och följde dess beslutspunkter. Under projektets gång efter vi passerat beslutspunkt 4 så blev det inte lika självklart att följa projektmodellen och vi applicerade egentligen inget av modellens arbetssätt. Det fanns aldrig någon riktig verifiering av de aktiviteter vi genomförde utan de bedömdes som färdiga av de gruppmedlemmar som genomförde dem. Genom att faktiskt verifiera aktiviteter med någon annan gruppmedlem och verkligen testa funktionaliteten hade vi antagligen kunnat undvika många problem som orsakats av att funktioner inte fungerat för alla fall de senare skulle utsättas för. När vi bestämde en aktivitet som avklarad och påbörjade nästa för att vara i fas med tidplanen sköt vi bara problemet längre fram.
 
 \subsection{Hur fungerade relationen med beställaren?}
 TODO: wtf, nära relation????
@@ -217,14 +219,7 @@ Gruppen upplever inte att den haft någon nära relation med beställaren, men a
 Handledaren fanns oftast till hands när vi behövde ställa frågor, vilket var en användbar resurs då gruppen konstruerade hårdvaran. Gruppen upplevde inte ett så stort behov att att ställa frågor, men är mycket nöjd med den hjälp som givits. Handledaren har visat intresse även då gruppen inte beöhvt något stöd.
 
 \subsection{Tekniska framgångar/Problem}
-Ordning:
-Laser
-Bluetooth
-WiFi
-
-\subsubsection{1. Svårast problem}
-\subsubsection{2. Nästa svårast}
-\subsubsection{3. Tredje svårast}
+TODO: Text
 
 \subsubsection{Mätvärden från laser}
 Vid första leveransen upplevdes inte positionsbestämningen fungerar konsekvent, vilket visade sig bero på två olika saker. 
@@ -246,25 +241,19 @@ Under utvecklingen av mjukvaruklienten samt robotens uppkoppling mot den, upplev
 
 Då både server- och klientsidan utvecklades i Python användes biblioteket Pybluez för Bluetoothuppkopplingen. Orsaker till att detta problem uppstod var dels att detta bibliotek var dåligt dokumenterat, underskattning av planerad tidsåtgång, vissa uppgifter föll mellan de specificerade aktiviteterna och blev inbakade i de ursprungliga aktiviteterna, ingen tidigare kunskap om nätverksprogrammering eller processhantering i Python samt dålig kommunikation inom gruppen för planering av nivån på lösningarna. 
 
-WiFi (designfel)
-
-
-Beskriv de 3 besvärligaste problemen som ni har haft under projektet. 
-Rangordna problemen där 1 är mest besvärlig i betydelsen tog längst tid att fixa.
-Beskriv för varje problem:
-a. felets typ - ange t.ex.  hårdvarufel, mjukvarufel, systemintegrationsfel 
-b. kort beskrivning av felets symptom 
-c. kort beskrivning av felets orsak t.ex. logiskt fel i programmering, timing-fel, glappkontakt, missförstånd av spec., felaktig design. 
-d. kort beskrivning av hur ni fixade felet. T.ex. hur ni fixade mjukvarubuggen, fick ny hårdvara, virade om, gick runt problemet.
-e. ungefärlig skattning av hur mycket tid som ni ägnade åt felsökningen (dvs. tid som kunde tjänats in om felet inte hade uppstått)
-
+\subsubsection{Uppkoppling över trådlöst nätverk}
+När vi planerade gruppens arbetsflöde gjorde vi antagandet att vi likt en bärbar dator kunde koppla upp robotens huvudenhet, som bestod av en Raspberry Pi, på det trådlösa nätverket \textit{eduroam}. Antagandet var egentligen inte inkorrekt, vi kunde koppla upp roboten på nätverket och nå den från en annan dator på samma nätverk. Det som orsakade problem var stabiliteten hos uppkopplingen.
+\newline\newline
+Det felaktiga antagandet som orsakade vårt designfel var att anslutningen från en Raspberry Pi skulle erbjuda samma stabilitet som en bärbar dator. Problemet med Raspberry Pi:n är att den endast har en antenn för 2.4 GHZ-bandet, som utöver det också är väldigt liten. Detta ledde till att vi fick svårigheter att bibehålla en uppkoppling mot enheten och ofta var tvungen att försöka återansluta. Inte allt för sällan hade IP-adressen på nätverket förändrats sen senaste gången vi försökte ansluta och vi var därför tvungna att vänta på att robotens display skulle uppdateras med den nya adressen - något som bara sker en gång per minut.
+\newline\newline
+Om en skulle uppskatta antalet timmar som förlorats på grund av problem med uppkopplingen hade det rört sig om ett par tiotal timmar bortkastad tid. Vad som egentligen borde gjorts så fort vi upptäckte att det här var ett problem hade varit att dela mobilnätverket från en mobil där både robot och uppkopplad dator hade kunnat anslutas. Under projektets gång ignorerade vi istället en möjlig lösning och lät problemet ligga kvar och ta upp tid, detta beror på att alla var fokuserade på att få andra saker att fungera så det här var aldrig något som prioriterades.
 
 \clearpage
 \section{Måluppfyllelese}
-text
+TODO: text
 
 \subsection{Vad har uppnåtts?}
-text
+TODO: text
 
 \subsection{Hur fungerade leveransen?}
 Kvällen innan BP5-mötet hade roboten konsekvent klarat en bana, men den var helt klart inte konsekvent nog då den vid leverans inte klarade banan en enda gång. En omleverans bokades in tre dagar senare, och på den tiden lyckades gruppen identifiera och lösa felen som lett till robotens inkonsekventa beteende. Vid det andra BP5-mötet klarade roboten fyra av fyra körningar, varav två kördes på en helt okänd bana. Gruppen är mycket nöjd med robotens kvalitet vid leverans.
@@ -274,19 +263,21 @@ Då nästan hela gruppen har haft olika scheman, deltidsarbetat och varit aktiva
 
 \clearpage
 \section{Sammanfattning}
-text
+TODO: text
 
 \subsection{De tre viktigaste erfarenheterna}
-
-Kandidater:
+\subsubsection{Kommunikation}
 Kommunicera. Log i slack. Alla.
-Tänk igenom hur robust funktionaliteten behöver vara. Over-engineera inte. Team-Bluetooth.
-Struktur och planering. Arbete med git. Planering är tråkigt men nyttigt!
 
+\subsubsection{Over-engineering (TODO: Annan rubrik)}
+Tänk igenom hur robust funktionaliteten behöver vara. Over-engineera inte. Team-Bluetooth.
+
+\subsubsection{Struktur och planering}
+Struktur och planering. Arbete med git. Planering är tråkigt men nyttigt!
 
 \subsection{Goda råd till de som ska utföra ett liknande projekt}
 Kommunicera mera! Se till att alla vet i alla fall vad som händer i alla delar av projektet, varje dag. Använd versionshantering. Överskatta tidsåtgång.
-Att ha kvar på formen 'roboten ska klara 3/3 körningar' är sjukt våghalsigt
+Att ha kvar på formen 'roboten ska klara 3/3 körningar' är sjukt våghalsigt. Lös problem med arbetsflödet direkt!
 
 \nocite{*}
 \bibliography{efterstudie}{}
