@@ -210,14 +210,19 @@ Text
 Text
 
 \subsection{Hur fungerade relationen med beställaren?}
+TODO: wtf, nära relation????
 Gruppen upplever inte att den haft någon nära relation med beställaren, men att han varit lätt att få tag på och att kommunikationen har fungerat väl. Kritiken som gavs på den tekniska dokumentationen uppskattades. 
 
 \subsection{Hur fungerade relationen med handledaren?}
-Handledaren fanns oftast till hands när vi behövde ställa frågor, vilket var en användbar resurs då gruppen konstruerade hårdvaran. Gruppen upplevde inte ett så stort behov att att ställa frågor, men är mycket nöjd med den hjälp som givits.
+Handledaren fanns oftast till hands när vi behövde ställa frågor, vilket var en användbar resurs då gruppen konstruerade hårdvaran. Gruppen upplevde inte ett så stort behov att att ställa frågor, men är mycket nöjd med den hjälp som givits. Handledaren har visat intresse även då gruppen inte beöhvt något stöd.
 
 \subsection{Tekniska framgångar/Problem}
+Ordning:
+Laser
+Bluetooth
+WiFi
 
-\subsubsection{1. Svårat problem}
+\subsubsection{1. Svårast problem}
 \subsubsection{2. Nästa svårast}
 \subsubsection{3. Tredje svårast}
 
@@ -236,16 +241,10 @@ Att lasersensorn kunde ge konstiga värden berodde förmodligen på något fel p
 \\
 Att roboten kunde ställa sig snett berodde på dess navigeringslogik, vilken fick förbättras. Navigationslogiken är programmerad som en tillståndsmaskin, och för att lösa problemet lades ett nytt tillstånd till som roboten går in i efter varje sväng, där den korrigerar sin riktning. På så sätt kunde det säkerställas att roboten alltid stod parallelt med väggen på höger sida efter en sväng och att lasern träffade där den skulle. När problemet väl upptäcks åtgärdades det på bara några timmar, men det hade länge legat och spökat under testkörningar. Det är svårt att urskilja vilket problem som påverkade när, men även det här felet kan ha kostat gruppen flera dagar av felsökning.
 
-Ordning:
-Laser
-Bluetooth
-WiFi
+\subsubsection{Utveckling av Bluetooth}
+Under utvecklingen av mjukvaruklienten samt robotens uppkoppling mot den, upplevdes stor tidsåtgång på dess aktiviteter. Planerad tid för Bluetoothkommunikation samt mjukvaruklient var ungefär 40 timmar, och den lagda tiden hamnade på nästan 200 timmar. 
 
-Kandidater:
-Bluetooth
-Under utvecklingen av mjukvaruklienten samt robotens uppkoppling mot den, upplevdes stor tidsåtgång på dess aktiviteter. Då både server- och klientsidan utvecklades i Python användes biblioteket Pybluez för Bluetoothuppkopplingen. 
-
-Orsaker till att detta problem uppstod var dels att detta bibliotek var otroligt dåligt dokumenterat, ingen tidigare kunskap om nätverksprogrammering eller processhantering i Python, dålig kommunikation inom gruppen för planering av nivån på utvecklingen, 
+Då både server- och klientsidan utvecklades i Python användes biblioteket Pybluez för Bluetoothuppkopplingen. Orsaker till att detta problem uppstod var dels att detta bibliotek var dåligt dokumenterat, underskattning av planerad tidsåtgång, vissa uppgifter föll mellan de specificerade aktiviteterna och blev inbakade i de ursprungliga aktiviteterna, ingen tidigare kunskap om nätverksprogrammering eller processhantering i Python samt dålig kommunikation inom gruppen för planering av nivån på lösningarna. 
 
 WiFi (designfel)
 
@@ -286,7 +285,7 @@ Struktur och planering. Arbete med git. Planering är tråkigt men nyttigt!
 
 
 \subsection{Goda råd till de som ska utföra ett liknande projekt}
-Kommunicera mera! Använd versionshantering. Överskatta tidsåtgång.
+Kommunicera mera! Se till att alla vet i alla fall vad som händer i alla delar av projektet, varje dag. Använd versionshantering. Överskatta tidsåtgång.
 Att ha kvar på formen 'roboten ska klara 3/3 körningar' är sjukt våghalsigt
 
 \nocite{*}
