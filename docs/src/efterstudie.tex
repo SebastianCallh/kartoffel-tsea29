@@ -1,4 +1,4 @@
-\documentclass{article}
+﻿\documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage[english, swedish]{babel}
 
@@ -236,12 +236,19 @@ Att lasersensorn kunde ge konstiga värden berodde förmodligen på något fel p
 \\
 Att roboten kunde ställa sig snett berodde på dess navigeringslogik, vilken fick förbättras. Navigationslogiken är programmerad som en tillståndsmaskin, och för att lösa problemet lades ett nytt tillstånd till som roboten går in i efter varje sväng, där den korrigerar sin riktning. På så sätt kunde det säkerställas att roboten alltid stod parallelt med väggen på höger sida efter en sväng och att lasern träffade där den skulle. När problemet väl upptäcks åtgärdades det på bara några timmar, men det hade länge legat och spökat under testkörningar. Det är svårt att urskilja vilket problem som påverkade när, men även det här felet kan ha kostat gruppen flera dagar av felsökning.
 
+Ordning:
+Laser
+Bluetooth
+WiFi
 
 Kandidater:
 Bluetooth
 Under utvecklingen av mjukvaruklienten samt robotens uppkoppling mot den, upplevdes stor tidsåtgång på dess aktiviteter. Då både server- och klientsidan utvecklades i Python användes biblioteket Pybluez för Bluetoothuppkopplingen. 
 
 Orsaker till att detta problem uppstod var dels att detta bibliotek var otroligt dåligt dokumenterat, ingen tidigare kunskap om nätverksprogrammering eller processhantering i Python, dålig kommunikation inom gruppen för planering av nivån på utvecklingen, 
+
+WiFi (designfel)
+
 
 Beskriv de 3 besvärligaste problemen som ni har haft under projektet. 
 Rangordna problemen där 1 är mest besvärlig i betydelsen tog längst tid att fixa.
@@ -275,6 +282,7 @@ text
 Kandidater:
 Kommunicera. Log i slack. Alla.
 Tänk igenom hur robust funktionaliteten behöver vara. Over-engineera inte. Team-Bluetooth.
+Struktur och planering. Arbete med git. Planering är tråkigt men nyttigt!
 
 
 \subsection{Goda råd till de som ska utföra ett liknande projekt}
