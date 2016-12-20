@@ -36,30 +36,15 @@
 *.su
 
 # Compiled latex files
-docs/src/projektplan.aux
-docs/src/projektplan.log
-docs/src/projektplan.pdf
-docs/src/projektplan.toc
-docs/src/systemskiss.aux
-docs/src/systemskiss.log
-docs/src/systemskiss.pdf
-docs/src/systemskiss.toc
-docs/src/systemskiss.bbl
-docs/src/systemskiss.blg
-docs/src/designspec.aux
-docs/src/designspec.log
-docs/src/designspec.pdf
-docs/src/designspec.toc
-docs/src/designspec.bbl
-docs/src/designspec.blg
-docs/src/teknisk_dokumentation.aux
-docs/src/teknisk_dokumentation.log
-docs/src/teknisk_dokumentation.pdf
-docs/src/teknisk_dokumentation.toc
-docs/src/anvandarhandledning.aux
-docs/src/anvandarhandledning.log
-docs/src/anvandarhandledning.pdf
-docs/src/anvandarhandledning.toc
+docs/src/*.aux
+docs/src/*.log
+docs/src/*.pdf
+docs/src/*.toc
+docs/src/*.bbl
+docs/src/*.blg
+
+# Include documentation images
+!docs/src/images/
 
 # Emacs backup files
 *~
